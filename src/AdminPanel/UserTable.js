@@ -1,7 +1,7 @@
 import {MDBBtn,MDBInputGroup,MDBCheckbox , MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
 import { connect,useDispatch,useSelector } from 'react-redux';
-import {setUsers, deleteUser } from './actions';
+import {setUsers, deleteUser } from '../redux/actions';
 import {MDBNavbarItem} from 'mdb-react-ui-kit';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';

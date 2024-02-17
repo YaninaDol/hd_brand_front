@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import AdminPanel from './AdminPanel';
-import ShoesPage from './ShoesPage';
-import ClothesPage from './ClothesPage';
-import Accessorise from './Accessorise';
+import Home from './Pages/Home';
+import AdminPanel from './AdminPanel/AdminPanel';
+import ShoesPage from './Pages/ShoesPage';
+import ClothesPage from './Pages/ClothesPage';
+import Accessorise from './Pages/Accessorise';
 
 const App = () => {
   return (

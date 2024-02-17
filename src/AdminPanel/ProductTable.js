@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { connect,useDispatch,useSelector } from 'react-redux';
-import { setProducts, setUsers, addProduct, deleteUser,deleteProduct,setCategories,editProduct,setMaterials,setSeasons,setSubCategories, addSubCategory } from './actions';
+import { setProducts, setUsers, addProduct, deleteUser,deleteProduct,setCategories,editProduct,setMaterials,setSeasons,setSubCategories, addSubCategory } from '../redux/actions';
 import axios from 'axios';
 import React from 'react';
-import ProductTableItem from './ProductTableItem';
+import ProductTableItem from '../Components/ProductTableItem';
 import {MDBBtn,MDBInputGroup,MDBInput,MDBCheckbox , MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';

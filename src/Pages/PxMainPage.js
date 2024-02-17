@@ -28,7 +28,7 @@ const PxMainPage = () => {
               className="logo-icon"
               loading="eager"
               alt=""
-              src={require('./assets/logo@2x.png')}
+              src={require('../assets/logo@2x.png')}
             />
             <div className="menu-navigation">
               <div className="menu-navigation-button-contain">
@@ -57,7 +57,7 @@ const PxMainPage = () => {
                 className="icon-search"
                 loading="eager"
                 alt=""
-                src={require('./assets/search.png')}
+                src={require('../assets/search.png')}
               />
              <input placeholder="Що будемо шукати?"  type="search"  className="search-field">
             </input>
@@ -66,26 +66,26 @@ const PxMainPage = () => {
                 className="language-icon"
                 loading="eager"
                 alt=""
-                src={require('./assets/language.png')}
+                src={require('../assets/language.png')}
               />
               <img
                 className="user-icon"
                 loading="eager"
                 alt=""
-                src={require('./assets/user.png')} 
+                src={require('../assets/user.png')} 
               />
               <img
                 className="favourite-icon"
                 loading="eager"
                 alt=""
-                src={require('./assets/favourite.png')}
+                src={require('../assets/favourite.png')}
               />
              
                 <img
                   className="pagination-element-frame"
                   loading="eager"
                   alt=""
-                  src={require('./assets/vector.png')}
+                  src={require('../assets/vector.png')}
                 />
                 <div className="heading-frame">
                   <div className="item-card-frame">(1)</div>
