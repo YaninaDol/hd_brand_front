@@ -148,6 +148,7 @@
   border: 1px solid;
   border-color: var(--defaultblack);
   border-radius: 4px;
+ 
 }
 .favourite-icon,
 .language-icon,
@@ -696,6 +697,7 @@
   letter-spacing: normal;
 }
 @media screen and (max-width: 1600px) {
+  
   .header-container1 {
     gap: var(--gap-249xl);
   }
@@ -704,7 +706,18 @@
     grid-template-columns: repeat(2, minmax(397px, 689px));
   }
 }
+@media screen and (max-width: 1400px) {
+  
+  .search-field-icons {
+    visibility: hidden;
+   
+  }
+}
 @media screen and (max-width: 1050px) {
+  .search-field-icons {
+    visibility: hidden;
+   
+  }
   .header-container {
     padding-left: var(--padding-6xl);
     padding-right: var(--padding-6xl);
@@ -737,7 +750,8 @@
     gap: var(--gap-31xl);
   }
   .search-field-icons {
-    gap: var(--gap-81xl);
+    visibility: hidden;
+   
   }
   .header-container
   {
