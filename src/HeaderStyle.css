@@ -1,0 +1,102 @@
+.ukrainian-brand,
+.ukrainian-brand1,
+.ukrainian-brand10,
+.ukrainian-brand2,
+.ukrainian-brand3,
+.ukrainian-brand4,
+.ukrainian-brand5,
+.ukrainian-brand6,
+.ukrainian-brand7,
+.ukrainian-brand8,
+.ukrainian-brand9 {
+  position: relative;
+  text-transform: uppercase;
+  
+    position: relative;
+    animation: moveAnimation 7s linear infinite;
+  }
+
+  @keyframes moveAnimation {
+      0% { left: 0; }
+       50% { left: 200px }
+       100% { left: 100 }
+     }
+.ticker {
+  white-space: nowrap;
+  color:white;
+  align-self: stretch;
+  background-color: var(--typography-black);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 15px 20px 16px;
+  gap: var(--gap-xl);
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px; /* Вы можете настроить отступы по вашему усмотрению */
+  }
+  
+  .logo-menu-navigation {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu-navigation {
+    display: flex;
+  }
+  
+  .search-field-icons {
+    display: flex;
+    align-items: center;
+  }
+  .button-nav4 {
+  color:hotpink;
+  }
+  .button-nav,
+  .button-nav1,
+  .button-nav2,
+  .button-nav3,
+  .button-nav4,
+  .button-nav5
+   {
+    position: relative;
+  text-transform: uppercase;
+  font-weight: 500;
+    margin-right: 10px; /* Добавьте отступ между кнопками в меню */
+  }
+  
+  .icons {
+    display: flex;
+    align-items: center;
+    margin-left: 10px; /* Добавьте отступ между полем поиска и иконками */
+  }
+  
+  .shopping-bag-1 {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pagination-element-frame {
+    margin-left: 5px; /* или другое значение, чтобы установить желаемый отступ */
+  }
+  
+  .heading-frame {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .favourite-icon,
+.language-icon,
+.pagination-element-frame,
+.user-icon {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+  

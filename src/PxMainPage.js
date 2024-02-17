@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import "./PxMainPage.css";
+// import "./PxMainPage.css";
+import "./HeaderStyle.css"
 
 const PxMainPage = () => {
 
@@ -79,7 +80,7 @@ const PxMainPage = () => {
                 alt=""
                 src={require('./assets/favourite.png')}
               />
-              <div className="shopping-bag-1">
+             
                 <img
                   className="pagination-element-frame"
                   loading="eager"
@@ -87,8 +88,8 @@ const PxMainPage = () => {
                   src={require('./assets/vector.png')}
                 />
                 <div className="heading-frame">
-                  <div className="item-card-frame">1</div>
-                </div>
+                  <div className="item-card-frame">(1)</div>
+               
               </div>
             </div>
           </div>
