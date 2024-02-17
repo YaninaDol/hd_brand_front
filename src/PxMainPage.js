@@ -4,21 +4,6 @@ import "./PxMainPage.css";
 const PxMainPage = () => {
 
 
-   
-
-
-   
-// document.addEventListener('DOMContentLoaded', function() {
-//     let ukrainianBrand = document.getElementById('ukrainianBrand');
-//     let currentPosition = 0;
-//     function moveElement() {
-//         currentPosition += 5; // или другая скорость движения
-//         ukrainianBrand.style.left= currentPosition + 'px';
-      
-//         requestAnimationFrame(moveElement);
-//       }
-//       moveElement();
-//   });
 
      return (
       <div className="px-main-page">
@@ -35,7 +20,7 @@ const PxMainPage = () => {
           <div className="ukrainian-brand8"  id="ukrainianBrand">Ukrainian brand</div>
           <div className="ukrainian-brand9"  id="ukrainianBrand">Ukrainian brand</div>
         </div>
-        <header className="header">
+        <header className="header" >
         <div className="header-container">
           <div className="logo-menu-navigation">
             <img
@@ -66,15 +51,15 @@ const PxMainPage = () => {
             </div>
           </div>
           <div className="search-field-icons">
-            <div  className="search-field">
+           
               <img
                 className="icon-search"
                 loading="eager"
                 alt=""
                 src={require('./assets/search.png')}
               />
-              <div className="div">Що будемо шукати?</div>
-            </div>
+             <input placeholder="Що будемо шукати?"  type="search"  className="search-field">
+            </input>
             <div className="icons">
               <img
                 className="language-icon"

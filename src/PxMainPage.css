@@ -119,12 +119,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   max-width: 100%;
 }
 .menu-navigation {
   display: flex;
-  gap: 20px; /* Отступы между кнопками навигации */
+  gap: 20px;
 }
 .logo-menu-navigation {
   display: flex;
@@ -144,7 +144,10 @@
 .search-field {
   display: flex;
   align-items: center;
-  margin-right: 20px; 
+  margin-right: 50px;
+  border: 1px solid;
+  border-color: var(--defaultblack);
+  border-radius: 4px;
 }
 .favourite-icon,
 .language-icon,
@@ -161,6 +164,7 @@
   position: relative;
 }
 .item-card-frame {
+  align-items: center;
   position: relative;
   text-transform: uppercase;
   font-weight: 500;
@@ -168,7 +172,6 @@
 .heading-frame,
 .shopping-bag-1 {
   align-self: stretch;
-  flex: 1;
   display: flex;
 }
 .heading-frame {
@@ -177,39 +180,31 @@
   justify-content: center;
   padding: var(--padding-10xs) 1px 2px;
   z-index: 1;
-  margin-top: -16px;
+  margin-top: -19px;
 }
 .shopping-bag-1 {
   overflow: hidden;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items:center;
+  justify-content: center;
+  
+  
 }
-.icons,
-.search-field-icons {
-  display: flex;
-  align-items: center;
-}
+
 .icons {
   display: flex;
   gap: 10px; 
 }
 .search-field-icons {
-  width: 375px;
+  display: flex;
   align-items: center;
-  gap: var(--gap-81xl);
-  max-width: 100%;
+  margin-right: 150px; 
 }
 .header-container {
   background-color: var(--typography-white);
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   justify-content: space-between;
-  padding: var(--padding-11xl) 51px var(--padding-11xl) var(--padding-31xl);
-  box-sizing: border-box;
-  gap: var(--gap-xl);
-  color: var(--typography-black);
 }
 .frame-title,
 .header-container,
@@ -323,7 +318,6 @@
   align-items: center;
   padding: 303px 0 var(--padding-11xl);
   gap: var(--gap-249xl);
-  background-image: url(/public/image@2x.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
@@ -688,11 +682,16 @@
   color: var(--typography-black);
   font-family: var(--h2-bold-28-uppercase);
 }
+.header
+{
+  margin: 15px;
+ 
+}
 .px-main-page {
   width: 100%;
   background-color: var(--typography-white);
   overflow: hidden;
-  padding: 0 0 715px;
+  padding: 0 0 15px;
   box-sizing: border-box;
   letter-spacing: normal;
 }
