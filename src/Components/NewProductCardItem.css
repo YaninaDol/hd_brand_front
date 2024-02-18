@@ -1,0 +1,201 @@
+/* .product-card {
+    position: relative;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .new-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff0000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .like-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  .product-details {
+    margin-top: 10px;
+  }
+  
+  .product-title {
+    font-weight: bold;
+  }
+  
+  .product-price {
+    color: #007bff;
+  }
+   */
+   .image-icon5 {
+    align-self: stretch;
+    width: 100%;
+    position: absolute;
+    margin: 0 !important;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  .pagination-element13,
+  .pagination-element14,
+  .pagination-element15 {
+    height: 5px;
+    width: 93px;
+    position: relative;
+    background-color: var(--additional-white-30);
+    display: none;
+  }
+  .pagination-element14,
+  .pagination-element15 {
+    background-color: var(--additional-white-70);
+  }
+  .pagination-element15 {
+    background-color: var(--additional-white-30);
+  }
+  .pagination4 {
+    height: 3.9px;
+    width: 288px;
+    display: none;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--gap-8xs);
+    z-index: 1;
+  }
+  .new {
+    position: relative;
+    font-size: var(--button-regular-15-uppercase-size);
+    text-transform: uppercase;
+    font-weight: 500;
+    font-family: var(--h2-bold-28-uppercase);
+    color: var(--typography-additional);
+    text-align: center;
+  }
+  .tag-container3 {
+    cursor: pointer;
+    border: 0;
+    padding: var(--padding-8xs) var(--padding-8xs) var(--padding-7xs);
+    background-color: var(--typography-white);
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .tag-container3:hover {
+    background-color: var(--color-gainsboro);
+  }
+  .head3 {
+    height: 24px;
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .component-25-container {
+    height: 18.7px;
+    width: 20px;
+    position: relative;
+  }
+  .tag-icon {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: var(--padding-sm) var(--padding-xl) 0;
+    gap: var(--gap-xl);
+    z-index: 1;
+  }
+  .div12,
+  .image-elements {
+    align-self: stretch;
+    position: relative;
+    
+  }
+  .image-elements {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 0 var(--padding-303xl);
+  }
+  .div12 {
+    line-height: 18.13px;
+  }
+  .uah7 {
+    height: 25px;
+    position: relative;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+  .uah7 {
+    
+    letter-spacing: -0.03em;
+    font-weight: 500;
+    color: var(--default-black);
+  }
+  .description-price,
+  .item-card2,
+  .price3 {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .price3 {
+    flex-direction: row;
+    gap: var(--gap-7xs);
+    font-size: var(--subtitle-medium-20-size);
+    color: var(--typography-gray);
+  }
+  .description-price,
+  .item-card2 {
+    flex-direction: column;
+  }
+  .description-price {
+    align-self: stretch;
+    gap: var(--gap-xl);
+  }
+  .item-card2 {
+    width: 288px;
+    flex-shrink: 0;
+    gap: var(--gap-3xs);
+    text-align: left;
+    font-size: var(--button-regular-15-uppercase-size);
+    color: var(--default-black);
+    font-family: var(--h2-bold-28-uppercase);
+  }
+  @media screen and (max-width: 450px) {
+    .image-elements {
+      padding-bottom: var(--padding-190xl);
+      box-sizing: border-box;
+    }
+    .uah6,
+    .uah7 {
+      font-size: var(--font-size-base);
+    }
+  }
+  

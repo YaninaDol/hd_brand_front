@@ -12,7 +12,7 @@ const CatalogsItemContainer = ({link, image, prop, propPadding }) => {
 
   return (
     <div >
-   <Card  style={{border:'none' }}  className="text-center d-flex align-items-center">
+   <Card   style={{border:'none' }}  className="text-center d-flex align-items-center">
     <Link to={link}>
   <Card.Img  className="img-fluid"    variant="center" src={image} />
   <Card.ImgOverlay   className="d-flex  align-items-center justify-content-center">
