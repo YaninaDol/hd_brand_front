@@ -7,6 +7,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import CatalogsItemContainer from "../Components/CatalogsItemContainer";
 import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
+import '../Components/NewProductCardItem.css'
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1500 },
