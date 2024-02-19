@@ -8,6 +8,8 @@ import CatalogsItemContainer from "../Components/CatalogsItemContainer";
 import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
 import '../Components/NewProductCardItem.css'
+import WeeklyPreview from '../Components/WeeklyPreview'
+
 import { CardGroup,Card } from 'react-bootstrap';
 
 const responsive = {
@@ -179,10 +181,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <CardGroup>
-      <Card.Img    ></Card.Img>
-      </CardGroup>
- 
+    
+   <WeeklyPreview image1={require('../assets/look1.png')} image2={require('../assets/look2.png')} image3={require('../assets/look3.png')}   />
     </div>
   );
 };
