@@ -13,14 +13,14 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
 
   return (
     <Card  className="img-fluid no-gutters" style={{  marginLeft: '15px', marginRight:'15px', border: 'none' }}>
-    <Carousel >
-      <Carousel.Item>
+      <MDBCarousel  >
+      <MDBCarouselItem itemId={1}>
         <Card.Img   variant="top" style={{borderTopLeftRadius:'0px',borderTopRightRadius:'0px'}}   className="img-fluid" src={imageSrc1} />
-      </Carousel.Item>
-      <Carousel.Item>
+      </MDBCarouselItem>
+      <MDBCarouselItem itemId={2}>
         <Card.Img variant="top" style={{borderTopLeftRadius:'0px',borderTopRightRadius:'0px'}}  className="img-fluid" src={imageSrc2} />
-      </Carousel.Item>
-    </Carousel>
+        </MDBCarouselItem>
+    </MDBCarousel>
     <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
       <div className="head3">
         <button className="tag-container3">
@@ -28,7 +28,7 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
         </button>
       </div>
     </div>
-    <div  onClick={handleLikeClick}  style={{width:'50px', position: 'absolute', top: '10px', right: '15px' }}>
+    <div  onClick={handleLikeClick}  style={{width:'50px', position:'fixed', top: '10px', right: '15px' }}>
      
       <img
         className="component-25-container"
