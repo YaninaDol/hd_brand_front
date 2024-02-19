@@ -205,7 +205,18 @@
   background-color: var(--typography-white);
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   justify-content: space-between;
+  padding: var(--padding-11xl) 51px var(--padding-11xl) var(--padding-31xl);
+  box-sizing: border-box;
+  gap: var(--gap-xl);
+  top: 0;
+  z-index: 99;
+  position: sticky;
+  text-align: left;
+  font-size: var(--button-regular-15-uppercase-size);
+  color: var(--default-black);
+  font-family: var(--h2-bold-28-uppercase);
 }
 .frame-title,
 .header-container,
@@ -314,7 +325,7 @@
   z-index: 1;
 }
 .header-container1 {
-  width: 1900px;
+  width: 1600px;
   flex-direction: column;
   align-items: center;
   padding: 303px 0 var(--padding-11xl);

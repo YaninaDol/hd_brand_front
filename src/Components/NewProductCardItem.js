@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import Carousel from 'react-bootstrap/Carousel';
 import './NewProductCardItem.css';
-
+import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion, price }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
 
@@ -12,13 +12,13 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
   };
 
   return (
-    <Card  className="img-fluid" style={{ width: '17rem', marginLeft: 10, border: 'none' }}>
-    <Carousel>
+    <Card  className="img-fluid no-gutters" style={{  marginLeft: '15px', marginRight:'15px', border: 'none' }}>
+    <Carousel >
       <Carousel.Item>
-        <Card.Img   variant="top" className="img-fluid" src={imageSrc1} />
+        <Card.Img   variant="top" style={{borderTopLeftRadius:'0px',borderTopRightRadius:'0px'}}   className="img-fluid" src={imageSrc1} />
       </Carousel.Item>
       <Carousel.Item>
-        <Card.Img variant="top" className="img-fluid" src={imageSrc2} />
+        <Card.Img variant="top" style={{borderTopLeftRadius:'0px',borderTopRightRadius:'0px'}}  className="img-fluid" src={imageSrc2} />
       </Carousel.Item>
     </Carousel>
     <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
@@ -44,7 +44,7 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
      
     </div>
     <Card.Body style={{ padding: '0px' }}>
-      <Card.Text>
+      <Card.Text >
         <div className="div12">{descriprion}</div>
       </Card.Text>
       <Card.Title>

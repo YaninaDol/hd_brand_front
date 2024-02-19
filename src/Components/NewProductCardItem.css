@@ -40,6 +40,7 @@
     color: #007bff;
   }
    */
+   
    .image-icon5 {
     align-self: stretch;
     width: 100%;
@@ -143,6 +144,9 @@
     padding: 0 0 var(--padding-303xl);
   }
   .div12 {
+    max-height: 80px; /* Adjust the maximum height as needed */
+    overflow: hidden;
+    text-overflow:ellipsis;
     line-height: 18.13px;
   }
   .uah7 {
@@ -179,6 +183,38 @@
     align-self: stretch;
     gap: var(--gap-xl);
   }
+  .head {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--padding-31xl);
+  }
+  .h2{
+    align-self: stretch;
+    margin-top: 10px;
+    position: relative;
+    font-size: inherit;
+    line-height: 0%;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: inherit;
+    font-size: large;
+    display: flex;
+    align-items: center;
+  }
+  .title-h2 {
+    
+    margin: 30px;
+    flex-direction: row;
+    align-items: center;
+    justify-content:center;
+    height: 29px;
+  display: flex;
+    margin-left: 10px;
+   
+    flex-direction: row;
+  }
+  
   .item-card2 {
     width: 288px;
     flex-shrink: 0;

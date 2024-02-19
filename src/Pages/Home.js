@@ -8,28 +8,36 @@ import CatalogsItemContainer from "../Components/CatalogsItemContainer";
 import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
 import '../Components/NewProductCardItem.css'
+import { CardGroup,Card } from 'react-bootstrap';
+
 const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1500 },
+  desktopLarge: {
+    breakpoint: { max: 3000, min: 1400 },
     items: 5,
     slidesToSlide: 5,
-    partialVisible: false,
-    itemWidth: 20, // 20% от ширины экрана
-   
+    partialVisible: true,
+    itemWidth: 20,
+  },
+  desktop: {
+    breakpoint: { max: 1400, min: 800 },
+    items: 4,
+    slidesToSlide: 4,
+    itemWidth: 20,
   },
   tablet: {
-    breakpoint: { max: 760, min: 464 },
-    items: 2,
-    slidesToSlide: 2,
-    itemWidth: 20, // 20% от ширины экрана
+    breakpoint: { max: 800, min: 464 },
+    items: 3,
+    slidesToSlide: 3,
+    itemWidth: 20,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    items: 1,
-    slidesToSlide: 1,
-    itemWidth: 20, // 20% от ширины экрана
+    items: 2,
+    slidesToSlide: 2,
+    itemWidth: 20,
   },
 };
+
 const Home = () => {
   
   
@@ -115,10 +123,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <Carousels  responsive={responsive}   itemClass="carousel-item-padding"
-      containerClass="carousel-container" >
+      <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
         
-      <NewProductCardItem
+      <NewProductCardItem 
      
            imageSrc1={require('../assets/newimage.png')}
            imageSrc2={require('../assets/newimage.png')}
@@ -162,8 +169,20 @@ const Home = () => {
            price="2700 uah"
         />
       </Carousels>
-      
-   </div>
+      </div>
+      <section className="graphic">
+        <div className="new-items">
+          <div className="head">
+            <div className="title-h2">
+              <h2 className="h2">образ тижня</h2>
+            </div>
+          </div>
+        </div>
+      </section>
+      <CardGroup>
+      <Card.Img    ></Card.Img>
+      </CardGroup>
+ 
     </div>
   );
 };

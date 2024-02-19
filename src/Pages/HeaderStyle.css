@@ -33,10 +33,11 @@
   padding: 15px 20px 16px;
   gap: var(--gap-xl);
 }
+
 .header-container {
     display: flex;
     justify-content: space-between;
-    padding: 15px; /* Вы можете настроить отступы по вашему усмотрению */
+    padding: 50px;
   }
   .px-main-page {
     width: 100%;
@@ -59,6 +60,7 @@
     display: flex;
     align-items: center;
   }
+ 
   .button-nav4 {
   color:hotpink;
   }
@@ -72,13 +74,13 @@
     position: relative;
   text-transform: uppercase;
   font-weight: 500;
-    margin-right: 10px; /* Добавьте отступ между кнопками в меню */
+  margin-right: 15px; 
   }
   
   .icons {
     display: flex;
     align-items: center;
-    margin-left: 10px; /* Добавьте отступ между полем поиска и иконками */
+    margin-left: 15px; 
   }
   
   .shopping-bag-1 {
@@ -87,7 +89,7 @@
   }
   
   .pagination-element-frame {
-    margin-left: 5px; /* или другое значение, чтобы установить желаемый отступ */
+    margin-left: 5px; 
   }
   
   .heading-frame {
@@ -100,6 +102,7 @@
 .language-icon,
 .pagination-element-frame,
 .user-icon {
+  margin-left: 15px;
   height: 20px;
   width: 20px;
   position: relative;
@@ -113,3 +116,4 @@
     min-height: 40px;
     margin-right: 10px;
   }
+  
