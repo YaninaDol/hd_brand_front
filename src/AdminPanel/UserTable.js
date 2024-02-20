@@ -54,7 +54,12 @@ export default function UserTable(){
 
 
  
-      axios.get('https://localhost:7269/api/Authenticate/getUsers')
+      axios({method:'get',
+        url:'https://localhost:7269/api/Authenticate/getUsers',
+      headers: {
+                      'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                            'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                    }})
         .then(response => dispatch(setUsers(response.data)))
         .catch(error => console.error('Error fetching users:', error));
     }, [dispatch]);
@@ -78,10 +83,10 @@ export default function UserTable(){
                     method:'post',
                     url:'https://localhost:7269/api/Authenticate/deleteUser',
                     data:bodyFormData
-                    // ,headers: {
-                    //   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-                    //         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-                    // },
+                    ,headers: {
+                      'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                            'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                    },
                    
                     }
     
@@ -144,10 +149,10 @@ export default function UserTable(){
             method:'post',
             url:'https://localhost:7269/api/Authenticate/updateUser',
             data:bodyFormData,
-            // ,headers: {
-            //   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-            //         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-            // },
+            headers: {
+              'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                    'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+            },
           
             }
 

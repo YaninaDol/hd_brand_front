@@ -48,7 +48,7 @@ const PxMainPage = () => {
                       
                       {
                          
-                           
+                           console.log(res.data);
                          
                               window.sessionStorage.setItem("AccessToken", res.data.token);
                               window.sessionStorage.setItem("UserId", res.data.userId);
@@ -81,7 +81,7 @@ const PxMainPage = () => {
                       })
                       .catch(function (error) {
                           alert("Error password or email");
-                          window.location.href = "/";
+                        window.location.href = "/";
                           setIsLogin(false);
                           console.log("Error:"+error);
                         });
