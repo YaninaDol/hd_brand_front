@@ -9,7 +9,7 @@ const DiscountItem = ({ imageSrc1, imageSrc2, isDiscount, isLiked, descriprion, 
     const [isFavourite, setIsFavourite] = useState(isLiked);
 
     const handleLikeClick = () => {
-      alert('Like clicked!');
+     
       setIsFavourite(!isFavourite);
     };
   

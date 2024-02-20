@@ -7,7 +7,7 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
   const [isFavourite, setIsFavourite] = useState(isLiked);
 
   const handleLikeClick = () => {
-    alert('Like clicked!');
+    
     setIsFavourite(!isFavourite);
   };
 
