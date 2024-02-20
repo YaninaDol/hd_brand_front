@@ -1,13 +1,145 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 // import "./PxMainPage.css";
 import "./HeaderStyle.css"
+import axios from 'axios';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { Link } from "react-router-dom";
 const PxMainPage = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass1, setPass1] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  function loginbtn()
+  {
+    
+      handleShow();
+     
+   
+
+  }
+
+  function SubmitLogIn() 
+  {
+     
+         
+      
+              axios (
+
+                  {
+                      method:'post',
+                      url:'https://localhost:7269/api/Authenticate/login',
+                      data:
+                      JSON.stringify({ UserName:login, Password: pass1}),
+                      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+
+                  }
 
 
+
+              ).then  (res=>
+
+                      
+                      {
+                         
+                           
+                         
+                              window.sessionStorage.setItem("AccessToken", res.data.token);
+                              window.sessionStorage.setItem("UserId", res.data.userId);
+                            setIsLogin(true);
+                             if(res.data.userRole[0]=="User")
+
+                             {
+                                             
+                           
+                          
+                          
+                               console.log(res.data.userRole[0]);
+                              console.log(res.data.token);
+                              handleClose();
+
+                             }
+
+                             if(res.data.userRole[0]=="Admin")
+                             {
+                             
+                                window.location.href='/admin';
+                             }
+                             if(res.data.userRole[0]=="Menager")
+                             {
+                             
+                                window.location.href='/admin';
+                             }
+
+
+                      })
+                      .catch(function (error) {
+                          alert("Error password or email");
+                          window.location.href = "/";
+                          setIsLogin(false);
+                          console.log("Error:"+error);
+                        });
+                      
+                      
+                      ;
+
+     
+
+  };
 
      return (
+     
+
       <div className="px-main-page">
+         <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Авторизація</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form >
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Login</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter Login"
+              name="login"
+              onChange={(e)=>setLogin(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              name="password"
+             
+              onChange={(e)=>setPass1(e.target.value)}   
+            />
+          </Form.Group>
+       
+         
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label onClick={()=>alert('Реєстраційні данні були відправленні на вашу пошту')}>Forgot password?</Form.Label>
+          
+          </Form.Group>
+
+
+          <Button  variant="dark" onClick={SubmitLogIn} >
+            Submit
+          </Button>
+         
+        </Form>
+        </Modal.Body>
+        </Modal>
+
+
              <section className="header-frame">
         <div className="ticker">
           <div className="ukrainian-brand" id="ukrainianBrand">Ukrainian brand</div>
@@ -73,7 +205,7 @@ const PxMainPage = () => {
 </svg>
 
                </div>
-               <div
+               <div onClick={loginbtn}
                 className="user-icon"
                >
 <svg xmlns="http://www.w3.org/2000/svg"width="25" height="25" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
