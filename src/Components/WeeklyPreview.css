@@ -143,8 +143,7 @@
 
 .head-parent,
 .head2,
-.item-line1,
-.px-main-page {
+.item-line1{
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
