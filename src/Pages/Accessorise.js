@@ -1,13 +1,13 @@
 
 import React from 'react';
 
-
+import PxMainPage from './PxMainPage';
 const Accessorise = () => {
   
   
   return (
     <div >
-   <h1>Accessorise PAGE</h1>
+    <PxMainPage />
    
     </div>
   );

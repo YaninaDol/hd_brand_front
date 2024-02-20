@@ -1,13 +1,13 @@
 
 import React from 'react';
-
+import PxMainPage from './PxMainPage';
 
 const FAQ = () => {
   
   
   return (
     <div >
-   <h1>TEXT ABOUT</h1>
+     <PxMainPage />
    
     </div>
   );

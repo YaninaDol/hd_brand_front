@@ -1,0 +1,15 @@
+.cartClass{
+   
+    width: 350px;
+    align-content: center;
+    justify-content:center;
+    height: auto;
+    margin: 15px;
+    background-color: rgba(246, 248, 241, 0);
+    border-style: ridge;
+    
+  border-width: 3px;
+  border-color: rgb(216, 230, 244);
+  border-radius: 10px;
+}
+

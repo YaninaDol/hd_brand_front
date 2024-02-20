@@ -1,13 +1,13 @@
 
 import React from 'react';
-
+import PxMainPage from './PxMainPage';
 
 const ClothesPage = () => {
   
   
   return (
     <div >
-   <h1>CLOTHES PAGE</h1>
+     <PxMainPage />
    
     </div>
   );
