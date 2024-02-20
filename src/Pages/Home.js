@@ -11,7 +11,8 @@ import '../Components/NewProductCardItem.css'
 import WeeklyPreview from '../Components/WeeklyPreview'
 
 import { CardGroup,Card } from 'react-bootstrap';
-
+import DiscountItem from '../Components/DiscountItem';
+import Footer from '../Components/Footer';
 const responsive = {
   desktopLarge: {
     breakpoint: { max: 3000, min: 1400 },
@@ -183,7 +184,68 @@ const Home = () => {
       </section>
     
    <WeeklyPreview image1={require('../assets/look1.png')} image2={require('../assets/look2.png')} image3={require('../assets/look3.png')}   />
+   <section className="graphic">
+        <div className="new-items">
+          <div className="head">
+            <div className="title-h2">
+              <h2 className="h2">акційні товари</h2>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+   <DiscountItem   imageSrc1={require('../assets/newimage.png')}
+           imageSrc2={require('../assets/newimage.png')}
+           isDiscount={true}
+          isLiked={false}
+           descriprion=" Кеди із замшевими вставками на стильній подошві"
+           price1="2700" 
+           price2="1800" 
+           ></DiscountItem>
+            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
+           imageSrc2={require('../assets/newimage.png')}
+           isDiscount={true}
+          isLiked={false}
+           descriprion=" Кеди із замшевими вставками на стильній подошві"
+           price1="2700" 
+           price2="1800" 
+           ></DiscountItem>
+            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
+           imageSrc2={require('../assets/newimage.png')}
+           isDiscount={true}
+          isLiked={false}
+           descriprion=" Кеди із замшевими вставками на стильній подошві"
+           price1="2700" 
+           price2="1800" 
+           ></DiscountItem>
+            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
+           imageSrc2={require('../assets/newimage.png')}
+           isDiscount={true}
+          isLiked={false}
+           descriprion=" Кеди із замшевими вставками на стильній подошві"
+           price1="2700" 
+           price2="1800" 
+           ></DiscountItem>
+            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
+           imageSrc2={require('../assets/newimage.png')}
+           isDiscount={true}
+          isLiked={false}
+           descriprion=" Кеди із замшевими вставками на стильній подошві"
+           price1="2700" 
+           price2="1800" 
+           ></DiscountItem>
+            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
+           imageSrc2={require('../assets/newimage.png')}
+           isDiscount={true}
+          isLiked={false}
+           descriprion=" Кеди із замшевими вставками на стильній подошві"
+           price1="2700" 
+           price2="1800" 
+           ></DiscountItem>
+   </Carousels>
+   <Footer />
     </div>
+    
   );
 };
 

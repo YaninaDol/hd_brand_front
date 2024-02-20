@@ -2,8 +2,8 @@
 .some {
   margin-top: 10px;
     display: flex;
-    justify-content: space-between; /* или другие значения в зависимости от ваших предпочтений */
-    align-items: center; /* или другие значения в зависимости от ваших предпочтений */
+    justify-content: space-between; 
+    align-items: center;
   }
   
   .something {

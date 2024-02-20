@@ -92,12 +92,12 @@
   max-width: 100%;
 }
 .button-block {
-  width: 388px;
-  background-color: var(--background-additional);
-  overflow: hidden;
-  flex-shrink: 0;
-  flex-direction: row;
-}
+    width: 388px;
+    background-color: var(--background-additional);
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-direction: row;
+  }
 .item-line-button-block,
 .n-a,
 .weekly-preview-head {
@@ -172,6 +172,7 @@
   }
 }
 @media screen and (max-width: 1400px) {
+    
   
   .search-field-icons {
     visibility: hidden;
@@ -237,8 +238,53 @@
     padding-top: var(--padding-46xl);
     box-sizing: border-box;
   }
+  .button-block {
+    width: 100%; /* При уменьшении экрана, ширина блока будет 100% */
+  }
+
+  .circle-elements {
+    padding: 0 var(--padding-mini); /* Измените отступы внутри .circle-elements для адаптации к узкому экрану */
+    gap: var(--gap-mini); /* Измените gap между элементами для адаптации к узкому экрану */
+  }
+
+  .button-container {
+    width: calc(100% - 20px); /* Измените ширину .button-container для адаптации к узкому экрану */
+    margin: 10px; /* Измените отступы для адаптации к узкому экрану */
+  }
 }
 @media screen and (max-width: 450px) {
+    
+        .div1 {
+         
+            font-size: 9px !important; 
+        }
+   
+    .circle-element-icon,
+.circle-element-icon1,
+.circle-element-icon2 {
+    margin: 2px;
+    object-fit: cover;
+    border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  position: relative;
+  min-height: 30px;
+}
+.button-block {
+        width: 30%; /* При уменьшении экрана, ширина блока будет 100% */
+      }
+    
+      .circle-elements {
+        width: 100px;
+        padding: 0 var(--padding-mini); /* Измените отступы внутри .circle-elements для адаптации к узкому экрану */
+        gap: var(--gap-mini); /* Измените gap между элементами для адаптации к узкому экрану */
+      }
+    
+      .button-container {
+        width: 100px;
+     height: 20px;
+        margin: 10px; /* Измените отступы для адаптации к узкому экрану */
+      }
   .spring-collection {
     font-size: var(--font-size-19xl);
     line-height: 42px;
@@ -269,9 +315,6 @@
     padding-left: var(--padding-xl);
     padding-right: var(--padding-xl);
     box-sizing: border-box;
-  }
-  .button-container {
-    width: calc(100% - 40px);
   }
   .n-a {
     padding-bottom: 42px;
