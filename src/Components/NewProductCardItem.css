@@ -50,10 +50,12 @@
     text-align: center;
   }
   .tag-container3 {
+    width: 50px;
+    margin-bottom: -6px;
     cursor: pointer;
     border: 0;
     padding: var(--padding-8xs) var(--padding-8xs) var(--padding-7xs);
-    background-color: var(--typography-white);
+    background-color:white;
     align-self: stretch;
     display: flex;
     flex-direction: row;

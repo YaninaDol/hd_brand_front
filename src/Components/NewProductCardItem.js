@@ -22,7 +22,7 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
         </MDBCarouselItem>
     </MDBCarousel>
     <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
-      <div className="head3">
+      <div className="card3">
         <button className="tag-container3">
           <div className="new">{isNew && 'new'}</div>
         </button>

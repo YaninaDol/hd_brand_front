@@ -212,18 +212,15 @@
   }
 }
 @media screen and (max-width: 750px) {
-    
   .logo-menu-navigation {
+    visibility: hidden;
     gap: var(--gap-31xl);
   }
-  .search-field-icons {
+  .search-field {
     visibility: hidden;
    
   }
-  .header-container
-  {
-    visibility: hidden;
-  }
+ 
   .header-container1 {
   
     gap: var(--gap-249xl);
@@ -239,21 +236,29 @@
     box-sizing: border-box;
   }
   .button-block {
-    width: 100%; /* При уменьшении экрана, ширина блока будет 100% */
+    width: 100%;
   }
 
   .circle-elements {
-    padding: 0 var(--padding-mini); /* Измените отступы внутри .circle-elements для адаптации к узкому экрану */
-    gap: var(--gap-mini); /* Измените gap между элементами для адаптации к узкому экрану */
+    padding: 0 var(--padding-mini); 
+    gap: var(--gap-mini); 
   }
 
   .button-container {
-    width: calc(100% - 20px); /* Измените ширину .button-container для адаптации к узкому экрану */
-    margin: 10px; /* Измените отступы для адаптации к узкому экрану */
+    width: calc(100% - 20px);
+    margin: 10px; 
   }
 }
 @media screen and (max-width: 450px) {
-    
+  .logo-menu-navigation {
+    visibility: hidden;
+    gap: var(--gap-31xl);
+  }
+  .search-field {
+    visibility: hidden;
+   
+  }
+ 
         .div1 {
          
             font-size: 9px !important; 
@@ -271,19 +276,20 @@
   min-height: 30px;
 }
 .button-block {
-        width: 30%; /* При уменьшении экрана, ширина блока будет 100% */
+
+        width: 30%; 
       }
     
       .circle-elements {
         width: 100px;
-        padding: 0 var(--padding-mini); /* Измените отступы внутри .circle-elements для адаптации к узкому экрану */
-        gap: var(--gap-mini); /* Измените gap между элементами для адаптации к узкому экрану */
+        padding: 0 var(--padding-mini);
+        gap: var(--gap-mini); 
       }
     
       .button-container {
         width: 100px;
      height: 20px;
-        margin: 10px; /* Измените отступы для адаптации к узкому экрану */
+        margin: 10px;
       }
   .spring-collection {
     font-size: var(--font-size-19xl);

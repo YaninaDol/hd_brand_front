@@ -758,16 +758,14 @@
 }
 @media screen and (max-width: 750px) {
   .logo-menu-navigation {
+    visibility: hidden;
     gap: var(--gap-31xl);
   }
-  .search-field-icons {
+  .search-field {
     visibility: hidden;
    
   }
-  .header-container
-  {
-    visibility: hidden;
-  }
+ 
   .header-container1 {
   
     gap: var(--gap-249xl);
