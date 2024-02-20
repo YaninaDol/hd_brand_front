@@ -24,26 +24,34 @@ export default function ProductTable(){
   
     const [inputSearch, setInputSearch] = useState('');
     const [findproducts,setFindProducts] = useState([]);
-
+    const [AddProductArtikel,setAddProductArtikel] = useState("");
     const [AddProductName,setAddProductName] = useState("");
     const [AddProductImage,setAddProductImage] = useState("");
+    const [AddProductImage2,setAddProductImage2] = useState("");
+
     const [AddProductVideo,setAddProductVideo] = useState("");
-    const [AddproductPrice,setAddproductPrice] = useState("");
+    const [AddproductPrice,setAddproductPrice] = useState(0);
+    const [AddproductSalePrice,setAddproductSalePrice] = useState(0);
     const [addProductRow,setaddProductRow] = useState("hidden");
     const [AddProductCategory,setAddProductCategory] = useState("");
     const [AddProductSubCategory,setAddProductSubCategory] = useState("");
     const [AddProductSeason,setAddProductSeason] = useState("");
     const [AddProductMaterial,setAddProductMaterial] = useState("");
     const [AddProductSizes,setAddProductSizes] = useState("");
+    const [AddIsNew,setAddAddIsNew] = useState(true);
     const [idToDelete,setIdToDelete]=useState(0);
 
     const [nametoUpdate,setNameToUpdate] = useState("");
+    const [artikeltoUpdate,setArtikelToUpdate] = useState("");
     const [imagetoUpdate,setImageToUpdate] = useState("");
+    const [image2toUpdate,setImage2ToUpdate] = useState("");
     const [videotoUpdate,setVideoToUpdate] = useState("");
     const [subCategoryUpdate,setSubCategoryUpdate] = useState("");
     const [priceUpdate,setPriceUpdate] = useState(0);
+    const [salepriceUpdate,setSalePriceUpdate] = useState(0);
     const [materialUpdate,setMaterialUpdate] = useState("");
     const [seasonUpdate,setSeasonUpdate] = useState(true);
+    const [isNewUpdate,setIsNewUpdate] = useState(true);
     const [categoryUpdate,setCategoryUpdate] = useState(0);
     const [SizesUpdate,setSizesUpdate] = useState("");
     const [prodIdUpdate,setProdIdUpdate] = useState(0);
@@ -107,8 +115,11 @@ export default function ProductTable(){
      
       let prod= products.find(item=>item.id == id);
     setProdIdUpdate(id);
+    setArtikelToUpdate(prod['artikel']);
         setNameToUpdate(prod['name']);
         setImageToUpdate(prod['image']);
+        setImage2ToUpdate(prod['image2']);
+        setIsNewUpdate(prod['isNew']);
         setVideoToUpdate(prod['video']);
         setSubCategoryUpdate(prod['subCategoryid']);
         setCategoryUpdate(prod['categoryid']);   
@@ -116,6 +127,7 @@ export default function ProductTable(){
         setSeasonUpdate(prod['seasonid'])
         setSizesUpdate(prod['sizes'])
         setPriceUpdate(prod['price']);
+        setSalePriceUpdate(prod['salePrice']);
       handleShowUp();
       
     };
@@ -128,16 +140,28 @@ function confirmAdd()
 
         { var bodyFormData = new FormData();
           bodyFormData.append('name', AddProductName);
+          bodyFormData.append('artikel', AddProductArtikel);
           bodyFormData.append('image', AddProductImage);
+          bodyFormData.append('image2', AddProductImage2);
+         
+          bodyFormData.append('isNew', AddIsNew);
           bodyFormData.append('video', AddProductVideo);
           bodyFormData.append('subcategoryid', AddProductSubCategory);
           bodyFormData.append('categoryid', AddProductCategory);
           bodyFormData.append('seasonid', AddProductSeason);
           bodyFormData.append('materialid', AddProductMaterial);
           bodyFormData.append('price', AddproductPrice);
+          bodyFormData.append('salePrice', AddproductSalePrice);
           bodyFormData.append('sizes', AddProductSizes);
         
-          
+          if(AddproductSalePrice>0)
+{
+  bodyFormData.append('isDiscount', true);
+}
+else 
+{
+  bodyFormData.append('isDiscount', false);
+}
           
           
           
@@ -256,16 +280,28 @@ const confirmUpdate = () => {
   { var bodyFormData = new FormData();
     bodyFormData.append('id', prodIdUpdate);
     bodyFormData.append('name', nametoUpdate);
+    bodyFormData.append('artikel', artikeltoUpdate);
     bodyFormData.append('image', imagetoUpdate);
+    bodyFormData.append('image2', image2toUpdate);
+    bodyFormData.append('isnew', isNewUpdate);
     bodyFormData.append('video', videotoUpdate);
     bodyFormData.append('subcategoryid', subCategoryUpdate);
     bodyFormData.append('categoryid', categoryUpdate);
     bodyFormData.append('seasonid', seasonUpdate);
     bodyFormData.append('materialid', materialUpdate);
     bodyFormData.append('price', priceUpdate);
+    bodyFormData.append('saleprice', salepriceUpdate);
     bodyFormData.append('sizes', SizesUpdate);
   
-    
+    if(salepriceUpdate>0)
+    {
+      bodyFormData.append('isDiscount', true);
+    }
+    else 
+    {
+      bodyFormData.append('isDiscount', false);
+    }
+           
     
     
     
@@ -347,11 +383,17 @@ else alert("You need to choose !")
           <Modal.Title>Update product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <MDBInputGroup className='mb-3'  textBefore='Art.'>
+      <input onChange={(e)=>setArtikelToUpdate(e.target.value)} value={artikeltoUpdate} className='form-control' type='text' />
+    </MDBInputGroup>
         <MDBInputGroup className='mb-3'  textBefore='Name'>
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
     </MDBInputGroup>
     <MDBInputGroup className='mb-3' textBefore='Image URL'>
     <input  onChange={(e)=>setImageToUpdate(e.target.value)} value={imagetoUpdate} className='form-control' type='text' />
+      </MDBInputGroup>
+      <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
+    <input  onChange={(e)=>setImage2ToUpdate(e.target.value)} value={image2toUpdate} className='form-control' type='text' />
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Video URL'>
       <input  onChange={(e)=>setVideoToUpdate(e.target.value)} value={videotoUpdate} className='form-control' type='text' />
@@ -423,6 +465,12 @@ else alert("You need to choose !")
         <MDBInputGroup className='mb-3'  textBefore='Price'>
       <input  onChange={(e)=>setPriceUpdate(e.target.value)} value={priceUpdate} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
       </MDBInputGroup>
+      <MDBInputGroup className='mb-3'  textBefore='Sale Price'>
+      <input  onChange={(e)=>setSalePriceUpdate(e.target.value)} value={salepriceUpdate} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
+      </MDBInputGroup>
+      <MDBInputGroup className='mb-3'  textBefore='New Product'>
+      <MDBCheckbox  label='NEW' checked={isNewUpdate} onChange={(e)=>setIsNewUpdate(e.target.checked)} />
+      </MDBInputGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseUp}>
@@ -453,15 +501,19 @@ else alert("You need to choose !")
     <MDBTableHead dark>
         <tr>
           <th>#</th>
+          <th>artikel</th>
           <th>Name</th>
           <th>Image</th>
+          <th>Image2</th>
           <th>Video</th>
+          <th>NEW</th>
           <th>Category</th>
           <th>Sub Category</th>
           <th>Material</th>
           <th>Season</th>
           <th>Sizes</th>
           <th>Price</th>
+          <th>Sale Price</th>
           <th></th>
           <th>Function</th>
           <th></th>
@@ -472,11 +524,12 @@ else alert("You need to choose !")
       <tr hidden={addProductRow} >
                  <th  scope='row' ></th>
           
-          
+                 <td > <MDBInput onChange={((e)=>setAddProductArtikel(e.target.value))} type='text'/> </td>
             <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/> </td>
             <td > <MDBInput onChange={((e)=>setAddProductImage(e.target.value))} type='text'/> </td>
+            <td > <MDBInput onChange={((e)=>setAddProductImage2(e.target.value))} type='text'/> </td>
             <td > <MDBInput onChange={((e)=>setAddProductVideo(e.target.value))} type='text'/> </td>
- 
+ <td>   <MDBCheckbox  label='NEW' onChange={(e)=>setAddAddIsNew(e.target.checked)} /></td>
             <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductCategory(e.target.value)}>
@@ -541,7 +594,7 @@ else alert("You need to choose !")
            </td>
            <td > <MDBInput onChange={((e)=>setAddProductSizes(e.target.value))} type='text'/> </td>
            <td > <MDBInput onChange={((e)=>setAddproductPrice(e.target.value))} type='number' min='0' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '');"/> </td>
-       
+           <td > <MDBInput onChange={((e)=>setAddproductSalePrice(e.target.value))} type='number' min='0' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '');"/> </td>
 <td >  </td>
 <td><Button   onClick={confirmAdd}  variant='dark'> Confirm to database</Button></td>
 <td></td>
@@ -550,7 +603,11 @@ else alert("You need to choose !")
         allproducts.map((x, index)=> <tr  >
                 
         <th scope='row'>{x.id}</th>
-      
+        <td > 
+           <MDBInputGroup  className='mb-3'  >
+      <input   value={x.artikel} className='form-control' type='text' />
+    </MDBInputGroup>
+    </td>
         <td > 
            <MDBInputGroup  className='mb-3'  >
       <input   value={x.name} className='form-control' type='text' />
@@ -563,10 +620,17 @@ else alert("You need to choose !")
     </MDBInputGroup>
     </td>
     <td > 
+    <img src={x.image2} width={50} height={50} alt="Товар" />
+           <MDBInputGroup  className='mb-3'  >
+      <input  value={x.image2} className='form-control' type='text' />
+    </MDBInputGroup>
+    </td>
+    <td > 
            <MDBInputGroup  className='mb-3'  >
       <input value={x.video} className='form-control' type='text' />
     </MDBInputGroup>
     </td>
+    <td>   <MDBCheckbox  label='NEW' checked={x.isNew} /></td>
     <td >
 
 <MDBInputGroup className='mb-3' >
@@ -651,7 +715,12 @@ else alert("You need to choose !")
       <input  onChange={(e)=>setPriceUpdate(e.target.value)} value={x.price} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
       </MDBInputGroup>
         </td>
-        
+        <td  >
+
+<MDBInputGroup className='mb-3' >
+<input  onChange={(e)=>setSalePriceUpdate(e.target.value)} value={x.salePrice} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
+</MDBInputGroup>
+</td>
     
         
        

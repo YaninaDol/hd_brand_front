@@ -6,6 +6,8 @@ import AdminPanel from './AdminPanel/AdminPanel';
 import ShoesPage from './Pages/ShoesPage';
 import ClothesPage from './Pages/ClothesPage';
 import Accessorise from './Pages/Accessorise';
+import CareShoes from './Pages/CareShoes';
+import FAQ from './Pages/FAQ';
 
 const App = () => {
   return (
@@ -18,6 +20,8 @@ const App = () => {
           <Route path="/shoes" element={<ShoesPage />} />
           <Route path="/clothes" element={<ClothesPage />} />
           <Route path="/accessorise" element={<Accessorise />} />
+          <Route path="/careshoes" element={<CareShoes />} />
+          <Route path="/faq" element={<FAQ />} />
         </Routes>
       </div>
     </BrowserRouter>

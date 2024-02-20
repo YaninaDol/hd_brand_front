@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 // import "./PxMainPage.css";
 import "./HeaderStyle.css"
-
+import { Link } from "react-router-dom";
 const PxMainPage = () => {
 
 
@@ -32,22 +32,22 @@ const PxMainPage = () => {
             />
             <div className="menu-navigation">
               <div className="menu-navigation-button-contain">
-                <div className="button-nav">взуття</div>
+               <Link to='/shoes'> <div className="button-nav" >взуття</div></Link>
               </div>
               <div className="menu-navigation-button-contain1">
-                <div className="button-nav1">одяг</div>
+              <Link to='/clothes'>  <div className="button-nav1">одяг</div></Link>
               </div>
               <div className="menu-navigation-button-contain2">
-                <div className="button-nav2">аксесуари</div>
+              <Link to='/accessorise'>   <div className="button-nav2">аксесуари</div></Link>
               </div>
               <div className="menu-navigation-button-contain3">
-                <div className="button-nav3">догляд за взуттям</div>
+              <Link to='/careshoes'>       <div className="button-nav3">догляд за взуттям</div></Link>
               </div>
               <div className="menu-navigation-button-contain4">
-                <div className="button-nav4">знижки</div>
+              <Link to='/shoes'>  <div className="button-nav4">знижки</div></Link>
               </div>
               <div className="menu-navigation-button-contain5">
-                <div className="button-nav5">FAQ</div>
+              <Link to='/faq'>   <div className="button-nav5">FAQ</div></Link>
               </div>
             </div>
           </div>

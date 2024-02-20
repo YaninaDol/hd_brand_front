@@ -104,7 +104,7 @@
     padding: 0 0 var(--padding-303xl);
   }
   .div12 {
-    max-height: 80px; /* Adjust the maximum height as needed */
+    max-height: 80px; 
     overflow: hidden;
     text-overflow:ellipsis;
     line-height: 18.13px;

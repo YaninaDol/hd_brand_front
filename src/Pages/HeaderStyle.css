@@ -71,6 +71,7 @@
   .button-nav4,
   .button-nav5
    {
+    color: #000;
     position: relative;
   text-transform: uppercase;
   font-weight: 500;
@@ -117,4 +118,8 @@
     min-height: 40px;
     margin-right: 10px;
   }
-  
+ :link
+  {
+   
+    text-decoration: none;
+  }
