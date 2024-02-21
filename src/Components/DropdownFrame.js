@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import "./DropdownFrame.css";
 
-const DropdownFrame = ({ prop, prop1, prop2, propPadding }) => {
+const DropdownFrame = ({ prop, items, propPadding }) => {
   const logoFrameStyle = useMemo(() => {
     return {
       padding: propPadding,
@@ -16,14 +16,17 @@ const DropdownFrame = ({ prop, prop1, prop2, propPadding }) => {
         <div className="logo-frame2" style={logoFrameStyle}>
           <div className="frame-with-icons">
             <div className="frame-with-reviews">
-              <input className="footer-container2" type="checkbox" />
-              <input className="container-with-logo" type="checkbox" />
-              <input className="payment-icons-container" type="checkbox" />
+
+            {
+              items.map((x)=>(<input className="footer-container2" type="checkbox" />))
+            }
+              
             </div>
             <div className="div78">
-              <p className="p14">Шкіра</p>
-              <p className="p15">{prop1}</p>
-              <p className="p16">{prop2}</p>
+            {
+              items.map((x)=>( <p className="p14">{x.name}</p>))
+            }
+
             </div>
           </div>
         </div>

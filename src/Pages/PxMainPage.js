@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react";
+import CartBasket from '../Components/CartBasket';
 // import "./PxMainPage.css";
 import "./HeaderStyle.css"
 import axios from 'axios';
@@ -7,16 +8,51 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from "react-router-dom";
 import { Dropdown } from 'react-bootstrap';
+import {
+  MDBPagination, MDBPaginationItem, MDBPaginationLink,
+  MDBFooter,
+  MDBContainer,
+  MDBIcon,
+  MDBInput,
+  MDBCol,
+  MDBRow,
+  MDBTypography,
+  MDBBtn,
+  MDBCard,
+  MDBRange ,
+  MDBCardBody,
+  MDBCardImage
+} from 'mdb-react-ui-kit';
 const PxMainPage = () => {
+  const [arrBasket,setArrBasket] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [pass1, setPass1] = useState("");
+  const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
+  const [total,setTotal] = useState(0);
+  const [payamount,setPayAmount] = useState(0);
   const [show, setShow] = useState(false);
-
+  const [delivery,setDelivery] = useState("");
+  const [userId,setUserId] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
+  useEffect(() => {
+   
+    const storedBasket = window.sessionStorage.getItem("Basket");
+    if (storedBasket && storedBasket.length > 0){
+    const parsedBasketData = JSON.parse(storedBasket);
+    setArrBasket(parsedBasketData);
+    setCount(parsedBasketData.length);
+    const totalSum = parsedBasketData.reduce((sum, item) => sum + item.price, 0);
+    setTotal(totalSum);
+    setPayAmount(totalSum);
+  }
+
+ 
+  }, []);
   function loginbtn()
   {
     
@@ -49,7 +85,7 @@ const PxMainPage = () => {
                       
                       {
                          
-                           console.log(res.data);
+                       
                          
                               window.sessionStorage.setItem("AccessToken", res.data.token);
                               window.sessionStorage.setItem("UserId", res.data.userId);
@@ -61,8 +97,7 @@ const PxMainPage = () => {
                            
                           
                           
-                               console.log(res.data.userRole[0]);
-                              console.log(res.data.token);
+                          
                               handleClose();
 
                              }
@@ -94,10 +129,140 @@ const PxMainPage = () => {
 
   };
 
+  const [showBasket, setShowBasket] = useState(false);
+  const handleCloseBasket = () => setShowBasket(false);
+  const handleShowBasket = () => setShowBasket(true);
+
+
+  function removeBasket(id) {
+    let prod = arrBasket.find(item => item.id === id);
+    if (prod) {
+     
+      const updatedBasket = arrBasket.filter(item => item.id !== id);
+      setArrBasket(updatedBasket);
+      setCount(count - 1);
+  
+    
+      window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      setTotal(total - prod['price']);
+
+      setPayAmount(payamount-prod['price']);
+      window.sessionStorage.setItem("cartItemCount", count);
+  
+    }
+  }
+  function savechange()
+  {
+  
+  // for (const iterator of arrBasket) 
+  // {
+  // var bodyFormData = new FormData();
+  // bodyFormData.append('prodID', iterator.id);
+  // bodyFormData.append('userID', userId);
+  //             axios (
+  
+  //               {
+  //               method:'post',
+  //               url:'https://localhost:7211/api/Product/Buy',
+  //               data:bodyFormData,
+  //               headers: {
+  //                 'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+  //                       'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+  //               },
+               
+  //               }
+  
+  
+  
+  //           ).then  (res=>
+  //           {
+  //             alert("Your order is accepted")
+  //               console.log(res.data);
+               
+  //           });  
+  // }
+  // handleClose();
+  // window.location.reload();
+  
+  
+  }  
+
+
      return (
      
 
       <div className="px-main-page">
+<Modal id='basket' show={showBasket} onHide={handleCloseBasket}>
+        <Modal.Header closeButton>
+          <Modal.Title>Кошик</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> {
+        arrBasket.map(
+            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.price} ></CartBasket>
+        )
+        }
+        
+              <MDBTypography tag="h5" className="text-uppercase mb-3">
+                Доставка:
+              </MDBTypography>
+
+              <div className="mb-4 pb-2">
+                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setDelivery((e.target.value) )}>
+                  <option value="Нова Пошта">Нова Пошта </option>
+                  <option value="Укр Пошта">Укр Пошта</option>
+                  
+                </select>
+              </div>
+              <MDBTypography tag="h5" className="text-uppercase mb-3">
+                Спосіб оплати:
+              </MDBTypography>
+
+              <div className="mb-4 pb-2">
+                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setPayAmount(parseInt(e.target.value) )}>
+                  <option value={total}>Повна </option>
+                  <option value="200">Часткова (200грн)</option>
+                  
+                </select>
+              </div>
+              <div className="d-flex justify-content-between mb-4">
+                <MDBTypography tag="h5" className="text-uppercase">
+                  До сплати: 
+                </MDBTypography>
+                <MDBTypography tag="h5">{payamount} &#8372;</MDBTypography>
+              </div>
+
+              <MDBCardBody>
+            <p>
+              <strong>Ми приймаємо</strong>
+            </p>
+            <MDBCardImage className="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+              alt="Visa" />
+            <MDBCardImage className="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+              alt="American Express" />
+            <MDBCardImage className="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+              alt="Mastercard" />
+            <MDBCardImage className="me-2" width="45px"
+              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
+              alt="PayPal acceptance mark" />
+          </MDBCardBody>
+        
+        </Modal.Body>
+        <Modal.Footer>
+        <Button  variant="dark"  onClick={savechange}>
+            Сплатити
+          </Button>
+          <Button variant="outline-secondary" onClick={handleCloseBasket}>
+            Продовжити
+          </Button>
+         
+        </Modal.Footer>
+      </Modal>
+
+
+
          <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Авторизація</Modal.Title>
@@ -237,14 +402,14 @@ const PxMainPage = () => {
                 </div>
                
                 <div
-                className="pagination-element-frame"
+                className="pagination-element-frame "onClick={handleShowBasket}
                >
                 <svg xmlns="http://www.w3.org/2000/svg"width="20" height="20"  fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
   <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
 </svg>
                </div>
                 <div className="heading-frame">
-                  <div className="item-card-frame">(0)</div>
+                  <div className="item-card-frame">({count})</div>
                
               </div>
             </div>

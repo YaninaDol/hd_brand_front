@@ -32,7 +32,7 @@ import {
                     <p hidden="hidden">{this.props.unic}</p>
                   <p className="lead fw-normal mb-2">{this.props.name}</p>
                   <p>
-                    <span className="text-muted">Model: </span>{this.props.model}{" "}
+                    <span className="text-muted"></span>{this.props.model}{" "}
                   
                   </p>
                 </MDBCol>
