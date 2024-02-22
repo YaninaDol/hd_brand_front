@@ -162,7 +162,7 @@ function confirmAdd()
           bodyFormData.append('price', AddproductPrice);
           bodyFormData.append('salePrice', AddproductPrice);
           bodyFormData.append('sizes', AddProductSizes);
-          bodyFormData.append('isDiscount', false);   
+          bodyFormData.append('isDiscount', false); 
           
           
           axios (
@@ -458,7 +458,7 @@ else alert("You need to choose !")
       </MDBInputGroup>
       <MDBInputGroup className='mb-3'  textBefore='Sizes' >
       <div className="mb-6 pb-2">
-                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate(e.target.value)} value={SizesUpdate}>
+                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate((e.target.value))} value={SizesUpdate}>
                
                       {
                       sizes.map((x) => 
@@ -524,7 +524,7 @@ else alert("You need to choose !")
           <th>Season</th>
           <th>Sizes</th>
           <th>Price</th>
-          <th></th>
+          <th>For sale</th>
           <th>Function</th>
           <th></th>
 
@@ -604,7 +604,7 @@ else alert("You need to choose !")
            </td>
            <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
-                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setProductSizes(e.target.value)}>
+                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductSizes(e.target.value)}>
                 <option selected value="0">Choose item</option>
                       {
                       sizes.map((x) => 
