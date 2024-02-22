@@ -18,7 +18,7 @@ import {
 } from 'mdb-react-ui-kit';
 const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   const [sortOrder, setSortOrder] = useState('asc');
-  const [range, setRange] = useState(0);
+  const [range, setRange] = useState(10000);
   const [itemsPerRow, setItemsPerRow] = useState(12);
   const [visibleItems, setVisibleItems] = useState(itemsPerRow);
   const [allhidden, setAllHidden] = useState('');
@@ -29,6 +29,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   };
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [selectedSeasons, setSelectedSeasons] = useState([]);
   const [seasonValues, setSeasonValues] = useState({
     1: false,
     2: false,
@@ -49,7 +50,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       });
     } else if (type === 'season') {
     
-      setSeasonValues((prevValues) => ({ ...prevValues, [value]: checked }));
+      setSelectedSeasons((prev) => {
+        return checked ? [...prev, value] : prev.filter((item) => item !== value);
+      });
     }
   };
   const handleSort = (order) => {
@@ -72,24 +75,25 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 
   };
   const applyFilters = () => {
-    const selectedSeasons = Object.keys(seasonValues).filter((key) => seasonValues[key]);
+  
   
     const filteredProducts1 = items.filter((product) => {
       const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
       const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
-      const seasonIncluded =
-        (!product.season || (selectedSeasons.spring && product.season === 'Spring') ||
-        (selectedSeasons.autumn && product.season === 'Autumn') ||
-        (selectedSeasons.winter && product.season === 'Winter') ||
-        (selectedSeasons.summer && product.season === 'Summer'));
-  
+      const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
+    
+      console.log('Product:', product);
+      console.log('Type Included:', typeIncluded);
+      console.log('Material Included:', materialIncluded);
+      console.log('Season Included:', seasonIncluded);
+    
       return typeIncluded && materialIncluded && seasonIncluded;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
       const priceInRange = product.price >= 0 && product.price <= range;
       return priceInRange;
     });
-    
+  
     setfilteredProducts(priceFilteredProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
@@ -136,9 +140,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
               <div className="div53">Ціна</div>
               <MDBRange
              onChange={(e)=>setRange(e.target.value)}
-    defaultValue='0'
+    defaultValue='10000'
     min='0'
-    max='100000'
+    max='10000'
     step='50'
     id='customRange3'
    
@@ -151,7 +155,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             type='checkbox'
          
             value={3}
-            checked={seasonValues[3]}
+           
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label='Весна'
             style={{ marginTop:15}}
@@ -159,7 +163,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
           <Form.Check 
             type='checkbox'
            
-            checked={seasonValues[1]}
+           
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label='Літо'
@@ -169,7 +173,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             type='checkbox'
           
             value={2}
-            checked={seasonValues[2]}
+          
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label='Зима'
             style={{ marginTop:15}}
@@ -178,7 +182,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             type='checkbox'
            
             value={4}
-            checked={seasonValues[4]}
+         
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label='Осінь'
             style={{ marginTop:15}}
