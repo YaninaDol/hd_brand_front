@@ -17,10 +17,13 @@ import {
   MDBRange 
 } from 'mdb-react-ui-kit';
 const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
+  const [sortOrder, setSortOrder] = useState('asc');
   const [range, setRange] = useState(0);
   const [itemsPerRow, setItemsPerRow] = useState(12);
   const [visibleItems, setVisibleItems] = useState(itemsPerRow);
-  
+  const [allhidden, setAllHidden] = useState('');
+  const [filteredhidden, setFilteredHidden] = useState('hidden');
+  const [filteredProducts, setfilteredProducts] = useState([]);
   const showMoreItems = () => {
     setVisibleItems((prevVisibleItems) => prevVisibleItems + itemsPerRow);
   };
@@ -45,17 +48,33 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
         return checked ? [...prev, value] : prev.filter((item) => item !== value);
       });
     } else if (type === 'season') {
-      // Остальная логика остается без изменений
+    
       setSeasonValues((prevValues) => ({ ...prevValues, [value]: checked }));
     }
   };
+  const handleSort = (order) => {
+    setSortOrder(order);
+  
+   
+    const sortedProducts = [...items].sort((a, b) => {
+      if (order === 'asc') {
+        
+        return a.price - b.price;
+      } else {
+        return b.price - a.price;
+      }
+     
+    });
+  
+    setfilteredProducts(sortedProducts);
+    setAllHidden('hidden');
+    setFilteredHidden('');
 
+  };
   const applyFilters = () => {
-    // Получаем выбранные значения для фильтрации
     const selectedSeasons = Object.keys(seasonValues).filter((key) => seasonValues[key]);
   
-    // Применяем фильтрацию к массиву products
-    const filteredProducts = items.filter((product) => {
+    const filteredProducts1 = items.filter((product) => {
       const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
       const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
       const seasonIncluded =
@@ -63,13 +82,19 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
         (selectedSeasons.autumn && product.season === 'Autumn') ||
         (selectedSeasons.winter && product.season === 'Winter') ||
         (selectedSeasons.summer && product.season === 'Summer'));
-    
+  
       return typeIncluded && materialIncluded && seasonIncluded;
     });
+    const priceFilteredProducts = filteredProducts1.filter((product) => {
+      const priceInRange = product.price >= 0 && product.price <= range;
+      return priceInRange;
+    });
     
-    // Выводим отфильтрованные продукты в консоль (или применяем их как-то еще)
-    console.log('Отфильтрованные продукты:', filteredProducts);
-  }
+    setfilteredProducts(priceFilteredProducts);
+    setAllHidden('hidden');
+    setFilteredHidden('');
+    setSortOrder('asc');
+  };
   return (
     <div >
       <section className="h-100 h-custom" >
@@ -94,8 +119,8 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
           <div className="materials-list1">
           
             <DropdownButton variant='outline light' id="dropdown-basic-button" size="sm" title="По ціні">
-  <Dropdown.Item href="#/action-1">Від дешевих до дорогих</Dropdown.Item>
-  <Dropdown.Item href="#/action-2">Від дорогих до дешевих</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleSort('asc')}>Від дешевих до дорогих</Dropdown.Item>
+  <Dropdown.Item onClick={() => handleSort('desc')}>Від дорогих до дешевих</Dropdown.Item>
 
 </DropdownButton>
           </div></div></MDBRow>
@@ -125,8 +150,8 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
                       <Form.Check 
             type='checkbox'
          
-            value={1}
-            checked={seasonValues[1]}
+            value={3}
+            checked={seasonValues[3]}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label='Весна'
             style={{ marginTop:15}}
@@ -134,17 +159,17 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
           <Form.Check 
             type='checkbox'
            
-            checked={seasonValues[2]}
+            checked={seasonValues[1]}
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            value={2}
+            value={1}
             label='Літо'
             style={{ marginTop:15}}
           />
           <Form.Check 
             type='checkbox'
           
-            value={3}
-            checked={seasonValues[3]}
+            value={2}
+            checked={seasonValues[2]}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label='Зима'
             style={{ marginTop:15}}
@@ -244,6 +269,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
                     {types.map((x) => (
   <Form.Check
     key={x.id}
+    value={x.id}
     type="checkbox"
     id={x.id}
     label={x.name}
@@ -253,10 +279,11 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 ))}
  <hr className="my-4" />
                     <div className="div77">Матеріал</div>
-{/* Для материалов */}
+
 {materials.map((x) => (
   <Form.Check
     key={x.id}
+    value={x.id}
     type="checkbox"
     id={x.id}
     label={x.name}
@@ -278,17 +305,37 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
               
             </MDBCol>
 
-            <MDBCol className="containerCart">
-              {items.slice(0, visibleItems).map((x) => (
-                <CartProduct
-                  add={AddBtn}
-                  key={x.id}
-                  unic={x.id}
-                  name={x.name}
-                  picture={x.image}
-                  price={x.price}
-                />
-              ))}
+            <MDBCol hidden={allhidden} className="containerCart">
+            {items.length > 0 ? (
+    items.slice(0, visibleItems).map((x) => (
+      <CartProduct
+        add={AddBtn}
+        key={x.id}
+        unic={x.id}
+        name={x.name}
+        picture={x.image}
+        price={x.price}
+      />
+    ))
+  ) : (
+    <div>Нічого не знайдено </div>
+  )}
+            </MDBCol>
+            <MDBCol hidden={filteredhidden} className="containerCart">
+            {filteredProducts.length > 0 ? (
+    filteredProducts.slice(0, visibleItems).map((x) => (
+      <CartProduct
+        add={AddBtn}
+        key={x.id}
+        unic={x.id}
+        name={x.name}
+        picture={x.image}
+        price={x.price}
+      />
+    ))
+  ) : (
+    <div>Нічого не знайдено</div>
+  )}
             </MDBCol>
           </MDBRow>
           <MDBRow>

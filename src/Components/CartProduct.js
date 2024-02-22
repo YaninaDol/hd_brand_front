@@ -12,7 +12,7 @@ class Cart extends Component{
         return(
             <div  >
               
-                    <Card    style={{width:200,marginLeft:20}}>
+                    <Card    style={{width:200,marginLeft:15,marginTop:15}}>
                     <p hidden='hidden'>this.props.unic</p>
                     <Card.Img style={{height:200}} variant="top"  src={this.props.picture} ></Card.Img>
                     <Card.Body>
