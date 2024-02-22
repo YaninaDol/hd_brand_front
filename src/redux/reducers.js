@@ -94,5 +94,21 @@ const productsReducer = (state = [], action) => {
           return state;
       }
     };
+    const sizesReducer = (state = [], action) => {
+      switch (action.type) {
+        case 'SET_SIZES':
+          return action.payload;
+        default:
+          return state;
+      }
+    };
+    const productsizesReducer = (state = [], action) => {
+      switch (action.type) {
+        case 'SET_PRODUCTSIZES':
+          return action.payload;
+        default:
+          return state;
+      }
+    };
     
-  export { productsReducer, usersReducer,categoriesReducer , seasonsReducer, subCategoriesReducer, materialsReducer };
+  export { productsReducer, usersReducer,categoriesReducer , seasonsReducer, subCategoriesReducer, materialsReducer,sizesReducer,productsizesReducer };

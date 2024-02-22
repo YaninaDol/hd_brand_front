@@ -318,7 +318,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
         unic={x.id}
         name={x.name}
         picture={x.image}
-        price={x.price}
+        price={x.salePrice}
       />
     ))
   ) : (
@@ -334,7 +334,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
         unic={x.id}
         name={x.name}
         picture={x.image}
-        price={x.price}
+        price={x.salePrice}
       />
     ))
   ) : (

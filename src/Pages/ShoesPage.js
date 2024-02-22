@@ -78,7 +78,7 @@ const products = useSelector(state => state.products);
     const parsedBasketData = JSON.parse(storedBasket);
     setArrBasket(parsedBasketData);
     setCount(parsedBasketData.length);
-    const totalSum = parsedBasketData.reduce((sum, item) => sum + item.price, 0);
+    const totalSum = parsedBasketData.reduce((sum, item) => sum + item.salePrice, 0);//
     setTotal(totalSum);
    }
 
@@ -100,7 +100,7 @@ function addBasket() {
   
   window.sessionStorage.setItem("Basket", JSON.stringify(copy));
 
-  setTotal(total + newProd['price']);
+  setTotal(total + newProd['salePrice']);//
   handleCloseM();
   window.location.reload();
 };

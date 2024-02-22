@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { connect,useDispatch,useSelector } from 'react-redux';
-import { setProducts, setUsers, addProduct, deleteUser,deleteProduct,setCategories,editProduct,setMaterials,setSeasons,setSubCategories, addSubCategory } from '../redux/actions';
+import { setProducts, setUsers, addProduct, deleteUser,setSizes,setProductSizes,deleteProduct,setCategories,editProduct,setMaterials,setSeasons,setSubCategories, addSubCategory } from '../redux/actions';
 import axios from 'axios';
 import React from 'react';
 import ProductTableItem from '../Components/ProductTableItem';
@@ -20,6 +20,8 @@ export default function ProductTable(){
   const subcategories = useSelector(state => state.subcategories);
   const materials = useSelector(state => state.materials);
   const seasons = useSelector(state => state.seasons);
+  const sizes = useSelector(state => state.sizes);
+  const productsizes = useSelector(state => state.productsizes);
 
   
     const [inputSearch, setInputSearch] = useState('');
@@ -73,6 +75,13 @@ export default function ProductTable(){
     {
     
 
+      axios.get('https://localhost:7269/api/Specification/GetAllSizes')
+      .then(response => {
+        console.log(response.data)
+        dispatch(setSizes(response.data))
+       
+      })
+      .catch(error => console.error('Error fetching products:', error));
 
       axios.get('https://localhost:7269/api/Product/GetProducts')
       .then(response => {
@@ -151,18 +160,9 @@ function confirmAdd()
           bodyFormData.append('seasonid', AddProductSeason);
           bodyFormData.append('materialid', AddProductMaterial);
           bodyFormData.append('price', AddproductPrice);
-          bodyFormData.append('salePrice', AddproductSalePrice);
+          bodyFormData.append('salePrice', AddproductPrice);
           bodyFormData.append('sizes', AddProductSizes);
-        
-          if(AddproductSalePrice>0)
-{
-  bodyFormData.append('isDiscount', true);
-}
-else 
-{
-  bodyFormData.append('isDiscount', false);
-}
-          
+          bodyFormData.append('isDiscount', false);   
           
           
           axios (
@@ -293,7 +293,7 @@ const confirmUpdate = () => {
     bodyFormData.append('saleprice', salepriceUpdate);
     bodyFormData.append('sizes', SizesUpdate);
   
-    if(salepriceUpdate>0)
+    if(salepriceUpdate<priceUpdate)
     {
       bodyFormData.append('isDiscount', true);
     }
@@ -457,7 +457,18 @@ else alert("You need to choose !")
                 </div>
       </MDBInputGroup>
       <MDBInputGroup className='mb-3'  textBefore='Sizes' >
-      <input  onChange={(e)=>setSizesUpdate(e.target.value)} value={SizesUpdate} className='form-control' type='text' />
+      <div className="mb-6 pb-2">
+                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate(e.target.value)} value={SizesUpdate}>
+               
+                      {
+                      sizes.map((x) => 
+                        <option  value={x.id}>
+                        {x.value}
+                        </option>
+                     )}
+                  
+                </select>
+                </div>
       </MDBInputGroup>
        
     
@@ -513,7 +524,6 @@ else alert("You need to choose !")
           <th>Season</th>
           <th>Sizes</th>
           <th>Price</th>
-          <th>Sale Price</th>
           <th></th>
           <th>Function</th>
           <th></th>
@@ -592,9 +602,23 @@ else alert("You need to choose !")
                 </div>
                 </MDBInputGroup>
            </td>
-           <td > <MDBInput onChange={((e)=>setAddProductSizes(e.target.value))} type='text'/> </td>
+           <td > <MDBInputGroup className='mb-3' >
+      <div className="mb-6 pb-2">
+                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setProductSizes(e.target.value)}>
+                <option selected value="0">Choose item</option>
+                      {
+                      sizes.map((x) => 
+                        <option  value={x.id}>
+                        {x.value}
+                        </option>
+                     )}
+                  
+                </select>
+                </div>
+                </MDBInputGroup>
+           </td>
            <td > <MDBInput onChange={((e)=>setAddproductPrice(e.target.value))} type='number' min='0' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '');"/> </td>
-           <td > <MDBInput onChange={((e)=>setAddproductSalePrice(e.target.value))} type='number' min='0' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '');"/> </td>
+        
 <td >  </td>
 <td><Button   onClick={confirmAdd}  variant='dark'> Confirm to database</Button></td>
 <td></td>
@@ -703,10 +727,21 @@ else alert("You need to choose !")
       </MDBInputGroup>
         </td>
 
-        <td>    
+        <td >
 
         <MDBInputGroup className='mb-3' >
-      <input  onChange={(e)=>setSizesUpdate(e.target.value)} value={x.sizes} className='form-control' type='text' />
+      <div className="mb-6 pb-2">
+                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate(e.target.value)} value={x.seasonid}>
+               
+                      {
+                      sizes.map((x) => 
+                        <option  value={x.id}>
+                        {x.value}
+                        </option>
+                     )}
+                  
+                </select>
+                </div>
       </MDBInputGroup>
         </td>
         <td  >

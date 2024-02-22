@@ -144,9 +144,9 @@ const PxMainPage = () => {
   
     
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
-      setTotal(total - prod['price']);
+      setTotal(total - prod['salePrice']);
 
-      setPayAmount(payamount-prod['price']);
+      setPayAmount(payamount-prod['salePrice']);
       window.sessionStorage.setItem("cartItemCount", count);
   
     }
@@ -198,7 +198,7 @@ const PxMainPage = () => {
         </Modal.Header>
         <Modal.Body> {
         arrBasket.map(
-            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.price} ></CartBasket>
+            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.salePrice} ></CartBasket>
         )
         }
         

@@ -7,7 +7,14 @@ export const setProducts = (products) => ({
     type: 'SET_USERS',
     payload: users,
   });
-  
+  export const setSizes = (sizes) => ({
+    type: 'SET_SIZES',
+    payload: sizes,
+  });
+  export const setProductSizes = (productsizes) => ({
+    type: 'SET_PRODUCTSIZES',
+    payload: productsizes,
+  });
   export const addProduct = (product) => ({
     type: 'ADD_PRODUCT',
     payload: product,
