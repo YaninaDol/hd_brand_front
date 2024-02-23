@@ -4,7 +4,6 @@ import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
 import { useState } from "react";
 import { useEffect } from "react";
-
 import axios from 'axios';
 import { connect,useDispatch,useSelector } from 'react-redux';
 import { Link, Outlet } from "react-router-dom";
@@ -23,7 +22,7 @@ const ShoesPage = () => {
   const [popular,setPopular] = useState([]);
   const [arrBasket,setArrBasket] = useState([]);
   const [findproducts,setFindProducts] = useState([]);
-  const [f,setF] = useState(0);
+
   const [show, setShow] = useState(false);
   const [inputSearch, setInputSearch] = useState('');
   const handleClose = () => setShow(false);
@@ -132,15 +131,7 @@ function getSearch()
 
     }
 
-function AddBtn(id)
-        {
-         
-         
-            setNewProd(products.find(item => item.id == id));
-          handleShowM();
-          
-         
-        }
+
 
 function find()
 {
@@ -196,7 +187,7 @@ console.log("resapi"+res.then((result)=>{console.log("find"+result.data);setMas(
 
 </div>
 
-<ContentPage items={products} link='shoes' materials={materials} types={types} page='взуття' AddBtn={AddBtn}></ContentPage>
+<ContentPage items={products} link='shoes' materials={materials} types={types} page='Взуття' ></ContentPage>
 
 
     <Footer />

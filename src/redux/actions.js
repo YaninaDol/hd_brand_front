@@ -106,3 +106,26 @@ export const setProducts = (products) => ({
     type: 'EDIT_MATERIAL',
     payload: { materialId, updatedMaterial },
   });
+  export const setProduct = (product) => ({
+    type: 'SETPRODUCT',
+    payload: product,
+  });
+  
+  export const setSeason = (season) => ({
+    type: 'SETSEASON',
+    payload: season,
+  });
+  
+  export const setMaterial = (material) => ({
+    type: 'SETMATERIAL',
+    payload: material,
+  });
+  
+  export const setSubCategory = (subcategory) => ({
+    type: 'SETSUBCATEGORY',
+    payload: subcategory,
+  });
+  export const setCategory = (subcategory) => ({
+    type: 'SETCATEGORY',
+    payload: subcategory,
+  });

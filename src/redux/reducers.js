@@ -6,6 +6,8 @@ const productsReducer = (state = [], action) => {
         return [...state, action.payload];
       case 'DELETE_PRODUCT':
           return state.filter(product => product.id !== action.payload);
+          case 'SETPRODUCT':
+  return action.payload;
       case 'EDIT_PRODUCT':
         return state.map(product =>
           product.id === action.payload.productId ? action.payload.updatedProduct : product
@@ -29,6 +31,8 @@ const productsReducer = (state = [], action) => {
     switch (action.type) {
       case 'SET_CATEGORIES':
         return action.payload;
+        case 'SETCATEGORY':
+          return action.payload;
       case 'ADD_CATEGORY':
         return [...state, action.payload];
       case 'DELETE_CATEGORY':
@@ -47,6 +51,8 @@ const productsReducer = (state = [], action) => {
           return action.payload;
         case 'ADD_SEASON':
           return [...state, action.payload];
+          case 'SETSEASON':
+  return action.payload;
         case 'DELETE_SEASON':
           return state.filter(season => season.id !== action.payload);
         case 'EDIT_SEASON':
@@ -65,6 +71,8 @@ const productsReducer = (state = [], action) => {
           return action.payload;
         case 'ADD_SUBCATEGORY':
           return [...state, action.payload];
+          case 'SETSUBCATEGORY':
+  return action.payload;
         case 'DELETE_SUBCATEGORY':
           return state.filter(subcategory => subcategory.id !== action.payload);
         case 'EDIT_SUBCATEGORY':
@@ -81,6 +89,8 @@ const productsReducer = (state = [], action) => {
       switch (action.type) {
         case 'SET_MATERIALS':
           return action.payload;
+          case 'SETMATERIAL':
+  return action.payload;
         case 'ADD_MATERIAL':
           return [...state, action.payload];
         case 'DELETE_MATERIAL':

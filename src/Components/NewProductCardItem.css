@@ -14,6 +14,14 @@
     max-height: 100%;
     object-fit: cover;
   }
+  .tag-container4 {
+    color: white;
+    width: 60px;
+    background-color: var(--typography-additional);
+    flex-direction: row;
+    padding: var(--padding-10xs) var(--padding-10xs) var(--padding-9xs);
+    box-sizing: border-box;
+  }
   .pagination-element13,
   .pagination-element14,
   .pagination-element15 {
@@ -123,8 +131,7 @@
     color: var(--default-black);
   }
   .description-price,
-  .item-card2,
-  .price3 {
+  .item-card2 {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -134,6 +141,7 @@
     gap: var(--gap-7xs);
     font-size: var(--subtitle-medium-20-size);
     color: var(--typography-gray);
+   
   }
   .description-price,
   .item-card2 {

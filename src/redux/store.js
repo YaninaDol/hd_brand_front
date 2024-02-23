@@ -10,6 +10,11 @@ const rootReducer = combineReducers({
   materials: materialsReducer,
   sizes: sizesReducer,
   productsizes: productsizesReducer,
+  product: subCategoriesReducer,
+  season: seasonsReducer,
+  material: materialsReducer,
+  subcategory: subCategoriesReducer,
+  category:categoriesReducer
 });
 
 const store = createStore(rootReducer);

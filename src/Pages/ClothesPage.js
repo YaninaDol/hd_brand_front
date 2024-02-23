@@ -194,7 +194,7 @@ console.log("resapi"+res.then((result)=>{console.log("find"+result.data);setMas(
 
 </div>
 
-<ContentPage items={products} link='clothes' materials={materials} types={types} page='одяг' AddBtn={AddBtn}></ContentPage>
+<ContentPage items={products} link='clothes' materials={materials} types={types} page='Одяг' AddBtn={AddBtn}></ContentPage>
 
 
     <Footer />

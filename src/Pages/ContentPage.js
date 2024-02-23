@@ -3,12 +3,10 @@ import { useState } from "react";
 import './ContentPage.css';
 import { Link, Outlet } from "react-router-dom";
 import CartProduct from '../Components/CartProduct';
-import DropdownFrame from '../Components/DropdownFrame';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 import {
  
   MDBContainer,
@@ -30,12 +28,6 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
-  const [seasonValues, setSeasonValues] = useState({
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-  });
 
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
@@ -82,10 +74,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
       const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
     
-      console.log('Product:', product);
-      console.log('Type Included:', typeIncluded);
-      console.log('Material Included:', materialIncluded);
-      console.log('Season Included:', seasonIncluded);
+   
     
       return typeIncluded && materialIncluded && seasonIncluded;
     });
@@ -312,14 +301,19 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             <MDBCol hidden={allhidden} className="containerCart">
             {items.length > 0 ? (
     items.slice(0, visibleItems).map((x) => (
+      <Link to={`/${link}/${x.subCategoryid}/${x.id}`}>
       <CartProduct
-        add={AddBtn}
-        key={x.id}
-        unic={x.id}
-        name={x.name}
-        picture={x.image}
-        price={x.salePrice}
+      id_key={x.id}
+      imageSrc1={x.image}
+      imageSrc2={x.image2}
+      isNew={x.isNew}
+      isDiscount={x.isDiscount}
+      isLiked={false}
+      descriprion={x.name}
+      price1={x.price}
+      price2={x.salePrice}
       />
+      </Link>
     ))
   ) : (
     <div>Нічого не знайдено </div>
@@ -328,14 +322,19 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             <MDBCol hidden={filteredhidden} className="containerCart">
             {filteredProducts.length > 0 ? (
     filteredProducts.slice(0, visibleItems).map((x) => (
+      <Link to={`/${link}/${x.subCategoryid}/${x.id}`}>
       <CartProduct
-        add={AddBtn}
-        key={x.id}
-        unic={x.id}
-        name={x.name}
-        picture={x.image}
-        price={x.salePrice}
+      id_key={x.id}
+      imageSrc1={x.image}
+      imageSrc2={x.image2}
+      isNew={x.isNew}
+      isDiscount={x.isDiscount}
+      isLiked={false}
+      descriprion={x.name}
+      price1={x.price}
+      price2={x.salePrice}
       />
+      </Link>
     ))
   ) : (
     <div>Нічого не знайдено</div>
