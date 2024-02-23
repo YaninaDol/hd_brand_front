@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   materials: materialsReducer,
   sizes: sizesReducer,
   productsizes: productsizesReducer,
-  product: subCategoriesReducer,
+  product: productsReducer,
   season: seasonsReducer,
   material: materialsReducer,
   subcategory: subCategoriesReducer,

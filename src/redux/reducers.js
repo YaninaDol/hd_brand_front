@@ -6,7 +6,7 @@ const productsReducer = (state = [], action) => {
         return [...state, action.payload];
       case 'DELETE_PRODUCT':
           return state.filter(product => product.id !== action.payload);
-          case 'SETPRODUCT':
+      case 'SETPRODUCT':
   return action.payload;
       case 'EDIT_PRODUCT':
         return state.map(product =>

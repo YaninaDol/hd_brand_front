@@ -12,6 +12,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { setProducts,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
 import { useParams } from 'react-router-dom';
+import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 
 const ProductDetailsPage = () => {
     const [total,setTotal] = useState(0);
@@ -42,25 +43,26 @@ const ProductDetailsPage = () => {
   
   
     axios.get(`https://localhost:7269/api/Product/GetSizeofProduct?id=${id}`)
-    .then(response => {
+    .then(respons => {
    
-      dispatch(setProductSizes(response.data));
-      console.log(response.data);
+      dispatch(setProductSizes(respons.data));
+      console.log(respons.data);
     })
     .catch(error => console.error('Error fetching products:', error));
   
    
   
     axios.get(`https://localhost:7269/api/Product/GetProductById?id=${id}`)
-    .then(response => {
+    .then(res => {
       
-        dispatch(setProduct(response.data.value))
-      console.log(response.data.value);
-      axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${response.data.value.categoryid}`)
-      .then(response => {
+        dispatch(setProduct(res.data.value))
+      console.log(res.data.value);
+
+      axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
+      .then(resp => {
      
-        dispatch(setCategory(response.data.value));
-        console.log(response.data);
+        dispatch(setCategory(resp.data.value));
+        console.log(resp.data);
       })
       .catch(error => console.error('Error fetching products:', error));
     })
@@ -118,6 +120,64 @@ const ProductDetailsPage = () => {
 {subcategory.name}
 </div>
    <div>
+
+<MDBContainer style={{margin:'50px'}}>
+<MDBRow style={{marginTop:'100px'}}>
+   
+
+    <MDBCol>
+            <MDBRow>
+   
+    <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+             </MDBRow>
+             <MDBRow>
+   
+   <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+            </MDBRow>
+   </MDBCol>
+   <MDBCol>
+            <MDBRow>
+   
+    <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+             </MDBRow>
+             <MDBRow>
+   
+   <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+            </MDBRow>
+   </MDBCol>
+<MDBCol>
+<MDBRow style={{alignContent:'right'}}>Арт: {product.artikel}  </MDBRow>
+<MDBRow>
+     <h1>{product.name} </h1>
+   
+    </MDBRow>
+
+<MDBRow>{product.salePrice} грн </MDBRow>
+
+<MDBRow><MDBCol>Розмір </MDBCol><MDBCol>36</MDBCol></MDBRow>
+<MDBRow> <Button
+                  style={{ borderRadius: '0px' }}
+                  variant="dark"
+                 
+                >
+                  Додати в кошик
+                </Button></MDBRow>
+
+
+                
+                <MDBRow>Характеристика товару</MDBRow>
+                <MDBRow><MDBCol> Сезон: </MDBCol> <MDBCol> Весна </MDBCol> </MDBRow>
+
+
+                <MDBRow>Таблиця розмірів</MDBRow>
+</MDBCol>
+      
+</MDBRow>
+
+
+
+</MDBContainer>
+
 
 </div>
 

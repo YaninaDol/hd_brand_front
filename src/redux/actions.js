@@ -125,7 +125,7 @@ export const setProducts = (products) => ({
     type: 'SETSUBCATEGORY',
     payload: subcategory,
   });
-  export const setCategory = (subcategory) => ({
+  export const setCategory = (category) => ({
     type: 'SETCATEGORY',
-    payload: subcategory,
+    payload: category,
   });
