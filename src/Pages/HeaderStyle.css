@@ -110,7 +110,10 @@
     flex-direction: column;
     align-items: center;
   }
-
+:link
+{
+  color: #000;
+}
 
   .favourite-icon,
 .language-icon,
