@@ -183,7 +183,7 @@ function confirmAdd()
         ).then  (response=>
         {
           alert("Product  added successfull!")
-          dispatch(addProduct(response.data))
+        
           window.location.reload();
           
         });  
@@ -323,7 +323,6 @@ const confirmUpdate = () => {
   ).then  (response=>
   {
     alert("Product  updated successfull!")
-    dispatch(editProduct(prodIdUpdate, response.data));
 
     window.location.reload();
     
