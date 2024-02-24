@@ -29,7 +29,7 @@ const ShoesPage = () => {
   const handleShow = () => setShow(true);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
-  const [newProd,setNewProd] = useState(new Object());
+  
   const [userId,setUserId] = useState("");
   const [showM, setShowM] = useState(false);
   const [total,setTotal] = useState(0);
@@ -85,24 +85,7 @@ const products = useSelector(state => state.products);
 
 
 
-function addBasket() {
-  setCount((prevCount) => {
-    const newCount = prevCount + 1;
-    window.sessionStorage.setItem("cartItemCount", newCount);
-    return newCount;
-  });
 
-  let copy = [...arrBasket];
-  copy.push(newProd);
-  setArrBasket(copy);
-
-  
-  window.sessionStorage.setItem("Basket", JSON.stringify(copy));
-
-  setTotal(total + newProd['salePrice']);//
-  handleCloseM();
-  window.location.reload();
-};
 
 
  
@@ -165,21 +148,7 @@ console.log("resapi"+res.then((result)=>{console.log("find"+result.data);setMas(
 
   return (
     <div >
-      <Modal show={showM} onHide={handleCloseM}>
-        <Modal.Header closeButton>
-          <Modal.Title>Придбати товар</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Додати товар до кошику ?</Modal.Body>
-        <Modal.Footer>
-        <Button variant="outline-secondary" onClick={addBasket}>
-            Так
-          </Button>
-          <Button variant="dark" onClick={handleCloseM}>
-            Ні
-          </Button>
-        
-        </Modal.Footer>
-      </Modal>
+    
 
    <PxMainPage />
 

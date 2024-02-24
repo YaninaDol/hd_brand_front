@@ -24,6 +24,7 @@ const ProductDetailsPage = () => {
   const category = useSelector(state => state.category);
   const material = useSelector(state => state.material);
   const season = useSelector(state => state.season);
+  const [newProd,setNewProd] = useState(new Object());
   const [arrBasket,setArrBasket] = useState([]);
   const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
   useEffect(()=>
@@ -71,19 +72,40 @@ const ProductDetailsPage = () => {
 
    
   
-    // const storedBasket = window.sessionStorage.getItem("Basket");
-    // if (storedBasket) {
-    //   const parsedBasketData = JSON.parse(storedBasket);
-    //   setArrBasket(parsedBasketData);
-    //   setCount(parsedBasketData.length);
-    //   const totalSum = parsedBasketData.reduce((sum, item) => sum + item.salePrice, 0);//
-    //   setTotal(totalSum);
-    //  }
+    const storedBasket = window.sessionStorage.getItem("Basket");
+    if (storedBasket) {
+      const parsedBasketData = JSON.parse(storedBasket);
+      setArrBasket(parsedBasketData);
+      setCount(parsedBasketData.length);
+      const totalSum = parsedBasketData.reduce((sum, item) => sum + item.salePrice, 0);//
+      setTotal(totalSum);
+     }
   
   }, [dispatch]);
 
-
-
+  function addBasket() {
+    setCount((prevCount) => {
+      const newCount = prevCount + 1;
+      window.sessionStorage.setItem("cartItemCount", newCount);
+      return newCount;
+    });
+  
+    let copy = [...arrBasket];
+    copy.push(newProd);
+    setArrBasket(copy);
+  
+    
+    window.sessionStorage.setItem("Basket", JSON.stringify(copy));
+  
+    setTotal(total + newProd['salePrice']);//
+    // handleCloseM();
+    window.location.reload();
+  };
+  function AddBtn(id)
+  {
+      setNewProd(productsizes.find(item => item.id == id));
+    
+  }
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
@@ -154,8 +176,25 @@ const ProductDetailsPage = () => {
 
 <MDBRow>{product.salePrice} грн </MDBRow>
 
-<MDBRow><MDBCol>Розмір </MDBCol><MDBCol>36</MDBCol></MDBRow>
+{productsizes.length > 0 && (
+  <MDBRow>
+    <MDBCol>Розмір </MDBCol>
+    <MDBCol>
+      <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e) => AddBtn(e.target.value)}>
+      <option selected value="0">Оберіть розмір</option>
+      
+        {productsizes.map((x) => (
+            
+          <option key={x.id} value={x.id}>
+            {x.size}
+          </option>
+        ))}
+      </select>
+    </MDBCol>
+  </MDBRow>
+)}
 <MDBRow> <Button
+onClick={addBasket}
                   style={{ borderRadius: '0px' }}
                   variant="dark"
                  
@@ -164,7 +203,7 @@ const ProductDetailsPage = () => {
                 </Button></MDBRow>
 
 
-                
+
                 <MDBRow>Характеристика товару</MDBRow>
                 <MDBRow><MDBCol> Сезон: </MDBCol> <MDBCol> Весна </MDBCol> </MDBRow>
 
