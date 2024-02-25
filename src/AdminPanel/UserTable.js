@@ -438,7 +438,8 @@ REGISTER MENAGER
  }
 </MDBTableBody>
 </MDBTable>
-
+<h1 style={{textAlign:'center',alignItems:'center'}} >CRM</h1>
+<img style={{width:'100%'}}  src={require('../assets/srm db.png')}></img>
     </div>
     );
 }
