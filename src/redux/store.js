@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import { productsReducer, usersReducer,categoriesReducer,seasonsReducer,subCategoriesReducer,materialsReducer, sizesReducer, productsizesReducer } from './reducers';
+import { productsReducer, usersReducer,categoriesReducer,seasonsReducer,subCategoriesReducer,materialsReducer, sizesReducer, productsizesReducer, similarproductsReducer } from './reducers';
 
 const rootReducer = combineReducers({
   products: productsReducer,
@@ -14,7 +14,8 @@ const rootReducer = combineReducers({
   season: seasonsReducer,
   material: materialsReducer,
   subcategory: subCategoriesReducer,
-  category:categoriesReducer
+  category:categoriesReducer,
+  silimarproducts:similarproductsReducer
 });
 
 const store = createStore(rootReducer);

@@ -120,5 +120,14 @@ const productsReducer = (state = [], action) => {
           return state;
       }
     };
+    const similarproductsReducer = (state = [], action) => {
+      switch (action.type) {
+        case 'SET_SIMILAR_PRODUCTS':
+          return action.payload;
+        default:
+          return state;
+      }
+    };
     
-  export { productsReducer, usersReducer,categoriesReducer , seasonsReducer, subCategoriesReducer, materialsReducer,sizesReducer,productsizesReducer };
+    
+  export { productsReducer,similarproductsReducer, usersReducer,categoriesReducer , seasonsReducer, subCategoriesReducer, materialsReducer,sizesReducer,productsizesReducer };

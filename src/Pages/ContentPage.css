@@ -1,11 +1,10 @@
 .containerCart{
     display: flex;
-    justify-content:center;
+    justify-content:left;
     align-items: stretch;
     margin-left: 5px;
     flex-flow:row wrap;
     text-align: center;
-    background-color: rgb(247, 247, 247);
     
     
   }

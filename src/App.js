@@ -9,6 +9,7 @@ import Accessorise from './Pages/Accessorise';
 import CareShoes from './Pages/CareShoes';
 import FAQ from './Pages/FAQ';
 import ProductDetailsPage from './Pages/ProductDetailsPage';
+import ShoeSizeTable from './Components/ShoeSizeTable';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/accessorise/:subcategoryid/:id" element={<ProductDetailsPage />} />
           <Route path="/careshoes" element={<CareShoes />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/shoesize" element={<ShoeSizeTable />} />
         </Routes>
       </div>
     </BrowserRouter>

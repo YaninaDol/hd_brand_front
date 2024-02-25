@@ -9,27 +9,25 @@ import Modal from 'react-bootstrap/Modal';
 import { Link } from "react-router-dom";
 import { Dropdown } from 'react-bootstrap';
 import {
-  MDBPagination, MDBPaginationItem, MDBPaginationLink,
-  MDBFooter,
-  MDBContainer,
-  MDBIcon,
-  MDBInput,
-  MDBCol,
-  MDBRow,
   MDBTypography,
-  MDBBtn,
-  MDBCard,
-  MDBRange ,
   MDBCardBody,
   MDBCardImage
 } from 'mdb-react-ui-kit';
 const PxMainPage = () => {
+
+  const [userName, setUserName] = useState("");
+  const [secondName, setSecondName] = useState("");
+  const [userMail, setUserMail] = useState("");
+  const [userNumber, setUserNumber] = useState("");
+  const [userCity, setUserCity] = useState("");
+  const [userPostDepart, setUsePostDepart] = useState("");
+
   const [arrBasket,setArrBasket] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [pass1, setPass1] = useState("");
-  const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
+  const [count, setCount] = useState(0);
   const [total,setTotal] = useState(0);
   const [payamount,setPayAmount] = useState(0);
   const [show, setShow] = useState(false);
@@ -198,7 +196,7 @@ const PxMainPage = () => {
         </Modal.Header>
         <Modal.Body> {
         arrBasket.map(
-            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.salePrice} ></CartBasket>
+            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.price} ></CartBasket>
         )
         }
         
@@ -337,12 +335,6 @@ const PxMainPage = () => {
               </div>
               <div className="menu-navigation-button-contain2">
               <Link to='/accessorise'>   <div className="button-nav2">аксесуари</div></Link>
-              </div>
-              <div className="menu-navigation-button-contain3">
-              <Link to='/careshoes'>       <div className="button-nav3">догляд за взуттям</div></Link>
-              </div>
-              <div className="menu-navigation-button-contain4">
-              <Link to='/shoes'>  <div className="button-nav4">знижки</div></Link>
               </div>
               <div className="menu-navigation-button-contain5">
               <Link to='/faq'>   <div className="button-nav5">FAQ</div></Link>

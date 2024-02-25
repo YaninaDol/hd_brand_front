@@ -2,6 +2,10 @@ export const setProducts = (products) => ({
     type: 'SET_PRODUCTS',
     payload: products,
   });
+  export const setSimilar = (silimarproducts) => ({
+    type: 'SET_SIMILAR_PRODUCTS',
+    payload: silimarproducts,
+  });
   
   export const setUsers = (users) => ({
     type: 'SET_USERS',

@@ -26,7 +26,7 @@ export default function ProductTable(){
   
     const [inputSearch, setInputSearch] = useState('');
     const [findproducts,setFindProducts] = useState([]);
-    const [AddProductArtikel,setAddProductArtikel] = useState("");
+    const [AddProductImage3,setAddProductImage3] = useState("");
     const [AddProductName,setAddProductName] = useState("");
     const [AddProductImage,setAddProductImage] = useState("");
     const [AddProductImage2,setAddProductImage2] = useState("");
@@ -44,7 +44,7 @@ export default function ProductTable(){
     const [idToDelete,setIdToDelete]=useState(0);
 
     const [nametoUpdate,setNameToUpdate] = useState("");
-    const [artikeltoUpdate,setArtikelToUpdate] = useState("");
+    const [image3toUpdate,setImage3ToUpdate] = useState("");
     const [imagetoUpdate,setImageToUpdate] = useState("");
     const [image2toUpdate,setImage2ToUpdate] = useState("");
     const [videotoUpdate,setVideoToUpdate] = useState("");
@@ -124,7 +124,7 @@ export default function ProductTable(){
      
       let prod= products.find(item=>item.id == id);
     setProdIdUpdate(id);
-    setArtikelToUpdate(prod['artikel']);
+    setImage3ToUpdate(prod['image3']);
         setNameToUpdate(prod['name']);
         setImageToUpdate(prod['image']);
         setImage2ToUpdate(prod['image2']);
@@ -149,10 +149,10 @@ function confirmAdd()
 
         { var bodyFormData = new FormData();
           bodyFormData.append('name', AddProductName);
-          bodyFormData.append('artikel', AddProductArtikel);
+         
           bodyFormData.append('image', AddProductImage);
           bodyFormData.append('image2', AddProductImage2);
-         
+          bodyFormData.append('image3', AddProductImage3);
           bodyFormData.append('isNew', AddIsNew);
           bodyFormData.append('video', AddProductVideo);
           bodyFormData.append('subcategoryid', AddProductSubCategory);
@@ -280,7 +280,7 @@ const confirmUpdate = () => {
   { var bodyFormData = new FormData();
     bodyFormData.append('id', prodIdUpdate);
     bodyFormData.append('name', nametoUpdate);
-    bodyFormData.append('artikel', artikeltoUpdate);
+    bodyFormData.append('image3', image3toUpdate);
     bodyFormData.append('image', imagetoUpdate);
     bodyFormData.append('image2', image2toUpdate);
     bodyFormData.append('isnew', isNewUpdate);
@@ -382,9 +382,7 @@ else alert("You need to choose !")
           <Modal.Title>Update product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <MDBInputGroup className='mb-3'  textBefore='Art.'>
-      <input onChange={(e)=>setArtikelToUpdate(e.target.value)} value={artikeltoUpdate} className='form-control' type='text' />
-    </MDBInputGroup>
+     
         <MDBInputGroup className='mb-3'  textBefore='Name'>
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
     </MDBInputGroup>
@@ -393,6 +391,9 @@ else alert("You need to choose !")
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
     <input  onChange={(e)=>setImage2ToUpdate(e.target.value)} value={image2toUpdate} className='form-control' type='text' />
+      </MDBInputGroup>
+      <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
+    <input  onChange={(e)=>setImage3ToUpdate(e.target.value)} value={image3toUpdate} className='form-control' type='text' />
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Video URL'>
       <input  onChange={(e)=>setVideoToUpdate(e.target.value)} value={videotoUpdate} className='form-control' type='text' />
@@ -511,10 +512,10 @@ else alert("You need to choose !")
     <MDBTableHead dark>
         <tr>
           <th>#</th>
-          <th>artikel</th>
           <th>Name</th>
           <th>Image</th>
           <th>Image2</th>
+          <th>Image3</th>
           <th>Video</th>
           <th>NEW</th>
           <th>Category</th>
@@ -533,10 +534,11 @@ else alert("You need to choose !")
       <tr hidden={addProductRow} >
                  <th  scope='row' ></th>
           
-                 <td > <MDBInput onChange={((e)=>setAddProductArtikel(e.target.value))} type='text'/> </td>
+               
             <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/> </td>
             <td > <MDBInput onChange={((e)=>setAddProductImage(e.target.value))} type='text'/> </td>
             <td > <MDBInput onChange={((e)=>setAddProductImage2(e.target.value))} type='text'/> </td>
+            <td > <MDBInput onChange={((e)=>setAddProductImage3(e.target.value))} type='text'/> </td>
             <td > <MDBInput onChange={((e)=>setAddProductVideo(e.target.value))} type='text'/> </td>
  <td>   <MDBCheckbox  label='NEW' onChange={(e)=>setAddAddIsNew(e.target.checked)} /></td>
             <td > <MDBInputGroup className='mb-3' >
@@ -626,11 +628,7 @@ else alert("You need to choose !")
         allproducts.map((x, index)=> <tr  >
                 
         <th scope='row'>{x.id}</th>
-        <td > 
-           <MDBInputGroup  className='mb-3'  >
-      <input   value={x.artikel} className='form-control' type='text' />
-    </MDBInputGroup>
-    </td>
+      
         <td > 
            <MDBInputGroup  className='mb-3'  >
       <input   value={x.name} className='form-control' type='text' />
@@ -646,6 +644,12 @@ else alert("You need to choose !")
     <img src={x.image2} width={50} height={50} alt="Товар" />
            <MDBInputGroup  className='mb-3'  >
       <input  value={x.image2} className='form-control' type='text' />
+    </MDBInputGroup>
+    </td>
+    <td > 
+    <img src={x.image3} width={50} height={50} alt="Товар" />
+           <MDBInputGroup  className='mb-3'  >
+      <input  value={x.image3} className='form-control' type='text' />
     </MDBInputGroup>
     </td>
     <td > 

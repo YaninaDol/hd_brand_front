@@ -7,19 +7,25 @@ import { useEffect } from "react";
 import {setProductSizes } from '../redux/actions';
 import axios from 'axios';
 import { connect,useDispatch,useSelector } from 'react-redux';
-import { Link, Outlet } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import { Link, Outlet } from "react-router-dom";
+import Carousels from 'react-multi-carousel';
+import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
-import { setProducts,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
+import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
 import { useParams } from 'react-router-dom';
 import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
+import ShoppingAssistant from '../Components/ShoppingAssistant';
 
+import CartProduct from '../Components/CartProduct';
 const ProductDetailsPage = () => {
     const [total,setTotal] = useState(0);
     const { id, subcategoryid } = useParams();
   const dispatch = useDispatch();
   const productsizes = useSelector(state => state.productsizes);
   const product = useSelector(state => state.product);
+  const silimarproducts=useSelector(state => state.silimarproducts);
+  const products = useSelector(state => state.products);
   const subcategory = useSelector(state => state.subcategory);
   const category = useSelector(state => state.category);
   const material = useSelector(state => state.material);
@@ -27,10 +33,46 @@ const ProductDetailsPage = () => {
   const [newProd,setNewProd] = useState(new Object());
   const [arrBasket,setArrBasket] = useState([]);
   const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
+
+
+  const responsive = {
+    desktopLarge: {
+      breakpoint: { max: 3000, min: 1400 },
+      items: 5,
+      slidesToSlide: 5,
+      partialVisible: true,
+      itemWidth: 20,
+    },
+    desktop: {
+      breakpoint: { max: 1400, min: 800 },
+      items: 4,
+      slidesToSlide: 4,
+      itemWidth: 20,
+    },
+    tablet: {
+      breakpoint: { max: 800, min: 464 },
+      items: 3,
+      slidesToSlide: 3,
+      itemWidth: 20,
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 2,
+      slidesToSlide: 2,
+      itemWidth: 20,
+    },
+  };
+  
+
+
+
+
   useEffect(()=>
 
   {
    
+
+
     axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
     .then(response => {
     
@@ -66,10 +108,33 @@ const ProductDetailsPage = () => {
         console.log(resp.data);
       })
       .catch(error => console.error('Error fetching products:', error));
+      axios.get(`https://localhost:7269/api/Specification/GetMaterialById?id=${res.data.value.materialid}`)
+      .then(resp => {
+     
+        dispatch(setMaterial(resp.data.value));
+        console.log(resp.data);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+      axios.get(`https://localhost:7269/api/Specification/GetSeasonById?id=${res.data.value.seasonid}`)
+      .then(resp => {
+     
+        dispatch(setSeason(resp.data.value));
+        console.log(resp.data);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+      axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
+    .then(responses => {
+      dispatch(setSimilar(responses.data));
+      console.log(responses.data.length);
+    })
+    .catch(error => console.error('Error fetching products:', error));
+  
+      
     })
     .catch(error => console.error('Error fetching products:', error));
 
-
+    
+    
    
   
     const storedBasket = window.sessionStorage.getItem("Basket");
@@ -97,7 +162,7 @@ const ProductDetailsPage = () => {
     
     window.sessionStorage.setItem("Basket", JSON.stringify(copy));
   
-    setTotal(total + newProd['salePrice']);//
+    setTotal(total + newProd['price']);//
     // handleCloseM();
     window.location.reload();
   };
@@ -150,36 +215,40 @@ const ProductDetailsPage = () => {
     <MDBCol>
             <MDBRow>
    
-    <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+    <MDBCol><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
              </MDBRow>
              <MDBRow>
    
-   <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+   <MDBCol><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
             </MDBRow>
    </MDBCol>
    <MDBCol>
             <MDBRow>
    
-    <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+    <MDBCol><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
              </MDBRow>
              <MDBRow>
    
-   <MDBCol><img src={product.image2} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+   <MDBCol><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
             </MDBRow>
    </MDBCol>
-<MDBCol>
-<MDBRow style={{alignContent:'right'}}>Арт: {product.artikel}  </MDBRow>
-<MDBRow>
+<MDBCol style={{marginLeft:'25px'}}>
+
+<MDBRow >
      <h1>{product.name} </h1>
    
     </MDBRow>
 
-<MDBRow>{product.salePrice} грн </MDBRow>
-
+<MDBRow  style={{marginTop:'5px',fontFamily:'monospace',fontSize:'20px'}}><h7>{product.salePrice} грн</h7> </MDBRow>
+<MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol> {season.name} </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol> {subcategory.name} </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol> {material.name} </MDBCol> </MDBRow>
 {productsizes.length > 0 && (
-  <MDBRow>
-    <MDBCol>Розмір </MDBCol>
-    <MDBCol>
+  <MDBRow style={{marginTop:'55px'}}>
+    <div>
+     <MDBCol>
       <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e) => AddBtn(e.target.value)}>
       <option selected value="0">Оберіть розмір</option>
       
@@ -191,9 +260,13 @@ const ProductDetailsPage = () => {
         ))}
       </select>
     </MDBCol>
+    </div>
+    <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} href='/shoesize'>Таблиця розмірів</a></MDBRow> </MDBCol>
+    
   </MDBRow>
 )}
-<MDBRow> <Button
+
+<MDBRow  style={{marginTop:'75px'}}> <Button
 onClick={addBasket}
                   style={{ borderRadius: '0px' }}
                   variant="dark"
@@ -204,17 +277,39 @@ onClick={addBasket}
 
 
 
-                <MDBRow>Характеристика товару</MDBRow>
-                <MDBRow><MDBCol> Сезон: </MDBCol> <MDBCol> Весна </MDBCol> </MDBRow>
-
-
-                <MDBRow>Таблиця розмірів</MDBRow>
+          
+              
 </MDBCol>
       
 </MDBRow>
-
-
-
+<MDBRow style={{marginTop:'75px'}}>
+<ShoppingAssistant></ShoppingAssistant>
+</MDBRow>
+<MDBRow style={{marginTop:'35px'}}>
+Вам також може сподобатись :
+<Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+  
+{silimarproducts.length > 0 ? (
+    silimarproducts.map((x) => (
+      <Link to={`/${category.id}/${x.subCategoryid}/${x.id}`}>
+      <CartProduct
+      id_key={x.id}
+      imageSrc1={x.image}
+      imageSrc2={x.image2}
+      isNew={x.isNew}
+      isDiscount={x.isDiscount}
+      isLiked={false}
+      descriprion={x.name}
+      price1={x.price}
+      price2={x.salePrice}
+      />
+      </Link>
+    ))
+  ) : (
+    <div></div>
+  )}
+   </Carousels>
+</MDBRow>
 </MDBContainer>
 
 
