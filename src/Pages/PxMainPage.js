@@ -478,7 +478,7 @@ function setCities(selectedCity)
         <Button  variant="outline-secondary"  onClick={savechange}>
             Сплатити 
           </Button>
-          <Button variant="dark" onClick={()=>{handleClose()}}>
+          <Button variant="dark" onClick={()=>{handleCloseBasket()}}>
             Продовжити покупки
           </Button>
          
