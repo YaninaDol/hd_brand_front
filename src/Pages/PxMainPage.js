@@ -9,18 +9,33 @@ import Modal from 'react-bootstrap/Modal';
 import { Link } from "react-router-dom";
 import { Dropdown } from 'react-bootstrap';
 import {
+  MDBInput,
+  MDBCol,
+  MDBRow,
   MDBTypography,
   MDBCardBody,
   MDBCardImage
 } from 'mdb-react-ui-kit';
 const PxMainPage = () => {
 
-  const [userName, setUserName] = useState("");
-  const [secondName, setSecondName] = useState("");
-  const [userMail, setUserMail] = useState("");
-  const [userNumber, setUserNumber] = useState("");
-  const [userCity, setUserCity] = useState("");
-  const [userPostDepart, setUsePostDepart] = useState("");
+  
+  const [setwarehouse, setsetwarehouse] = useState("");
+
+  const [FirstName, setFirstName] = useState("");
+  const [LastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [notice, setNotice] = useState("none");
+  const [payInfo, setPayInfo] = useState("");
+
+  const [showQr, setShowQr] = useState(false);
+  const handleCloseQr = () => setShowQr(false);
+  const handleShowQr = () => setShowQr(true);
+
+  const [showPayCard, setShowPayCard] = useState(false);
+  const handleClosePayCard = () => setShowPayCard(false);
+  const handleShowPayCard = () => setShowPayCard(true);
+
+
 
   const [arrBasket,setArrBasket] = useState([]);
   const [isLogin, setIsLogin] = useState(false);
@@ -35,8 +50,10 @@ const PxMainPage = () => {
   const [userId,setUserId] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-
+  const [result, setResult] = useState("");
+      const [picture, setPicture] = useState("");
+      const apiKey = '24443d18027301d444ec98b00ef49598';
+      const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
   useEffect(() => {
    
     const storedBasket = window.sessionStorage.getItem("Basket");
@@ -127,6 +144,43 @@ const PxMainPage = () => {
 
   };
 
+  function CreateQr()
+  {
+    handleShowQr();
+
+
+   var QRCode = require('qrcode')
+ var str=`https://www.ipay.ua/ru/charger?bill_id=1663&acc=021018496&invoice=${payamount}.00&order_id=100506`;
+   QRCode.toDataURL(str, function (err, url) {
+    setPicture(url);
+     console.log(url)
+     setPayInfo('order_id=100506');
+   })
+  
+  }
+
+
+function pay()
+{
+setPayInfo('order_id=100506');
+var notice_str=notice+payInfo;
+setNotice(notice_str);
+
+handleCloseQr();
+}
+function payCard()
+{
+setPayInfo('order_id=100506');
+var notice_str=notice+payInfo;
+setNotice(notice_str);
+
+handleClosePayCard();
+}
+
+
+
+
+
   const [showBasket, setShowBasket] = useState(false);
   const handleCloseBasket = () => setShowBasket(false);
   const handleShowBasket = () => setShowBasket(true);
@@ -152,6 +206,21 @@ const PxMainPage = () => {
   function savechange()
   {
   
+
+    if(FirstName!=""&&LastName!=""&&phoneNumber!="")
+    { 
+     
+     if(phoneNumber.length==10 && FirstName.length>1 && LastName.length>5 )
+               {
+                  alert()
+
+               }
+    }
+    else{
+      alert("Перевірте пусті поля!")
+    }
+
+
   // for (const iterator of arrBasket) 
   // {
   // var bodyFormData = new FormData();
@@ -184,12 +253,112 @@ const PxMainPage = () => {
   
   
   }  
+ 
+function Delivery(postType)
+{
+  if(postType=="1")
+  {
+    const requestData = {
+      apiKey: apiKey,
+      modelName: 'Address',
+      calledMethod: 'getCities',
+      methodProperties: {}
+    };
+    
+    
+    const selectElement = document.getElementById('citySelect');
+    
+   
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+       
+        const cityDescriptions = data.data.map(city => city.Description);
+    
+       
+        selectElement.innerHTML = '';
+    
+       
+        cityDescriptions.forEach(description => {
+          const optionElement = document.createElement('option');
+          optionElement.value = description;
+          optionElement.text = description;
+          selectElement.appendChild(optionElement);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+  else
+  {
 
+  }
+}
 
+function setCities(selectedCity)
+{
+ 
+  const warehouseSelectElement = document.getElementById('warehouseSelect');
+  const getWarehousesRequest = {
+    apiKey: apiKey,
+    modelName: 'Address',
+    calledMethod: 'getWarehouses',
+    methodProperties: {
+      CityName: selectedCity
+  
+    }
+  };
+
+  fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(getWarehousesRequest)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      
+      const warehouseDescriptions = data.data.map(warehouse => warehouse.Description);
+
+     
+      warehouseSelectElement.innerHTML = '';
+
+     
+      warehouseDescriptions.forEach(description => {
+        const optionElement = document.createElement('option');
+        optionElement.value = description;
+        optionElement.text = description;
+        warehouseSelectElement.appendChild(optionElement);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching warehouse data:', error);
+    });
+}
      return (
      
 
       <div className="px-main-page">
+
+
 <Modal id='basket' show={showBasket} onHide={handleCloseBasket}>
         <Modal.Header closeButton>
           <Modal.Title>Кошик</Modal.Title>
@@ -199,39 +368,83 @@ const PxMainPage = () => {
             (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.price} ></CartBasket>
         )
         }
-        
-              <MDBTypography tag="h5" className="text-uppercase mb-3">
-                Доставка:
-              </MDBTypography>
+             
+              <h3 style={{color:'navy'}}>Ваші данні : </h3>
+              <MDBRow className="justify-content-between align-items-center">
+                <MDBCol >
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Ім'я</Form.Label>
+        <Form.Control onChange={(e)=>setFirstName(e.target.value)} type="text" />
+      
+      </Form.Group>
+                </MDBCol>
+                <MDBCol  >
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Прізвище</Form.Label>
+        <Form.Control onChange={(e)=>setLastName(e.target.value)} type="text" />
+      </Form.Group>
+                </MDBCol>
+                </MDBRow>
 
-              <div className="mb-4 pb-2">
-                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setDelivery((e.target.value) )}>
-                  <option value="Нова Пошта">Нова Пошта </option>
-                  <option value="Укр Пошта">Укр Пошта</option>
+                <MDBRow className="justify-content-between align-items-center">
+                <MDBCol >
+                <Form.Group className="mb-3" >
+        <Form.Label>Номер телефону </Form.Label>
+        <Form.Control onChange={(e)=>setPhoneNumber(e.target.value)} type="text" />
+      
+      </Form.Group>
+                </MDBCol>
+                </MDBRow>
+                <MDBRow className="justify-content-between align-items-center">
+                <MDBCol  >
+                <Form.Group className="mb-3" >
+        <Form.Label>Коментар </Form.Label>
+        <Form.Control onChange={(e)=>setNotice(e.target.value)} type="text" />
+      </Form.Group>
+                </MDBCol>
+                </MDBRow>
+                <MDBRow className="justify-content-between align-items-center">
+                <MDBCol  >
+                <Form.Group className="mb-3" >
+        <Form.Label>Доставка </Form.Label>
+        <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>Delivery((e.target.value) )}>
+        <option value="2">Укр Пошта</option>
+                  <option value="1">Нова Пошта </option>
+                 
                   
                 </select>
-              </div>
-              <MDBTypography tag="h5" className="text-uppercase mb-3">
-                Спосіб оплати:
-              </MDBTypography>
-
-              <div className="mb-4 pb-2">
-                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setPayAmount(parseInt(e.target.value) )}>
-                  <option value={total}>Повна </option>
-                  <option value="200">Часткова (200грн)</option>
-                  
+      </Form.Group>
+                </MDBCol>
+                </MDBRow>
+                <MDBRow className="justify-content-between align-items-center">
+                <MDBCol  >
+                <Form.Group className="mb-3" >
+        <Form.Label>Оберіть місто </Form.Label>
+        <select id='citySelect' className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>{setCities(e.target.value)}}>
+                
                 </select>
-              </div>
+      </Form.Group>
+                </MDBCol>
+                </MDBRow>
+                <MDBRow className="justify-content-between align-items-center">
+                <MDBCol  >
+                <Form.Group className="mb-3" >
+        <Form.Label>Оберіть відділення </Form.Label>
+        <select id='warehouseSelect' className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>{setwarehouse(e.target.value)}}>
+                
+                </select>
+      </Form.Group>
+                </MDBCol>
+                </MDBRow>
+              <MDBCardBody>
               <div className="d-flex justify-content-between mb-4">
                 <MDBTypography tag="h5" className="text-uppercase">
-                  До сплати: 
+                  До сплати : 
                 </MDBTypography>
-                <MDBTypography tag="h5">{payamount} &#8372;</MDBTypography>
+                <MDBTypography tag="h5">{payamount} грн</MDBTypography>
               </div>
-
-              <MDBCardBody>
             <p>
-              <strong>Ми приймаємо</strong>
+              <strong>Ми приймаємо </strong>
             </p>
             <MDBCardImage className="me-2" width="45px"
               src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
@@ -246,20 +459,117 @@ const PxMainPage = () => {
               src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
               alt="PayPal acceptance mark" />
           </MDBCardBody>
-        
+        <MDBCol style={{marginTop:20}}>
+        <MDBRow>
+          <Button  variant="outline-success" onClick={()=>handleShowPayCard()}  >
+            Сплатити карткою
+          </Button>
+          </MDBRow>
+          </MDBCol>
+          <MDBCol>
+          <MDBRow>
+          <Button  variant="outline-success" onClick={()=>{ CreateQr()}} >
+            Сгенерувати QR 
+          </Button>
+          </MDBRow>
+</MDBCol>
         </Modal.Body>
         <Modal.Footer>
-        <Button  variant="dark"  onClick={savechange}>
-            Сплатити
+        <Button  variant="outline-secondary"  onClick={savechange}>
+            Сплатити 
           </Button>
-          <Button variant="outline-secondary" onClick={handleCloseBasket}>
-            Продовжити
+          <Button variant="dark" onClick={()=>{handleClose()}}>
+            Продовжити покупки
           </Button>
          
         </Modal.Footer>
       </Modal>
+    
+<Modal show={showPayCard} onHide={handleClosePayCard} >
+
+<MDBCol >
+<Modal.Header  closeButton>
+<Modal.Title>Payment</Modal.Title>
+        </Modal.Header>   
+        <Modal.Body>
+                    <label>Card number</label>
+                    <form className="mb-5">
+                      <MDBInput
+                        className="mb-5"
+                      
+                        type="text"
+                        size="lg"
+                        defaultValue="1234 5678 9012 3457"
+                      />
+                        <label>Name on card</label>
+                      <MDBInput
+                        className="mb-5"
+                        type="text"
+                        size="lg"
+                        defaultValue="John Smith"
+                      />
+                       
+                      <MDBRow>
+                        <MDBCol md="6" className="mb-5">
+                          <MDBInput
+                            className="mb-4"
+                            label="Expiration"
+                            type="text"
+                            size="sm"
+                            minLength="7"
+                            maxLength="7"
+                            defaultValue="01/22"
+                            placeholder="MM/YYYY"
+                          />
+                        </MDBCol>
+                        <MDBCol md="6" className="mb-5">
+                          <MDBInput
+                            className="mb-4"
+                            label="Cvv"
+                            type="text"
+                            size="sm"
+                            minLength="3"
+                            maxLength="3"
+                            placeholder="&#9679;&#9679;&#9679;"
+                            defaultValue="&#9679;&#9679;&#9679;"
+                          />
+                        </MDBCol>
+                      </MDBRow>
+
+                      <MDBRow>
+                      <Button style={{marginTop:30}} onClick={payCard}  size="lg">
+                        Proceed to payment 
+                      </Button>
+                      </MDBRow>
+
+                      </form>
+                      </Modal.Body>
+                      </MDBCol>
+  
+</Modal>
 
 
+
+      <Modal  className="text-center" show={showQr}  onHide={handleCloseQr}>
+        <Modal.Header closeButton>
+          <Modal.Title>QR payment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> <div>
+   <img src={picture} alt="picture QR"></img>
+    </div>
+    <div >
+			
+			<div >{result}</div>		
+		</div></Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseQr}>
+            Закрити
+          </Button>
+          <Button variant="success" onClick={pay} >
+            Сплатити
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
          <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -359,24 +669,7 @@ const PxMainPage = () => {
             <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
           </svg>
           </div>
-            
-      {/* <Dropdown>
-        <Dropdown.Toggle variant="outline" id="dropdown-basic">
-        <div className="language-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-globe" viewBox="0 0 16 16">
-            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855A8 8 0 0 0 5.145 4H7.5zM4.09 4a9.3 9.3 0 0 1 .64-1.539 7 7 0 0 1 .597-.933A7.03 7.03 0 0 0 2.255 4zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a7 7 0 0 0-.656 2.5zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5zM8.5 5v2.5h2.99a12.5 12.5 0 0 0-.337-2.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5zM5.145 12q.208.58.468 1.068c.552 1.035 1.218 1.65 1.887 1.855V12zm.182 2.472a7 7 0 0 1-.597-.933A9.3 9.3 0 0 1 4.09 12H2.255a7 7 0 0 0 3.072 2.472M3.82 11a13.7 13.7 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5zm6.853 3.472A7 7 0 0 0 13.745 12H11.91a9.3 9.3 0 0 1-.64 1.539 7 7 0 0 1-.597.933M8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855q.26-.487.468-1.068zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.7 13.7 0 0 1-.312 2.5m2.802-3.5a7 7 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7 7 0 0 0-3.072-2.472c.218.284.418.598.597.933M10.855 4a8 8 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4z"/>
-          </svg>
-          </div>
-        </Dropdown.Toggle>
 
-        <Dropdown.Menu>
-          <Dropdown.Item href="#/action1">Українська</Dropdown.Item>
-          <Dropdown.Item href="#/action2">English</Dropdown.Item>
-          <Dropdown.Item href="#/action3">Русский</Dropdown.Item>
-        
-        </Dropdown.Menu>
-      </Dropdown>
-    */}
                <div onClick={loginbtn}
                 className="user-icon"
                >

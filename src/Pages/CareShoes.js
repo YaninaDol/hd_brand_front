@@ -2,7 +2,7 @@
 import React from 'react';
 import PxMainPage from './PxMainPage';
 
-const FAQ = () => {
+const CareShoes = () => {
   
   
   return (
@@ -13,4 +13,4 @@ const FAQ = () => {
   );
 };
 
-export default FAQ;
+export default CareShoes;

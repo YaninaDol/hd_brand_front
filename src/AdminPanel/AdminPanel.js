@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import ProductsTable from './ProductTable';
 import UsersTable from './UserTable';
+import CategorySpecification from './CategorySpecification';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('"/admin/products');
@@ -28,6 +29,18 @@ const AdminPanel = () => {
         </li>
         <li className="nav-item" role="presentation">
           <Link
+            className={`nav-link ${activeTab === '/admin/categoryspec' ? 'active' : ''}`}
+            to="/admin/categoryspec"
+            role="tab"
+            aria-controls="ex3-pills-2"
+            aria-selected={activeTab === '/admin/categoryspec'}
+            onClick={() => handleTabClick('/admin/categoryspec')}
+          >
+            DASHBOARD OF CATEGORY & SPECIFICATIONS
+          </Link>
+        </li>
+        <li className="nav-item" role="presentation">
+          <Link
             className={`nav-link ${activeTab === '/admin/users' ? 'active' : ''}`}
             to="/admin/users"
             role="tab"
@@ -44,6 +57,7 @@ const AdminPanel = () => {
         <Routes>
           <Route path="/products" element={<ProductsTable />} />
           <Route path="/users" element={<UsersTable />} />
+          <Route path="/categoryspec" element={<CategorySpecification />} />
         </Routes>
       </div>
     </div>

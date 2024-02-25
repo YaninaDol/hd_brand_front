@@ -149,7 +149,10 @@ const ProductDetailsPage = () => {
   }, [dispatch]);
 
   function addBasket() {
-    setCount((prevCount) => {
+
+if(newProd.size!=null)
+   
+ {   setCount((prevCount) => {
       const newCount = prevCount + 1;
       window.sessionStorage.setItem("cartItemCount", newCount);
       return newCount;
@@ -165,6 +168,8 @@ const ProductDetailsPage = () => {
     setTotal(total + newProd['price']);//
     // handleCloseM();
     window.location.reload();
+}
+else alert("Оберіть розмір! ");
   };
   function AddBtn(id)
   {
@@ -200,7 +205,7 @@ const ProductDetailsPage = () => {
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-{category.name}
+<a style={{color:'black'}} href='/shoes'>{category.name}</a>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
@@ -266,7 +271,7 @@ const ProductDetailsPage = () => {
   </MDBRow>
 )}
 
-<MDBRow  style={{marginTop:'75px'}}> <Button
+<MDBRow  style={{marginTop:'55px'}}> <Button
 onClick={addBasket}
                   style={{ borderRadius: '0px' }}
                   variant="dark"
