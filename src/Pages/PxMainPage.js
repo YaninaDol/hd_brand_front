@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from "react-router-dom";
-import { Dropdown } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import {
   MDBInput,
   MDBCol,
@@ -162,17 +162,31 @@ const PxMainPage = () => {
 
 function pay()
 {
-setPayInfo('order_id=100506');
-var notice_str=notice+payInfo;
-setNotice(notice_str);
+// setPayInfo('order_id=100506');
+// var notice_str=notice+payInfo;
+// setNotice(notice_str);
+arrBasket.splice(0, arrBasket.length);
+window.sessionStorage.removeItem("Basket");
 
+
+alert("Замовлення відправленне на опрацювання!")
+
+window.location.reload();
 handleCloseQr();
 }
 function payCard()
 {
-setPayInfo('order_id=100506');
-var notice_str=notice+payInfo;
-setNotice(notice_str);
+// setPayInfo('order_id=100506');
+// var notice_str=notice+payInfo;
+// setNotice(notice_str);
+arrBasket.splice(0, arrBasket.length);
+window.sessionStorage.removeItem("Basket");
+
+
+alert("Замовлення відправленне на опрацювання!")
+
+window.location.href = "https://www.liqpay.ua/en";
+
 
 handleClosePayCard();
 }
@@ -475,9 +489,7 @@ function setCities(selectedCity)
 </MDBCol>
         </Modal.Body>
         <Modal.Footer>
-        <Button  variant="outline-secondary"  onClick={savechange}>
-            Сплатити 
-          </Button>
+        
           <Button variant="dark" onClick={()=>{handleCloseBasket()}}>
             Продовжити покупки
           </Button>
