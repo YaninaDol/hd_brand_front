@@ -160,10 +160,12 @@ const ProductDetailsPage = () => {
   }, [id, subcategoryid, dispatch]);
 
   function addBasket() {
-
-if(newProd.size!=null)
    
- {   setCount((prevCount) => {
+if(newProd.size!=null||product.categoryid==3)
+  
+ {  
+  
+  setCount((prevCount) => {
       const newCount = prevCount + 1;
       window.sessionStorage.setItem("cartItemCount", newCount);
       return newCount;
