@@ -51,6 +51,7 @@ const PxMainPage = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [result, setResult] = useState("");
+  const [department, setDepartment] = useState("");
       const [picture, setPicture] = useState("");
       const apiKey = '24443d18027301d444ec98b00ef49598';
       const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
@@ -190,8 +191,13 @@ window.location.href = "https://www.liqpay.ua/en";
 
 handleClosePayCard();
 }
+const [searchQuery,setSearchQuery] = useState("");
+function redirectToFilteredPage(searchQuery) {
+  
+  const baseUrl = '/search';
 
-
+  window.location.href = `${baseUrl}?search=${encodeURIComponent(searchQuery)}`;
+}
 
 
 
@@ -210,9 +216,9 @@ handleClosePayCard();
   
     
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
-      setTotal(total - prod['salePrice']);
+      setTotal(total - prod['price']);
 
-      setPayAmount(payamount-prod['salePrice']);
+      setPayAmount(payamount-prod['price']);
       window.sessionStorage.setItem("cartItemCount", count);
   
     }
@@ -444,7 +450,7 @@ function setCities(selectedCity)
                 <MDBCol  >
                 <Form.Group className="mb-3" >
         <Form.Label>Оберіть відділення </Form.Label>
-        <select id='warehouseSelect' className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>{setwarehouse(e.target.value)}}>
+        <select id='warehouseSelect' className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>{setDepartment(e.target.value)}}>
                 
                 </select>
       </Form.Group>
@@ -671,7 +677,9 @@ function setCities(selectedCity)
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
 </svg>
                 </span>
-                <input type="text" class="form-control" placeholder="Що будемо шукати? " aria-label="Input group example" aria-describedby="basic-addon1"/>
+                <input type="text" class="form-control" placeholder="Що будемо шукати? " onChange={(e) => setSearchQuery(e.target.value)}
+
+        onBlur={redirectToFilteredPage} aria-label="Input group example" aria-describedby="basic-addon1"/>
               </div>
             <div className="icons">
            

@@ -10,6 +10,7 @@ import CareShoes from './Pages/CareShoes';
 import FAQ from './Pages/FAQ';
 import ProductDetailsPage from './Pages/ProductDetailsPage';
 import ShoeSizeTable from './Components/ShoeSizeTable';
+import FilteredProductsPage from './Pages/FilteredProductsPage';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/careshoes" element={<CareShoes />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/shoesize" element={<ShoeSizeTable />} />
+          <Route path="/search" element={<FilteredProductsPage />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -214,6 +214,7 @@
   }
 }
 @media screen and (max-width: 750px) {
+  
   .logo-menu-navigation {
     visibility: hidden;
     gap: var(--gap-31xl);
