@@ -12,7 +12,7 @@ const CartProduct = ({id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked, 
     };
   
     return (
-      <Card id={id_key} style={{ width: '200px',height:'350px', marginLeft: '15px', marginRight: '15px',marginTop:'15px', border: 'none' }}>
+      <Card id={id_key} style={{ width: '200px',height:'350px', marginLeft: '15px', marginRight: '15px',marginTop:'5px', border: 'none',marginBottom:'25px' }}>
         <MDBCarousel>
           <MDBCarouselItem itemId={1}>
             <Card.Img variant="top"  style={{ width: '200px',height:'250px', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc1} />

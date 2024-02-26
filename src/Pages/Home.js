@@ -1,5 +1,5 @@
-
-import React from 'react';
+import axios from 'axios';
+import React,{Fragment} from 'react';
 import Carousels from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import PxMainPage from './PxMainPage';
@@ -9,10 +9,15 @@ import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
 import '../Components/NewProductCardItem.css'
 import WeeklyPreview from '../Components/WeeklyPreview'
-
+import { Link, Outlet } from "react-router-dom";
+import { connect,useDispatch,useSelector } from 'react-redux';
+import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
 import { CardGroup,Card } from 'react-bootstrap';
 import DiscountItem from '../Components/DiscountItem';
 import Footer from '../Components/Footer';
+import { useEffect } from 'react';
+
+import CartProduct from '../Components/CartProduct';
 const responsive = {
   desktopLarge: {
     breakpoint: { max: 3000, min: 1400 },
@@ -42,8 +47,37 @@ const responsive = {
 };
 
 const Home = () => {
+
+
+  const dispatch = useDispatch();
+  const products = useSelector(state => state.products);
+
+  useEffect(() => {
+
+    axios.get('https://localhost:7269/api/Product/GetProducts')
+      .then(response => {
+        console.log(response.data)
+        dispatch(setProducts(response.data))
+      })
+      .catch(error => console.error('Error fetching products:', error));
+
+
+  },[dispatch]);
   
+  function generatePath(categoryId) {
+    switch (categoryId) {
+      case 1:
+        return 'clothes';
+      case 2:
+        return 'shoes';
+      case 3:
+        return 'accessorise';
   
+      default:
+        return 'unknown';
+    }
+  }
+  const showSection = products.filter((x) => x.isDiscount === true).length > 5;
   return (
     <div >
     <PxMainPage />
@@ -104,7 +138,7 @@ const Home = () => {
 
     </Carousel>
     <div  className='some'>
-      
+      {}
       <div className="something">
         <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop="взуття" />
       </div>
@@ -128,49 +162,28 @@ const Home = () => {
       </section>
       <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
         
-      <NewProductCardItem 
+      {
+        products
+        .filter((x) => x.isNew === true)
+        .map((x) => (
+          <div className="something">
+          <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+            <CartProduct
+              id_key={x.id}
+              imageSrc1={x.image}
+              imageSrc2={x.image2}
+              isNew={x.isNew}
+              isDiscount={x.isDiscount}
+              isLiked={false}
+              descriprion={x.name}
+              price1={x.price}
+              price2={x.salePrice}
+            />
+          </Link>
+          </div>
+        ))
+      }
      
-           imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isNew={true}
-           isLiked={true}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price="2700 uah"
-        />
-        <NewProductCardItem
-          imageSrc1={require('../assets/newimage.png')}
-          imageSrc2={require('../assets/newimage.png')}
-          isNew={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price="2700 uah"
-        />
-          <NewProductCardItem
-          imageSrc1={require('../assets/newimage.png')}
-          imageSrc2={require('../assets/newimage.png')}
-          isNew={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price="2700 uah"
-        />
-          <NewProductCardItem
-        
-          imageSrc1={require('../assets/newimage.png')}
-          imageSrc2={require('../assets/newimage.png')}
-          isNew={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price="2700 uah"
-        />
-          <NewProductCardItem
-          
-           imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isNew={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price="2700 uah"
-        />
       </Carousels>
       </div>
       <section className="graphic">
@@ -183,8 +196,9 @@ const Home = () => {
         </div>
       </section>
     
-   <WeeklyPreview image1={require('../assets/look1.png')} image2={require('../assets/look2.png')} image3={require('../assets/look3.png')}   />
-   <section className="graphic">
+   <WeeklyPreview  image1={require('../assets/look1.png')} image2={require('../assets/look2.png')} image3={require('../assets/look3.png')}   />
+   {showSection && (
+      <section className="graphic">
         <div className="new-items">
           <div className="head">
             <div className="title-h2">
@@ -193,55 +207,31 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
-   <DiscountItem   imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isDiscount={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price1="2700" 
-           price2="1800" 
-           ></DiscountItem>
-            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isDiscount={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price1="2700" 
-           price2="1800" 
-           ></DiscountItem>
-            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isDiscount={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price1="2700" 
-           price2="1800" 
-           ></DiscountItem>
-            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isDiscount={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price1="2700" 
-           price2="1800" 
-           ></DiscountItem>
-            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isDiscount={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price1="2700" 
-           price2="1800" 
-           ></DiscountItem>
-            <DiscountItem   imageSrc1={require('../assets/newimage.png')}
-           imageSrc2={require('../assets/newimage.png')}
-           isDiscount={true}
-          isLiked={false}
-           descriprion=" Кеди із замшевими вставками на стильній подошві"
-           price1="2700" 
-           price2="1800" 
-           ></DiscountItem>
+    )}
+    <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+      {products
+        .filter((x) => x.isDiscount === true)
+        .map((x) => (
+          <React.Fragment key={x.id}>
+            {showSection && (
+            
+                <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+                  <CartProduct
+                    id_key={x.id}
+                    imageSrc1={x.image}
+                    imageSrc2={x.image2}
+                    isNew={x.isNew}
+                    isDiscount={x.isDiscount}
+                    isLiked={false}
+                    descriprion={x.name}
+                    price1={x.price}
+                    price2={x.salePrice}
+                  />
+                </Link>
+            
+            )}
+          </React.Fragment>
+        ))}
    </Carousels>
    <Footer />
     </div>

@@ -14,6 +14,8 @@ const FilteredProductsPage = () => {
   const materials = useSelector(state => state.materials);
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
+
+  
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
   const query = searchParams.get('search') || '';
