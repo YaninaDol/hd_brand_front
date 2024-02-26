@@ -218,6 +218,7 @@
     visibility: hidden;
     gap: var(--gap-31xl);
   }
+  .input-group,
   .search-field,
   .icon-search {
     visibility: hidden;

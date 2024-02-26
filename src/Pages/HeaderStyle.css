@@ -33,7 +33,46 @@
   padding: 15px 20px 16px;
   gap: var(--gap-xl);
 }
+.text1 {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  margin: 0 !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--br-8xs);
+  border: 1px solid var(--color-gray-100);
+  box-sizing: border-box;
+}
+.div97,
+.ru {
+  flex: 1;
+  position: relative;
+}
 
+.div97 {
+  flex: 1;
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; /* Центрирование по вертикали */
+  padding: var(--padding-5xs);
+  gap: var(--gap-8xs);
+  z-index: 1;
+}
+.svg-container {
+  display: flex;
+  align-items: center; /* Центрирование по вертикали */
+}
+
+/* Стили для иконки поиска */
+.bi-search {
+  margin-top: 5px; /* Применить нужный отступ сверху */
+}
 .header-container {
     display: flex;
     justify-content: space-between;
