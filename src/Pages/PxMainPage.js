@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react";
+
 import CartBasket from '../Components/CartBasket';
 // import "./PxMainPage.css";
 import "./HeaderStyle.css"
@@ -6,7 +7,7 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 import { Alert, Dropdown } from 'react-bootstrap';
 import {
   MDBInput,
@@ -16,11 +17,18 @@ import {
   MDBCardBody,
   MDBCardImage
 } from 'mdb-react-ui-kit';
-const PxMainPage = () => {
+function PxMainPage({ history, onSearch }) {
+  const navigate = useNavigate();
 
-  
-  const [setwarehouse, setsetwarehouse] = useState("");
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
+  const handleSearch = () => {
+    if (onSearch) {
+      onSearch(searchQuery);
+    }
+  }
   const [FirstName, setFirstName] = useState("");
   const [LastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -193,12 +201,10 @@ handleClosePayCard();
 }
 const [searchQuery,setSearchQuery] = useState("");
 function redirectToFilteredPage(searchQuery) {
-  
   const baseUrl = '/search';
-
-  window.location.href = `${baseUrl}?search=${encodeURIComponent(searchQuery)}`;
+  navigate(`${baseUrl}?search=${encodeURIComponent(searchQuery)}`);
+  window.location.reload();
 }
-
 
 
   const [showBasket, setShowBasket] = useState(false);
@@ -677,9 +683,9 @@ function setCities(selectedCity)
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
 </svg>
                 </span>
-                <input type="text" class="form-control" placeholder="Що будемо шукати? " onChange={(e) => setSearchQuery(e.target.value)}
-
-        onBlur={redirectToFilteredPage} aria-label="Input group example" aria-describedby="basic-addon1"/>
+                <input type="text" class="form-control" placeholder="Що будемо шукати? "    value={searchQuery} 
+        onChange={handleInputChange} 
+  onBlur={() => redirectToFilteredPage(searchQuery)} aria-label="Input group example" aria-describedby="basic-addon1"/>
               </div>
             <div className="icons">
            

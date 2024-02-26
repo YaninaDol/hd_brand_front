@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { connect,useDispatch,useSelector } from 'react-redux';
 import { setProducts, setUsers, addProduct, deleteUser,setSizes,setProductSizes,deleteProduct,setCategories,editProduct,setMaterials,setSeasons,setSubCategories, addSubCategory } from '../redux/actions';
 import axios from 'axios';
+import { useNavigate  } from 'react-router-dom';
+import PxMainPage from './PxMainPage';
 const FilteredProductsPage = () => {
   
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const query = searchParams.get('search') || '';
-    setSearchQuery(query);
+  const query = searchParams.get('search') || '';
+  setSearchQuery(query);
 
     axios.get('https://localhost:7269/api/Product/GetProducts')
       .then(response => {
@@ -33,14 +36,8 @@ const FilteredProductsPage = () => {
 
   return (
     <div>
-      <h1>Filtered Products</h1>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search"
-      />
 
+   <PxMainPage></PxMainPage>
     
       <div>
         {filteredProducts.map(product => (

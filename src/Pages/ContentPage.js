@@ -79,7 +79,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       return typeIncluded && materialIncluded && seasonIncluded;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
-      const priceInRange = product.price >= 0 && product.price <= range;
+      const priceInRange = product.salePrice >= 0 && product.salePrice <= range;
       return priceInRange;
     });
   

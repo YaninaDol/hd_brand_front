@@ -34,7 +34,19 @@ const ProductDetailsPage = () => {
   const [arrBasket,setArrBasket] = useState([]);
   const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
 
-
+  function generatePath(categoryId) {
+    switch (categoryId) {
+      case 1:
+        return 'clothes';
+      case 2:
+        return 'shoes';
+      case 3:
+        return 'accessorise';
+  
+      default:
+        return 'unknown';
+    }
+  }
   const responsive = {
     desktopLarge: {
       breakpoint: { max: 3000, min: 1400 },
@@ -70,7 +82,7 @@ const ProductDetailsPage = () => {
   useEffect(()=>
 
   {
-   
+  
 
 
     axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
@@ -87,7 +99,6 @@ const ProductDetailsPage = () => {
   
     axios.get(`https://localhost:7269/api/Product/GetSizeofProduct?id=${id}`)
     .then(respons => {
-   
       dispatch(setProductSizes(respons.data));
       console.log(respons.data);
     })
@@ -146,7 +157,7 @@ const ProductDetailsPage = () => {
       setTotal(totalSum);
      }
   
-  }, [dispatch]);
+  }, [id, subcategoryid, dispatch]);
 
   function addBasket() {
 
@@ -296,7 +307,7 @@ onClick={addBasket}
   
 {silimarproducts.length > 0 ? (
     silimarproducts.map((x) => (
-      <Link to={`/${category.id}/${x.subCategoryid}/${x.id}`}>
+      <Link to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
       <CartProduct
       id_key={x.id}
       imageSrc1={x.image}
