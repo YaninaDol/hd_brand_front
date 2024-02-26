@@ -41,7 +41,7 @@ const FilteredProductsPage = () => {
       .catch(error => console.error('Error fetching products:', error));
 
 
-  }, []);
+  },[dispatch]);
 
 
   const filterProductsBySearchQuery = (query, products) => {

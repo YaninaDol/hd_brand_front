@@ -88,6 +88,19 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     setFilteredHidden('');
     setSortOrder('asc');
   };
+  function generatePath(categoryId) {
+    switch (categoryId) {
+      case 1:
+        return 'clothes';
+      case 2:
+        return 'shoes';
+      case 3:
+        return 'accessorise';
+  
+      default:
+        return 'unknown';
+    }
+  }
   return (
     <div >
       <section className="h-100 h-custom" >
@@ -301,7 +314,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             <MDBCol hidden={allhidden} className="containerCart">
             {items.length > 0 ? (
     items.slice(0, visibleItems).map((x) => (
-      <Link to={`/${link}/${x.subCategoryid}/${x.id}`}>
+      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
       <CartProduct
       id_key={x.id}
       imageSrc1={x.image}
@@ -322,7 +335,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             <MDBCol hidden={filteredhidden} className="containerCart">
             {filteredProducts.length > 0 ? (
     filteredProducts.slice(0, visibleItems).map((x) => (
-      <Link to={`/${link}/${x.subCategoryid}/${x.id}`}>
+      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
       <CartProduct
       id_key={x.id}
       imageSrc1={x.image}
