@@ -167,40 +167,74 @@ const ProductDetailsPage = () => {
 
   
   function addBasket() {
-    
-    if (newProd.size !== null || product.categoryid == 3) {
-     
-      const existingProduct = arrBasket.find(item => item.size === newProd.size);
-  
-      if (existingProduct) {
-     
-        alert("Товар вже доданий у кошик !");
-      } else {
-    
-
-        setCount(prevCount => {
-          const newCount = prevCount + 1;
-         
-          return newCount;
-        });
-    
-
-
-        let copy = [...arrBasket];
-        copy.push(newProd);
-        setArrBasket(copy);
-        handleShowM();
-        window.sessionStorage.setItem("Basket", JSON.stringify(copy));
-  
-        setTotal(total + newProd['price']);
-     
-      
-        window.location.reload();
-      }
-    } else {
    
-      alert("Оберіть розмір!");
-    }
+    if(product.categoryid != 3)
+         {     if (newProd.size !== null) {
+              
+                const existingProduct = arrBasket.find(item => item.size === newProd.size);
+            
+                if (existingProduct) {
+              
+                  alert("Товар вже доданий у кошик !");
+                } else {
+              
+
+                  setCount(prevCount => {
+                    const newCount = prevCount + 1;
+                  
+                    return newCount;
+                  });
+              
+
+
+                  let copy = [...arrBasket];
+                  copy.push(newProd);
+                  setArrBasket(copy);
+                  handleShowM();
+                  window.sessionStorage.setItem("Basket", JSON.stringify(copy));
+            
+                  setTotal(total + newProd['price']);
+              
+                
+                  window.location.reload();
+                }
+              } else {
+            
+                alert("Оберіть розмір!");
+              }
+            }
+    else
+            {
+           
+              const existingProduct = arrBasket.find(item => item.productid === product.id);
+            
+              if (existingProduct) {
+            
+                alert("Товар вже доданий у кошик !");
+              } else {
+            
+
+                setCount(prevCount => {
+                  const newCount = prevCount + 1;
+                
+                  return newCount;
+                });
+            
+
+
+                let copy = [...arrBasket];
+                copy.push(productsizes.find(item => item.productid == product.id));
+                setArrBasket(copy);
+                handleShowM();
+                window.sessionStorage.setItem("Basket", JSON.stringify(copy));
+          
+                setTotal(total + product['salePrice']);
+            
+              
+                window.location.reload();
+              }
+            
+            }
   }
   function AddBtn(id)
   {
@@ -273,7 +307,7 @@ const ProductDetailsPage = () => {
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol> {subcategory.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol> {material.name} </MDBCol> </MDBRow>
-{productsizes.length > 0 && (
+{productsizes.length > 1 && (
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
