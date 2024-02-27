@@ -32,7 +32,11 @@ const ProductDetailsPage = () => {
   const season = useSelector(state => state.season);
   const [newProd,setNewProd] = useState(new Object());
   const [arrBasket,setArrBasket] = useState([]);
-  const [count, setCount] = useState(parseInt(window.sessionStorage.getItem("cartItemCount")) || 0);
+  const [count, setCount] = useState(0);
+  const [showM, setshowM] = useState(false);
+  const handleCloseM = () => setshowM(false);
+  const handleShowM = () => setshowM(true);
+
 
   function generatePath(categoryId) {
     switch (categoryId) {
@@ -91,7 +95,7 @@ const ProductDetailsPage = () => {
      
     
      dispatch(setSubCategory(response.data.value))
-      console.log(response.data.value);
+    
     })
     .catch(error => console.error('Error fetching products:', error));
   
@@ -100,7 +104,7 @@ const ProductDetailsPage = () => {
     axios.get(`https://localhost:7269/api/Product/GetSizeofProduct?id=${id}`)
     .then(respons => {
       dispatch(setProductSizes(respons.data));
-      console.log(respons.data);
+     
     })
     .catch(error => console.error('Error fetching products:', error));
   
@@ -110,33 +114,33 @@ const ProductDetailsPage = () => {
     .then(res => {
       
         dispatch(setProduct(res.data.value))
-      console.log(res.data.value);
+     
 
       axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
       .then(resp => {
      
         dispatch(setCategory(resp.data.value));
-        console.log(resp.data);
+     
       })
       .catch(error => console.error('Error fetching products:', error));
       axios.get(`https://localhost:7269/api/Specification/GetMaterialById?id=${res.data.value.materialid}`)
       .then(resp => {
      
         dispatch(setMaterial(resp.data.value));
-        console.log(resp.data);
+    
       })
       .catch(error => console.error('Error fetching products:', error));
       axios.get(`https://localhost:7269/api/Specification/GetSeasonById?id=${res.data.value.seasonid}`)
       .then(resp => {
      
         dispatch(setSeason(resp.data.value));
-        console.log(resp.data);
+      
       })
       .catch(error => console.error('Error fetching products:', error));
       axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
     .then(responses => {
       dispatch(setSimilar(responses.data));
-      console.log(responses.data.length);
+     
     })
     .catch(error => console.error('Error fetching products:', error));
   
@@ -159,58 +163,64 @@ const ProductDetailsPage = () => {
   
   }, [id, subcategoryid, dispatch]);
 
+
+
+  
   function addBasket() {
-   
-if(newProd.size!=null||product.categoryid==3)
-  
- {  
-  
-  setCount((prevCount) => {
-      const newCount = prevCount + 1;
-      window.sessionStorage.setItem("cartItemCount", newCount);
-      return newCount;
-    });
-  
-    let copy = [...arrBasket];
-    copy.push(newProd);
-    setArrBasket(copy);
-  
     
-    window.sessionStorage.setItem("Basket", JSON.stringify(copy));
+    if (newProd.size !== null || product.categoryid == 3) {
+     
+      const existingProduct = arrBasket.find(item => item.size === newProd.size);
   
-    setTotal(total + newProd['price']);//
-    // handleCloseM();
-    window.location.reload();
-}
-else alert("Оберіть розмір! ");
-  };
+      if (existingProduct) {
+     
+        alert("Товар вже доданий у кошик !");
+      } else {
+    
+
+        setCount(prevCount => {
+          const newCount = prevCount + 1;
+         
+          return newCount;
+        });
+    
+
+
+        let copy = [...arrBasket];
+        copy.push(newProd);
+        setArrBasket(copy);
+        handleShowM();
+        window.sessionStorage.setItem("Basket", JSON.stringify(copy));
+  
+        setTotal(total + newProd['price']);
+     
+      
+        window.location.reload();
+      }
+    } else {
+   
+      alert("Оберіть розмір!");
+    }
+  }
   function AddBtn(id)
   {
       setNewProd(productsizes.find(item => item.id == id));
     
+
   }
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
 
-  // Отображение подробных данных о товаре
   return (
     <div>
-      {/* <Modal show={showM} onHide={handleCloseM}>
+      <Modal show={showM} onHide={handleCloseM}>
         <Modal.Header closeButton>
-          <Modal.Title>Придбати товар</Modal.Title>
+        <Modal.Body>Товар додано до кошику </Modal.Body>
         </Modal.Header>
-        <Modal.Body>Додати товар до кошику ?</Modal.Body>
-        <Modal.Footer>
-        <Button variant="outline-secondary" onClick={addBasket}>
-            Так
-          </Button>
-          <Button variant="dark" onClick={handleCloseM}>
-            Ні
-          </Button>
-        
-        </Modal.Footer>
-      </Modal> */}
+      
+      
+      </Modal>
 
    <PxMainPage />
    <div className="stock-status">
@@ -218,7 +228,7 @@ else alert("Оберіть розмір! ");
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<a style={{color:'black'}} href='/shoes'>{category.name}</a>
+<a style={{color:'black'}} href={`/${generatePath(category.id)}`}>{category.name}</a>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>

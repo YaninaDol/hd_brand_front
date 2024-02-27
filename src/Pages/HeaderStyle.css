@@ -179,3 +179,14 @@
    
     text-decoration: none;
   }
+  @media screen and (max-width: 750px) {
+
+    .header
+    {
+      visibility: hidden;
+    }
+    .headermob
+    {
+      visibility:visible;
+    }
+  }

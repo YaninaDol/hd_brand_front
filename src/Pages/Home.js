@@ -15,7 +15,7 @@ import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,set
 import { CardGroup,Card } from 'react-bootstrap';
 import DiscountItem from '../Components/DiscountItem';
 import Footer from '../Components/Footer';
-import { useEffect } from 'react';
+import { useEffect,useState } from 'react';
 
 import CartProduct from '../Components/CartProduct';
 const responsive = {
@@ -51,13 +51,14 @@ const Home = () => {
 
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
-
+  const [contents,setContents] = useState([]);
   useEffect(() => {
 
     axios.get('https://localhost:7269/api/Product/GetProducts')
       .then(response => {
-        console.log(response.data)
+        
         dispatch(setProducts(response.data))
+        setContents(response.data);
       })
       .catch(error => console.error('Error fetching products:', error));
 
@@ -77,7 +78,7 @@ const Home = () => {
         return 'unknown';
     }
   }
-  const showSection = products.filter((x) => x.isDiscount === true).length > 5;
+  const showSection = contents.filter((x) => x.isDiscount === true).length > 5;
   return (
     <div >
     <PxMainPage />
@@ -137,8 +138,8 @@ const Home = () => {
       
 
     </Carousel>
-    <div  className='some'>
-      {}
+    <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5}}>
+    
       <div className="something">
         <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop="взуття" />
       </div>
@@ -149,7 +150,9 @@ const Home = () => {
       <div className="something">
         <CatalogsItemContainer link='/accessorise' image={require('../assets/categoryImage3.png')} prop="аксесуари" />
       </div>
-    </div>
+    </CardGroup>
+
+    
    <div>
    <section className="graphic">
         <div className="new-items">
@@ -163,7 +166,7 @@ const Home = () => {
       <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
         
       {
-        products
+        contents
         .filter((x) => x.isNew === true)
         .map((x) => (
           <div className="something">
@@ -209,7 +212,7 @@ const Home = () => {
       </section>
     )}
     <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
-      {products
+      {contents
         .filter((x) => x.isDiscount === true)
         .map((x) => (
           <React.Fragment key={x.id}>
