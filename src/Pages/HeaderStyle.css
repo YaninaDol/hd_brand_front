@@ -171,6 +171,9 @@
   overflow: hidden;
   flex-shrink: 0;
 }
+.navbar-toggler {
+  border: none;
+}
 .item-title
 {
   width: 100%;
