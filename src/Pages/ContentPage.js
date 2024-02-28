@@ -7,6 +7,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Navbar, Nav, NavDropdown,Offcanvas  } from 'react-bootstrap';
 import {
  
   MDBContainer,
@@ -101,6 +102,14 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
         return 'unknown';
     }
   }
+
+  const [showFilters, setShowFilters] = React.useState(false);
+
+  const toggleFilters = () => {
+    setShowFilters(!showFilters);
+  };
+
+
   return (
     <div >
       <section className="h-100 h-custom" >
@@ -134,9 +143,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   <MDBRow className="justify-content-left align-items-left h-100">
     
  
-                  <div className="div37">Фільтри</div>
+                 
             
-    <MDBCol lg="3" className="bg-grey" >
+    {/* <MDBCol lg="3" className="bg-grey" >
     
               <div style={{backgroundColor:'rgb(247, 247, 247)'}}  className="p-2">
               <div className="div53">Ціна</div>
@@ -189,46 +198,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             label='Осінь'
             style={{ marginTop:15}}
           />
-                      {/* <div className="footer-container">
-                        <div className="season-slider">
-                          <div className="spring-summer-autumn">
-                          <input
-              className="rectangle-frame1"
-              type="checkbox"
-              value={1}
-              checked={seasonValues[1]}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              className="rectangle-frame2"
-              type="checkbox"
-              value={2}
-              checked={seasonValues[2]}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              className="rectangle-frame3"
-              type="checkbox"
-              value={3}
-              checked={seasonValues[3]}
-              onChange={handleCheckboxChange}
-            />
-            <input
-              className="rectangle-frame3"
-              type="checkbox"
-              value={4}
-              checked={seasonValues[4]}
-              onChange={handleCheckboxChange}
-            />
-                          </div>
-                          <div className="div54">
-                            <p className="p1">Весна</p>
-                            <p className="p1">Осінь</p>
-                            <p className="p2">Зима</p>
-                            <p className="p3">Літо</p>
-                          </div>
-                        </div>
-                      </div> */}
+                   
                     </div>
 
                 <hr className="my-4" />
@@ -309,7 +279,87 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
                  
               </div>
               
-            </MDBCol>
+            </MDBCol> */}
+            <Navbar bg="light" expand="lg">
+        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleFilters} />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto"></Nav>
+          
+          <Form className="d-flex flex-column">
+            <Offcanvas show={showFilters}  placement="end" onHide={toggleFilters}>
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title>Фільтри</Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <div style={{ backgroundColor: 'rgb(247, 247, 247)' }} className="p-2">
+                  <div className="div53">Ціна</div>
+                  {/* Add your range input here */}
+                  <hr className="my-4" />
+                  <div className="text-components2">
+                    <div className="div53">Сезон</div>
+                    {/* Checkbox inputs for seasons */}
+                    {/* ... */}
+                  </div>
+                  <hr className="my-4" />
+                  <div className="line-frame1">
+                    <div className="apply-button" />
+                    {/* ... Additional filter options */}
+                  </div>
+                  <hr className="my-4" />
+                  <div className="div77">Тип</div>
+                  {types.map((x) => (
+                    <Form.Check
+                      key={x.id}
+                      value={x.id}
+                      type="checkbox"
+                      id={x.id}
+                      label={x.name}
+                      style={{ marginTop: 15 }}
+                      onChange={(e) => handleCheckboxChange(e, 'type')}
+                    />
+                  ))}
+                  <hr className="my-4" />
+                  <div className="div77">Матеріал</div>
+                  {materials.map((x) => (
+                    <Form.Check
+                      key={x.id}
+                      value={x.id}
+                      type="checkbox"
+                      id={x.id}
+                      label={x.name}
+                      style={{ marginTop: 15 }}
+                      onChange={(e) => handleCheckboxChange(e, 'material')}
+                    />
+                  ))}
+                  <hr className="my-4" />
+                  <div className="icons-payment-systems">
+                    <div onClick={applyFilters} className="div59">
+                      застосувати{' '}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-chevron-double-right"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"
+                        />
+                        <path
+                          fill-rule="evenodd"
+                          d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"
+                        />
+                      </svg>{' '}
+                    </div>
+                  </div>
+                </div>
+              </Offcanvas.Body>
+            </Offcanvas>
+          </Form>
+        </Navbar.Collapse>
+      </Navbar>
 
             <MDBCol hidden={allhidden} className="containerCart">
             {items.length > 0 ? (
@@ -354,9 +404,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   )}
             </MDBCol>
           </MDBRow>
-          <MDBRow>
-            <MDBCol></MDBCol>
-            <MDBCol>
+          <MDBRow >
+            <MDBCol  class='column-hide'></MDBCol>
+            <MDBCol style={{alignItems:'center'}}>
               {visibleItems < items.length && (
                 <Button
                   style={{ borderRadius: '0px' }}

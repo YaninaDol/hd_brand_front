@@ -14,7 +14,7 @@ const FilteredProductsPage = () => {
   const materials = useSelector(state => state.materials);
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
-
+  const [contents,setContents] = useState([]);
   
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -23,8 +23,9 @@ const FilteredProductsPage = () => {
 
     axios.get('https://localhost:7269/api/Product/GetProducts')
       .then(response => {
-        console.log(response.data)
+    
         dispatch(setProducts(response.data))
+        setContents(response.data)
       })
       .catch(error => console.error('Error fetching products:', error));
 
@@ -46,14 +47,14 @@ const FilteredProductsPage = () => {
   },[dispatch]);
 
 
-  const filterProductsBySearchQuery = (query, products) => {
-    return products.filter(product =>
+  const filterProductsBySearchQuery = (query, contents) => {
+    return contents.filter(product =>
       product.name.toLowerCase().includes(query.toLowerCase())
     );
   };
 
 
-  const filteredProducts = filterProductsBySearchQuery(searchQuery, products);
+  const filteredProducts = filterProductsBySearchQuery(searchQuery, contents);
 
   return (
     <div>

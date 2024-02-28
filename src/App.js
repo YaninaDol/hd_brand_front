@@ -11,6 +11,7 @@ import FAQ from './Pages/FAQ';
 import ProductDetailsPage from './Pages/ProductDetailsPage';
 import ShoeSizeTable from './Components/ShoeSizeTable';
 import FilteredProductsPage from './Pages/FilteredProductsPage';
+import SubcategoryPage from './Pages/SubcategoryPage';
 
 const App = () => {
   return (
@@ -21,11 +22,14 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/admin/*" element={<AdminPanel />} />
           <Route path="/shoes" element={<ShoesPage />} />
+          <Route path="/shoes/:subcategoryid" element={<SubcategoryPage />} />
           <Route path="/shoes/:subcategoryid/:id" element={<ProductDetailsPage />} />
           <Route path="/clothes" element={<ClothesPage />} />
           <Route path="/clothes/:subcategoryid/:id" element={<ProductDetailsPage />} />
+          <Route path="/clothes/:subcategoryid" element={<ProductDetailsPage />} />
           <Route path="/accessorise" element={<Accessorise />} />
           <Route path="/accessorise/:subcategoryid/:id" element={<ProductDetailsPage />} />
+          <Route path="/accessorise/:subcategoryid" element={<ProductDetailsPage />} />
           <Route path="/careshoes" element={<CareShoes />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/shoesize" element={<ShoeSizeTable />} />

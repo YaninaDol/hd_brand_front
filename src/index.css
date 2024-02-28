@@ -3,7 +3,7 @@ body {
  
   margin: 0;
   line-height: normal;
-
+  font-family: 'Cera Pro', sans-serif; /* Apply the imported font */
 }
 html {
   overflow: scroll;
