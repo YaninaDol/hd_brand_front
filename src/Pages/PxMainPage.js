@@ -1,7 +1,5 @@
 import { useEffect,useState } from "react";
-
 import CartBasket from '../Components/CartBasket';
-// import "./PxMainPage.css";
 import "./HeaderStyle.css"
 import axios from 'axios';
 import Form from 'react-bootstrap/Form';
@@ -18,7 +16,6 @@ import {
   MDBCardBody,
   MDBCardImage
 } from 'mdb-react-ui-kit';
-import { setSubCategory } from "../redux/actions";
 function PxMainPage({ history, onSearch }) {
   const navigate = useNavigate();
 const expand='false';

@@ -24,7 +24,7 @@ const FilteredProductsPage = () => {
     axios.get('https://localhost:7269/api/Product/GetProducts')
       .then(response => {
     
-        dispatch(setProducts(response.data))
+       
         setContents(response.data)
       })
       .catch(error => console.error('Error fetching products:', error));

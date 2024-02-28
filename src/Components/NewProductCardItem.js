@@ -12,14 +12,14 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
   };
 
   return (
-    <Card  className="img-fluid no-gutters" style={{  marginLeft: '15px', marginRight:'15px', border: 'none' }}>
-      <MDBCarousel  >
+    <Card className="no-gutters" style={{ marginLeft: '15px', marginRight: '15px', border: 'none' }}>
+    <MDBCarousel style={{ height: '350px' }}> 
       <MDBCarouselItem itemId={1}>
-        <Card.Img   variant="top" style={{borderTopLeftRadius:'0px',borderTopRightRadius:'0px'}}   className="img-fluid" src={imageSrc1} />
+        <Card.Img variant="top" style={{ objectFit: 'cover', height: '100%' }} className="img-fluid" src={imageSrc1} />
       </MDBCarouselItem>
       <MDBCarouselItem itemId={2}>
-        <Card.Img variant="top" style={{borderTopLeftRadius:'0px',borderTopRightRadius:'0px'}}  className="img-fluid" src={imageSrc2} />
-        </MDBCarouselItem>
+        <Card.Img variant="top" style={{ objectFit: 'cover', height: '100%' }} className="img-fluid" src={imageSrc2} />
+      </MDBCarouselItem>
     </MDBCarousel>
     <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
       <div className="card3">
@@ -28,8 +28,7 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
         </button>
       </div>
     </div>
-    <div  onClick={handleLikeClick}  style={{width:'50px', position:'fixed', top: '10px', right: '15px' }}>
-     
+    <div onClick={handleLikeClick} style={{ width: '50px', position: 'fixed', top: '10px', right: '15px' }}>
       <img
         className="component-25-container"
         loading="eager"
@@ -39,21 +38,20 @@ const NewProductCardItem = ({ imageSrc1, imageSrc2, isNew, isLiked, descriprion,
             ? require('../assets/icon=favourite, color=white, fill=on.png')
             : require('../assets/component-25-container.png')
         }
-       
       />
-     
     </div>
     <Card.Body style={{ padding: '0px' }}>
-      <Card.Text >
+      <Card.Text>
         <div className="div12">{descriprion}</div>
       </Card.Text>
       <Card.Title>
         <div className="price3">
-          <div className="uah7">{price}</div>
+          <div className="uah7">{price} &#8372;</div>
         </div>
       </Card.Title>
     </Card.Body>
   </Card>
+  
   );
 };
 

@@ -11,7 +11,7 @@ import '../Components/NewProductCardItem.css'
 import WeeklyPreview from '../Components/WeeklyPreview'
 import { Link, Outlet } from "react-router-dom";
 import { connect,useDispatch,useSelector } from 'react-redux';
-import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
+import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory,setSubCategories,setMaterials} from '../redux/actions';
 import { CardGroup,Card } from 'react-bootstrap';
 import DiscountItem from '../Components/DiscountItem';
 import Footer from '../Components/Footer';
@@ -50,6 +50,8 @@ const Home = () => {
 
 
   const dispatch = useDispatch();
+  const subcategories = useSelector(state => state.subcategories);
+  const materials = useSelector(state => state.materials);
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
   useEffect(() => {
@@ -61,7 +63,6 @@ const Home = () => {
         setContents(response.data);
       })
       .catch(error => console.error('Error fetching products:', error));
-
 
   },[dispatch]);
   
@@ -163,15 +164,15 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+      <Carousels  responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
         
       {
         contents
         .filter((x) => x.isNew === true)
         .map((x) => (
-          <div className="something">
+          <div className="something" >
           <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-            <CartProduct
+            <NewProductCardItem
               id_key={x.id}
               imageSrc1={x.image}
               imageSrc2={x.image2}
@@ -179,8 +180,7 @@ const Home = () => {
               isDiscount={x.isDiscount}
               isLiked={false}
               descriprion={x.name}
-              price1={x.price}
-              price2={x.salePrice}
+              price={x.price}
             />
           </Link>
           </div>
