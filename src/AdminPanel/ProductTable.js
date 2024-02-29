@@ -10,7 +10,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Card, CardGroup, CardImg} from 'react-bootstrap';
+import { Card, CardGroup, CardImg, Container} from 'react-bootstrap';
 export default function ProductTable(){
 
 
@@ -407,39 +407,46 @@ function changeLook()
 
         <div>
 
-<Modal show={showChange} onHide={handleCloseChange}>
-        <Modal.Header closeButton>
-          <Modal.Title>Change look</Modal.Title>
-        </Modal.Header>
-        <Modal.Body> 
-          
-        {allproducts.map((product) => (
-        <Card
-          key={product.id}
-          style={{
-            width: '18rem',
-            alignItems: 'center',
-            backgroundColor: selectedProductId === product.id ? 'lightblue' : 'white',
-          }}
-        >
-          <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
-          <Button onClick={() => setNewLookId(product.id)} variant="dark">
-            {selectedProductId === product.id ? 'Обрати' : 'Обрати'}
-          </Button>
-        </Card>
-      ))}
+<Modal
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      show={showChange}
+      onHide={handleCloseChange}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Оберіть товар для заміни </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Container style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {allproducts
+  .filter((x) => x.categoryid === allproducts.find((x) => x.id === oldLookId)?.categoryid)
+  .map((product) => (
+    <Card
+    onClick={() => setNewLookId(product.id)} 
+      key={product.id}
+      style={{
+        width: '12rem',
+        margin: '10px',
+        alignItems: 'center',
+        backgroundColor: selectedProductId === product.id ? 'lightblue' : 'white',
+      }}
+    >
+      <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
      
-   
-           </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseChange}>
-            Відміна
-          </Button>
-          <Button variant="dark" onClick={changeLook}>
-            Підтвердити
-          </Button>
-        </Modal.Footer>
-      </Modal>
+    </Card>
+  ))}
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleCloseChange}>
+          Відміна
+        </Button>
+        <Button variant="dark" onClick={changeLook}>
+          Підтвердити
+        </Button>
+      </Modal.Footer>
+    </Modal>
 
 <Modal show={showRemove} onHide={handleCloseRemove}>
         <Modal.Header closeButton>
