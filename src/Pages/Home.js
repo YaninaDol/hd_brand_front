@@ -9,15 +9,12 @@ import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
 import '../Components/NewProductCardItem.css'
 import WeeklyPreview from '../Components/WeeklyPreview'
-import { Link, Outlet } from "react-router-dom";
-import { connect,useDispatch,useSelector } from 'react-redux';
-import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory,setSubCategories,setMaterials} from '../redux/actions';
+import { Link } from "react-router-dom";
+import { useDispatch,useSelector } from 'react-redux';
+import { setProducts} from '../redux/actions';
 import { CardGroup,Card } from 'react-bootstrap';
-import DiscountItem from '../Components/DiscountItem';
 import Footer from '../Components/Footer';
 import { useEffect,useState } from 'react';
-
-import CartProduct from '../Components/CartProduct';
 const responsive = {
   desktopLarge: {
     breakpoint: { max: 3000, min: 1400 },
@@ -56,8 +53,6 @@ const Home = () => {
 
 
   const dispatch = useDispatch();
-  const subcategories = useSelector(state => state.subcategories);
-  const materials = useSelector(state => state.materials);
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
   useEffect(() => {
