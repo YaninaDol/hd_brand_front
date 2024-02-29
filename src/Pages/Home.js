@@ -28,20 +28,26 @@ const responsive = {
   },
   desktop: {
     breakpoint: { max: 1400, min: 800 },
-    items: 4,
-    slidesToSlide: 4,
+    items: 3,
+    slidesToSlide: 3,
     itemWidth: 20,
   },
   tablet: {
-    breakpoint: { max: 800, min: 464 },
+    breakpoint: { max: 800, min: 540 },
     items: 3,
     slidesToSlide: 3,
     itemWidth: 20,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
+    breakpoint: { max: 540, min: 280 },
     items: 2,
     slidesToSlide: 2,
+    itemWidth: 20,
+  },
+  minmobile: {
+    breakpoint: { max: 280, min: 0 },
+    items: 1,
+    slidesToSlide: 1,
     itemWidth: 20,
   },
 };
@@ -173,14 +179,15 @@ const Home = () => {
           <div className="something" >
           <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
             <NewProductCardItem
-              id_key={x.id}
-              imageSrc1={x.image}
-              imageSrc2={x.image2}
-              isNew={x.isNew}
-              isDiscount={x.isDiscount}
-              isLiked={false}
-              descriprion={x.name}
-              price={x.price}
+               id_key={x.id}
+               imageSrc1={x.image}
+               imageSrc2={x.image2}
+               isNew={x.isNew}
+               isDiscount={x.isDiscount}
+               isLiked={false}
+               descriprion={x.name}
+               price1={x.price}
+               price2={x.salePrice}
             />
           </Link>
           </div>
@@ -211,7 +218,7 @@ const Home = () => {
         </div>
       </section>
     )}
-    <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+    <Carousels  responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
       {contents
         .filter((x) => x.isDiscount === true)
         .map((x) => (
@@ -219,17 +226,17 @@ const Home = () => {
             {showSection && (
             
                 <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-                  <CartProduct
-                    id_key={x.id}
-                    imageSrc1={x.image}
-                    imageSrc2={x.image2}
-                    isNew={x.isNew}
-                    isDiscount={x.isDiscount}
-                    isLiked={false}
-                    descriprion={x.name}
-                    price1={x.price}
-                    price2={x.salePrice}
-                  />
+                <NewProductCardItem
+               id_key={x.id}
+               imageSrc1={x.image}
+               imageSrc2={x.image2}
+               isNew={x.isNew}
+               isDiscount={x.isDiscount}
+               isLiked={false}
+               descriprion={x.name}
+               price1={x.price}
+               price2={x.salePrice}
+            />
                 </Link>
             
             )}

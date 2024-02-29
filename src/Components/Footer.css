@@ -234,7 +234,7 @@
   color: var(--default-gray-1);
 }
 .footer {
-  
+  margin-top: 100px;
   align-self: stretch;
   background-color:black;
   flex-direction: row;
