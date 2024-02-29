@@ -10,6 +10,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { Card, CardGroup, CardImg} from 'react-bootstrap';
 export default function ProductTable(){
 
 
@@ -70,6 +71,16 @@ export default function ProductTable(){
     const handleCloseUp = () => setShowUp(false);
     const handleShowUp = () => setShowUp(true);
 
+    const [showChange, setShowChange] = useState(false);
+    const handleCloseChange = () => setShowChange(false);
+    const handleShowChange = () => setShowChange(true);
+    const [oldLookId,setOldLookId] = useState(0);
+    const [selectedProductId, setSelectedProductId] = useState(null);
+
+  const setNewLookId = (productId) => {
+    setSelectedProductId(productId);
+  };
+
     useEffect(()=>
 
     {
@@ -77,7 +88,7 @@ export default function ProductTable(){
 
       axios.get('https://localhost:7269/api/Specification/GetAllSizes')
       .then(response => {
-        console.log(response.data)
+       
         dispatch(setSizes(response.data))
        
       })
@@ -93,26 +104,26 @@ export default function ProductTable(){
   
       axios.get('https://localhost:7269/api/Specification/GetAllCategory')
       .then(response => {
-        console.log(response.data)
+      
         dispatch(setCategories(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
 
       axios.get('https://localhost:7269/api/Specification/GetAllMaterials')
       .then(response => {
-        console.log(response.data)
+       
         dispatch(setMaterials(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
       axios.get('https://localhost:7269/api/Specification/GetAllSubCategories')
       .then(response => {
-        console.log(response.data)
+       
         dispatch(setSubCategories(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
       axios.get('https://localhost:7269/api/Specification/GetAllSeasons')
       .then(response => {
-        console.log(response.data)
+      
         dispatch(setSeasons(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
@@ -171,10 +182,10 @@ function confirmAdd()
             method:'post',
             url:'https://localhost:7269/api/Product/Add',
             data:bodyFormData
-            // ,headers: {
-            //   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-            //         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-            // },
+            ,headers: {
+              'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                    'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+            },
           
             }
 
@@ -351,11 +362,58 @@ else alert("You need to choose !")
 
       }
 
+function btnChange(id)
+{
+setOldLookId(id);
+ handleShowChange();
+}
+
+function changeLook()
+{  
+ alert('OLD'+oldLookId);
+ alert('NEW'+selectedProductId);
+ setSelectedProductId(null);
+ handleCloseChange();
+
+}
 
     return(
 
         <div>
 
+<Modal show={showChange} onHide={handleCloseChange}>
+        <Modal.Header closeButton>
+          <Modal.Title>Change look</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> 
+          
+        {allproducts.map((product) => (
+        <Card
+          key={product.id}
+          style={{
+            width: '18rem',
+            alignItems: 'center',
+            backgroundColor: selectedProductId === product.id ? 'lightblue' : 'white',
+          }}
+        >
+          <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
+          <Button onClick={() => setNewLookId(product.id)} variant="dark">
+            {selectedProductId === product.id ? 'Обрати' : 'Обрати'}
+          </Button>
+        </Card>
+      ))}
+     
+   
+           </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseChange}>
+            Відміна
+          </Button>
+          <Button variant="dark" onClick={changeLook}>
+            Підтвердити
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
 <Modal show={showRemove} onHide={handleCloseRemove}>
         <Modal.Header closeButton>
@@ -490,8 +548,18 @@ else alert("You need to choose !")
           <Button variant="dark" onClick={confirmUpdate}>Confirm</Button>
         </Modal.Footer>
       </Modal>
-
-   
+      <h1 style={{textAlign:'center',alignItems:'center'}} >WEEKLY LOOK</h1>
+     
+   <CardGroup>
+    {
+      allproducts.filter((x) => x.weeklyLook === true).map((product) => (
+        <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> {/* Assuming there is an 'id' property in your product object */}
+          <Card.Img variant="center" style={{width:300}}  src={product.image}></Card.Img>
+        <Button onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
+        </Card>
+      ))
+    }
+   </CardGroup>
     <h1 style={{textAlign:'center',alignItems:'center'}} >PRODUCT TABLE</h1>
     <Button   variant='dark'  onClick={(()=>setaddProductRow(""))}>
                            + Add new product

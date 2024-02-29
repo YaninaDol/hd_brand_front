@@ -76,8 +76,7 @@ const CategorySpecification = () => {
     }, [dispatch]);
 
 
-    //addCategory 
-  //deleteCategory
+  
 
   function deletecategory(type,id)
   {
@@ -101,9 +100,14 @@ const CategorySpecification = () => {
   
               ).then  (res=>
               {
-                alert("Successfull remove");
+                if(res.data.statusCode==400)
+               alert('Помилка! В категорії є товари !')
+                else
+                {
+                  alert('Категорія успішно видалена ')
+                   window.location.reload();
+                }
                 
-                 window.location.reload();
                  
               });  
   
@@ -132,7 +136,7 @@ function addCategory(type,name)
 
             ).then  (res=>
             {
-              alert("Category added successfull")
+              alert('Категорія успішно добавлена ')
               
                window.location.reload();
                
