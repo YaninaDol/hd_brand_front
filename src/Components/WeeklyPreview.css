@@ -214,7 +214,7 @@
   }
 }
 @media screen and (max-width: 750px) {
-  
+ 
   .logo-menu-navigation {
     visibility: hidden;
     gap: var(--gap-31xl);
@@ -255,52 +255,27 @@
   }
 }
 @media screen and (max-width: 450px) {
-  .logo-menu-navigation {
-    visibility: hidden;
-    gap: var(--gap-31xl);
-  }
-  .search-field,
-  .icon-search {
-    visibility: hidden;
-   
-  }
+  
  
         .div1 {
          
             font-size: 9px !important; 
         }
    
-    .circle-element-icon,
-.circle-element-icon1,
-.circle-element-icon2 {
-    margin: 2px;
-    object-fit: cover;
-    border-radius: 50%;
-  height: 30px;
-  width: 30px;
-  position: relative;
-  min-height: 30px;
-}
-.button-block {
-
-        width: 30%; 
-      }
-    
-      .circle-elements {
-        width: 100px;
-        padding: 0 var(--padding-mini);
-        gap: var(--gap-mini); 
-      }
-    
-      .button-container {
-        width: 100px;
-     height: 20px;
-        margin: 10px;
-      }
-  .spring-collection {
-    font-size: var(--font-size-19xl);
-    line-height: 42px;
-  }
+        .button-block {
+          width: 100%; /* Ширина 100% на мобильных устройствах */
+        }
+      
+        .circle-elements {
+          padding: 0 var(--padding-mini);
+          gap: var(--gap-mini);
+        }
+      
+        .button-container {
+          width: 100%; /* Ширина 100% на мобильных устройствах */
+          height: auto; /* Высота автоматическая на мобильных устройствах */
+          margin: 10px;
+        }
   .hd-brand {
     font-size: var(--font-size-base);
   }

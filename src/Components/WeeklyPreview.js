@@ -4,7 +4,7 @@ import React from 'react';
 import './WeeklyPreview.css'
 const WeeklyPreview = ({ image1, image2, image3 }) => {
   return (
-    <CardGroup style={{marginBottom:'15px'}} className="d-flex flex-row flex-sm-row">
+    <CardGroup style={{marginBottom:'15px'}} >
      
      
         <Card  style={{marginRight:'15px',marginLeft:'15px', border: 'none'}}>
