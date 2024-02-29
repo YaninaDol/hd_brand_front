@@ -19,19 +19,17 @@ const CategorySpecification = () => {
 
     const [addCategoryHide,setAddCategoryHide] = useState("hidden");
     const [addCatName,setAddCatName] = useState("");
-    const [addCatBed,setAddCatBed] = useState("");
 
     const [updateCategoryHide,setUpdateCategoryHide] = useState("hidden");
     const [UpdateCatId,setUpdateCatId] = useState(0);
     const [UpdateCatName,setUpdateCatName] = useState("");
-    const [UpdateCatBed,setUpdateCatBed] = useState("");
     const dispatch = useDispatch();
     const categories = useSelector(state => state.categories);
     const subcategories = useSelector(state => state.subcategories);
     const materials = useSelector(state => state.materials);
     const seasons = useSelector(state => state.seasons);
     const sizes = useSelector(state => state.sizes);
-
+  
 
     useEffect(()=>
 

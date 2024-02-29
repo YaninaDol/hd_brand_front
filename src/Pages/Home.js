@@ -55,6 +55,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
+  const [weekly,setWeekly] = useState([]);
   useEffect(() => {
 
     axios.get('https://localhost:7269/api/Product/GetProducts')
@@ -62,6 +63,8 @@ const Home = () => {
         
         dispatch(setProducts(response.data))
         setContents(response.data);
+        console.log(contents);
+       
       })
       .catch(error => console.error('Error fetching products:', error));
 
@@ -201,7 +204,10 @@ const Home = () => {
         </div>
       </section>
     
-   <WeeklyPreview  image1={require('../assets/look1.png')} image2={require('../assets/look2.png')} image3={require('../assets/look3.png')}   />
+   <WeeklyPreview weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
+  
+  
+  
    {showSection && (
       <section className="graphic">
         <div className="new-items">

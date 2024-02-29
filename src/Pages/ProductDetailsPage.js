@@ -168,7 +168,7 @@ const ProductDetailsPage = () => {
   
   function addBasket() {
    
-    if(product.categoryid != 3)
+    if(newProd.categoryid != 3)
          {     if (newProd.size !== null) {
               
                 const existingProduct = arrBasket.find(item => item.size === newProd.size);
