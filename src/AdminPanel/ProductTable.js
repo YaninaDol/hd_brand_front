@@ -369,9 +369,35 @@ setOldLookId(id);
 }
 
 function changeLook()
-{  
- alert('OLD'+oldLookId);
- alert('NEW'+selectedProductId);
+{ 
+ var bodyFormData = new FormData();
+  bodyFormData.append('oldId', oldLookId);
+  bodyFormData.append('newId', selectedProductId);
+
+              axios (
+
+                {
+                method:'post',
+                url:'https://localhost:7269/api/Product/WeeklyLook',
+                data:bodyFormData,
+                headers: {
+                  'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                        'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                },
+               
+                }
+
+
+
+            ).then  (res=>
+            {
+              
+                window.location.reload();
+               
+               
+            });  
+
+
  setSelectedProductId(null);
  handleCloseChange();
 
@@ -550,12 +576,12 @@ function changeLook()
       </Modal>
       <h1 style={{textAlign:'center',alignItems:'center'}} >WEEKLY LOOK</h1>
      
-   <CardGroup>
+   <CardGroup style={{height:300}}>
     {
       allproducts.filter((x) => x.weeklyLook === true).map((product) => (
         <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> {/* Assuming there is an 'id' property in your product object */}
-          <Card.Img variant="center" style={{width:300}}  src={product.image}></Card.Img>
-        <Button onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
+          <Card.Img variant="center" style={{height:'80%'}}  src={product.image}></Card.Img>
+        <Button style={{marginTop:'15px'}} onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
         </Card>
       ))
     }
