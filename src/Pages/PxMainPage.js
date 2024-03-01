@@ -435,133 +435,59 @@ function generatePath(categoryId) {
       return 'unknown';
   }
 }
+function getOrder()
+{
+
+}
      return (
      
 <div>
       <div className="px-main-page">
 
 
-<Modal id='basket' show={showBasket} onHide={handleCloseBasket}>
+<Modal className="h-100 h-custom" id='basket' show={showBasket} onHide={handleCloseBasket}>
         <Modal.Header closeButton>
           <Modal.Title>Кошик</Modal.Title>
         </Modal.Header>
-        <Modal.Body> {
+        <Modal.Body > 
+          
+        <MDBRow className="justify-content-between align-items-center">
+            <MDBCol md="1" lg="1" xl="1">
+             
+            </MDBCol>
+            <MDBCol md="3" lg="3" xl="3">
+             
+            </MDBCol>
+            <MDBCol md="3" lg="3" xl="3"> 
+             Товар
+             
+            </MDBCol>
+            
+            <MDBCol md="2" lg="2" xl="2">
+             
+               Кількість
+          
+            </MDBCol>
+            <MDBCol md="2" lg="2" xl="3">
+              <MDBTypography tag="h7" className="mx-2">
+             Ціна
+              </MDBTypography>
+            </MDBCol>
+          </MDBRow>
+          {
         arrBasket.map(
             (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} quantity={x.quantity} size={x.size} picture={x.image} price={x.price} ></CartBasket>
         )
         }
-             
-              <h3 style={{color:'navy'}}>Ваші данні : </h3>
-              <MDBRow className="justify-content-between align-items-center">
-                <MDBCol >
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Ім'я</Form.Label>
-        <Form.Control onChange={(e)=>setFirstName(e.target.value)} type="text" />
-      
-      </Form.Group>
-                </MDBCol>
-                <MDBCol  >
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Прізвище</Form.Label>
-        <Form.Control onChange={(e)=>setLastName(e.target.value)} type="text" />
-      </Form.Group>
-                </MDBCol>
-                </MDBRow>
-
-                <MDBRow className="justify-content-between align-items-center">
-                <MDBCol >
-                <Form.Group className="mb-3" >
-        <Form.Label>Номер телефону </Form.Label>
-        <Form.Control onChange={(e)=>setPhoneNumber(e.target.value)} type="text" />
-      
-      </Form.Group>
-                </MDBCol>
-                </MDBRow>
-                <MDBRow className="justify-content-between align-items-center">
-                <MDBCol  >
-                <Form.Group className="mb-3" >
-        <Form.Label>Коментар </Form.Label>
-        <Form.Control onChange={(e)=>setNotice(e.target.value)} type="text" />
-      </Form.Group>
-                </MDBCol>
-                </MDBRow>
-                <MDBRow className="justify-content-between align-items-center">
-                <MDBCol  >
-                <Form.Group className="mb-3" >
-        <Form.Label>Доставка </Form.Label>
-        <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>Delivery((e.target.value) )}>
-        <option value="2">Укр Пошта</option>
-                  <option value="1">Нова Пошта </option>
-                 
-                  
-                </select>
-      </Form.Group>
-                </MDBCol>
-                </MDBRow>
-                <MDBRow className="justify-content-between align-items-center">
-                <MDBCol  >
-                <Form.Group className="mb-3" >
-        <Form.Label>Оберіть місто </Form.Label>
-        <select id='citySelect' className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>{setCities(e.target.value)}}>
-                
-                </select>
-      </Form.Group>
-                </MDBCol>
-                </MDBRow>
-                <MDBRow className="justify-content-between align-items-center">
-                <MDBCol  >
-                <Form.Group className="mb-3" >
-        <Form.Label>Оберіть відділення </Form.Label>
-        <select id='warehouseSelect' className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>{setDepartment(e.target.value)}}>
-                
-                </select>
-      </Form.Group>
-                </MDBCol>
-                </MDBRow>
-              <MDBCardBody>
-              <div className="d-flex justify-content-between mb-4">
-                <MDBTypography tag="h5" className="text-uppercase">
-                  До сплати : 
-                </MDBTypography>
-                <MDBTypography tag="h5">{payamount} грн</MDBTypography>
-              </div>
-            <p>
-              <strong>Ми приймаємо </strong>
-            </p>
-            <MDBCardImage className="me-2" width="45px"
-              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-              alt="Visa" />
-            <MDBCardImage className="me-2" width="45px"
-              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-              alt="American Express" />
-            <MDBCardImage className="me-2" width="45px"
-              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-              alt="Mastercard" />
-            <MDBCardImage className="me-2" width="45px"
-              src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
-              alt="PayPal acceptance mark" />
-          </MDBCardBody>
-        <MDBCol style={{marginTop:20}}>
-        <MDBRow>
-          <Button  variant="outline-success" onClick={()=>handleShowPayCard()}  >
-            Сплатити карткою
+               </Modal.Body>
+              
+             <Modal.Footer>
+          <Button variant="outline-dark" style={{borderRadius:'0px'}} onClick={()=>{handleCloseBasket()}}>
+            Продовжити
           </Button>
-          </MDBRow>
-          </MDBCol>
-          <MDBCol>
-          <MDBRow>
-          <Button  variant="outline-success" onClick={()=>{ CreateQr()}} >
-            Сгенерувати QR 
+          <Button variant="dark" style={{borderRadius:'0px'}} onClick={getOrder}>
+            Оформити замовлення
           </Button>
-          </MDBRow>
-</MDBCol>
-        </Modal.Body>
-        <Modal.Footer>
-        
-          <Button variant="dark" onClick={()=>{handleCloseBasket()}}>
-            Продовжити покупки
-          </Button>
-         
         </Modal.Footer>
       </Modal>
     

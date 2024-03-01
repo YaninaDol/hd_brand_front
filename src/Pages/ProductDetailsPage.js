@@ -311,7 +311,7 @@ const ProductDetailsPage = () => {
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
-      <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e) => AddBtn(e.target.value)}>
+      <select className="select p-2 bg-grey" style={{ width: "100%" }} onChange={(e) => AddBtn(e.target.value)}>
       <option selected value="0">Оберіть розмір</option>
       
         {productsizes.map((x) => (
