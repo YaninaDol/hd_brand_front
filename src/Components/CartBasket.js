@@ -14,19 +14,14 @@ import { Button } from "react-bootstrap";
 class CartBasket extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      quantity: props.quantity || 1, 
-    };
+   
   }
-
   incrementQuantity = () => {
-    this.setState((prevState) => ({ quantity: prevState.quantity + 1 }));
+    this.props.incrementQuantity(this.props.unic);
   };
 
   decrementQuantity = () => {
-    if (this.state.quantity > 1) {
-      this.setState((prevState) => ({ quantity: prevState.quantity - 1 }));
-    }
+    this.props.decrementQuantity(this.props.unic);
   };
   render() {
     return (
@@ -64,7 +59,7 @@ class CartBasket extends Component {
                 <Button variant="light" size="sm" onClick={this.decrementQuantity}>
                   -
                 </Button>
-                <span className="mx-2">{this.state.quantity}</span>
+                <span className="mx-2">{this.props.quantity}</span>
                 <Button variant="light" size="sm" onClick={this.incrementQuantity}>
                   +
                 </Button>
@@ -72,7 +67,7 @@ class CartBasket extends Component {
             </MDBCol>
             <MDBCol md="2" lg="2" xl="3">
               <MDBTypography tag="h5" className="mx-2">
-              {this.props.price * this.state.quantity} &#8372;
+              {this.props.price * this.props.quantity} &#8372;
               </MDBTypography>
             </MDBCol>
           </MDBRow>

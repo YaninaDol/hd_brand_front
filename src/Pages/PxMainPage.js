@@ -93,14 +93,14 @@ const expand='false';
   .catch(error => console.error('Error fetching products:', error));
 
 
-    const storedBasket = window.sessionStorage.getItem("Basket");
-    if (storedBasket && storedBasket.length > 0){
+  const storedBasket = window.sessionStorage.getItem("Basket");
+  if (storedBasket && storedBasket.length > 0) {
     const parsedBasketData = JSON.parse(storedBasket);
     setArrBasket(parsedBasketData);
-    setCount(parsedBasketData.length);
-    const totalSum = parsedBasketData.reduce((sum, item) => sum + item.price, 0);
-    setTotal(totalSum);
-    setPayAmount(totalSum);
+
+    // Calculate total count based on quantities of each item
+    const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
+    setCount(totalCount);
   }
   
  
@@ -245,23 +245,53 @@ function redirectToFilteredPage(searchQuery) {
   const handleShowBasket = () => setShowBasket(true);
 
 
+
   function removeBasket(id) {
     let prod = arrBasket.find(item => item.id === id);
     if (prod) {
-     
+      setCount(count - prod.quantity);
       const updatedBasket = arrBasket.filter(item => item.id !== id);
       setArrBasket(updatedBasket);
-      setCount(count - 1);
-  
-    
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
-      setTotal(total - prod['price']);
-
-      setPayAmount(payamount-prod['price']);
-      window.sessionStorage.setItem("cartItemCount", count);
-  
     }
   }
+  
+  
+  const decrementQuantity = (id) => {
+    let prod = arrBasket.find(item => item.id === id);
+    if (prod && prod.quantity > 1) {
+      setCount(count - 1);
+  
+      const updatedBasket = arrBasket.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      );
+  
+      const filteredBasket = updatedBasket.filter(item => item.quantity > 0);
+  
+      setArrBasket(filteredBasket);
+  
+      window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
+    }
+  };
+
+  const incrementQuantity = (id) => {
+    let prod = arrBasket.find(item => item.id === id);
+    if (prod) {
+    
+      setCount(count + 1);
+
+      
+      const updatedBasket = arrBasket.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+
+     
+      setArrBasket(updatedBasket);
+
+     
+      window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+    }
+  };
   function savechange()
   {
   
@@ -445,47 +475,60 @@ function getOrder()
       <div className="px-main-page">
 
 
-<Modal className="h-100 h-custom" id='basket' show={showBasket} onHide={handleCloseBasket}>
+      <Modal className="h-100 h-custom" id='basket' show={showBasket} onHide={handleCloseBasket}>
         <Modal.Header closeButton>
           <Modal.Title>Кошик</Modal.Title>
         </Modal.Header>
-        <Modal.Body > 
-          
-        <MDBRow className="justify-content-between align-items-center">
-            <MDBCol md="1" lg="1" xl="1">
+        <Modal.Body>
+          {arrBasket.length < 1 ? (
+            <p>Ваш кошик пустий.</p>
+          ) : (
+            <>
+              <MDBRow className="justify-content-between align-items-center">
+              <MDBCol md="1" lg="1" xl="1">
              
-            </MDBCol>
-            <MDBCol md="3" lg="3" xl="3">
-             
-            </MDBCol>
-            <MDBCol md="3" lg="3" xl="3"> 
-             Товар
-             
-            </MDBCol>
-            
-            <MDBCol md="2" lg="2" xl="2">
-             
-               Кількість
-          
-            </MDBCol>
-            <MDBCol md="2" lg="2" xl="3">
-              <MDBTypography tag="h7" className="mx-2">
-             Ціна
-              </MDBTypography>
-            </MDBCol>
-          </MDBRow>
-          {
-        arrBasket.map(
-            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} quantity={x.quantity} size={x.size} picture={x.image} price={x.price} ></CartBasket>
-        )
-        }
-               </Modal.Body>
+             </MDBCol>
+             <MDBCol md="3" lg="3" xl="3">
               
-             <Modal.Footer>
-          <Button variant="outline-dark" style={{borderRadius:'0px'}} onClick={()=>{handleCloseBasket()}}>
+             </MDBCol>
+             <MDBCol md="3" lg="3" xl="3"> 
+              Товар
+              
+             </MDBCol>
+             
+             <MDBCol md="2" lg="2" xl="2">
+              
+                Кількість
+           
+             </MDBCol>
+             <MDBCol md="2" lg="2" xl="3">
+               <MDBTypography tag="h7" className="mx-2">
+              Ціна
+               </MDBTypography>
+             </MDBCol>
+              </MDBRow>
+              {arrBasket.map((x) => (
+                <CartBasket
+                  key={x.id}
+                  remove={removeBasket}
+                  unic={x.id}
+                  name={x.name}
+                  quantity={x.quantity}
+                  size={x.size}
+                  picture={x.image}
+                  price={x.price}
+                  incrementQuantity={incrementQuantity}
+                  decrementQuantity={decrementQuantity}
+                ></CartBasket>
+              ))}
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outline-dark" style={{ borderRadius: '0px' }} onClick={() => { handleCloseBasket() }}>
             Продовжити
           </Button>
-          <Button variant="dark" style={{borderRadius:'0px'}} onClick={getOrder}>
+          <Button variant="dark" style={{ borderRadius: '0px' }} onClick={getOrder}>
             Оформити замовлення
           </Button>
         </Modal.Footer>
