@@ -65,41 +65,43 @@ const WeeklyPreview = ({ weekly, generatePath }) => {
   };
 
   const addToBasket = () => {
-
-    console.log(size1 + size2 + size3)
-
-    if (size1 && size2 && size3) {
-      // All sizes are selected, proceed to add to the basket
-      const updatedBasket = [
-        { ...size1, quantity: 1 },
-        { ...size2, quantity: 1 },
-        { ...size3, quantity: 1 },
-      ];
-
-      // Retrieve the existing basket from sessionStorage
+    const selectedSizes = [size1, size2, size3].filter((size) => size !== null);
+  
+    if (selectedSizes.length > 0) {
+     
       const storedBasket = window.sessionStorage.getItem("Basket");
       const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
-
-      // Create a new array that includes both the existing items and the new sizes
-      const combinedBasket = [...existingBasket, ...updatedBasket];
-
-      // Save the updated basket to sessionStorage
-      window.sessionStorage.setItem("Basket", JSON.stringify(combinedBasket));
-
-      // Inform the user
+  
+      // Update quantities for existing sizes
+      selectedSizes.forEach((selectedSize) => {
+        const existingItem = existingBasket.find((item) => item.id === selectedSize.id);
+  
+        if (existingItem) {
+          // If the size already exists, update its quantity
+          existingItem.quantity += 1;
+        } else {
+         
+          existingBasket.push({ ...selectedSize, quantity: 1 });
+        }
+      });
+  
+      
+      window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+  
+     
       alert("Додано!");
-
-      // Optionally, reset the selected sizes
+  
+    
       setSize1(null);
       setSize2(null);
       setSize3(null);
-
-      // Close the modal
+  
+     
       handleClose();
       window.location.reload();
     } else {
-      // Inform the user that all sizes must be selected
-      alert("Оберіть розміри для всіх товарів.");
+      
+      alert("Оберіть розміри для товарів.");
     }
   };
   const showModal = () => {
