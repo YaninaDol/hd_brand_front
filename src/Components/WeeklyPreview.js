@@ -14,6 +14,9 @@ const WeeklyPreview = ({ weekly, generatePath }) => {
   const handleShow = () => setShow(true);
   const [arrBasket, setArrBasket] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [size1, setSize1] = useState(null);
+  const [size2, setSize2] = useState(null);
+  const [size3, setSize3] = useState(null);
   const [copy, setCopy] = useState([]);
   const getSizes = async (id) => {
     try {
@@ -40,31 +43,67 @@ const WeeklyPreview = ({ weekly, generatePath }) => {
     }
   }, [weekly]);
 
-  const addToBasket = () => {
-    // Retrieve the existing basket from sessionStorage
-    const storedBasket = window.sessionStorage.getItem("Basket");
-    const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
+  const addSize = (size,index) => {
+   if (index==0)
+   {
+    setSize1(size);
+   
+    
+   }
+   else if(index==1)
+   {
+    setSize2(size);
+   
 
-    // Create a new array that includes both the existing items and the new sizes from the state
-    const updatedBasket = [...existingBasket, ...copy];
+   }
+   else
+   {
+    setSize3(size);
+    
+   }
 
-    // Save the updated basket to sessionStorage
-    window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
-
-    // Inform the user
-    alert("Додано!");
-window.location.reload();
-    // Optionally, reset the state to clear the selected sizes
-    setCopy([]);
   };
 
+  const addToBasket = () => {
+
+    console.log(size1 + size2 + size3)
+
+    if (size1 && size2 && size3) {
+      // All sizes are selected, proceed to add to the basket
+      const updatedBasket = [
+        { ...size1, quantity: 1 },
+        { ...size2, quantity: 1 },
+        { ...size3, quantity: 1 },
+      ];
+
+      // Retrieve the existing basket from sessionStorage
+      const storedBasket = window.sessionStorage.getItem("Basket");
+      const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
+
+      // Create a new array that includes both the existing items and the new sizes
+      const combinedBasket = [...existingBasket, ...updatedBasket];
+
+      // Save the updated basket to sessionStorage
+      window.sessionStorage.setItem("Basket", JSON.stringify(combinedBasket));
+
+      // Inform the user
+      alert("Додано!");
+
+      // Optionally, reset the selected sizes
+      setSize1(null);
+      setSize2(null);
+      setSize3(null);
+
+      // Close the modal
+      handleClose();
+      window.location.reload();
+    } else {
+      // Inform the user that all sizes must be selected
+      alert("Оберіть розміри для всіх товарів.");
+    }
+  };
   const showModal = () => {
     handleShow();
-  };
-
-  const addSize = (size) => {
-   
-    setCopy((prevCopy) => [...prevCopy, size]);
   };
 
 
@@ -83,7 +122,7 @@ window.location.reload();
               sizes={sizes[index]}
               picture={x.image}
               price={x.price}
-              choosesize={(size) => addSize(size)}
+              choosesize={(size) => addSize(size, index)}
             />
           ))}
         </Modal.Body>

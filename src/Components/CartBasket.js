@@ -39,6 +39,11 @@ import {
                   {this.props.price} &#8372;
                   </MDBTypography>
                 </MDBCol>
+                <MDBCol md="2" lg="8" xl="4" className="offset-lg-1">
+                  <MDBTypography tag="h5" className="mb-0">
+                  {this.props.quantity}{this.props.size}
+                  </MDBTypography>
+                </MDBCol>
                 <MDBCol md="1" lg="1" xl="1" className="text-end">
                  
                   <MDBBtn onClick={() => this.props.remove(this.props.unic)}  color='dark'>

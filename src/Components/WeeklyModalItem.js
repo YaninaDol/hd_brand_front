@@ -35,22 +35,26 @@ import {
                 </MDBCol>
                
                
-                <MDBCol md="4" lg="1" xl="1" className="text-end">
-                {this.props.sizes.length > 1 && (
-  <select className="select p-2 bg-grey" onChange={(e) => this.props.choosesize(JSON.parse(e.target.value))}>
+                <MDBCol md="5" lg="1" xl="1" className="text-end">
+     
+                <select className="select p-2 bg-grey" onChange={(e) => this.props.choosesize(JSON.parse(e.target.value))}>
+                <option value={JSON.stringify(null)} >
+      Розмір
+    </option>
   {this.props.sizes.map((x) => (
+    
     <option key={x.id} value={JSON.stringify(x)}>
       {x.size}
     </option>
   ))}
 </select>
-        )}
+      
 </MDBCol>
-                <MDBCol  md="2" lg="8" xl="4" className="offset-lg-1">
-                  <MDBTypography  tag="h5" className="mb-0">
-                  {this.props.price} &#8372;
-                  </MDBTypography>
-                </MDBCol>
+<MDBCol md="2" lg="8" xl="4" className="text-end">
+  <MDBTypography tag="h5" className="mb-1" >
+    {this.props.price} &#8372;
+  </MDBTypography>
+</MDBCol>
               </MDBRow>
             </MDBCardBody>
           </MDBCard>

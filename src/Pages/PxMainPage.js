@@ -447,7 +447,7 @@ function generatePath(categoryId) {
         </Modal.Header>
         <Modal.Body> {
         arrBasket.map(
-            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} model='' picture={x.image} price={x.price} ></CartBasket>
+            (x)=><CartBasket remove={removeBasket}  unic={x.id} name={x.name} quantity={x.quantity} size={x.size} picture={x.image} price={x.price} ></CartBasket>
         )
         }
              
