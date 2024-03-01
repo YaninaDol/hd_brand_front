@@ -65,8 +65,8 @@ class CartBasket extends Component {
                 </Button>
               </div>
             </MDBCol>
-            <MDBCol md="2" lg="2" xl="3">
-              <MDBTypography tag="h5" className="mx-2">
+            <MDBCol  md="2" lg="2" xl="3">
+              <MDBTypography tag="h5" id='price' className="mx-2">
               {this.props.price * this.props.quantity} &#8372;
               </MDBTypography>
             </MDBCol>

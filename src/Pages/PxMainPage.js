@@ -98,7 +98,7 @@ const expand='false';
     const parsedBasketData = JSON.parse(storedBasket);
     setArrBasket(parsedBasketData);
 
-    // Calculate total count based on quantities of each item
+   
     const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
     setCount(totalCount);
   }
@@ -484,7 +484,7 @@ function getOrder()
             <p>Ваш кошик пустий.</p>
           ) : (
             <>
-              <MDBRow className="justify-content-between align-items-center">
+              <MDBRow id='titleRow' className="justify-content-between align-items-center">
               <MDBCol md="1" lg="1" xl="1">
              
              </MDBCol>
