@@ -30,7 +30,7 @@ const ProductDetailsPage = () => {
   const category = useSelector(state => state.category);
   const material = useSelector(state => state.material);
   const season = useSelector(state => state.season);
-  const [newProd,setNewProd] = useState(new Object());
+  const [newProd,setNewProd] = useState(null);
   const [arrBasket,setArrBasket] = useState([]);
   const [count, setCount] = useState(0);
   const [showM, setshowM] = useState(false);
@@ -148,100 +148,49 @@ const ProductDetailsPage = () => {
     })
     .catch(error => console.error('Error fetching products:', error));
 
-    
-    
-   
-  
-    const storedBasket = window.sessionStorage.getItem("Basket");
-    if (storedBasket) {
-      const parsedBasketData = JSON.parse(storedBasket);
-      setArrBasket(parsedBasketData);
-      setCount(parsedBasketData.length);
-      const totalSum = parsedBasketData.reduce((sum, item) => sum + item.salePrice, 0);//
-      setTotal(totalSum);
-     }
   
   }, [id, subcategoryid, dispatch]);
 
 
 
   
-  function addBasket() {
-   
-    if(newProd.categoryid != 3)
-         {     if (newProd.size !== null) {
-              
-                const existingProduct = arrBasket.find(item => item.size === newProd.size);
-            
-                if (existingProduct) {
-              
-                  alert("Товар вже доданий у кошик !");
-                } else {
-              
-
-                  setCount(prevCount => {
-                    const newCount = prevCount + 1;
-                  
-                    return newCount;
-                  });
-              
-
-
-                  let copy = [...arrBasket];
-                  copy.push(newProd);
-                  setArrBasket(copy);
-                  handleShowM();
-                  window.sessionStorage.setItem("Basket", JSON.stringify(copy));
-            
-                  setTotal(total + newProd['price']);
-              
-                
-                  window.location.reload();
-                }
-              } else {
-            
-                alert("Оберіть розмір!");
-              }
-            }
-    else
-            {
-           
-              const existingProduct = arrBasket.find(item => item.productid === product.id);
-            
-              if (existingProduct) {
-            
-                alert("Товар вже доданий у кошик !");
-              } else {
-            
-
-                setCount(prevCount => {
-                  const newCount = prevCount + 1;
-                
-                  return newCount;
-                });
-            
-
-
-                let copy = [...arrBasket];
-                copy.push(productsizes.find(item => item.productid == product.id));
-                setArrBasket(copy);
-                handleShowM();
-                window.sessionStorage.setItem("Basket", JSON.stringify(copy));
-          
-                setTotal(total + product['salePrice']);
-            
-              
-                window.location.reload();
-              }
-            
-            }
-  }
-  function AddBtn(id)
-  {
-      setNewProd(productsizes.find(item => item.id == id));
+  const addToBasket = () => {
+  
+    if (newProd!=null) {
+     console.log(newProd);
+      const storedBasket = window.sessionStorage.getItem("Basket");
+      const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
+  
+      
+        const existingItem = existingBasket.find((item) => item.id === newProd.id);
+  
+        if (existingItem) {
+         
+          existingItem.quantity += 1;
+        } else {
+         
+          existingBasket.push({ ...newProd, quantity: 1 });
+        }
+     
+  
+      
+      window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+  
+     
+      alert("Додано!");
+  
     
-
-  }
+     setNewProd(null);
+  
+     
+    
+      window.location.reload();
+    } else {
+      
+      alert("Оберіть розмір для товару.");
+    }
+  };
+ 
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
@@ -311,12 +260,12 @@ const ProductDetailsPage = () => {
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
-      <select className="select p-2 bg-grey" style={{ width: "100%" }} onChange={(e) => AddBtn(e.target.value)}>
+      <select className="select p-2 bg-grey" style={{ width: "100%" }} onChange={(e) => setNewProd(JSON.parse(e.target.value))}>
       <option selected value="0">Оберіть розмір</option>
       
         {productsizes.map((x) => (
             
-          <option key={x.id} value={x.id}>
+          <option key={x.id} value={JSON.stringify(x)}>
             {x.size}
           </option>
         ))}
@@ -329,7 +278,7 @@ const ProductDetailsPage = () => {
 )}
 
 <MDBRow  style={{marginTop:'55px'}}> <Button
-onClick={addBasket}
+onClick={addToBasket}
                   style={{ borderRadius: '0px' }}
                   variant="dark"
                  
