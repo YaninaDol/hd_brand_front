@@ -1377,6 +1377,20 @@
   gap: 20px 0;
   max-width: 100%;
 }
+.h25 {
+  margin-top: 35px;
+  margin-bottom: 35px;
+  width: 102px;
+  height: 0;
+  position: relative;
+  font-size: var(--desktop-h2-bold-28-uppercase-size);
+  line-height: 0%;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--color-black);
+  justify-content: center;
+}
 
 @media screen and (max-width: 825px) {
   .column-hide{

@@ -7,6 +7,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Slider from 'rc-slider';
+import '../Components/range.css'; 
 import { Navbar, Nav, NavDropdown,Offcanvas  } from 'react-bootstrap';
 import {
  
@@ -17,7 +19,7 @@ import {
 } from 'mdb-react-ui-kit';
 const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   const [sortOrder, setSortOrder] = useState('asc');
-  const [range, setRange] = useState(10000);
+  const [sortCollection, setSortCollection] = useState('');
   const [itemsPerRow, setItemsPerRow] = useState(12);
   const [visibleItems, setVisibleItems] = useState(itemsPerRow);
   const [allhidden, setAllHidden] = useState('');
@@ -29,7 +31,12 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
+  
+  const [rangeValues, setRangeValues] = useState([0, 10000]);
 
+  const handleRangeChange = (values) => {
+    setRangeValues(values);
+  };
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
   
@@ -55,9 +62,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     const sortedProducts = [...items].sort((a, b) => {
       if (order === 'asc') {
         
-        return a.price - b.price;
+        return a.salePrice - b.salePrice;
       } else {
-        return b.price - a.price;
+        return b.salePrice - a.salePrice;
       }
      
     });
@@ -67,6 +74,17 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     setFilteredHidden('');
 
   };
+
+
+  const handleSortCollection = (order) => {
+    setSortCollection(order);
+  
+    setfilteredProducts(items.filter((x) => x[order] === true));
+    setAllHidden('hidden');
+    setFilteredHidden('');
+
+  };
+
   const applyFilters = () => {
   
   
@@ -80,7 +98,8 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       return typeIncluded && materialIncluded && seasonIncluded;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
-      const priceInRange = product.salePrice >= 0 && product.salePrice <= range;
+      const priceInRange = product.salePrice >= rangeValues[0] && product.salePrice <= rangeValues[1];
+    
       return priceInRange;
     });
   
@@ -121,48 +140,154 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 <Link to={`/${link.toLowerCase()}`}><div className="div34">{page}</div></Link>
 </div>
 <MDBContainer className="py-5 h-100">
-<MDBRow> 
-         
+<MDBRow > 
+<h2 className="h25">{page}</h2>
        
         
        </MDBRow>
-        <MDBRow>   <div className="color-picker">
-          
-          <div className="materials-list">
-            <div >Сортувати:</div>
-          </div>
-          <div className="materials-list1">
-          
-            <DropdownButton variant='outline light' id="dropdown-basic-button" size="sm" title="По ціні">
-            <Dropdown.Item onClick={() => handleSort('asc')}>Від дешевих до дорогих</Dropdown.Item>
-  <Dropdown.Item onClick={() => handleSort('desc')}>Від дорогих до дешевих</Dropdown.Item>
-
-</DropdownButton>
-          </div></div></MDBRow>
+       
 
   <MDBRow className="justify-content-left align-items-left h-100">
     
  
                  
             
-    {/* <MDBCol lg="3" className="bg-grey" >
+    <MDBCol lg="3" >
     
-              <div style={{backgroundColor:'rgb(247, 247, 247)'}}  className="p-2">
-              <div className="div53">Ціна</div>
-              <MDBRange
-             onChange={(e)=>setRange(e.target.value)}
-    defaultValue='10000'
-    min='0'
-    max='10000'
-    step='50'
-    id='customRange3'
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+  <div class="accordion-item">
+  <h2 className="accordion-header" id="flush-headingOne">
+        <button
+          className="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseOne"
+          aria-expanded="false"
+          aria-controls="flush-collapseOne"
+        >
+          Сортувати
+        </button>
+      </h2>
+      <div
+        id="flush-collapseOne"
+        className="accordion-collapse collapse"
+        aria-labelledby="flush-headingOne"
+        data-bs-parent="#accordionFlushExample"
+      >
+        <div className="accordion-body">
+          <Form.Check
+            type="checkbox"
+            name="sorting"
+            id="cheapToExpensive"
+            label="Від дешевих до дорогих"
+            checked={sortOrder === 'asc'}
+            onChange={() => handleSort('asc')}
+            style={{ marginTop: 15 }}
+          />
+          <Form.Check
+            type="checkbox"
+            name="sorting"
+            id="expensiveToCheap"
+            label="Від дорогих до дешевих"
+            checked={sortOrder === 'desc'}
+            onChange={() => handleSort('desc')}
+            style={{ marginTop: 15 }}
+          />
+        </div>
+      </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+        Колекція
+      </button>
+    </h2>
+    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+      <Form.Check
+            type="checkbox"
+            name="sorting"
+            id="newcollection"
+            label="Нова колекція"
+            checked={sortCollection === 'isNew'}
+            onChange={() => handleSortCollection('isNew')}
+            style={{ marginTop: 15 }}
+          />
+          <Form.Check
+            type="checkbox"
+            name="sorting"
+            id="salecollection"
+            label="Знижки"
+            checked={sortCollection === 'isDiscount'}
+            onChange={() => handleSortCollection('isDiscount')}
+            style={{ marginTop: 15 }}
+          />
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+        Ціна
+      </button>
+    </h2>
+    <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+  
+      <Slider 
+      
+        range
+        min={0}
+        max={10000}
+        step={50}
+        value={rangeValues}
+        onChange={handleRangeChange}
+      />
+      <p>
+        {rangeValues[0]}&nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
+      </p>
+    </div>
+
+     
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingFour">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+        Тип
+      </button>
+    </h2>
+    <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
    
+      {types.map((x) => (
+  <Form.Check
+    key={x.id}
+    value={x.id}
+    type="checkbox"
+    id={x.id}
+    label={x.name}
+    style={{ marginTop: 15 }}
+    onChange={(e) => handleCheckboxChange(e, 'type')}
   />
-       <hr className="my-4" />
-<div className="dropdown-frame1" />
-                    <div className="text-components2">
-                      <div className="div53">Сезон</div>
-                      <Form.Check 
+))}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingFive">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+        Сезон
+      </button>
+    </h2>
+    <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+   
+      <Form.Check 
             type='checkbox'
          
             value={3}
@@ -198,16 +323,44 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             label='Осінь'
             style={{ marginTop:15}}
           />
-                   
-                    </div>
+      </div>
+    </div>
+  </div>
 
-                <hr className="my-4" />
-                <div className="line-frame1">
-                      <div className="apply-button" />
-                      <div className="tovares-group">
-                        <div className="div55">Колір</div>
-                        <div className="u-a-h-component">
-                          <div className="frame-instance">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingSix">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+        Матеріал
+      </button>
+    </h2>
+    <div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+   
+      {materials.map((x) => (
+  <Form.Check
+    key={x.id}
+    value={x.id}
+    type="checkbox"
+    id={x.id}
+    label={x.name}
+    style={{ marginTop: 15 }}
+    onChange={(e) => handleCheckboxChange(e, 'material')}
+  />
+))}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingSeven">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+        Колір
+      </button>
+    </h2>
+    <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">
+      <div className="frame-instance">
                             <div className="rectangle-parent">
                               <div className="rectangle">
                                 <div className="similarto-spring-summer-autumn">
@@ -237,37 +390,13 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
                               <div className="div58" />
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <hr className="my-4" />
-                    <div className="div77">Тип</div>
-                    {types.map((x) => (
-  <Form.Check
-    key={x.id}
-    value={x.id}
-    type="checkbox"
-    id={x.id}
-    label={x.name}
-    style={{ marginTop: 15 }}
-    onChange={(e) => handleCheckboxChange(e, 'type')}
-  />
-))}
- <hr className="my-4" />
-                    <div className="div77">Матеріал</div>
+    
+      </div>
+    </div>
+  </div>
 
-{materials.map((x) => (
-  <Form.Check
-    key={x.id}
-    value={x.id}
-    type="checkbox"
-    id={x.id}
-    label={x.name}
-    style={{ marginTop: 15 }}
-    onChange={(e) => handleCheckboxChange(e, 'material')}
-  />
-))}
-                    
+  </div>
+        
                     <hr className="my-4" />
                     <div className="icons-payment-systems">
                       <div onClick={applyFilters} className="div59">застосувати <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
@@ -276,90 +405,10 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 </svg> </div>
                      
                     </div>
-                 
-              </div>
               
-            </MDBCol> */}
-            <Navbar bg="light" expand="lg">
-        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleFilters} />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto"></Nav>
-          
-          <Form className="d-flex flex-column">
-            <Offcanvas show={showFilters}  placement="end" onHide={toggleFilters}>
-              <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Фільтри</Offcanvas.Title>
-              </Offcanvas.Header>
-              <Offcanvas.Body>
-                <div style={{ backgroundColor: 'rgb(247, 247, 247)' }} className="p-2">
-                  <div className="div53">Ціна</div>
-                  {/* Add your range input here */}
-                  <hr className="my-4" />
-                  <div className="text-components2">
-                    <div className="div53">Сезон</div>
-                    {/* Checkbox inputs for seasons */}
-                    {/* ... */}
-                  </div>
-                  <hr className="my-4" />
-                  <div className="line-frame1">
-                    <div className="apply-button" />
-                    {/* ... Additional filter options */}
-                  </div>
-                  <hr className="my-4" />
-                  <div className="div77">Тип</div>
-                  {types.map((x) => (
-                    <Form.Check
-                      key={x.id}
-                      value={x.id}
-                      type="checkbox"
-                      id={x.id}
-                      label={x.name}
-                      style={{ marginTop: 15 }}
-                      onChange={(e) => handleCheckboxChange(e, 'type')}
-                    />
-                  ))}
-                  <hr className="my-4" />
-                  <div className="div77">Матеріал</div>
-                  {materials.map((x) => (
-                    <Form.Check
-                      key={x.id}
-                      value={x.id}
-                      type="checkbox"
-                      id={x.id}
-                      label={x.name}
-                      style={{ marginTop: 15 }}
-                      onChange={(e) => handleCheckboxChange(e, 'material')}
-                    />
-                  ))}
-                  <hr className="my-4" />
-                  <div className="icons-payment-systems">
-                    <div onClick={applyFilters} className="div59">
-                      застосувати{' '}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        className="bi bi-chevron-double-right"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"
-                        />
-                        <path
-                          fill-rule="evenodd"
-                          d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"
-                        />
-                      </svg>{' '}
-                    </div>
-                  </div>
-                </div>
-              </Offcanvas.Body>
-            </Offcanvas>
-          </Form>
-        </Navbar.Collapse>
-      </Navbar>
+              
+            </MDBCol>
+   
 
             <MDBCol hidden={allhidden} className="containerCart">
             {items.length > 0 ? (
@@ -405,8 +454,8 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
             </MDBCol>
           </MDBRow>
           <MDBRow >
-            <MDBCol  class='column-hide'></MDBCol>
-            <MDBCol style={{alignItems:'center'}}>
+            <MDBCol className='column-hide'  ></MDBCol>
+            <MDBCol >
               {visibleItems < items.length && (
                 <Button
                   style={{ borderRadius: '0px' }}
