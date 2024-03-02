@@ -49,6 +49,19 @@ function generatePath(categoryName) {
   }
 }
 
+function generatePathName(categoryName) {
+  switch (categoryName) {
+    case 'clothes':
+      return 'Одяг';
+    case'shoes':
+      return 'Взуття';
+    case 'accessorise':
+      return 'Аксесуари';
+
+    default:
+      return 'unknown';
+  }
+}
 
 
  useEffect(()=>
@@ -100,7 +113,7 @@ function generatePath(categoryName) {
 
 </div>
 
-<ContentPage items={allproducts} link='shoes' materials={materials} types={types} page='Взуття' ></ContentPage>
+<ContentPage items={allproducts} link={categoryName} materials={materials} types={types} page={generatePathName(categoryName)} ></ContentPage>
 
 
     <Footer />

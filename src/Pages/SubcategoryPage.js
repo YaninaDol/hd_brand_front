@@ -20,7 +20,7 @@ import ShoppingAssistant from '../Components/ShoppingAssistant';
 import CartProduct from '../Components/CartProduct';
 const SubcategoryPage = () => {
     const [total,setTotal] = useState(0);
-    const { id, subcategoryid } = useParams();
+    const { categoryName, subcategoryid } = useParams();
   const dispatch = useDispatch();
   const productsizes = useSelector(state => state.productsizes);
   const product = useSelector(state => state.product);
@@ -46,6 +46,19 @@ const SubcategoryPage = () => {
         return 'shoes';
       case 3:
         return 'accessorise';
+  
+      default:
+        return 'unknown';
+    }
+  }
+  function generatePathName(categoryName) {
+    switch (categoryName) {
+      case 'clothes':
+        return 'Одяг';
+      case'shoes':
+        return 'Взуття';
+      case 'accessorise':
+        return 'Аксесуари';
   
       default:
         return 'unknown';
@@ -100,68 +113,7 @@ const SubcategoryPage = () => {
     .catch(error => console.error('Error fetching products:', error));
   
   
-  
-    axios.get(`https://localhost:7269/api/Product/GetSizeofProduct?id=${id}`)
-    .then(respons => {
-      dispatch(setProductSizes(respons.data));
-     
-    })
-    .catch(error => console.error('Error fetching products:', error));
-  
-   
-  
-    axios.get(`https://localhost:7269/api/Product/GetProductById?id=${id}`)
-    .then(res => {
-      
-        dispatch(setProduct(res.data.value))
-     
-
-      axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
-      .then(resp => {
-     
-        dispatch(setCategory(resp.data.value));
-     
-      })
-      .catch(error => console.error('Error fetching products:', error));
-      axios.get(`https://localhost:7269/api/Specification/GetMaterialById?id=${res.data.value.materialid}`)
-      .then(resp => {
-     
-        dispatch(setMaterial(resp.data.value));
-    
-      })
-      .catch(error => console.error('Error fetching products:', error));
-      axios.get(`https://localhost:7269/api/Specification/GetSeasonById?id=${res.data.value.seasonid}`)
-      .then(resp => {
-     
-        dispatch(setSeason(resp.data.value));
-      
-      })
-      .catch(error => console.error('Error fetching products:', error));
-      axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
-    .then(responses => {
-      dispatch(setSimilar(responses.data));
-     
-    })
-    .catch(error => console.error('Error fetching products:', error));
-  
-      
-    })
-    .catch(error => console.error('Error fetching products:', error));
-
-    
-    
-   
-  
-    const storedBasket = window.sessionStorage.getItem("Basket");
-    if (storedBasket) {
-      const parsedBasketData = JSON.parse(storedBasket);
-      setArrBasket(parsedBasketData);
-      setCount(parsedBasketData.length);
-      const totalSum = parsedBasketData.reduce((sum, item) => sum + item.salePrice, 0);//
-      setTotal(totalSum);
-     }
-  
-  }, [id, subcategoryid, dispatch]);
+  }, [ subcategoryid, dispatch]);
 
 
 
@@ -262,120 +214,15 @@ const SubcategoryPage = () => {
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<a style={{color:'black'}} href={`/${generatePath(category.id)}`}>{category.name}</a>
+<a style={{color:'black'}} href={`/${categoryName}`}>{generatePathName(categoryName)}</a>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
 {subcategory.name}
 </div>
-   <div>
-
-<MDBContainer style={{margin:'50px'}}>
-<MDBRow style={{marginTop:'100px'}}>
-   
-
-    <MDBCol>
-            <MDBRow>
-   
-    <MDBCol><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-             </MDBRow>
-             <MDBRow>
-   
-   <MDBCol><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-            </MDBRow>
-   </MDBCol>
-   <MDBCol>
-            <MDBRow>
-   
-    <MDBCol><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-             </MDBRow>
-             <MDBRow>
-   
-   <MDBCol><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-            </MDBRow>
-   </MDBCol>
-<MDBCol style={{marginLeft:'25px'}}>
-
-<MDBRow >
-     <h1>{product.name} </h1>
-   
-    </MDBRow>
-
-<MDBRow  style={{marginTop:'5px',fontFamily:'monospace',fontSize:'20px'}}><h7>{product.salePrice} грн</h7> </MDBRow>
-<MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol> {season.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol> {subcategory.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol> {material.name} </MDBCol> </MDBRow>
-{productsizes.length > 1 && (
-  <MDBRow style={{marginTop:'55px'}}>
-    <div>
-     <MDBCol>
-      <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e) => AddBtn(e.target.value)}>
-      <option selected value="0">Оберіть розмір</option>
-      
-        {productsizes.map((x) => (
-            
-          <option key={x.id} value={x.id}>
-            {x.size}
-          </option>
-        ))}
-      </select>
-    </MDBCol>
-    </div>
-    <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} href='/shoesize'>Таблиця розмірів</a></MDBRow> </MDBCol>
-    
-  </MDBRow>
-)}
-
-<MDBRow  style={{marginTop:'55px'}}> <Button
-onClick={addBasket}
-                  style={{ borderRadius: '0px' }}
-                  variant="dark"
-                 
-                >
-                  Додати в кошик
-                </Button></MDBRow>
+ 
 
 
-
-          
-              
-</MDBCol>
-      
-</MDBRow>
-<MDBRow style={{marginTop:'75px'}}>
-<ShoppingAssistant></ShoppingAssistant>
-</MDBRow>
-<MDBRow style={{marginTop:'35px'}}>
-Вам також може сподобатись :
-<Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
-  
-{silimarproducts.length > 0 ? (
-    silimarproducts.map((x) => (
-      <Link to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
-      <CartProduct
-      id_key={x.id}
-      imageSrc1={x.image}
-      imageSrc2={x.image2}
-      isNew={x.isNew}
-      isDiscount={x.isDiscount}
-      isLiked={false}
-      descriprion={x.name}
-      price1={x.price}
-      price2={x.salePrice}
-      />
-      </Link>
-    ))
-  ) : (
-    <div></div>
-  )}
-   </Carousels>
-</MDBRow>
-</MDBContainer>
-
-
-</div>
 
 
 
