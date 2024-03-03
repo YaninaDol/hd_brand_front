@@ -794,7 +794,7 @@ function getOrder()
         <div class="accordion-body">
          
             {subcategory2.map((x) => (
-              <NavDropdown.Item  className="item-title" key={x.id} href={`/clothes/${x.id}`}>
+              <NavDropdown.Item  className="item-title" key={x.id} href={`/shoes/${x.id}`}>
               {x.name}
             </NavDropdown.Item>
             ))}
