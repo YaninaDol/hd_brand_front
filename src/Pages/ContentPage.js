@@ -18,7 +18,7 @@ import {
   MDBRange 
 } from 'mdb-react-ui-kit';
 const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
-  const [sortOrder, setSortOrder] = useState('asc');
+  const [sortOrder, setSortOrder] = useState('');
   const [sortCollection, setSortCollection] = useState('');
   const [itemsPerRow, setItemsPerRow] = useState(12);
   const [visibleItems, setVisibleItems] = useState(itemsPerRow);
@@ -109,7 +109,8 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     setfilteredProducts(priceFilteredProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
-    setSortOrder('asc');
+    setSortOrder('');
+    setSortCollection('');
   };
   function generatePath(categoryId) {
     switch (categoryId) {
@@ -571,7 +572,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
         onChange={handleRangeChange}
       />
       <p>
-        {rangeValues[0]}&nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
+        {rangeValues[0]}&nbsp;  &nbsp;    &nbsp; &nbsp;    &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
       </p>
     </div>
 

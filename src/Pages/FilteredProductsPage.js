@@ -15,7 +15,8 @@ const FilteredProductsPage = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
-  
+  const [allmaterials,setAllMAterials] = useState([]);
+  const [allsubcategories,seAllSubcategories] = useState([]);
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
   const query = searchParams.get('search') || '';
@@ -33,18 +34,21 @@ const FilteredProductsPage = () => {
       axios.get('https://localhost:7269/api/Specification/GetAllMaterials')
       .then(response => {
         console.log(response.data)
-        dispatch(setMaterials(response.data));
+      
+        setAllMAterials(response.data);
       })
       .catch(error => console.error('Error fetching products:', error));
+
       axios.get('https://localhost:7269/api/Specification/GetAllSubCategories')
       .then(response => {
         console.log(response.data)
-        dispatch(setSubCategories(response.data));
+      
+        seAllSubcategories(response.data);
       })
       .catch(error => console.error('Error fetching products:', error));
 
 
-  },[dispatch]);
+  },[dispatch,allmaterials,allsubcategories]);
 
 
   const filterProductsBySearchQuery = (query, contents) => {
@@ -62,7 +66,7 @@ const FilteredProductsPage = () => {
    <PxMainPage></PxMainPage>
     
       <div>
-      <ContentPage items={filteredProducts} link='search' materials={materials} types={subcategories} page='Пошук' ></ContentPage>
+      <ContentPage items={filteredProducts} link='search' materials={allmaterials} types={allsubcategories} page='Пошук' ></ContentPage>
 
 
 <Footer />

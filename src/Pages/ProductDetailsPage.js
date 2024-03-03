@@ -260,7 +260,7 @@ const ProductDetailsPage = () => {
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol> {subcategory.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol> {material.name} </MDBCol> </MDBRow>
-{productsizes.length > 1 && (
+
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
@@ -279,7 +279,7 @@ const ProductDetailsPage = () => {
     <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} href='/shoesize'>Таблиця розмірів</a></MDBRow> </MDBCol>
     
   </MDBRow>
-)}
+
 
 <MDBRow  style={{marginTop:'55px'}}> <Button
 onClick={addToBasket}
