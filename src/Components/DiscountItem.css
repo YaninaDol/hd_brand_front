@@ -185,9 +185,6 @@
     .card3 {
       gap: var(--gap-294xl);
     }
-    .uah8,
-    .uah9 {
-      font-size: var(--font-size-base);
-    }
+  
   }
   

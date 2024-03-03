@@ -16,7 +16,7 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked,
       setLoading(false);
     }, 1000);
 
-  
+    // Cleanup timeout to avoid memory leaks
     return () => clearTimeout(loadingTimeout);
   }, []);
 
@@ -25,7 +25,7 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked,
   };
 
   return (
-    <Card id={id_key} style={{ width: '200px', height: '350px', marginLeft: '15px', marginRight: '15px', marginTop: '5px', border: 'none', marginBottom: '25px', position: 'relative' }}>
+    <Card id={id_key} className='cart-item' style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', border: 'none', marginBottom: '25px', position: 'relative' }}>
       {loading ? (
        
        <Spinner variant="secondary"  animation="grow" />
@@ -34,10 +34,10 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked,
         <>
           <MDBCarousel>
             <MDBCarouselItem itemId={1}>
-              <Card.Img variant="top" style={{ width: '200px', height: '250px', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc1} />
+              <Card.Img id='id_img' variant="top" style={{  borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc1} />
             </MDBCarouselItem>
             <MDBCarouselItem itemId={2}>
-              <Card.Img variant="top" style={{ width: '200px', height: '250px', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc2} />
+              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc2} />
             </MDBCarouselItem>
           </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>

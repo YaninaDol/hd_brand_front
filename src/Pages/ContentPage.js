@@ -141,8 +141,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 </div>
 <MDBContainer className="py-5 h-100">
 <MDBRow > 
-<h2 className="h25">{page}</h2>
-       
+<MDBCol  style={{marginLeft:25}}><h2 className="h25">{page}</h2></MDBCol>
+<MDBCol style={{marginRight:35}}>  <p  id='filter_mob' style={{marginTop:35,textDecoration:'underline',position:'relative'}}  className="text-end">Фільтри</p>  </MDBCol>
+   
         
        </MDBRow>
        
@@ -152,7 +153,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
  
                  
             
-    <MDBCol lg="3" >
+    <MDBCol  id='filters' lg="3" >
     
     <div class="accordion accordion-flush" id="accordionFlushExample">
   <div class="accordion-item">

@@ -208,6 +208,15 @@
 {
   height: 400px;
 }
+#id_img
+{
+  width: 200px; height: 250px;
+}
+.cart-item
+{
+  width: 200px; height: 350px;
+}
+
 @media (max-width: 1400px) {
   .cardIMG
 {
@@ -226,7 +235,16 @@
       font-size: 15px;
     }
   }
+
   @media screen and (max-width: 464px) {
+    #id_img
+{
+  width: 150px; height: 200px;
+}
+.cart-item
+{
+  width: 150px; height: 280px;
+}
     .cardIMG
  {
       height: 200px;
@@ -236,11 +254,12 @@
       box-sizing: border-box;
     }
     .description-price,
-    .uah89,
+    .uah9,
     .uah8,
     .uah7 {
       font-size: 15px;
     }
+    
   }
   @media (max-width: 280px) {
     .cardIMG

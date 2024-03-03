@@ -11,15 +11,7 @@
   .column-hide{
     display: block;
   }
-  .stock-status {
-    opacity: 0.5;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    margin-left: 100px;
-    gap: 0 8px;
-  }
+  
   .div35 {
     position: relative;
   }
@@ -428,8 +420,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 0 var(--padding-9xl);
+  padding-left: 30px;
   gap: 0 8px;
+  opacity: 0.5;
 }
 
 .icon1 {
@@ -1391,7 +1384,23 @@
   color: var(--color-black);
   justify-content: center;
 }
-
+#filter_mob
+  {
+    display: none;
+  }
+@media screen and (max-width: 1125px) {
+  #filter_mob
+  {
+    display: block;
+  }
+  #filters {
+    display: none;
+  }
+  .column-hide{
+    display: none;
+  }
+  
+}
 @media screen and (max-width: 825px) {
   .column-hide{
     display: none;
