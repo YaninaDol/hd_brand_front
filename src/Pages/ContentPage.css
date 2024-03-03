@@ -1389,6 +1389,10 @@
     display: none;
   }
 @media screen and (max-width: 1125px) {
+  .showmoreBtn
+  {
+    text-align: center !important;
+  }
   #filter_mob
   {
     display: block;
