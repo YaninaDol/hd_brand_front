@@ -68,6 +68,8 @@ function generatePathName(categoryName) {
 
 {
  
+
+  
   axios.get(`https://localhost:7269/api/Product/GetProductsByCategory?id=${generatePath(categoryName)}`)
   .then(response => {
     setAllProducts(response.data);
@@ -92,14 +94,7 @@ function generatePathName(categoryName) {
   })
   .catch(error => console.error('Error fetching products:', error));
 
-  const storedBasket = window.sessionStorage.getItem("Basket");
-  if (storedBasket) {
-    const parsedBasketData = JSON.parse(storedBasket);
-    setArrBasket(parsedBasketData);
-    setCount(parsedBasketData.length);
-    const totalSum = parsedBasketData.reduce((sum, item) => sum + item.salePrice, 0);//
-    setTotal(totalSum);
-   }
+ 
 
 }, [dispatch,categoryName,allproducts]);
 

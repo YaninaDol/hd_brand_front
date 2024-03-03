@@ -4,7 +4,7 @@ import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
 import { useState } from "react";
 import { useEffect } from "react";
-import {setProductSizes } from '../redux/actions';
+import {setProductSizes, setSubCategories } from '../redux/actions';
 import axios from 'axios';
 import { connect,useDispatch,useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
@@ -18,24 +18,21 @@ import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import ShoppingAssistant from '../Components/ShoppingAssistant';
 
 import CartProduct from '../Components/CartProduct';
+import ContentPage from './ContentPage';
+import ContentPageSubCat from './ContentPageSubCat';
 const SubcategoryPage = () => {
-    const [total,setTotal] = useState(0);
     const { categoryName, subcategoryid } = useParams();
+    const [materials,setMaterials] = useState([]);
+    const [items,setItems] = useState([]);
   const dispatch = useDispatch();
-  const productsizes = useSelector(state => state.productsizes);
-  const product = useSelector(state => state.product);
-  const silimarproducts=useSelector(state => state.silimarproducts);
-  const products = useSelector(state => state.products);
   const subcategory = useSelector(state => state.subcategory);
   const category = useSelector(state => state.category);
   const material = useSelector(state => state.material);
   const season = useSelector(state => state.season);
-  const [newProd,setNewProd] = useState(new Object());
-  const [arrBasket,setArrBasket] = useState([]);
-  const [count, setCount] = useState(0);
   const [showM, setshowM] = useState(false);
   const handleCloseM = () => setshowM(false);
   const handleShowM = () => setshowM(true);
+
 
 
   function generatePath(categoryId) {
@@ -64,136 +61,52 @@ const SubcategoryPage = () => {
         return 'unknown';
     }
   }
-  const responsive = {
-    desktopLarge: {
-      breakpoint: { max: 3000, min: 1400 },
-      items: 5,
-      slidesToSlide: 5,
-      partialVisible: true,
-      itemWidth: 20,
-    },
-    desktop: {
-      breakpoint: { max: 1400, min: 800 },
-      items: 4,
-      slidesToSlide: 4,
-      itemWidth: 20,
-    },
-    tablet: {
-      breakpoint: { max: 800, min: 464 },
-      items: 3,
-      slidesToSlide: 3,
-      itemWidth: 20,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 2,
-      slidesToSlide: 2,
-      itemWidth: 20,
-    },
-  };
+
+
+  function generateId(categoryName) {
+    switch (categoryName) {
+      case 'clothes':
+        return 1;
+      case'shoes':
+        return 2;
+      case 'accessorise':
+        return 3;
   
-
-
+      default:
+        return 'unknown';
+    }
+  }
 
 
   useEffect(()=>
 
   {
   
-
-
     axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
     .then(response => {
+      dispatch(setSubCategory(response.data.value));
+    })
+    .catch(error => console.error('Error fetching products:', error));
+
+    axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
+    .then(response => {
     
-     
-    
-     dispatch(setSubCategory(response.data.value))
+     console.log(response.data);
+     setItems(response.data);
     
     })
     .catch(error => console.error('Error fetching products:', error));
-  
-  
-  }, [ subcategoryid, dispatch]);
-
-
-
-  
-  function addBasket() {
+    axios.get(`https://localhost:7269/api/Specification/MaterialNamesByCategoryId?id=${generateId(categoryName)}`)
+  .then(response => {
    
-    if(product.categoryid != 3)
-         {     if (newProd.size !== null) {
-              
-                const existingProduct = arrBasket.find(item => item.size === newProd.size);
-            
-                if (existingProduct) {
-              
-                  alert("Товар вже доданий у кошик !");
-                } else {
-              
-
-                  setCount(prevCount => {
-                    const newCount = prevCount + 1;
-                  
-                    return newCount;
-                  });
-              
+    setMaterials(response.data)
+  })
+  .catch(error => console.error('Error fetching products:', error));
+  
+  }, [categoryName, subcategoryid, dispatch,items]);
 
 
-                  let copy = [...arrBasket];
-                  copy.push(newProd);
-                  setArrBasket(copy);
-                  handleShowM();
-                  window.sessionStorage.setItem("Basket", JSON.stringify(copy));
-            
-                  setTotal(total + newProd['price']);
-              
-                
-                  window.location.reload();
-                }
-              } else {
-            
-                alert("Оберіть розмір!");
-              }
-            }
-    else
-            {
-           
-              const existingProduct = arrBasket.find(item => item.productid === product.id);
-            
-              if (existingProduct) {
-            
-                alert("Товар вже доданий у кошик !");
-              } else {
-            
 
-                setCount(prevCount => {
-                  const newCount = prevCount + 1;
-                
-                  return newCount;
-                });
-            
-
-
-                let copy = [...arrBasket];
-                copy.push(productsizes.find(item => item.productid == product.id));
-                setArrBasket(copy);
-                handleShowM();
-                window.sessionStorage.setItem("Basket", JSON.stringify(copy));
-          
-                setTotal(total + product['salePrice']);
-            
-              
-                window.location.reload();
-              }
-            
-            }
-  }
-  function AddBtn(id)
-  {
-      setNewProd(productsizes.find(item => item.id == id));
-    
-
-  }
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
@@ -221,6 +134,7 @@ const SubcategoryPage = () => {
 {subcategory.name}
 </div>
  
+<ContentPageSubCat items={items} link={categoryName} materials={materials}  page={subcategory.name} ></ContentPageSubCat>
 
 
 
