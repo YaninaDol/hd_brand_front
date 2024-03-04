@@ -50,5 +50,6 @@
   .div152 {
     flex-wrap: wrap;
     flex: 1;
+    margin: 5px;
   }
 }

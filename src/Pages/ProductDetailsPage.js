@@ -16,10 +16,9 @@ import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,set
 import { useParams } from 'react-router-dom';
 import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import ShoppingAssistant from '../Components/ShoppingAssistant';
-
+import '../Pages/ProductdetailPage.css';
 import CartProduct from '../Components/CartProduct';
 const ProductDetailsPage = () => {
-    const [total,setTotal] = useState(0);
     const { id, subcategoryid } = useParams();
   const dispatch = useDispatch();
   const productsizes = useSelector(state => state.productsizes);
@@ -31,8 +30,6 @@ const ProductDetailsPage = () => {
   const material = useSelector(state => state.material);
   const season = useSelector(state => state.season);
   const [newProd,setNewProd] = useState(null);
-  const [arrBasket,setArrBasket] = useState([]);
-  const [count, setCount] = useState(0);
   const [showM, setshowM] = useState(false);
   const handleCloseM = () => setshowM(false);
   const handleShowM = () => setshowM(true);
@@ -223,33 +220,48 @@ const ProductDetailsPage = () => {
 </div>
    <div>
 
-<MDBContainer style={{margin:'50px'}}>
-<MDBRow style={{marginTop:'100px'}}>
+<MDBContainer id='container50'>
+<MDBRow id='rowmargin50' >
    
 
-    <MDBCol>
+    <MDBCol id='photocolumn'>
             <MDBRow>
    
-    <MDBCol><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+    <MDBCol  ><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
              </MDBRow>
              <MDBRow>
    
-   <MDBCol><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+   <MDBCol  ><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
             </MDBRow>
    </MDBCol>
-   <MDBCol>
+   <MDBCol  id='photocolumn'>
             <MDBRow>
    
-    <MDBCol><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+    <MDBCol  id='photocolumn'><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
              </MDBRow>
              <MDBRow>
    
-   <MDBCol><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+   <MDBCol  id='photocolumn'><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
             </MDBRow>
    </MDBCol>
-<MDBCol style={{marginLeft:'25px'}}>
+<MDBCol style={{margin:'25px'}}>
 
 <MDBRow >
+<Carousel id='photocolumnmob'>
+<Carousel.Item>
+<img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>
+<Carousel.Item>
+<img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>
+<Carousel.Item>
+<img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>
+<Carousel.Item>
+<img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>
+</Carousel>
+
      <h1>{product.name} </h1>
    
     </MDBRow>
@@ -281,7 +293,7 @@ const ProductDetailsPage = () => {
   </MDBRow>
 
 
-<MDBRow  style={{marginTop:'55px'}}> <Button
+<MDBRow className='text-center'  style={{marginTop:'55px'}}> <Button
 onClick={addToBasket}
                   style={{ borderRadius: '0px' }}
                   variant="dark"
@@ -301,7 +313,8 @@ onClick={addToBasket}
 <ShoppingAssistant></ShoppingAssistant>
 </MDBRow>
 <MDBRow style={{marginTop:'35px'}}>
-Вам також може сподобатись :
+  <div style={{marginBottom:35,fontSize:20}}>Вам також може сподобатись :</div>
+
 <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
   
 {silimarproducts.length > 0 ? (

@@ -481,7 +481,7 @@ function getOrder()
         </Modal.Header>
         <Modal.Body>
           {arrBasket.length < 1 ? (
-            <p>Ваш кошик пустий.</p>
+            <p>Ваш кошик пустий </p>
           ) : (
             <>
               <MDBRow id='titleRow' className="justify-content-between align-items-center">

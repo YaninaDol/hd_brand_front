@@ -1,0 +1,31 @@
+#container50
+{
+    margin:50px;
+}
+#rowmargin50
+{
+    margin-top:50px;
+}
+#photocolumnmob
+{
+   display:none;
+}
+@media screen and (max-width: 1125px) {
+    #rowmargin50
+{
+    margin:0px;
+}
+#container50
+{
+    margin:0px;
+}
+ #photocolumn
+ {
+    display:none;
+ }
+ #photocolumnmob
+ {
+    display:block;
+ }
+    
+  }
