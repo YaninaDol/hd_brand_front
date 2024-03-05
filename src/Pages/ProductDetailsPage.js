@@ -33,6 +33,9 @@ const ProductDetailsPage = () => {
   const [showM, setshowM] = useState(false);
   const handleCloseM = () => setshowM(false);
   const handleShowM = () => setshowM(true);
+  const [showTableSize, setshowTableSize] = useState(false);
+  const handleClosetableSize = () => setshowTableSize(false);
+  const handleShowtableSize = () => setshowTableSize(true);
 
 
   function generatePath(categoryId) {
@@ -111,6 +114,7 @@ const ProductDetailsPage = () => {
     .then(res => {
       
         dispatch(setProduct(res.data.value))
+         console.log(res.data.value);
      
 
       axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
@@ -188,6 +192,21 @@ const ProductDetailsPage = () => {
     }
   };
  
+  function getTableImage(sizeId) {
+    switch (sizeId) {
+      case "1":
+        return require('../assets/table2.png');
+      case "2":
+        return require('../assets/table4.png');
+      case "11":
+        return require('../assets/table3.png');
+      case "12":
+        return require('../assets/table1.png');
+      default:
+        return  require('../assets/table1.png');
+    }
+  }
+
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
@@ -197,6 +216,16 @@ const ProductDetailsPage = () => {
       <Modal show={showM} onHide={handleCloseM}>
         <Modal.Header closeButton>
         <Modal.Body>Товар додано до кошику </Modal.Body>
+        </Modal.Header>
+      
+      
+      </Modal>
+      <Modal show={showTableSize} onHide={handleClosetableSize}>
+        <Modal.Header closeButton>
+        <Modal.Body>
+        <img width={400} src={getTableImage(product.sizes)} alt={`Table for size ${product.sizes}`} />
+          
+           </Modal.Body>
         </Modal.Header>
       
       
@@ -288,7 +317,7 @@ const ProductDetailsPage = () => {
       </select>
     </MDBCol>
     </div>
-    <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} href='/shoesize'>Таблиця розмірів</a></MDBRow> </MDBCol>
+    <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
     
   </MDBRow>
 
