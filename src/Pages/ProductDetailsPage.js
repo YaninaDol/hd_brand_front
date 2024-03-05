@@ -158,7 +158,6 @@ const ProductDetailsPage = () => {
   const addToBasket = () => {
   
     if (newProd!=null) {
-     console.log(newProd);
       const storedBasket = window.sessionStorage.getItem("Basket");
       const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
   
@@ -223,7 +222,7 @@ const ProductDetailsPage = () => {
       <Modal show={showTableSize} onHide={handleClosetableSize}>
         <Modal.Header closeButton>
         <Modal.Body>
-        <img width={400} src={getTableImage(product.sizes)} alt={`Table for size ${product.sizes}`} />
+        <img id='sizemodal'  src={getTableImage(product.sizes)} alt={`Table for size ${product.sizes}`} />
           
            </Modal.Body>
         </Modal.Header>

@@ -10,10 +10,18 @@
 {
    display:none;
 }
+#sizemodal
+{
+    width: 400px;
+}
 @media screen and (max-width: 1125px) {
     #rowmargin50
 {
     margin:0px;
+}
+#sizemodal
+{
+    width: 300px;
 }
 #container50
 {
