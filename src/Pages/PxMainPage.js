@@ -112,10 +112,13 @@ const expand='false';
 
   function loginbtn()
   {
-    
+    if(!window.sessionStorage.getItem("UserId"))
       handleShow();
+    else{
+
+    }
      
-   
+     window.location.href='/account';
 
   }
 
@@ -151,8 +154,8 @@ const expand='false';
 
                              {
                                              
-                           
-                          
+                              window.location.href='/account';
+                              
                           
                           
                               handleClose();
