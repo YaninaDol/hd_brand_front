@@ -27,6 +27,7 @@ export default function ProductTable(){
   
     const [inputSearch, setInputSearch] = useState('');
     const [findproducts,setFindProducts] = useState([]);
+    const [colors,setColors] = useState([]);
     const [AddProductImage3,setAddProductImage3] = useState("");
     const [AddProductName,setAddProductName] = useState("");
     const [AddProductImage,setAddProductImage] = useState("");
@@ -41,6 +42,7 @@ export default function ProductTable(){
     const [AddProductSeason,setAddProductSeason] = useState("");
     const [AddProductMaterial,setAddProductMaterial] = useState("");
     const [AddProductSizes,setAddProductSizes] = useState("");
+    const [AddProductColor,setAddProductColor] = useState("");
     const [AddIsNew,setAddAddIsNew] = useState(true);
     const [idToDelete,setIdToDelete]=useState(0);
 
@@ -53,6 +55,7 @@ export default function ProductTable(){
     const [priceUpdate,setPriceUpdate] = useState(0);
     const [salepriceUpdate,setSalePriceUpdate] = useState(0);
     const [materialUpdate,setMaterialUpdate] = useState("");
+    const [colorUpdate,setColorlUpdate] = useState("");
     const [seasonUpdate,setSeasonUpdate] = useState(true);
     const [isNewUpdate,setIsNewUpdate] = useState(true);
     const [categoryUpdate,setCategoryUpdate] = useState(0);
@@ -90,6 +93,14 @@ export default function ProductTable(){
       .then(response => {
        
         dispatch(setSizes(response.data))
+       
+      })
+      .catch(error => console.error('Error fetching products:', error));
+
+      axios.get('https://localhost:7269/api/Specification/GetAllColors')
+      .then(response => {
+       
+       setColors(response.data)
        
       })
       .catch(error => console.error('Error fetching products:', error));
@@ -147,6 +158,7 @@ export default function ProductTable(){
         setSeasonUpdate(prod['seasonid'])
         setSizesUpdate(prod['sizes'])
         setPriceUpdate(prod['price']);
+        setColorlUpdate(prod['color']);
         setSalePriceUpdate(prod['salePrice']);
       handleShowUp();
       
@@ -173,6 +185,7 @@ function confirmAdd()
           bodyFormData.append('price', AddproductPrice);
           bodyFormData.append('salePrice', AddproductPrice);
           bodyFormData.append('sizes', AddProductSizes);
+          bodyFormData.append('color', AddProductColor);
           bodyFormData.append('isDiscount', false); 
           
           
@@ -303,6 +316,7 @@ const confirmUpdate = () => {
     bodyFormData.append('price', priceUpdate);
     bodyFormData.append('saleprice', salepriceUpdate);
     bodyFormData.append('sizes', SizesUpdate);
+    bodyFormData.append('color', colorUpdate);
   
     if(salepriceUpdate<priceUpdate)
     {
@@ -322,10 +336,10 @@ const confirmUpdate = () => {
       method:'post',
       url:'https://localhost:7269/api/Product/Update',
       data:bodyFormData
-      // ,headers: {
-      //   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-      //         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-      // },
+      ,headers: {
+        'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+              'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+      },
     
       }
 
@@ -570,6 +584,21 @@ function changeLook()
       <MDBInputGroup className='mb-3'  textBefore='Sale Price'>
       <input  onChange={(e)=>setSalePriceUpdate(e.target.value)} value={salepriceUpdate} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
       </MDBInputGroup>
+      <MDBInputGroup className='mb-3'  textBefore='Colors' >
+      <div className="mb-6 pb-2">
+                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setColorlUpdate((e.target.value))} value={colorUpdate}>
+               
+                      {
+                      colors.map((x) => 
+                        <option  value={x.name}>
+                        {x.name}
+                        </option>
+                     )}
+                  
+                </select>
+                </div>
+      </MDBInputGroup>
+       
       <MDBInputGroup className='mb-3'  textBefore='New Product'>
       <MDBCheckbox  label='NEW' checked={isNewUpdate} onChange={(e)=>setIsNewUpdate(e.target.checked)} />
       </MDBInputGroup>
@@ -586,7 +615,7 @@ function changeLook()
    <CardGroup style={{height:300}}>
     {
       allproducts.filter((x) => x.weeklyLook === true).map((product) => (
-        <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> {/* Assuming there is an 'id' property in your product object */}
+        <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> 
           <Card.Img variant="center" style={{height:'80%'}}  src={product.image}></Card.Img>
         <Button style={{marginTop:'15px'}} onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
         </Card>
@@ -626,6 +655,7 @@ function changeLook()
           <th>Sizes</th>
           <th>Price</th>
           <th>For sale</th>
+          <th>Color</th>
           <th>Function</th>
           <th></th>
 
@@ -721,8 +751,26 @@ function changeLook()
            </td>
            <td > <MDBInput onChange={((e)=>setAddproductPrice(e.target.value))} type='number' min='0' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '');"/> </td>
         
-<td >  </td>
-<td><Button   onClick={confirmAdd}  variant='dark'> Confirm to database</Button></td>
+<td > Same price </td>
+<td > <MDBInputGroup className='mb-3' >
+      <div className="mb-6 pb-2">
+                <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductColor(e.target.value)}>
+                <option selected value="0">Choose item</option>
+                      {
+                      colors.map((x) => 
+                        <option  value={x.name}>
+                        {x.name}
+                        </option>
+                     )}
+                  
+                </select>
+                </div>
+                </MDBInputGroup>
+           </td>
+<td><Button   onClick={confirmAdd}  variant='dark'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
+  <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z"/>
+  <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0"/>
+</svg></Button></td>
 <td></td>
       </tr>
       {
@@ -731,34 +779,26 @@ function changeLook()
         <th scope='row'>{x.id}</th>
       
         <td > 
-           <MDBInputGroup  className='mb-3'  >
-      <input   value={x.name} className='form-control' type='text' />
-    </MDBInputGroup>
+        {x.name}
     </td>
     <td > 
     <img src={x.image} width={50} height={50} alt="Товар" />
-           <MDBInputGroup  className='mb-3'  >
-      <input  value={x.image} className='form-control' type='text' />
-    </MDBInputGroup>
+         
     </td>
     <td > 
     <img src={x.image2} width={50} height={50} alt="Товар" />
-           <MDBInputGroup  className='mb-3'  >
-      <input  value={x.image2} className='form-control' type='text' />
-    </MDBInputGroup>
+      
     </td>
     <td > 
     <img src={x.image3} width={50} height={50} alt="Товар" />
-           <MDBInputGroup  className='mb-3'  >
-      <input  value={x.image3} className='form-control' type='text' />
-    </MDBInputGroup>
+           
     </td>
     <td > 
            <MDBInputGroup  className='mb-3'  >
       <input value={x.video} className='form-control' type='text' />
     </MDBInputGroup>
     </td>
-    <td>   <MDBCheckbox  label='NEW' checked={x.isNew} /></td>
+    <td>   <MDBCheckbox checked={x.isNew} /></td>
     <td >
 
 <MDBInputGroup className='mb-3' >
@@ -862,15 +902,36 @@ function changeLook()
 </td>
     
         
-       
+<td >
+        <MDBInputGroup className='mb-3' >
+      <div className="mb-6 pb-2">
+                <select  className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setColorlUpdate(e.target.value)} value={x.color}>
+            
+                      {
+                      colors.map((x) => 
+                        <option  value={x.name}>
+                        {x.name}
+                        </option>
+                     )}
+                  
+                </select>
+                </div>
+      </MDBInputGroup>
+
+        </td>
 
         <td>
           
-         <Button variant="dark" onClick={()=>{handleUpdateClick(x.id)}}> Update </Button>
+         <Button variant="dark" onClick={()=>{handleUpdateClick(x.id)}}> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+  <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"/>
+  <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"/>
+</svg> </Button>
          </td>
        
         <td >
-        <Button variant="dark" onClick={()=>{setIdToDelete(x.id);handleShowRemove();}}> Delete </Button>
+        <Button variant="dark" onClick={()=>{setIdToDelete(x.id);handleShowRemove();}}> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+</svg> </Button>
          </td>
         
         

@@ -140,7 +140,6 @@
     flex-direction: row;
     gap: var(--gap-7xs);
     font-size: var(--subtitle-medium-20-size);
-    color: var(--typography-gray);
    
   }
   .card-body {

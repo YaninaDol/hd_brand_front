@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Slider from 'rc-slider';
 import '../Components/range.css'; 
+import '../Pages/FrameSet.css'; 
 import { Navbar, Nav, NavDropdown,Offcanvas  } from 'react-bootstrap';
 import {
  
@@ -31,7 +32,7 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
-  
+  const [selectedColor, setSelectedColor] = useState('');
   const [rangeValues, setRangeValues] = useState([0, 10000]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
@@ -95,10 +96,11 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
       const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
       const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
-    
+      
+      const colorIncluded = selectedColor==='' || (product.color && product.color === selectedColor);
    
     
-      return typeIncluded && materialIncluded && seasonIncluded;
+      return typeIncluded && materialIncluded && seasonIncluded && colorIncluded;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
       const priceInRange = product.salePrice >= rangeValues[0] && product.salePrice <= rangeValues[1];
@@ -111,6 +113,14 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     setFilteredHidden('');
     setSortOrder('');
     setSortCollection('');
+  };
+  const resetFilters = () => {
+    setfilteredProducts([]);
+    setAllHidden('');
+    setFilteredHidden('hidden');
+    setSortOrder('');
+    setSortCollection('');
+    setSelectedColor('');
   };
   function generatePath(categoryId) {
     switch (categoryId) {
@@ -365,36 +375,54 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     </h2>
     <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
-      <div className="frame-instance">
-                            <div className="rectangle-parent">
-                              <div className="rectangle">
-                                <div className="similarto-spring-summer-autumn">
-                                  <div className="similarto-spring-summer-autumn1" />
-                                  
-                                  <input
-                                    className="similarto-spring-summer-autumn3"
-                                    type="checkbox"
-                                  />
-                                  <div className="similarto-spring-summer-autumn4" />
-                                  <div className="similarto-spring-summer-autumn5" />
-                                  <div className="similarto-spring-summer-autumn6" />
-                                  <div className="similarto-spring-summer-autumn7" />
-                                </div>
-                                <div className="div56">
-                                  <p className="p4">Чорний</p>
-                                  <p className="p5">Білий</p>
-                                  <p className="p6">Молочний</p>
-                                  <p className="p8">Мокко</p>
-                                  <p className="p9">Карамельний</p>
-                                  <p className="p10">Хакі</p>
-                                </div>
-                              </div>
-                              <div className="div57">Показати ще</div>
-                            </div>
-                            <div className="similarto-spring-summer-autumn8">
-                              <div className="div58" />
-                            </div>
-                          </div>
+      <div className="frame-set">
+      <div className={`color ${selectedColor === 'Білий' ? 'selected' : ''}`} onClick={()=>setSelectedColor('Білий')} >
+        <div key="0" className="white"  />
+        <div className="div132">Білий</div>
+      </div>
+      <div  key="1" onClick={()=>setSelectedColor('Бежевий')} className={`color1 ${selectedColor === 'Бежевий' ? 'selected' : ''}`}>
+        
+        <div className="color-child" />
+        <div className="div133">Бежевий</div>
+      </div>
+      <div  key="2" onClick={()=>setSelectedColor('Коричневий')}  className={`color2 ${selectedColor === 'Коричневий' ? 'selected' : ''}`}>
+        <div className="color-item" />
+        <div className="div134">Коричневий</div>
+      </div>
+      <div  key="3" onClick={()=>setSelectedColor('Чорний')}  className={`color3 ${selectedColor === 'Чорний' ? 'selected' : ''}`}>
+        <div className="color-inner" />
+        <div className="div135">Чорний</div>
+      </div>
+      <div  key="4" onClick={()=>setSelectedColor('Сірий')}   className={`color4 ${selectedColor === 'Сірий' ? 'selected' : ''}`}>
+        <div className="color-child1" />
+        <div className="div136">Сірий</div>
+      </div>
+      <div  key="5" onClick={()=>setSelectedColor('Червоний')}  className={`color5 ${selectedColor === 'Червоний' ? 'selected' : ''}`}>
+        <div className="color-child2" />
+        <div className="div137">Червоний</div>
+      </div>
+      <div  key="6"  onClick={()=>setSelectedColor('Рожевий')}  className={`color6 ${selectedColor === 'Рожевий' ? 'selected' : ''}`}>
+        <div className="color-child3" />
+        <div className="div138">Рожевий</div>
+      </div>
+      <div  key="7"  onClick={()=>setSelectedColor('Фіолетовий')}  className={`color7 ${selectedColor === 'Фіолетовий' ? 'selected' : ''}`}>
+        <div className="color-child4" />
+        <div className="div139">Фіолетовий</div>
+      </div>
+      <div  key="8"  onClick={()=>setSelectedColor('Блакитний')}   className={`color8 ${selectedColor === 'Блакитний' ? 'selected' : ''}`}>
+        <div className="color-child5" />
+        <div className="div140">Блакитний</div>
+      </div>
+      <div  key="9"  onClick={()=>setSelectedColor('Зелений')}  className={`color9 ${selectedColor === 'Зелений' ? 'selected' : ''}`}>
+        <div className="color-child6" />
+        <div className="div141">Зелений</div>
+      </div>
+      <div  key="10"  onClick={()=>setSelectedColor('Комбінований')}  className={`color10 ${selectedColor === 'Комбінований' ? 'selected' : ''}`}>
+        <div className="color-child7" />
+        <div className="div142">Комбінований</div>
+      </div>
+    
+      </div>
     
       </div>
     </div>
@@ -408,6 +436,15 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
+{filteredProducts.length > 0 && (
+    <div style={{marginTop:'10px',opacity:'0.5',textDecoration:'underline'}} onClick={resetFilters} >
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+</svg>
+      скинути всі фільтри 
+     
+    </div>
+  )}
                      
                     </div>
               
@@ -687,37 +724,54 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
     </h2>
     <div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
-      <div className="frame-instance">
-                            <div className="rectangle-parent">
-                              <div className="rectangle">
-                                <div className="similarto-spring-summer-autumn">
-                                  <div className="similarto-spring-summer-autumn1" />
-                                  
-                                  <input
-                                    className="similarto-spring-summer-autumn3"
-                                    type="checkbox"
-                                  />
-                                  <div className="similarto-spring-summer-autumn4" />
-                                  <div className="similarto-spring-summer-autumn5" />
-                                  <div className="similarto-spring-summer-autumn6" />
-                                  <div className="similarto-spring-summer-autumn7" />
-                                </div>
-                                <div className="div56">
-                                  <p className="p4">Чорний</p>
-                                  <p className="p5">Білий</p>
-                                  <p className="p6">Молочний</p>
-                                  <p className="p8">Мокко</p>
-                                  <p className="p9">Карамельний</p>
-                                  <p className="p10">Хакі</p>
-                                </div>
-                              </div>
-                              <div className="div57">Показати ще</div>
-                            </div>
-                            <div className="similarto-spring-summer-autumn8">
-                              <div className="div58" />
-                            </div>
-                          </div>
+      <div className="frame-set">
+      <div className={`color ${selectedColor === 'Білий' ? 'selected' : ''}`} onClick={()=>setSelectedColor('Білий')} >
+        <div key="0" className="white"  />
+        <div className="div132">Білий</div>
+      </div>
+      <div  key="1" onClick={()=>setSelectedColor('Бежевий')} className={`color1 ${selectedColor === 'Бежевий' ? 'selected' : ''}`}>
+        
+        <div className="color-child" />
+        <div className="div133">Бежевий</div>
+      </div>
+      <div  key="2" onClick={()=>setSelectedColor('Коричневий')}  className={`color2 ${selectedColor === 'Коричневий' ? 'selected' : ''}`}>
+        <div className="color-item" />
+        <div className="div134">Коричневий</div>
+      </div>
+      <div  key="3" onClick={()=>setSelectedColor('Чорний')}  className={`color3 ${selectedColor === 'Чорний' ? 'selected' : ''}`}>
+        <div className="color-inner" />
+        <div className="div135">Чорний</div>
+      </div>
+      <div  key="4" onClick={()=>setSelectedColor('Сірий')}   className={`color4 ${selectedColor === 'Сірий' ? 'selected' : ''}`}>
+        <div className="color-child1" />
+        <div className="div136">Сірий</div>
+      </div>
+      <div  key="5" onClick={()=>setSelectedColor('Червоний')}  className={`color5 ${selectedColor === 'Червоний' ? 'selected' : ''}`}>
+        <div className="color-child2" />
+        <div className="div137">Червоний</div>
+      </div>
+      <div  key="6"  onClick={()=>setSelectedColor('Рожевий')}  className={`color6 ${selectedColor === 'Рожевий' ? 'selected' : ''}`}>
+        <div className="color-child3" />
+        <div className="div138">Рожевий</div>
+      </div>
+      <div  key="7"  onClick={()=>setSelectedColor('Фіолетовий')}  className={`color7 ${selectedColor === 'Фіолетовий' ? 'selected' : ''}`}>
+        <div className="color-child4" />
+        <div className="div139">Фіолетовий</div>
+      </div>
+      <div  key="8"  onClick={()=>setSelectedColor('Блакитний')}   className={`color8 ${selectedColor === 'Блакитний' ? 'selected' : ''}`}>
+        <div className="color-child5" />
+        <div className="div140">Блакитний</div>
+      </div>
+      <div  key="9"  onClick={()=>setSelectedColor('Зелений')}  className={`color9 ${selectedColor === 'Зелений' ? 'selected' : ''}`}>
+        <div className="color-child6" />
+        <div className="div141">Зелений</div>
+      </div>
+      <div  key="10"  onClick={()=>setSelectedColor('Комбінований')}  className={`color10 ${selectedColor === 'Комбінований' ? 'selected' : ''}`}>
+        <div className="color-child7" />
+        <div className="div142">Комбінований</div>
+      </div>
     
+      </div>
       </div>
     </div>
   </div>
@@ -730,8 +784,17 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-                     
+{filteredProducts.length > 0 && (
+    <div style={{marginTop:'10px',opacity:'0.5',textDecoration:'underline'}} onClick={resetFilters} >
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+</svg>
+      скинути всі фільтри 
+     
+    </div>
+)}   
                     </div>
+                    
         </Offcanvas.Body>
       </Offcanvas>
     

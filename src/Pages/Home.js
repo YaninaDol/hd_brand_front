@@ -83,7 +83,7 @@ const Home = () => {
         return 'unknown';
     }
   }
-  const showSection = contents.filter((x) => x.isDiscount === true).length > 5;
+  const showSection = contents.filter((x) => x.isDiscount === true).length > 4;
   return (
     <div >
     <PxMainPage />
