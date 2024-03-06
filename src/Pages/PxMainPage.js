@@ -115,10 +115,10 @@ const expand='false';
     if(!window.sessionStorage.getItem("UserId"))
       handleShow();
     else{
-
+      window.location.href='/account';
     }
      
-     window.location.href='/account';
+   
 
   }
 
@@ -470,7 +470,10 @@ function generatePath(categoryId) {
 }
 function getOrder()
 {
-
+  if(arrBasket.length>0)
+  {
+    window.location.href='/checkout';
+  }
 }
      return (
      
@@ -484,7 +487,7 @@ function getOrder()
         </Modal.Header>
         <Modal.Body>
           {arrBasket.length < 1 ? (
-            <p>Ваш кошик пустий </p>
+            <p>Ваш кошик порожній </p>
           ) : (
             <>
               <MDBRow id='titleRow' className="justify-content-between align-items-center">

@@ -10,7 +10,7 @@ import ProductDetailsPage from './Pages/ProductDetailsPage';
 import ShoeSizeTable from './Components/ShoeSizeTable';
 import FilteredProductsPage from './Pages/FilteredProductsPage';
 import SubcategoryPage from './Pages/SubcategoryPage';
-import OrderPage from './Pages/OrderPage';
+import CheckoutPage from './Pages/CheckoutPage';
 
 const App = () => {
   return (
@@ -26,7 +26,7 @@ const App = () => {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/shoesize" element={<ShoeSizeTable />} />
           <Route path="/search" element={<FilteredProductsPage />} />
-          <Route path="/order" element={<OrderPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/account" element={<Account />} />
         </Routes>
       </div>
