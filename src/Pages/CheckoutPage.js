@@ -24,14 +24,33 @@ const CheckoutPage = () => {
   const handleShow2 = () => setShow2(true);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  
   const [phoneNumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [cityDescriptions, setCityDescriptions] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [countries, setCountries] = useState([]);
+
   const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedCity2, setSelectedCity2] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedDepartament, setSelectedDepartament] = useState(null);
+  const [address, setAddress] = useState("");
+  const [address2, setAddress2] = useState("");
+
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
+  const [typeDelivery, setTypeDelivery] = useState('1');
+  const [activeTab, setActiveTab] = useState('longer-tab'); 
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+
+  const handleCheckboxChange = (id) => {
+    setSelectedPaymentMethod(id);
+  };
+
+
   const apiKey = '24443d18027301d444ec98b00ef49598';
   const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
+
   useEffect(() => {
     
     const storedBasket = window.sessionStorage.getItem("Basket");
@@ -45,8 +64,21 @@ const CheckoutPage = () => {
     setTitleAccount('У мене вже є аккаунт');
   else{
     setTitleAccount('');
-  }
+    
+    axios({method:'get',
+    url:`https://localhost:7269/api/Authenticate/getUserbyId?id=${window.sessionStorage.getItem("UserId").toString()}`,
+  headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                }})
+     .then(response => {
+    setName(response.data.userName);
+    setEmail(response.data.email);
+    setPhonenumber(response.data.phoneNumber);
+  })
+  .catch(error => console.error('Error fetching products:', error));
 
+   
+  }
+ 
 
   const requestData = {
     apiKey: apiKey,
@@ -76,59 +108,134 @@ const CheckoutPage = () => {
       }));
   
       setCityDescriptions(formattedCityDescriptions);
-      console.log(formattedCityDescriptions);
+   
   
     })
     .catch(error => {
       console.error('Error fetching data:', error);
     });
 
+   
+async function fetchCountries() {
+  try {
+    const response = await axios.get('https://restcountries.com/v2/all');
+    return response.data.map(country => ({
+      label:country.name,
+      name: country.name,
+      value: country.name,
+      alpha3Code: country.alpha3Code,
+    }));
+  } catch (error) {
+    console.error('Error fetching countries:', error.message);
+    return [];
+  }
+}
 
+async function fetchData() {
+  const countries = await fetchCountries();
+  setCountries(countries);
+}
+
+fetchData();
 
   }, []);
 
-  const handleChangeDep = (e) => {
-    setSelectedDepartament(e.value);
-  }
+
+  const handleChangeCountry = async (e) => {
+    setSelectedCountry(e.value);
+    await fetchCitiesByCountry(e.value);
+  };
+
+  const fetchCitiesByCountry = async (selectedCountry) => {
+    try {
+      const response = await fetch('https://countriesnow.space/api/v0.1/countries/cities', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          country: selectedCountry,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      const cities = data.data.map((city) => ({
+        label: city,
+        value: city,
+      }));
+  
+      setCities(cities);
+    } catch (error) {
+      console.error('Error fetching cities:', error.message);
+      setCities([]); // Clear cities in case of an error
+    }
+  };
+  
+  
   const handleChange = (e) => {
     setSelectedCity(e.value);
-    const getWarehousesRequest = {
-      apiKey: apiKey,
-      modelName: 'Address',
-      calledMethod: 'getWarehouses',
-      methodProperties: {
-        CityName: e.value
     
-      }
-    };
-  
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(getWarehousesRequest)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        
-      
-        const formattedDepDescriptions = data.data.map(warehouse => ({
-          label: warehouse.Description,
-          value: warehouse.Description,
-        }));
-        setwarehouseDescriptions(formattedDepDescriptions);
-       
-      })
-      .catch(error => {
-        console.error('Error fetching warehouse data:', error);
-      });
+    if(typeDelivery==='1')
+    {
     
+            const getWarehousesRequest = {
+              apiKey: apiKey,
+              modelName: 'Address',
+              calledMethod: 'getWarehouses',
+              methodProperties: {
+                CityName: e.value
+            
+              }
+            };
+          
+            fetch(apiUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(getWarehousesRequest)
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+              })
+              .then(data => {
+                
+              
+                const formattedDepDescriptions = data.data.map(warehouse => ({
+                  label: warehouse.Description,
+                  value: warehouse.Description,
+                }));
+                setwarehouseDescriptions(formattedDepDescriptions);
+              
+              })
+              .catch(error => {
+                console.error('Error fetching warehouse data:', error);
+              });
+            }
+
+    else if(typeDelivery==='3')
+    {
+      // axios.get(`https://www.ukrposhta.ua/address-classifier/get_city_by_region_id_and_district_id_and_city_ua?city_ua=${e.value}`, {
+      //   headers: { 
+      //     'Authorization': 'Bearer eCom f9027fbb-cf33-3e11-84bb-5484491e2c94', 
+      //     'Cookie': '__cf_bm=4lAVsmU8L1X.jYyaqT7HAPmQwKceefTA8CtGgiMhlIM-1709807613-1.0.1.1-tfRwtnsR16EHrimolr5XssJRxHBGQ5r5UrTJ6ahsXoJQKb29NLvSG56sN3LPTi2L772kpqJtXbJ3mlsKTVenog; _cfuvid=aPOm7oxAXvmEvrYmARi1ZSdeC13ziaaJJgsJcBG4kLU-1709805722449-0.0.1.1-604800000; TS01313a4c=013ec6202efb094cb01fe68c03f8141b3c4203c0735e32de0610d527f432a66dec7250133bda91bfb5ca1f98212511815ba7d3ff09'
+      //   }
+      // })
+      //   .then((response) => {
+      //     console.log(JSON.stringify(response.data));
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+
+    }
   };
   function SubmitLog() 
   {
@@ -141,7 +248,7 @@ const CheckoutPage = () => {
                       method:'post',
                       url:'https://localhost:7269/api/Authenticate/login',
                       data:
-                      JSON.stringify({ UserName:login, Password: pass1}),
+                      JSON.stringify({ email:email, Password: pass1}),
                       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
 
                   }
@@ -255,11 +362,13 @@ const CheckoutPage = () => {
               <MDBCol><Form.Control
            
                       type="text"
+                      value={name}
                       id="entername"
                       placeholder="Ваше ім'я *"
                       onChange={(e)=>setName(e.target.value)}
                     /></MDBCol>
               <MDBCol><Form.Control
+               value={surname}
                       type="text"
                       id="entersurname"
                       placeholder="Ваше прізвище *"
@@ -268,14 +377,14 @@ const CheckoutPage = () => {
               </MDBRow>
               <MDBRow style={{marginTop:'20px'}}>
               <MDBCol><Form.Control
-             
+              value={phoneNumber}
                       type="text"
                       id="enterphone"
                       placeholder="Номер телефону *"
                       onChange={(e)=>setPhonenumber(e.target.value)}
                     /></MDBCol>
               <MDBCol><Form.Control
-          
+           value={email}
                       type="email"
                       id="enteremail"
                       placeholder="E-mail *"
@@ -288,17 +397,21 @@ const CheckoutPage = () => {
               </MDBRow>
               <MDBRow>
               <Tabs
-      defaultActiveKey="profile"
-      id="justify-tab-example"
+      
+      defaultActiveKey={activeTab}
+      id="delivery-tabs"
+      onSelect={(key) => setActiveTab(key)}
       className="mb-3"
       justify
     >
     
       <Tab eventKey="longer-tab" title="ДОСТАВКА ПО УКРАЇНІ">
        <MDBRow>
-        <MDBCol>   <Form.Select  size="lg">
-        <option>Нова Пошта - відділення </option>
-        <option>Нова Пошта - адреса </option>
+        <MDBCol>   <Form.Select  size="lg" onChange={(e)=> setTypeDelivery(e.target.value) } >
+        <option  value={1}>Нова Пошта - відділення </option>
+        <option value={2}>Нова Пошта - адреса </option>
+        <option value={3}>УкрПошта - відділення </option>
+        <option value={2}>УкрПошта - адреса </option>
       </Form.Select></MDBCol>
         <MDBCol> <Select
            className="custom-select-lg"
@@ -311,28 +424,57 @@ const CheckoutPage = () => {
         control: (provided) => ({
           ...provided,
          borderRadius: '0%',
-          height: '45px', 
+          height: '50px', 
         }),
       }}
     /> </MDBCol>
        </MDBRow>
        <MDBRow>
         <MDBCol>
-        <Select 
-           className="custom-select-lg"
-    
-     onChange={handleChangeDep}
-      options={warehouseDescriptions}
-      isSearchable
-      placeholder="Оберіть відділення"
-      styles={{
-        control: (provided) => ({
-          ...provided,
-         borderRadius: '0%',
-          height: '45px', 
-        }),
-      }}
-    /> 
+        {typeDelivery === '1' && (
+        <Select
+          className="custom-select-lg"
+          onChange={(e)=> setSelectedDepartament(e.value)}
+          options={warehouseDescriptions}
+          isSearchable
+          placeholder="Оберіть відділення"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              borderRadius: '0%',
+              height: '50px',
+            }),
+          }}
+        />
+      )}
+
+{typeDelivery === '2' && (
+       <Form.Control
+          size="lg"
+       type="text"
+       id="enteraddress"
+       placeholder=" Введіть адресу "
+       onChange={(e)=>setAddress(e.target.value)}
+     />
+      )}
+
+  {typeDelivery === '3' && (
+        <Select
+          className="custom-select-lg"
+          onChange={(e)=> setSelectedDepartament(e.value)}
+          options={warehouseDescriptions}
+          isSearchable
+          placeholder="Оберіть відділення"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              borderRadius: '0%',
+              height: '50px',
+            }),
+          }}
+        />
+      )}
+
         </MDBCol>
         <MDBCol>
           
@@ -341,9 +483,89 @@ const CheckoutPage = () => {
        </MDBRow>
       </Tab>
       <Tab eventKey="longer-tab2" title="МІЖНАРОДНА ДОСТАВКА">
-        Tab content for Loooonger Tab
+       <MDBRow>
+            <MDBCol>
+            <Select
+          className="custom-select-lg"
+          onChange={handleChangeCountry}
+          options={countries}
+          isSearchable
+          placeholder="Оберіть країну"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              borderRadius: '0%',
+              height: '50px',
+            }),
+          }}
+        />
+            </MDBCol>
+            <MDBCol>
+            <MDBCol>
+            <Select
+          className="custom-select-lg"
+          onChange={(e)=> setSelectedCity2(e.value)}
+          options={cities}
+          isSearchable
+          placeholder="Оберіть місто"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              borderRadius: '0%',
+              height: '50px',
+            }),
+          }}
+        />
+            </MDBCol>
+            </MDBCol>
+
+       </MDBRow>
+<MDBRow>
+  <MDBCol>
+  <Form.Control
+          size="lg"
+       type="text"
+       id="enteraddress"
+       placeholder=" Введіть адресу "
+       onChange={(e)=>setAddress2(e.target.value)}
+     />
+  </MDBCol>
+  <MDBCol>
+  <Form.Control
+          size="lg"
+       type="text"
+       id="enteraddress"
+       placeholder=" "
+      
+     />
+  </MDBCol>
+</MDBRow>
       </Tab>
     </Tabs>
+              </MDBRow>
+              <MDBRow style={{marginTop:'60px'}}>
+              <MDBCol><div className="h211"> Оберіть зручний спосіб оплати </div>  </MDBCol>
+
+              </MDBRow>
+              <MDBRow style={{marginTop:'30px'}}>
+              <Form.Check 
+            type='checkbox'
+            id={`liqpay`}
+            checked={selectedPaymentMethod === 'liqpay'}
+            onChange={() => handleCheckboxChange('liqpay')}
+            label="Банківською карткою на сайті Visa або MasterCard (платіжний сервіс LiqPay)"
+          />
+
+              </MDBRow>
+              <MDBRow style={{marginTop:'20px'}}>
+              <Form.Check 
+            type='checkbox'
+            id={`cardpay`}
+            checked={selectedPaymentMethod === 'cardpay'}
+            onChange={() => handleCheckboxChange('cardpay')}
+            label="Передоплата або повна оплата на картку (ПриватБанк або Monobank)"
+          />
+
               </MDBRow>
   </MDBCol>
 

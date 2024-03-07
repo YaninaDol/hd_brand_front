@@ -56,12 +56,17 @@
 .form-select-lg {
    
     border-radius: 0%;
+    font-size: 1rem;
+}
+.form-control-lg {
+    border-radius: 0%;
+    font-size: 1rem;
 }
 .custom-select-lg {
    
   
     padding-bottom: .5rem;
-    font-size: 1.25rem;
+    font-size: 1rem;
     border-radius: 0%;
    
   }

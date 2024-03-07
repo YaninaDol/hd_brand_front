@@ -50,8 +50,7 @@ const expand='false';
 
 
   const [arrBasket,setArrBasket] = useState([]);
-  const [isLogin, setIsLogin] = useState(false);
-  const [login, setLogin] = useState("");
+
   const [email, setEmail] = useState("");
   const [pass1, setPass1] = useState("");
   const [count, setCount] = useState(0);
@@ -133,7 +132,7 @@ const expand='false';
                       method:'post',
                       url:'https://localhost:7269/api/Authenticate/login',
                       data:
-                      JSON.stringify({ UserName:login, Password: pass1}),
+                      JSON.stringify({ email:email, Password: pass1}),
                       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
 
                   }
@@ -149,7 +148,7 @@ const expand='false';
                          
                               window.sessionStorage.setItem("AccessToken", res.data.token);
                               window.sessionStorage.setItem("UserId", res.data.userId);
-                            setIsLogin(true);
+                           
                              if(res.data.userRole[0]=="User")
 
                              {
@@ -178,7 +177,7 @@ const expand='false';
                       .catch(function (error) {
                           alert("Error password or email");
                         window.location.href = "/";
-                          setIsLogin(false);
+                      
                           console.log("Error:"+error);
                         });
                       
@@ -399,52 +398,6 @@ function Delivery(postType)
   }
 }
 
-function setCities(selectedCity)
-{
- 
-  const warehouseSelectElement = document.getElementById('warehouseSelect');
-  const getWarehousesRequest = {
-    apiKey: apiKey,
-    modelName: 'Address',
-    calledMethod: 'getWarehouses',
-    methodProperties: {
-      CityName: selectedCity
-  
-    }
-  };
-
-  fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(getWarehousesRequest)
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      
-      const warehouseDescriptions = data.data.map(warehouse => warehouse.Description);
-
-     
-      warehouseSelectElement.innerHTML = '';
-
-     
-      warehouseDescriptions.forEach(description => {
-        const optionElement = document.createElement('option');
-        optionElement.value = description;
-        optionElement.text = description;
-        warehouseSelectElement.appendChild(optionElement);
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching warehouse data:', error);
-    });
-}
 
 function generateSubPath(categoryId, subcategory) {
   const category = subcategory.find(x => x.id === categoryId);
@@ -636,9 +589,9 @@ function getOrder()
             <Form.Label>Login</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Enter Login"
-              name="login"
-              onChange={(e)=>setLogin(e.target.value)}
+              placeholder="Enter email"
+              name="email"
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </Form.Group>
 
