@@ -14,6 +14,7 @@ import {
   MDBRow,
   MDBRange 
 } from 'mdb-react-ui-kit';
+import CardBox from "../Components/CardBox";
 const CheckoutPage = () => {
 
   const [titleaccount, setTitleAccount] = useState('');
@@ -24,7 +25,7 @@ const CheckoutPage = () => {
   const handleShow2 = () => setShow2(true);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
-  
+  const [arrbuket, setBuket] = useState([]);
   const [phoneNumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [cityDescriptions, setCityDescriptions] = useState([]);
@@ -42,7 +43,7 @@ const CheckoutPage = () => {
   const [typeDelivery, setTypeDelivery] = useState('1');
   const [activeTab, setActiveTab] = useState('longer-tab'); 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-
+  const [total,setTotal] = useState(0);
   const handleCheckboxChange = (id) => {
     setSelectedPaymentMethod(id);
   };
@@ -54,12 +55,21 @@ const CheckoutPage = () => {
   useEffect(() => {
     
     const storedBasket = window.sessionStorage.getItem("Basket");
+   
 
     if(! storedBasket || storedBasket.length<1)
      {
     
      window.location.href='/';
     }
+    else{
+      const parsedBasketData = JSON.parse(storedBasket);
+      setBuket(parsedBasketData);
+      const totalCost = parsedBasketData.reduce((sum, item) => sum + item.quantity * item.price, 0);
+setTotal(totalCost);
+    }
+
+
     if(!window.sessionStorage.getItem("UserId"))
     setTitleAccount('У мене вже є аккаунт');
   else{
@@ -140,7 +150,55 @@ fetchData();
 
   }, []);
 
+  function removeBasket(id) {
+    let prod = arrbuket.find(item => item.id === id);
+    if (prod) {
+      const updatedBasket = arrbuket.filter(item => item.id !== id);
+      setBuket(updatedBasket);
+      const totalCost = updatedBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
+      setTotal(totalCost);
+      window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+    }
+  }
+  
+  
+  const decrementQuantity = (id) => {
+    let prod = arrbuket.find(item => item.id === id);
+    if (prod && prod.quantity > 1) {
+     
+  
+      const updatedBasket = arrbuket.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      );
+  
+      const filteredBasket = updatedBasket.filter(item => item.quantity > 0);
+  
+      setBuket(filteredBasket);
+      const totalCost = filteredBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
+      setTotal(totalCost);
+      window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
+    }
+  };
 
+  const incrementQuantity = (id) => {
+    let prod = arrbuket.find(item => item.id === id);
+    if (prod) {
+    
+     
+
+      
+      const updatedBasket = arrbuket.map(item =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+
+     
+      setBuket(updatedBasket);
+      const totalCost = updatedBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
+      setTotal(totalCost);
+     
+      window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+    }
+  };
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e.value);
     await fetchCitiesByCountry(e.value);
@@ -351,7 +409,7 @@ fetchData();
 <MDBRow> <h2 className="h25title">Оформлення замовлення</h2></MDBRow>
   <MDBRow>
  
-  <MDBCol md='8'>
+  <MDBCol md='7'>
               <MDBRow>
               <MDBCol><div className="h211"> Заповніть ваші данні</div>  </MDBCol>
               <MDBCol className="text-end"> <div className="di153">{titleaccount}</div> </MDBCol>
@@ -572,8 +630,44 @@ fetchData();
 
 
 
-  <MDBCol md='4'>
+  <MDBCol style={{paddingLeft:'35px'}} md='5'>
   <MDBRow> <MDBCol><div className="h211"> Ваш кошик </div>  </MDBCol> </MDBRow>
+  <MDBRow>
+{
+  arrbuket.map((x) => (
+    <CardBox
+      key={x.id}
+      remove={removeBasket}
+      unic={x.id}
+      name={x.name}
+      quantity={x.quantity}
+      size={x.size}
+      picture={x.image}
+      price={x.price}
+      incrementQuantity={incrementQuantity}
+      decrementQuantity={decrementQuantity}
+    ></CardBox>))
+}
+
+
+  </MDBRow>
+  <hr className="my-4" />
+  <MDBRow>
+  <MDBCol>Всього </MDBCol>
+  <MDBCol className="text-end"><h5>{total} UAH</h5></MDBCol>
+  </MDBRow>
+  <MDBRow>
+  <MDBCol>Доставка </MDBCol>
+  <MDBCol className="text-end"><h5>700 UAH</h5></MDBCol>
+  </MDBRow>
+  <hr className="my-4" />
+  <MDBRow>
+  <MDBCol>До сплати </MDBCol>
+  <MDBCol className="text-end"><h5>{total+700} UAH</h5></MDBCol>
+  </MDBRow>
+  <MDBRow style={{marginTop:'15px'}}>
+    <Button variant="dark" style={{borderRadius:'0px'}}> Оформити замовлення </Button>
+  </MDBRow>
     </MDBCol>
 
   </MDBRow>

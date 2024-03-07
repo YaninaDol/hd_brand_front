@@ -70,6 +70,14 @@
     border-radius: 0%;
    
   }
+  .quantity-container {
+    border: 1px solid #ccc; /* Тонкая рамка с цветом #ccc */
+    
+  }
+  .col-md-7 {
+    border-right: 1px solid #ccc; /* Тонкая рамка с цветом #ccc */
+    padding-right: 70px; 
+}
   @media screen and (max-width: 1125px) {
    .h211
 
@@ -79,6 +87,7 @@
    }
     .h25title {
         font-size: var(  --body-regular-15-size);
+        height: 25px;
     }
     .di153{
         font-size: 9px;
