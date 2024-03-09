@@ -5,7 +5,7 @@ import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
-const NewProductCardItem = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
+const NewProductCardItem = ({ currency, imageSrc1, imageSrc2, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -84,12 +84,12 @@ const NewProductCardItem = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, i
             <Card.Title style={{ textAlign: 'left' }}>
               {isDiscount ? (
                 <div className="price4" style={{ display: 'inline-block' }}>
-                  <div className="uah8">{price1} &#8372;</div>
-                  <div className="uah9">{price2} &#8372;</div>
+                  <div className="uah8">{price1} {currency}</div>
+                  <div className="uah9">{price2} {currency}</div>
                 </div>
               ) : (
                 <div className="price3" style={{ display: 'inline-block' }}>
-                  <div className="uah7">{price1} &#8372;</div>
+                  <div className="uah7">{price1} {currency}</div>
                 </div>
               )}
             </Card.Title>

@@ -28,6 +28,7 @@ const CheckoutPage = () => {
   const [arrbuket, setBuket] = useState([]);
   const [phoneNumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
+  const [discount, setDiscount] = useState(null);
   const [cityDescriptions, setCityDescriptions] = useState([]);
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -80,9 +81,12 @@ setTotal(totalCost);
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
-    setName(response.data.userName);
+    setName(response.data.Name);
+    setSurname(response.data.Name);
     setEmail(response.data.email);
     setPhonenumber(response.data.phoneNumber);
+    setDiscount(response.data.discount);
+    console.log(response);
   })
   .catch(error => console.error('Error fetching products:', error));
 
@@ -229,7 +233,7 @@ fetchData();
       setCities(cities);
     } catch (error) {
       console.error('Error fetching cities:', error.message);
-      setCities([]); // Clear cities in case of an error
+      setCities([]); 
     }
   };
   
@@ -306,7 +310,7 @@ fetchData();
                       method:'post',
                       url:'https://localhost:7269/api/Authenticate/login',
                       data:
-                      JSON.stringify({ email:email, Password: pass1}),
+                      JSON.stringify({ email:login, Password: pass1}),
                       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
 
                   }
@@ -327,7 +331,7 @@ fetchData();
 
                              {
                                              
-                              window.location.href='/account';
+                              window.location.reload();
                               
                           
                           
@@ -341,7 +345,7 @@ fetchData();
                       })
                       .catch(function (error) {
                           alert("Error password or email");
-                        window.location.href = "/";
+                        window.location.href = "/checkout";
                         
                           console.log("Error:"+error);
                         });
@@ -412,7 +416,7 @@ fetchData();
   <MDBCol md='7'>
               <MDBRow>
               <MDBCol><div className="h211"> Заповніть ваші данні</div>  </MDBCol>
-              <MDBCol className="text-end"> <div className="di153">{titleaccount}</div> </MDBCol>
+              <MDBCol className="text-end" > <div onClick={handleShow2} className="di153">{titleaccount}</div> </MDBCol>
               </MDBRow>
               
               
@@ -656,6 +660,11 @@ fetchData();
   <MDBCol>Всього </MDBCol>
   <MDBCol className="text-end"><h5>{total} UAH</h5></MDBCol>
   </MDBRow>
+  {discount>0 && (
+  <MDBRow>
+  <MDBCol>Знижка </MDBCol>
+  <MDBCol className="text-end"><h5>{total*(discount/100)}UAH</h5></MDBCol>
+  </MDBRow>)}
   <MDBRow>
   <MDBCol>Доставка </MDBCol>
   <MDBCol className="text-end"><h5>700 UAH</h5></MDBCol>
@@ -663,7 +672,7 @@ fetchData();
   <hr className="my-4" />
   <MDBRow>
   <MDBCol>До сплати </MDBCol>
-  <MDBCol className="text-end"><h5>{total+700} UAH</h5></MDBCol>
+  <MDBCol className="text-end"><h5>{total -total*(discount/100)+700} UAH</h5></MDBCol>
   </MDBRow>
   <MDBRow style={{marginTop:'15px'}}>
     <Button variant="dark" style={{borderRadius:'0px'}}> Оформити замовлення </Button>

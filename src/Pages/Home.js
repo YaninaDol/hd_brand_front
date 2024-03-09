@@ -9,7 +9,7 @@ import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
 import '../Components/NewProductCardItem.css'
 import WeeklyPreview from '../Components/WeeklyPreview'
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { useDispatch,useSelector } from 'react-redux';
 import { setProducts} from '../redux/actions';
 import { CardGroup,Card } from 'react-bootstrap';
@@ -55,7 +55,25 @@ const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
-  const [weekly,setWeekly] = useState([]);
+  const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [exchangeRates, setExchangeRates] = useState({
+    usd: 1, 
+    eur: 1,
+  });
+ 
+  const handleCurrencyChange = (selectedCurrency) => {
+    setSelectedCurrency((prevCurrency) => {
+     
+      const newCurrency = selectedCurrency;
+  
+     
+      window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
+  
+      return newCurrency;
+    });
+  };
+
+
   useEffect(() => {
 
     axios.get('https://localhost:7269/api/Product/GetProducts')
@@ -63,13 +81,49 @@ const Home = () => {
         
         dispatch(setProducts(response.data))
         setContents(response.data);
-        console.log(contents);
+       
        
       })
-      .catch(error => console.error('Error fetching products:', error));
+      .catch(error => window.location.href='/notfound');
+      fetchExchangeRates();
 
+      const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+ 
+    if (savedCurrency) {
+      setSelectedCurrency(savedCurrency);
+    }
   },[dispatch]);
   
+  const fetchExchangeRates = async () => {
+    try {
+      // Получаем данные о курсах обмена от Нацбанка
+      const response = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+      const data = await response.json();
+
+      // Обновляем state с полученными курсами обмена
+      const newExchangeRates = {};
+      data.forEach(currency => {
+        newExchangeRates[currency.cc.toLowerCase()] = currency.rate;
+      });
+      setExchangeRates(newExchangeRates);
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
+  };
+
+  const convertPrice = (price, currency) => {
+    if (currency === 'USD') {
+      return (price / exchangeRates.usd).toFixed(0);
+    } else if (currency === 'EUR') {
+      return (price / exchangeRates.eur).toFixed(0);
+    } else {
+     
+      return price;
+    }
+  };
+
+
   function generatePath(categoryId) {
     switch (categoryId) {
       case 1:
@@ -86,8 +140,8 @@ const Home = () => {
   const showSection = contents.filter((x) => x.isDiscount === true).length > 4;
   return (
     <div >
-    <PxMainPage />
-    <Carousel  >
+    <PxMainPage selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+    <Carousel >
       <Carousel.Item active>
       <Carousel.Caption>
         <h3>SPRING COLLECTION ‘ 24</h3>
@@ -177,6 +231,7 @@ const Home = () => {
           <div className="something" >
           <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
             <NewProductCardItem
+
                id_key={x.id}
                imageSrc1={x.image}
                imageSrc2={x.image2}
@@ -184,8 +239,9 @@ const Home = () => {
                isDiscount={x.isDiscount}
                isLiked={false}
                descriprion={x.name}
-               price1={x.price}
-               price2={x.salePrice}
+               price1={convertPrice(x.price,selectedCurrency)}
+               currency={selectedCurrency}
+               price2={convertPrice(x.salePrice,selectedCurrency)}
             />
           </Link>
           </div>
@@ -235,8 +291,9 @@ const Home = () => {
                isDiscount={x.isDiscount}
                isLiked={false}
                descriprion={x.name}
-               price1={x.price}
-               price2={x.salePrice}
+               price1={convertPrice(x.price,selectedCurrency)}
+               currency={selectedCurrency}
+               price2={convertPrice(x.salePrice,selectedCurrency)}
             />
                 </Link>
             

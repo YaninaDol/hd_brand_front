@@ -11,7 +11,7 @@ import ShoeSizeTable from './Components/ShoeSizeTable';
 import FilteredProductsPage from './Pages/FilteredProductsPage';
 import SubcategoryPage from './Pages/SubcategoryPage';
 import CheckoutPage from './Pages/CheckoutPage';
-
+import NotFound from './Pages/NotFound';
 const App = () => {
   return (
     <BrowserRouter>
@@ -28,6 +28,7 @@ const App = () => {
           <Route path="/search" element={<FilteredProductsPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/notfound" element={<NotFound />} />
         </Routes>
       </div>
     </BrowserRouter>

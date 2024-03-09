@@ -63,19 +63,27 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center; /* Центрирование по вертикали */
+  align-items: center; 
   padding: var(--padding-5xs);
   gap: var(--gap-8xs);
   z-index: 1;
 }
 .svg-container {
   display: flex;
-  align-items: center; /* Центрирование по вертикали */
+  align-items: center;
 }
-
-/* Стили для иконки поиска */
+.form-select::after,
+.dropdown-toggle::after {
+  display: none;
+}
+#nav-dropdown-dark-example::after {
+  content: none; 
+}
 .bi-search {
-  margin-top: 5px; /* Применить нужный отступ сверху */
+  margin-top: 5px; 
+}
+.btn {
+  --bs-btn-padding-x: 0.2rem;
 }
 .header-container {
     display: flex;
@@ -208,7 +216,9 @@
   z-index: 1;
   cursor: pointer;
 }
-
+.dropdown-menu.show {
+  z-index: 10000;
+}
 .currency-list p {
   margin: 0;
   padding: 8px;
