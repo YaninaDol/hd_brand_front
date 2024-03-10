@@ -72,6 +72,9 @@
   display: flex;
   align-items: center;
 }
+.btn{
+  border-radius: 0%;
+}
 .form-select::after,
 .dropdown-toggle::after {
   display: none;

@@ -8,16 +8,15 @@ import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate  } from "react-router-dom";
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import AuthModal from "../Components/AuthModal";
 import { Navbar, Nav, NavDropdown, FormControl, InputGroup,  Container } from 'react-bootstrap';
 import {
   MDBInput,
   MDBCol,
   MDBRow,
-  MDBTypography,
-  MDBCardBody,
-  MDBCardImage
+  MDBTypography
 } from 'mdb-react-ui-kit';
-function PxMainPage({ handleCurrencyChange,selectedCurrency, onSearch }) {
+function PxMainPage({ handleCurrencyChange,selectedCurrency, onSearch,convertPrice }) {
   const navigate = useNavigate();
 const expand='false';
   const handleInputChange = (e) => {
@@ -52,6 +51,7 @@ const expand='false';
 
   const [email, setEmail] = useState("");
   const [pass1, setPass1] = useState("");
+  const [pass2, setPass2] = useState("");
   const [count, setCount] = useState(0);
   const [total,setTotal] = useState(0);
   const [payamount,setPayAmount] = useState(0);
@@ -112,7 +112,7 @@ const expand='false';
 
   function loginbtn()
   {
-    if(!window.sessionStorage.getItem("UserId"))
+    if(!window.sessionStorage.getItem("AccessToken"))
       handleShow();
     else{
       window.location.href='/account';
@@ -125,8 +125,8 @@ const expand='false';
   function SubmitLogIn() 
   {
      
-         
-      
+    if(email.includes('@'))
+      {
               axios (
 
                   {
@@ -148,7 +148,6 @@ const expand='false';
                        
                          
                               window.sessionStorage.setItem("AccessToken", res.data.token);
-                              window.sessionStorage.setItem("UserId", res.data.userId);
                            
                              if(res.data.userRole[0]=="User")
 
@@ -185,7 +184,8 @@ const expand='false';
                       
                       ;
 
-     
+                      }
+                      else alert('Не корректна поштова адреса')
 
   };
 
@@ -470,13 +470,14 @@ function getOrder()
               {arrBasket.map((x) => (
                 <CartBasket
                   key={x.id}
+                  selectedCurrency={selectedCurrency}
                   remove={removeBasket}
                   unic={x.id}
                   name={x.name}
                   quantity={x.quantity}
                   size={x.size}
                   picture={x.image}
-                  price={x.price}
+                  price1={convertPrice(x.price,selectedCurrency)}
                   incrementQuantity={incrementQuantity}
                   decrementQuantity={decrementQuantity}
                 ></CartBasket>
@@ -579,48 +580,8 @@ function getOrder()
           </Button>
         </Modal.Footer>
       </Modal>
-
-         <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Авторизація</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form >
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              name="email"
-              onChange={(e)=>setEmail(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter password"
-              name="password"
-             
-              onChange={(e)=>setPass1(e.target.value)}   
-            />
-          </Form.Group>
-       
-         
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label onClick={()=>alert('Реєстраційні данні були відправленні на вашу пошту')}>Forgot password?</Form.Label>
-          
-          </Form.Group>
-
-
-          <Button  variant="dark" onClick={SubmitLogIn} >
-            Submit
-          </Button>
-         
-        </Form>
-        </Modal.Body>
-        </Modal>
+<AuthModal show={show} handleClose={handleClose}></AuthModal>
+ 
 
 
              <section className="header-frame">

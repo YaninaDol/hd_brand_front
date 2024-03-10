@@ -18,7 +18,7 @@ import {
   MDBRow,
   MDBRange 
 } from 'mdb-react-ui-kit';
-const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
+const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertPrice }) => {
   const [sortOrder, setSortOrder] = useState('');
   const [sortCollection, setSortCollection] = useState('');
   const [itemsPerRow, setItemsPerRow] = useState(12);
@@ -464,8 +464,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       isDiscount={x.isDiscount}
       isLiked={false}
       descriprion={x.name}
-      price1={x.price}
-      price2={x.salePrice}
+      price1={convertPrice(x.price,selectedCurrency)}
+      currency={selectedCurrency}
+      price2={convertPrice(x.salePrice,selectedCurrency)}
       />
       </Link>
     ))
@@ -485,8 +486,9 @@ const ContentPage = ({ items,page,link,materials,types,AddBtn }) => {
       isDiscount={x.isDiscount}
       isLiked={false}
       descriprion={x.name}
-      price1={x.price}
-      price2={x.salePrice}
+      price1={convertPrice(x.price,selectedCurrency)}
+      currency={selectedCurrency}
+      price2={convertPrice(x.salePrice,selectedCurrency)}
       />
       </Link>
     ))

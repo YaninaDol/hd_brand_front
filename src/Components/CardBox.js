@@ -57,7 +57,7 @@ class CardBox extends Component {
 <MDBRow  style={{marginTop:'15px'}}>
 <MDBCol>
               <MDBTypography tag="h5" id='price'>
-              {this.props.price * this.props.quantity} UAH
+              {this.props.price * this.props.quantity} {this.props.selectedCurrency}
               </MDBTypography>
             </MDBCol>
 </MDBRow>

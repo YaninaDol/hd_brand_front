@@ -7,6 +7,7 @@ import {Button,Form,Modal,Tabs,Tab} from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
 import './CheckoutPage.css';
+import AuthModal from "../Components/AuthModal";
 import {
  
   MDBContainer,
@@ -29,22 +30,42 @@ const CheckoutPage = () => {
   const [phoneNumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [discount, setDiscount] = useState(null);
+  const [userdiscount, setUserDiscount] = useState(null);
   const [cityDescriptions, setCityDescriptions] = useState([]);
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
-
+  const [shipment, setShipment] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedCity2, setSelectedCity2] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedDepartament, setSelectedDepartament] = useState(null);
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
-
+  const [checkoutbtn, setCheckoutbtn] = useState(false);
+  const [count, setCount] = useState(0);
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
   const [typeDelivery, setTypeDelivery] = useState('1');
   const [activeTab, setActiveTab] = useState('longer-tab'); 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
   const [total,setTotal] = useState(0);
+
+  const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [exchangeRates, setExchangeRates] = useState({
+    usd: 1, 
+    eur: 1,
+  });
+ 
+  const handleCurrencyChange = (selectedCurrency) => {
+    setSelectedCurrency((prevCurrency) => {
+     
+      const newCurrency = selectedCurrency;
+  
+     
+      window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
+  
+      return newCurrency;
+    });
+  };
   const handleCheckboxChange = (id) => {
     setSelectedPaymentMethod(id);
   };
@@ -56,37 +77,40 @@ const CheckoutPage = () => {
   useEffect(() => {
     
     const storedBasket = window.sessionStorage.getItem("Basket");
-   
+     
 
-    if(! storedBasket || storedBasket.length<1)
-     {
-    
-     window.location.href='/';
-    }
-    else{
+    if (!storedBasket || storedBasket.length < 1) {
+     
+      window.location.href = '/';
+    } else {
+     
       const parsedBasketData = JSON.parse(storedBasket);
       setBuket(parsedBasketData);
       const totalCost = parsedBasketData.reduce((sum, item) => sum + item.quantity * item.price, 0);
-setTotal(totalCost);
+      setTotal(totalCost);
+      const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
+      setCount(totalCount);
     }
 
 
-    if(!window.sessionStorage.getItem("UserId"))
+    if(!window.sessionStorage.getItem("AccessToken"))
     setTitleAccount('У мене вже є аккаунт');
   else{
     setTitleAccount('');
     
     axios({method:'get',
-    url:`https://localhost:7269/api/Authenticate/getUserbyId?id=${window.sessionStorage.getItem("UserId").toString()}`,
+    url:`https://localhost:7269/api/Authenticate/getUserbyId`,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
-    setName(response.data.Name);
-    setSurname(response.data.Name);
-    setEmail(response.data.email);
-    setPhonenumber(response.data.phoneNumber);
-    setDiscount(response.data.discount);
-    console.log(response);
+      setName(response.data.name);
+      setSurname(response.data.surname);
+      setEmail(response.data.email);
+      setPhonenumber(response.data.phonenumber);
+      setUserDiscount(response.data.discount);
+  count>2?setDiscount(5):setDiscount(response.data.discount);
+   
+    
   })
   .catch(error => console.error('Error fetching products:', error));
 
@@ -151,7 +175,14 @@ async function fetchData() {
 }
 
 fetchData();
+fetchExchangeRates();
 
+const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+
+if (savedCurrency) {
+setSelectedCurrency(savedCurrency);
+}
   }, []);
 
   function removeBasket(id) {
@@ -161,7 +192,19 @@ fetchData();
       setBuket(updatedBasket);
       const totalCost = updatedBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
       setTotal(totalCost);
+      const totalCount = updatedBasket.reduce((sum, item) => sum + item.quantity, 0);
+      setCount(totalCount);
+      if (totalCount >= 2) {
+        setDiscount(5);
+      } else {
+        setDiscount(userdiscount);
+      }
+      if(totalCount<1)
+      {
+        setCheckoutbtn(true);
+      }
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      setShipment(calculateShippingCostAddress());
     }
   }
   
@@ -169,8 +212,6 @@ fetchData();
   const decrementQuantity = (id) => {
     let prod = arrbuket.find(item => item.id === id);
     if (prod && prod.quantity > 1) {
-     
-  
       const updatedBasket = arrbuket.map(item =>
         item.id === id ? { ...item, quantity: item.quantity - 1 } : item
       );
@@ -180,34 +221,106 @@ fetchData();
       setBuket(filteredBasket);
       const totalCost = filteredBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
       setTotal(totalCost);
+      const totalCount = filteredBasket.reduce((sum, item) => sum + item.quantity, 0);
+      setCount(totalCount);
+  
+      if (totalCount >= 2) {
+        setDiscount(5);
+      } else {
+        setDiscount(userdiscount);
+      }
+     
       window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
+      const shipmentCost = calculateShippingCostAddress();
+      setShipment(shipmentCost);
     }
   };
-
+  
   const incrementQuantity = (id) => {
     let prod = arrbuket.find(item => item.id === id);
     if (prod) {
-    
-     
-
-      
       const updatedBasket = arrbuket.map(item =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       );
-
-     
+  
       setBuket(updatedBasket);
       const totalCost = updatedBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
       setTotal(totalCost);
+      const totalCount = updatedBasket.reduce((sum, item) => sum + item.quantity, 0);
+      setCount(totalCount);
+  
+      if (totalCount >= 2) {
+        setDiscount(5);
+      } else {
+        setDiscount(userdiscount);
+      }
      
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      const shipmentCost = calculateShippingCostAddress();
+      setShipment(shipmentCost);
     }
   };
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e.value);
     await fetchCitiesByCountry(e.value);
-  };
 
+   setShipment(calculateShippingCostAddress());
+
+
+  };
+const calculateShippingCostAddress = () => {
+ 
+  switch (selectedCountry) {
+    case 'Poland':
+    case 'Moldova (Republic of)':
+      if (count === 1) {
+        return 600;
+      } else if (count === 2) {
+        return 630;
+      }
+      else {
+        
+        return 870;
+      }
+      case 'Romania':
+      case 'Czech Republic':
+      case 'Germany':
+      case 'Slovakia':
+      case 'Estonia':
+      case 'Latvia':
+      case 'Lithuania':
+      case 'Hungary':    
+        if (count === 1) {
+          return 900;
+        } else if (count === 2) {
+          return 930;
+        }
+        else {
+          
+          return 1970;
+        } 
+      case 'Italy':
+          if (count === 1) {
+            return 1300;
+          } else if (count === 2) {
+            return 1330;
+          }
+          else {
+            
+            return 2670;
+          }
+    default:
+    
+      if (count === 1) {
+        return 800;
+      } else if (count === 2) {
+        return 1200;
+      } else {
+        // Добавьте свои правила для других случаев, если нужно
+        return 0;
+      }
+  }
+};
   const fetchCitiesByCountry = async (selectedCountry) => {
     try {
       const response = await fetch('https://countriesnow.space/api/v0.1/countries/cities', {
@@ -299,108 +412,45 @@ fetchData();
 
     }
   };
-  function SubmitLog() 
-  {
+
+   
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
+      const data = await response.json();
+  
      
-         
+      const newExchangeRates = {
+        usd: data.rates.USD,
+        eur: data.rates.EUR,
       
-              axios (
-
-                  {
-                      method:'post',
-                      url:'https://localhost:7269/api/Authenticate/login',
-                      data:
-                      JSON.stringify({ email:login, Password: pass1}),
-                      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-
-                  }
-
-
-
-              ).then  (res=>
-
-                      
-                      {
-                         
-                       
-                         
-                              window.sessionStorage.setItem("AccessToken", res.data.token);
-                              window.sessionStorage.setItem("UserId", res.data.userId);
-                         
-                             if(res.data.userRole[0]=="User")
-
-                             {
-                                             
-                              window.location.reload();
-                              
-                          
-                          
-                              handleClose2();
-
-                             }
-
-                          
-
-
-                      })
-                      .catch(function (error) {
-                          alert("Error password or email");
-                        window.location.href = "/checkout";
-                        
-                          console.log("Error:"+error);
-                        });
-                      
-                      
-                      ;
-
-     
-
+      };
+  
+      setExchangeRates(newExchangeRates);
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
   };
+
+  const convertPrice = (price, currency) => {
+    if (currency === 'USD') {
+      return (price * exchangeRates.usd).toFixed(0);
+    } else if (currency === 'EUR') {
+      return (price * exchangeRates.eur).toFixed(0);
+    } else {
+     
+      return price;
+    }
+  };
+ function checkout()
+ {
+
+ }
   return (
     <div >
-          <Modal show={show2} onHide={handleClose2}>
-      <Modal.Header closeButton>
-        <Modal.Title>Авторизація</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form >
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Login</Form.Label>
-            <Form.Control
-            
-              type="email"
-              placeholder="Enter Login"
-              name="login"
-              onChange={(e)=>setLogin(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter password"
-              name="password"
-             
-              onChange={(e)=>setPass1(e.target.value)}   
-            />
-          </Form.Group>
-       
+      <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
          
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label onClick={()=>alert('Реєстраційні данні були відправленні на вашу пошту')}>Forgot password?</Form.Label>
-          
-          </Form.Group>
-
-
-          <Button  variant="dark" onClick={SubmitLog} >
-            Submit
-          </Button>
-         
-        </Form>
-        </Modal.Body>
-        </Modal>
-    <PxMainPage />
+        <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
     <div className="stock-status">
       <Link to="/"><div className="div33">Головна </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
@@ -638,19 +688,26 @@ fetchData();
   <MDBRow> <MDBCol><div className="h211"> Ваш кошик </div>  </MDBCol> </MDBRow>
   <MDBRow>
 {
+  arrbuket.length < 1 ? (
+    <>
+    <p>Ваш кошик порожній </p>
+  </>
+  ) : (
   arrbuket.map((x) => (
     <CardBox
       key={x.id}
       remove={removeBasket}
+      selectedCurrency={selectedCurrency}
       unic={x.id}
       name={x.name}
       quantity={x.quantity}
       size={x.size}
       picture={x.image}
-      price={x.price}
+      price={convertPrice(x.price,selectedCurrency)}
       incrementQuantity={incrementQuantity}
       decrementQuantity={decrementQuantity}
     ></CardBox>))
+    )
 }
 
 
@@ -658,24 +715,32 @@ fetchData();
   <hr className="my-4" />
   <MDBRow>
   <MDBCol>Всього </MDBCol>
-  <MDBCol className="text-end"><h5>{total} UAH</h5></MDBCol>
+  <MDBCol className="text-end"><h5>{convertPrice(total,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   </MDBRow>
   {discount>0 && (
   <MDBRow>
-  <MDBCol>Знижка </MDBCol>
-  <MDBCol className="text-end"><h5>{total*(discount/100)}UAH</h5></MDBCol>
+  <MDBCol>Знижка {discount}%</MDBCol>
+  <MDBCol className="text-end"><h5>{convertPrice(total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   </MDBRow>)}
+ 
   <MDBRow>
+  
   <MDBCol>Доставка </MDBCol>
-  <MDBCol className="text-end"><h5>700 UAH</h5></MDBCol>
+  {activeTab!='longer-tab' ? (
+  <MDBCol className="text-end"><h5>{convertPrice(shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  ): (
+    <MDBCol className="text-end"><a style={{color:'black'}} href="https://novaposhta.ua/basic_tariffs">По тарифам перевізника </a></MDBCol>
+    )
+  }
   </MDBRow>
+
   <hr className="my-4" />
   <MDBRow>
   <MDBCol>До сплати </MDBCol>
-  <MDBCol className="text-end"><h5>{total -total*(discount/100)+700} UAH</h5></MDBCol>
+  <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+700,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   </MDBRow>
   <MDBRow style={{marginTop:'15px'}}>
-    <Button variant="dark" style={{borderRadius:'0px'}}> Оформити замовлення </Button>
+    <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={{checkout}}> Оформити замовлення </Button>
   </MDBRow>
     </MDBCol>
 

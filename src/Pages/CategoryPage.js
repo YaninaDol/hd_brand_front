@@ -35,6 +35,26 @@ const handleShowM = () => setShowM(true);
 const dispatch = useDispatch();
 const products = useSelector(state => state.products);
 const {categoryName } = useParams();
+const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+const [exchangeRates, setExchangeRates] = useState({
+  usd: 1, 
+  eur: 1,
+});
+
+const handleCurrencyChange = (selectedCurrency) => {
+  setSelectedCurrency((prevCurrency) => {
+   
+    const newCurrency = selectedCurrency;
+
+   
+    window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
+
+    return newCurrency;
+  });
+};
+
+
+
 
 function generatePath(categoryName) {
   switch (categoryName) {
@@ -95,22 +115,56 @@ function generatePathName(categoryName) {
     setMaterials(response.data)
   })
   .catch(error => console.error('Error fetching products:', error));
+  fetchExchangeRates();
 
+  const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+
+if (savedCurrency) {
+  setSelectedCurrency(savedCurrency);
+}
  
 
 }, [dispatch,categoryName,allproducts]);
+const fetchExchangeRates = async () => {
+  try {
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
+    const data = await response.json();
 
+   
+    const newExchangeRates = {
+      usd: data.rates.USD,
+      eur: data.rates.EUR,
+    
+    };
+
+    setExchangeRates(newExchangeRates);
+  } catch (error) {
+    console.error('Error fetching exchange rates:', error);
+  }
+};
+
+const convertPrice = (price, currency) => {
+  if (currency === 'USD') {
+    return (price * exchangeRates.usd).toFixed(0);
+  } else if (currency === 'EUR') {
+    return (price * exchangeRates.eur).toFixed(0);
+  } else {
+   
+    return price;
+  }
+};
   return (
     <div >
     
 
-   <PxMainPage />
+   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 
    <div>
 
 </div>
 
-<ContentPage items={allproducts} link={categoryName} materials={materials} types={types} page={generatePathName(categoryName)} ></ContentPage>
+<ContentPage selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={allproducts} link={categoryName} materials={materials} types={types} page={generatePathName(categoryName)} ></ContentPage>
 
 
     <Footer />

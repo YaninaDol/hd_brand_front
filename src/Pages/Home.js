@@ -97,15 +97,16 @@ const Home = () => {
   
   const fetchExchangeRates = async () => {
     try {
-      // Получаем данные о курсах обмена от Нацбанка
-      const response = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
       const data = await response.json();
-
-      // Обновляем state с полученными курсами обмена
-      const newExchangeRates = {};
-      data.forEach(currency => {
-        newExchangeRates[currency.cc.toLowerCase()] = currency.rate;
-      });
+  
+     
+      const newExchangeRates = {
+        usd: data.rates.USD,
+        eur: data.rates.EUR,
+      
+      };
+  
       setExchangeRates(newExchangeRates);
     } catch (error) {
       console.error('Error fetching exchange rates:', error);
@@ -114,9 +115,9 @@ const Home = () => {
 
   const convertPrice = (price, currency) => {
     if (currency === 'USD') {
-      return (price / exchangeRates.usd).toFixed(0);
+      return (price * exchangeRates.usd).toFixed(0);
     } else if (currency === 'EUR') {
-      return (price / exchangeRates.eur).toFixed(0);
+      return (price * exchangeRates.eur).toFixed(0);
     } else {
      
       return price;
@@ -140,7 +141,7 @@ const Home = () => {
   const showSection = contents.filter((x) => x.isDiscount === true).length > 4;
   return (
     <div >
-    <PxMainPage selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+    <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
     <Carousel >
       <Carousel.Item active>
       <Carousel.Caption>

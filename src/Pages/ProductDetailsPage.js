@@ -36,6 +36,23 @@ const ProductDetailsPage = () => {
   const [showTableSize, setshowTableSize] = useState(false);
   const handleClosetableSize = () => setshowTableSize(false);
   const handleShowtableSize = () => setshowTableSize(true);
+  const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [exchangeRates, setExchangeRates] = useState({
+    usd: 1, 
+    eur: 1,
+  });
+ 
+  const handleCurrencyChange = (selectedCurrency) => {
+    setSelectedCurrency((prevCurrency) => {
+     
+      const newCurrency = selectedCurrency;
+  
+     
+      window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
+  
+      return newCurrency;
+    });
+  };
 
 
   function generatePath(categoryId) {
@@ -86,7 +103,14 @@ const ProductDetailsPage = () => {
   useEffect(()=>
 
   {
-  
+    fetchExchangeRates();
+
+    const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+
+  if (savedCurrency) {
+    setSelectedCurrency(savedCurrency);
+  }
 
 
     axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
@@ -114,7 +138,6 @@ const ProductDetailsPage = () => {
     .then(res => {
       
         dispatch(setProduct(res.data.value))
-         console.log(res.data.value);
      
 
       axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
@@ -149,10 +172,61 @@ const ProductDetailsPage = () => {
     })
     .catch(error => console.error('Error fetching products:', error));
 
+
+   
   
   }, [id, subcategoryid, dispatch]);
 
+  // const fetchExchangeRates = async () => {
+  //   try {
+    
+  //     const response = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+  //     const data = await response.json();
 
+     
+  //     const newExchangeRates = {};
+  //     data.forEach(currency => {
+  //       newExchangeRates[currency.cc.toLowerCase()] = currency.rate;
+  //     });
+  //     setExchangeRates(newExchangeRates);
+  //   } catch (error) {
+  //     console.error('Error fetching exchange rates:', error);
+  //   }
+  // };
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
+      const data = await response.json();
+  
+     
+      const newExchangeRates = {
+        usd: data.rates.USD,
+        eur: data.rates.EUR,
+      
+      };
+  
+      setExchangeRates(newExchangeRates);
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
+  };
+  
+  const convertPrice = (price, currency) => {
+    if (!exchangeRates || Object.keys(exchangeRates).length === 0) {
+      return price;
+    }
+  
+    const usdRate = exchangeRates.usd
+    const eurRate = exchangeRates.eur;
+  
+    if (currency === 'USD') {
+      return (price * usdRate).toFixed(0);
+    } else if (currency === 'EUR') {
+      return (price * eurRate).toFixed(0);
+    } else {
+      return price;
+    }
+  };
 
   
   const addToBasket = () => {
@@ -230,7 +304,7 @@ const ProductDetailsPage = () => {
       
       </Modal>
 
-   <PxMainPage />
+   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
    <div className="stock-status">
       <Link to="/"><div className="div33">Головна </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
@@ -294,7 +368,7 @@ const ProductDetailsPage = () => {
    
     </MDBRow>
 
-<MDBRow  style={{marginTop:'5px',fontFamily:'monospace',fontSize:'20px'}}><h7>{product.salePrice} грн</h7> </MDBRow>
+<MDBRow  style={{marginTop:'5px',fontFamily:'monospace',fontSize:'20px'}}> <h7>{convertPrice(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
 <MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol> {season.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>
@@ -356,8 +430,9 @@ onClick={addToBasket}
       isDiscount={x.isDiscount}
       isLiked={false}
       descriprion={x.name}
-      price1={x.price}
-      price2={x.salePrice}
+      price1={convertPrice(x.price,selectedCurrency)}
+      currency={selectedCurrency}
+      price2={convertPrice(x.salePrice,selectedCurrency)}
       />
       </Link>
     ))
