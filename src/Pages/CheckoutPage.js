@@ -46,10 +46,61 @@ const CheckoutPage = () => {
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
   const [typeDelivery, setTypeDelivery] = useState('1');
   const [activeTab, setActiveTab] = useState('longer-tab'); 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("liqpay");
   const [total,setTotal] = useState(0);
-
+  const [showManagerContact, setShowManagerContact] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [errors, setErrors] = useState({});
+  const [TotalSum,setTotalSum] = useState(0);
+  const validateForm = () => {
+    const errors = {};
+    if (!typeDelivery) {
+      errors.typeDelivery = 'Оберіть тип доставки';
+    }
+  
+    if (typeDelivery === '1' && !selectedDepartament) {
+      errors.selectedDepartament = 'Оберіть відділення';
+    }
+  
+    if (typeDelivery === '2' && !address) {
+      errors.address = 'Введіть адресу';
+    }
+  
+    if (activeTab=="longer-tab2" && (!selectedCountry || !selectedCity2 || !address2)) {
+      errors.internationalDelivery = 'Заповніть всі поля для міжнародної доставки';
+    }
+    
+    if (!name.trim()) {
+      errors.name = 'Заповніть ім\'я';
+    }
+
+    if (!surname.trim()) {
+      errors.surname = 'Заповніть прізвище';
+    }
+
+    if (!phoneNumber.trim()) {
+      errors.phoneNumber = 'Заповніть номер телефону';
+    }
+
+    if (!email.trim()) {
+      errors.email = 'Заповніть E-mail';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Введіть коректний E-mail';
+    }
+    if(arrbuket.length<1)
+    {
+      errors.buket='Оберіть товар для замовлення';
+    }
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0; 
+  };
+
+  
+
+
+
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
     eur: 1,
@@ -66,8 +117,9 @@ const CheckoutPage = () => {
       return newCurrency;
     });
   };
-  const handleCheckboxChange = (id) => {
-    setSelectedPaymentMethod(id);
+  const handleCheckboxChange = (method) => {
+    setSelectedPaymentMethod(method);
+    setShowManagerContact(method === 'cardpay');
   };
 
 
@@ -442,8 +494,55 @@ const calculateShippingCostAddress = () => {
       return price;
     }
   };
- function checkout()
+ function saveChanges()
  {
+  const isValid = validateForm();
+
+  if (isValid) {
+    
+    if(selectedPaymentMethod === 'liqpay')
+    {
+      window.location.href='https://www.liqpay.ua/';
+      setTotalSum(convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+    }
+    else
+    {
+      setTotalSum(convertPrice(total -total*(discount/100),selectedCurrency));
+    }
+
+    console.log(name,surname,phoneNumber,email,arrbuket);
+      if(activeTab=='longer-tab')
+      {
+        if(typeDelivery==='1')
+        {
+          //novaposta
+          console.log(selectedDepartament);
+        }
+        else if(typeDelivery==='2')
+        {
+          console.log(selectedCity,address);
+        }
+        else if(typeDelivery==='3')
+        {
+          
+          console.log(selectedDepartament);
+        }
+        else if(typeDelivery==='4')
+        {
+          //ukrpost
+          console.log(selectedCity,address);
+        }
+      }
+      else if(activeTab=='longer-tab2')
+      {
+        console.log(selectedCountry,selectedCity2,address2);
+      }
+  } else {
+   
+  }
+
+
+
 
  }
   return (
@@ -478,14 +577,15 @@ const calculateShippingCostAddress = () => {
                       id="entername"
                       placeholder="Ваше ім'я *"
                       onChange={(e)=>setName(e.target.value)}
-                    /></MDBCol>
+                    /> {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}</MDBCol>
+                     
               <MDBCol><Form.Control
                value={surname}
                       type="text"
                       id="entersurname"
                       placeholder="Ваше прізвище *"
                       onChange={(e)=>setSurname(e.target.value)}
-                    /> </MDBCol>
+                    />   {errors.surname && <div style={{ color: 'red' }}>{errors.surname}</div>}</MDBCol>
               </MDBRow>
               <MDBRow style={{marginTop:'20px'}}>
               <MDBCol><Form.Control
@@ -494,15 +594,23 @@ const calculateShippingCostAddress = () => {
                       id="enterphone"
                       placeholder="Номер телефону *"
                       onChange={(e)=>setPhonenumber(e.target.value)}
-                    /></MDBCol>
+                    />     {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
               <MDBCol><Form.Control
            value={email}
                       type="email"
                       id="enteremail"
                       placeholder="E-mail *"
                       onChange={(e)=>setEmail(e.target.value)}
-                    /> </MDBCol>
+                    />  {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}</MDBCol>
               </MDBRow>
+              <MDBRow style={{ marginTop: '20px' }}>
+          <MDBCol>
+          
+          
+       
+           
+          </MDBCol>
+        </MDBRow>
               <MDBRow style={{marginTop:'60px'}}>
               <MDBCol><div className="h211"> Оберіть зручний спосіб доставки </div>  </MDBCol>
 
@@ -523,7 +631,7 @@ const calculateShippingCostAddress = () => {
         <option  value={1}>Нова Пошта - відділення </option>
         <option value={2}>Нова Пошта - адреса </option>
         <option value={3}>УкрПошта - відділення </option>
-        <option value={2}>УкрПошта - адреса </option>
+        <option value={4}>УкрПошта - адреса </option>
       </Form.Select></MDBCol>
         <MDBCol> <Select
            className="custom-select-lg"
@@ -543,6 +651,7 @@ const calculateShippingCostAddress = () => {
        </MDBRow>
        <MDBRow>
         <MDBCol>
+
         {typeDelivery === '1' && (
         <Select
           className="custom-select-lg"
@@ -586,7 +695,24 @@ const calculateShippingCostAddress = () => {
           }}
         />
       )}
-
+      {typeDelivery === '4' && (
+        <Select
+          className="custom-select-lg"
+          onChange={(e)=> setSelectedDepartament(e.value)}
+          options={warehouseDescriptions}
+          isSearchable
+          placeholder="Оберіть відділення"
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              borderRadius: '0%',
+              height: '50px',
+            }),
+          }}
+        />
+      )}
+ {errors.selectedDepartament && <div style={{ color: 'red' }}>{errors.selectedDepartament}</div>}
+ {errors.address  && <div style={{ color: 'red' }}>{errors.address }</div>}
         </MDBCol>
         <MDBCol>
           
@@ -630,7 +756,7 @@ const calculateShippingCostAddress = () => {
         />
             </MDBCol>
             </MDBCol>
-
+           
        </MDBRow>
 <MDBRow>
   <MDBCol>
@@ -650,7 +776,9 @@ const calculateShippingCostAddress = () => {
        placeholder=" "
       
      />
+     
   </MDBCol>
+  {errors.internationalDelivery   && <div style={{ color: 'red' }}>{errors.internationalDelivery  }</div>}
 </MDBRow>
       </Tab>
     </Tabs>
@@ -679,6 +807,11 @@ const calculateShippingCostAddress = () => {
           />
 
               </MDBRow>
+              {showManagerContact && (
+        <div style={{ marginTop: '5px',marginLeft:'15px' }}>
+          <p style={{fontWeight:'bold',fontSize:'15px'}}> З вами зв'яжеться менеджер для уточнення деталей. </p>
+        </div>
+      )}
   </MDBCol>
 
 
@@ -691,6 +824,7 @@ const calculateShippingCostAddress = () => {
   arrbuket.length < 1 ? (
     <>
     <p>Ваш кошик порожній </p>
+    {errors.buket && <div style={{ color: 'red' }}>{errors.buket}</div>}
   </>
   ) : (
   arrbuket.map((x) => (
@@ -737,10 +871,14 @@ const calculateShippingCostAddress = () => {
   <hr className="my-4" />
   <MDBRow>
   <MDBCol>До сплати </MDBCol>
-  <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+700,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  {activeTab!='longer-tab' ? (
+  <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  ):( <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>)}
   </MDBRow>
+
+
   <MDBRow style={{marginTop:'15px'}}>
-    <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={{checkout}}> Оформити замовлення </Button>
+    <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Оформити замовлення </Button>
   </MDBRow>
     </MDBCol>
 
