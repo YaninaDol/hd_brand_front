@@ -229,10 +229,8 @@ setSelectedCurrency(savedCurrency);
       } else {
         setDiscount(userdiscount);
       }
-     
+      setShipment(calculateShippingCostAddress());
       window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
-      const shipmentCost = calculateShippingCostAddress();
-      setShipment(shipmentCost);
     }
   };
   
@@ -254,10 +252,8 @@ setSelectedCurrency(savedCurrency);
       } else {
         setDiscount(userdiscount);
       }
-     
+      setShipment(calculateShippingCostAddress());
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
-      const shipmentCost = calculateShippingCostAddress();
-      setShipment(shipmentCost);
     }
   };
   const handleChangeCountry = async (e) => {

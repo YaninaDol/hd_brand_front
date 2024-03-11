@@ -37,6 +37,7 @@ const ProductDetailsPage = () => {
   const handleClosetableSize = () => setshowTableSize(false);
   const handleShowtableSize = () => setshowTableSize(true);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [showValidation, setShowValidation] = useState(false);
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
     eur: 1,
@@ -231,7 +232,13 @@ const ProductDetailsPage = () => {
   
   const addToBasket = () => {
   
-    if (newProd!=null) {
+    if (!newProd)
+      {
+        setShowValidation(true);
+        return;
+      }
+    
+    
       const storedBasket = window.sessionStorage.getItem("Basket");
       const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
   
@@ -255,14 +262,11 @@ const ProductDetailsPage = () => {
   
     
      setNewProd(null);
-  
+     setShowValidation(false);
      
     
       window.location.reload();
-    } else {
-      
-      alert("Оберіть розмір для товару.");
-    }
+  
   };
  
   function getTableImage(sizeId) {
@@ -390,6 +394,11 @@ const ProductDetailsPage = () => {
       </select>
     </MDBCol>
     </div>
+    {showValidation && (newProd===null || newProd===0)&& (
+          <div style={{ color: 'red', marginTop: '10px' }}>
+            Виберіть розмір перед додаванням в корзину.
+          </div>
+        )}
     <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
     
   </MDBRow>
@@ -402,7 +411,7 @@ onClick={addToBasket}
                  
                 >
                   Додати в кошик
-                </Button></MDBRow>
+                </Button>   </MDBRow>
 
 
 

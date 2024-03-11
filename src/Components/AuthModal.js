@@ -157,7 +157,7 @@ const AuthModal = ({ show, handleClose }) => {
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
-            <Form.Label>Пароль</Form.Label>
+            <Form.Label style={{marginTop:'10px'}}>Пароль</Form.Label>
             <Form.Control
               type="password"
               placeholder="Введіть пароль"
@@ -169,7 +169,7 @@ const AuthModal = ({ show, handleClose }) => {
 
           {isRegistration && (
             <Form.Group controlId="formBasicRepeatPassword">
-              <Form.Label>Повторити пароль</Form.Label>
+              <Form.Label style={{marginTop:'10px'}}>Повторити пароль</Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Введіть пароль"
