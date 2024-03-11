@@ -183,7 +183,12 @@ const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
 if (savedCurrency) {
 setSelectedCurrency(savedCurrency);
 }
-  }, []);
+const shippingCost = calculateShippingCostAddress();
+setShipment(shippingCost);
+
+
+
+  }, [selectedCountry,count]);
 
   function removeBasket(id) {
     let prod = arrbuket.find(item => item.id === id);
@@ -229,7 +234,7 @@ setSelectedCurrency(savedCurrency);
       } else {
         setDiscount(userdiscount);
       }
-      setShipment(calculateShippingCostAddress());
+    
       window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
     }
   };
@@ -252,7 +257,7 @@ setSelectedCurrency(savedCurrency);
       } else {
         setDiscount(userdiscount);
       }
-      setShipment(calculateShippingCostAddress());
+    
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
@@ -260,7 +265,6 @@ setSelectedCurrency(savedCurrency);
     setSelectedCountry(e.value);
     await fetchCitiesByCountry(e.value);
 
-   setShipment(calculateShippingCostAddress());
 
 
   };
@@ -312,8 +316,8 @@ const calculateShippingCostAddress = () => {
       } else if (count === 2) {
         return 1200;
       } else {
-        // Добавьте свои правила для других случаев, если нужно
-        return 0;
+        
+        return 1600;
       }
   }
 };
