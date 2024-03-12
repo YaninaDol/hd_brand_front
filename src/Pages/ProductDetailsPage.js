@@ -46,7 +46,25 @@ const ProductDetailsPage = () => {
   });
   const handleLikeClick = () => {
     setIsFavourite(!isFavourite);
+    
+
+      axios({method:'post',
+      url:`https://localhost:7269/api/Authenticate/setLike?prodId=${id}&like=${!isFavourite}`,
+    headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                  }})
+       .then(response => {
+       
+
+  
+  })
+  .catch(error => console.error('Error fetching products:', error));
+    
+
+
   };
+
+
+
   const handleCurrencyChange = (selectedCurrency) => {
     setSelectedCurrency((prevCurrency) => {
      
@@ -117,6 +135,19 @@ const ProductDetailsPage = () => {
     setSelectedCurrency(savedCurrency);
   }
 
+  axios({method:'post',
+      url:`https://localhost:7269/api/Authenticate/getlike?prodId=${id}`,
+    headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                  }})
+       .then(response => {
+  
+   
+        setIsFavourite(response.data);
+
+  
+  })
+  .catch(error => console.error('Error fetching products:', error));
+
 
     axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
     .then(response => {
@@ -143,8 +174,7 @@ const ProductDetailsPage = () => {
     .then(res => {
       
         dispatch(setProduct(res.data.value))
-     
-
+  
       axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
       .then(resp => {
      
