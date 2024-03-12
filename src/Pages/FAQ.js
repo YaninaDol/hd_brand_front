@@ -4,12 +4,79 @@ import PxMainPage from './PxMainPage';
 import { Link, Outlet } from "react-router-dom";
 import Footer from '../Components/Footer';
 import './ContentPage.css';
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from 'axios';
+
 const FAQ = () => {
   
+const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+const [exchangeRates, setExchangeRates] = useState({
+  usd: 1, 
+  eur: 1,
+});
+
+const handleCurrencyChange = (selectedCurrency) => {
+  setSelectedCurrency((prevCurrency) => {
+   
+    const newCurrency = selectedCurrency;
+
+   
+    window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
+
+    return newCurrency;
+  });
+};
+
+useEffect(()=>
+
+{
+ 
+  fetchExchangeRates();
+
+  const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+
+if (savedCurrency) {
+  setSelectedCurrency(savedCurrency);
+}
+ 
+
+}, []);
+
+
+const fetchExchangeRates = async () => {
+  try {
+    const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
+    const data = await response.json();
+
+   
+    const newExchangeRates = {
+      usd: data.rates.USD,
+      eur: data.rates.EUR,
+    
+    };
+
+    setExchangeRates(newExchangeRates);
+  } catch (error) {
+    console.error('Error fetching exchange rates:', error);
+  }
+};
+
+const convertPrice = (price, currency) => {
+  if (currency === 'USD') {
+    return (price * exchangeRates.usd).toFixed(0);
+  } else if (currency === 'EUR') {
+    return (price * exchangeRates.eur).toFixed(0);
+  } else {
+   
+    return price;
+  }
+};
   
   return (
     <div >
-     <PxMainPage />
+      <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
      <div className="stock-status">
       <Link to="/"><div className="div33">Головна </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
