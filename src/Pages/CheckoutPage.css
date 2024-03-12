@@ -78,12 +78,15 @@
     border-right: 1px solid #ccc; /* Тонкая рамка с цветом #ccc */
     padding-right: 70px; 
 }
+.col-md-5 {
+padding-left: 35px;
+}
   @media screen and (max-width: 1125px) {
    .h211
 
    {
-    font-size: var(  --body-regular-15-size);
     display: block;
+    margin-top: 30px;
    }
     .h25title {
         font-size: var(  --body-regular-15-size);
@@ -92,4 +95,13 @@
     .di153{
         font-size: 9px;
     }
+    .col-md-7 {
+      border-right:none;
+      padding-right: 0px; 
+  }
+  .col-md-5 {
+  padding-left: 15px;
+  padding-right: 5px; 
+
+  }
   }

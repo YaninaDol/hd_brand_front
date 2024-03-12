@@ -562,7 +562,7 @@ const calculateShippingCostAddress = () => {
 <MDBRow> <h2 className="h25title">Оформлення замовлення</h2></MDBRow>
   <MDBRow>
  
-  <MDBCol md='7'>
+  <MDBCol md='7'  className="order-lg-1 order-md-1">
               <MDBRow>
               <MDBCol><div className="h211"> Заповніть ваші данні</div>  </MDBCol>
               <MDBCol className="text-end" > <div onClick={handleShow2} className="di153">{titleaccount}</div> </MDBCol>
@@ -787,7 +787,7 @@ const calculateShippingCostAddress = () => {
               <MDBCol><div className="h211"> Оберіть зручний спосіб оплати </div>  </MDBCol>
 
               </MDBRow>
-              <MDBRow style={{marginTop:'30px'}}>
+              <MDBRow style={{marginTop:'30px',marginLeft:'10px'}}>
               <Form.Check 
             type='checkbox'
             id={`liqpay`}
@@ -797,7 +797,7 @@ const calculateShippingCostAddress = () => {
           />
 
               </MDBRow>
-              <MDBRow style={{marginTop:'20px'}}>
+              <MDBRow style={{marginTop:'20px',marginLeft:'15px'}}>
               <Form.Check 
             type='checkbox'
             id={`cardpay`}
@@ -808,7 +808,7 @@ const calculateShippingCostAddress = () => {
 
               </MDBRow>
               {showManagerContact && (
-        <div style={{ marginTop: '5px',marginLeft:'15px' }}>
+        <div style={{ marginTop: '5px',marginLeft:'10px' }}>
           <p style={{fontWeight:'bold',fontSize:'15px'}}> З вами зв'яжеться менеджер для уточнення деталей. </p>
         </div>
       )}
@@ -817,7 +817,7 @@ const calculateShippingCostAddress = () => {
 
 
 
-  <MDBCol style={{paddingLeft:'35px'}} md='5'>
+  <MDBCol  md='5' className="order-lg-2 order-md-2">
   <MDBRow> <MDBCol><div className="h211"> Ваш кошик </div>  </MDBCol> </MDBRow>
   <MDBRow>
 {

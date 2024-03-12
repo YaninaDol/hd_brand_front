@@ -19,7 +19,7 @@ const Account = () => {
   const [phoneNumber, setPhonenumber] = useState("");
   const [email, setEmail] = useState("");
   const [onEdit, setOnEdit] = useState(true);
-
+  const [errors, setErrors] = useState({});
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
@@ -37,7 +37,33 @@ const Account = () => {
       return newCurrency;
     });
   };
+  const validateForm = () => {
+    const errors = {};
+   
+    
+    if (!name.trim()) {
+      errors.name = 'Заповніть ім\'я';
+    }
 
+    if (!surname.trim()) {
+      errors.surname = 'Заповніть прізвище';
+    }
+
+    if (!phoneNumber.trim()) {
+      errors.phoneNumber = 'Заповніть номер телефону';
+    }
+
+    if (!email.trim()) {
+      errors.email = 'Заповніть E-mail';
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = 'Введіть коректний E-mail';
+    }
+   
+
+    setErrors(errors);
+
+    return Object.keys(errors).length === 0; 
+  };
 
   useEffect(() => {
     
@@ -102,6 +128,9 @@ const Account = () => {
   };
 function savechanges()
 {
+  const isValid = validateForm();
+
+  if (isValid) {
   var bodyFormData = new FormData();
   bodyFormData.append('Name', name);
   bodyFormData.append('SurName', surname);
@@ -124,8 +153,8 @@ function savechanges()
 
 ).then  (res=>
 {
-  alert("User updated successfull!")
-    console.log(res.data);
+  alert("Данні успішно обновлені ")
+   
     window.location.reload();
   
 }).catch(error => {
@@ -142,6 +171,7 @@ function savechanges()
   }
 
 });   
+  }
 }
 
   return (
@@ -169,7 +199,7 @@ function savechanges()
                       id="entername"
                       placeholder="Ваше ім'я *"
                       onChange={(e)=>setName(e.target.value)}
-                    /></MDBCol>
+                    /> {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}</MDBCol>
               <MDBCol><Form.Control
                disabled={onEdit}
                value={surname}
@@ -177,7 +207,7 @@ function savechanges()
                       id="entersurname"
                       placeholder="Ваше прізвище *"
                       onChange={(e)=>setSurname(e.target.value)}
-                    /> </MDBCol>
+                    /> {errors.surname && <div style={{ color: 'red' }}>{errors.surname}</div>} </MDBCol>
               </MDBRow>
               <MDBRow style={{marginTop:'20px'}}>
               <MDBCol><Form.Control
@@ -187,7 +217,7 @@ function savechanges()
                       id="enterphone"
                       placeholder="Номер телефону *"
                       onChange={(e)=>setPhonenumber(e.target.value)}
-                    /></MDBCol>
+                    /> {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
               <MDBCol><Form.Control
                disabled={onEdit}
            value={email}
@@ -195,7 +225,7 @@ function savechanges()
                       id="enteremail"
                       placeholder="E-mail *"
                       onChange={(e)=>setEmail(e.target.value)}
-                    /> </MDBCol>
+                    /> {errors.email && <div style={{ color: 'red' }}>{errors.email}</div>}</MDBCol>
               </MDBRow>
            
          <MDBRow style={{marginTop:'30px'}}>

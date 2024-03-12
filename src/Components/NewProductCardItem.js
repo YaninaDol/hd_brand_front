@@ -65,7 +65,7 @@ const NewProductCardItem = ({ currency, imageSrc1, imageSrc2, isNew, isDiscount,
               </div>
             )}
           </div>
-          <div onClick={handleLikeClick} style={{ height: '40px',width:'50px', position: 'fixed', top: '10px', right: '1px' ,justifyItems:'center'}}>
+          <div onClick={handleLikeClick} style={{zIndex:'1000', height: '40px',width:'50px', position: 'fixed', top: '10px', right: '1px' ,justifyItems:'center'}}>
             <img onClick={handleLikeClick} 
               className="component-25-container"
               loading="eager"

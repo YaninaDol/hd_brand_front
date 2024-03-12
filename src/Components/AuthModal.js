@@ -21,12 +21,12 @@ const AuthModal = ({ show, handleClose }) => {
       setEmailError('');
     }
 
-    if (!password || password.length < 6) {
-      setPasswordError('Пароль повинен містити принаймні 6 символів');
-      isValid = false;
-    } else {
-      setPasswordError('');
-    }
+    if (!password || password.length < 8 || !/(?=.*[A-Za-z])(?=.*\d)/.test(password)) {
+  setPasswordError('Пароль повинен містити принаймні 8 символів і включати хоча б одну букву і одну цифру');
+  isValid = false;
+} else {
+  setPasswordError('');
+}
 
     if (isRegistration && repeatPassword !== password) {
       setRepeatPasswordError('Паролі не співпадають');
@@ -60,11 +60,7 @@ const AuthModal = ({ show, handleClose }) => {
 
                     
                     {
-                            window.sessionStorage.setItem("AccessToken", res.data.token);
                          
-                           if(res.data.userRole[0]=="User")
-
-                           {
                                            
                             window.location.href='/account';
                             
@@ -72,7 +68,7 @@ const AuthModal = ({ show, handleClose }) => {
                         
                             handleClose();
 
-                           }
+                           
 
 
                     })
