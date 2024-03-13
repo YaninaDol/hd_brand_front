@@ -261,7 +261,7 @@ const Home = () => {
         </div>
       </section>
     
-   <WeeklyPreview weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
+   <WeeklyPreview convertPrice={convertPrice} selectedCurrency={selectedCurrency}  weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
   
   
   

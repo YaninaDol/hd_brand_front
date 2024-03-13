@@ -9,7 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate  } from "react-router-dom";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import AuthModal from "../Components/AuthModal";
-import { Navbar, Nav, NavDropdown, FormControl, InputGroup,  Container } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import {
   MDBInput,
   MDBCol,
@@ -624,14 +624,14 @@ function getOrder()
           <div className="search-field-icons">
            
           <div class="input-group">
-                <span class="input-group-text" id="basic-addon1">
+                <span class="input-group-text" >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
 </svg>
                 </span>
-                <input type="text" class="form-control" placeholder="Що будемо шукати? "    value={searchQuery} 
+                <input type="search" class="form-control" placeholder="Що будемо шукати? "    value={searchQuery} 
         onChange={handleInputChange} 
-  onBlur={() => redirectToFilteredPage(searchQuery)} aria-label="Input group example" aria-describedby="basic-addon1"/>
+  onBlur={() => redirectToFilteredPage(searchQuery)} aria-label="Input group example" />
               </div>
             <div className="icons">
            

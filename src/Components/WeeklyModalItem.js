@@ -51,8 +51,8 @@ import {
       
 </MDBCol>
 <MDBCol md="2" lg="8" xl="4" className="text-end">
-  <MDBTypography tag="h5" className="mb-1" >
-    {this.props.price} &#8372;
+  <MDBTypography tag="h5" style={{fontSize:'15px'}} className="mb-1" >
+    {this.props.price} {this.props.currency}
   </MDBTypography>
 </MDBCol>
               </MDBRow>

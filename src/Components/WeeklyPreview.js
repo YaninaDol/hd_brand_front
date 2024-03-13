@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import './WeeklyPreview.css';
 import WeeklyModalItem from './WeeklyModalItem';
 
-const WeeklyPreview = ({ weekly, generatePath }) => {
+const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -123,7 +123,8 @@ const WeeklyPreview = ({ weekly, generatePath }) => {
               name={x.name}
               sizes={sizes[index]}
               picture={x.image}
-              price={x.price}
+              price={convertPrice(x.price,selectedCurrency)}
+              currency={selectedCurrency}
               choosesize={(size) => addSize(size, index)}
             />
           ))}
