@@ -10,7 +10,9 @@ const AuthModal = ({ show, handleClose }) => {
   const [passwordError, setPasswordError] = useState('');
   const [repeatPasswordError, setRepeatPasswordError] = useState('');
   const [isRegistration, setIsRegistration] = useState(false);
-
+  const [showReset, setShowReset] = useState(false);
+  const handleCloseReset = () => setShowReset(false);
+  const handleShowReset = () => setShowReset(true);
   const validateForm = () => {
     let isValid = true;
 
@@ -133,8 +135,53 @@ const AuthModal = ({ show, handleClose }) => {
       handleClose();
     }
   };
+const handlesend=()=>
+{
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    setEmailError('Введіть коректний e-mail');
+   
+  } else {
 
+    axios.get(`https://localhost:7269/api/Email/sendCustomEmail?mail=${email}`)
+    .then(response => {
+      console.log(response.data); 
+      
+    })
+    .catch(error => {
+      console.error(error); 
+    });
+   
+  }
+}
   return (
+    <div>
+<Modal show={showReset} onHide={handleCloseReset}>
+        <Modal.Header closeButton>
+          <Modal.Title>Відновлення пароля</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> <Form.Control
+              type="email"
+              placeholder="Введіть e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            /> <Form.Text className="text-danger">{emailError}</Form.Text> 
+            <MDBRow style={{marginTop:'15px',marginLeft:'1px',marginRight:'1px'}}>
+            <Button size="lg" variant="dark" onClick={handlesend}>
+            Відновити
+          </Button>
+              
+            </MDBRow>
+           </Modal.Body>
+             
+        <Modal.Footer>
+        
+         
+        </Modal.Footer>
+      </Modal>
+
+
+
+  
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{isRegistration ? 'Реєстрація' : 'Авторизація'}</Modal.Title>
@@ -160,6 +207,7 @@ const AuthModal = ({ show, handleClose }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {!isRegistration &&( <Form.Text onClick={()=>{handleShowReset();handleClose()}} className="text-end">Забули пароль?</Form.Text>)}
             <Form.Text className="text-danger">{passwordError}</Form.Text>
           </Form.Group>
 
@@ -188,6 +236,7 @@ const AuthModal = ({ show, handleClose }) => {
         </Form>
       </Modal.Body>
     </Modal>
+    </div>
   );
 };
 

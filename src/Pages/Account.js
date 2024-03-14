@@ -4,6 +4,7 @@ import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
 import Form from 'react-bootstrap/Form'
 import { Link} from "react-router-dom";
+import CartProduct from "../Components/CartProduct";
 import axios from 'axios';
 import {
  
@@ -11,7 +12,7 @@ import {
   MDBCol,
   MDBRow
 } from 'mdb-react-ui-kit';
-import { Button } from "react-bootstrap";
+import { Button, CardGroup } from "react-bootstrap";
 const Account = () => {
 
   const [name, setName] = useState("");
@@ -25,6 +26,11 @@ const Account = () => {
   const [passwordError, setPasswordError] = useState('');
   const [repeatPasswordError, setRepeatPasswordError] = useState('');
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [showFirstColumn, setShowFirstColumn] = useState(true); 
+  const [showFavorColumn, setShowFavorColumn] = useState(false); 
+  const [favourite, setFavourite] = useState([]); 
+
+
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
     eur: 1,
@@ -68,7 +74,14 @@ const Account = () => {
 
     return Object.keys(errors).length === 0; 
   };
-
+  const handleSelectedProductsClick = () => {
+    setShowFirstColumn(false); 
+   setShowFavorColumn(true)
+  };
+  const handleSelfInfoClick = () => {
+    setShowFirstColumn(true); 
+   setShowFavorColumn(false)
+  };
   useEffect(() => {
     
    
@@ -92,6 +105,17 @@ const Account = () => {
     })
     .catch(error => console.error('Error fetching products:', error));
   
+
+
+    axios({method:'get',
+    url:`https://localhost:7269/api/Authenticate/getAllLikes`,
+  headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                }})
+     .then(response => {
+   setFavourite(response.data)
+   
+  })
+  .catch(error => console.error('Error fetching products:', error));
     }
     fetchExchangeRates();
 
@@ -119,7 +143,19 @@ const Account = () => {
       console.error('Error fetching exchange rates:', error);
     }
   };
-
+  function generatePath(categoryId) {
+    switch (categoryId) {
+      case 1:
+        return 'clothes';
+      case 2:
+        return 'shoes';
+      case 3:
+        return 'accessorise';
+  
+      default:
+        return 'unknown';
+    }
+  }
   const convertPrice = (price, currency) => {
     if (currency === 'USD') {
       return (price * exchangeRates.usd).toFixed(0);
@@ -214,6 +250,11 @@ function savepass()
     .catch(error => console.error('Error fetching products:', error));
   }
 }
+function goOut()
+{
+  window.sessionStorage.clear();
+  window.location.reload();
+}
   return (
     <div >
      <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
@@ -226,6 +267,7 @@ function savepass()
 </div>
 <MDBContainer>
   <MDBRow>
+  {showFirstColumn && (
 <MDBCol md='8'>
               <MDBRow style={{marginTop:'50px'}}>
               <MDBCol><div className="h211" > Ваші данні</div>  </MDBCol>
@@ -273,7 +315,7 @@ function savepass()
         {onEdit?(<Button variant="outline-dark" onClick={()=>setOnEdit(false)}>Редагувати</Button>)
           :( <Button variant="dark" onClick={savechanges}>Зберегти</Button>)
         }
-
+ </MDBRow>
 <MDBRow style={{marginTop:'50px'}}>
               <MDBCol><div className="h211" > Змінити пароль </div>  </MDBCol>
               </MDBRow>
@@ -297,30 +339,83 @@ function savepass()
           {onEdit?(<Button variant="outline-dark" onClick={()=>setOnEdit(false)}>Редагувати</Button>)
           :( <Button variant="dark" onClick={savepass}>Змінити</Button>)
         }
-            </MDBRow>
+           
          </MDBRow>
    
   </MDBCol>
+)}
+  {showFavorColumn && (
+    <MDBCol md='8'>
+      <MDBRow style={{marginTop:'50px'}} >
+        <CardGroup style={{flexWrap:'wrap'}}>
+      {favourite.length > 0 ? (
+    favourite.map((x) => (
+      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+       
+      <CartProduct
+      id_key={x.id}
+      imageSrc1={x.image}
+      imageSrc2={x.image2}
+      isNew={x.isNew}
+      isDiscount={x.isDiscount}
+      isLiked={false}
+      descriprion={x.name}
+      price1={convertPrice(x.price,selectedCurrency)}
+      currency={selectedCurrency}
+      price2={convertPrice(x.salePrice,selectedCurrency)}
+      />
+     
+      </Link>
+    ))
+  ) : (
+    <div> Ти ще не вподобала нічого ... </div>
+  )}
+  </CardGroup>
+      </MDBRow>
+    </MDBCol>
+  )}
   <MDBCol md='4'>
 <MDBRow  style={{paddingLeft:'55px'}}>
 <MDBRow style={{marginTop:'50px'}}>
-
-              <MDBCol><h5><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+  <h2>Доброго дня, {name} !</h2>
+<hr className="my-4" />
+              <MDBCol><h5 onClick={handleSelfInfoClick}><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
   <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
 </svg>    &nbsp; Особисті данні </h5>  </MDBCol>
               </MDBRow>
-              <MDBRow style={{marginTop:'15px'}}>
+              {/* <MDBRow style={{marginTop:'15px'}}>
 
               <MDBCol ><h5><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-bag-check" viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
   <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
 </svg>    &nbsp; Історія замовлень </h5>  </MDBCol>
-              </MDBRow>
+              </MDBRow> */}
               <MDBRow style={{marginTop:'15px'}}>
 
-<MDBCol><h5><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+<MDBCol><h5 onClick={handleSelectedProductsClick}><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
   <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
 </svg>  &nbsp; Обрані товари </h5>  </MDBCol>
+</MDBRow>
+<hr className="my-4" />
+<MDBRow style={{marginTop:'15px'}}>
+
+<MDBCol><h5 onClick={goOut}><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+  <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+</svg> &nbsp; Вийти з кабінету </h5>  </MDBCol>
+</MDBRow>
+<hr className="my-4" />
+<MDBRow style={{marginTop:'15px'}}>
+
+<MDBCol><h4 > Потрібна допомога?  </h4> 
+<p>Наші консультанти завжди раді допомогти з приводу будь-яких питань</p> 
+<p> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+</svg> &nbsp; +38 (098) 639 86 39  (Взуття/аксесуари)</p>
+<p> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+</svg> &nbsp; +38 (098) 639 86 39  (Одяг)</p>
+ </MDBCol>
 </MDBRow>
 </MDBRow>
   </MDBCol>
