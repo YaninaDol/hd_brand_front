@@ -41,6 +41,7 @@ const CheckoutPage = () => {
   const [selectedDepartament, setSelectedDepartament] = useState(null);
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
+  const [index, setIndex] = useState("");
   const [checkoutbtn, setCheckoutbtn] = useState(false);
   const [count, setCount] = useState(0);
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
@@ -53,6 +54,8 @@ const CheckoutPage = () => {
   const [errors, setErrors] = useState({});
   const [TotalSum,setTotalSum] = useState(0);
   const validateForm = () => {
+    const isEnglish = /^[a-zA-Z\s]*$/.test(name,surname);
+
     const errors = {};
     if (!typeDelivery) {
       errors.typeDelivery = 'Оберіть тип доставки';
@@ -66,8 +69,14 @@ const CheckoutPage = () => {
       errors.address = 'Введіть адресу';
     }
   
-    if (activeTab=="longer-tab2" && (!selectedCountry || !selectedCity2 || !address2)) {
+    if (activeTab=="longer-tab2" && (!selectedCountry || !selectedCity2 || !address2||!index)) {
       errors.internationalDelivery = 'Заповніть всі поля для міжнародної доставки';
+      if (!/^[a-zA-Z\s]*$/.test(name)) {
+        errors.name = 'Ім\'я повинно містити лише англійські букви'};
+      if (!/^[a-zA-Z\s]*$/.test(surname)) {
+        errors.surname = 'Прізвище повинно містити лише англійські букви';
+      }
+     
     }
     
     if (!name.trim()) {
@@ -515,7 +524,7 @@ const calculateShippingCostAddress = () => {
       {
         if(typeDelivery==='1')
         {
-          //novaposta
+        
           console.log(selectedDepartament);
         }
         else if(typeDelivery==='2')
@@ -529,7 +538,7 @@ const calculateShippingCostAddress = () => {
         }
         else if(typeDelivery==='4')
         {
-          //ukrpost
+         
           console.log(selectedCity,address);
         }
       }
@@ -773,7 +782,8 @@ const calculateShippingCostAddress = () => {
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" "
+       placeholder="Введіть індекс "
+       onChange={(e)=>setIndex(e.target.value)}
       
      />
      
