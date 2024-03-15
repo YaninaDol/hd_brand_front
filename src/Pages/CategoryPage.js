@@ -86,7 +86,6 @@ function generatePathName(categoryName) {
 
 
  useEffect(()=>
-
 {
  
 
@@ -125,7 +124,7 @@ if (savedCurrency) {
 }
  
 
-}, [dispatch,categoryName,allproducts]);
+}, [dispatch,categoryName]);
 const fetchExchangeRates = async () => {
   try {
     const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');

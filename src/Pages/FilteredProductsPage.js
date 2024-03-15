@@ -17,6 +17,24 @@ const FilteredProductsPage = () => {
   const [contents,setContents] = useState([]);
   const [allmaterials,setAllMAterials] = useState([]);
   const [allsubcategories,seAllSubcategories] = useState([]);
+  const [selectedCurrency, setSelectedCurrency] = useState('UAH');
+  const [exchangeRates, setExchangeRates] = useState({
+    usd: 1, 
+    eur: 1,
+  });
+ 
+  const handleCurrencyChange = (selectedCurrency) => {
+    setSelectedCurrency((prevCurrency) => {
+     
+      const newCurrency = selectedCurrency;
+  
+     
+      window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
+  
+      return newCurrency;
+    });
+  };
+
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
   const query = searchParams.get('search') || '';
@@ -46,7 +64,14 @@ const FilteredProductsPage = () => {
         seAllSubcategories(response.data);
       })
       .catch(error => console.error('Error fetching products:', error));
+      fetchExchangeRates();
 
+      const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+ 
+    if (savedCurrency) {
+      setSelectedCurrency(savedCurrency);
+    }
 
   },[dispatch,allmaterials,allsubcategories]);
 
@@ -57,16 +82,44 @@ const FilteredProductsPage = () => {
     );
   };
 
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
+      const data = await response.json();
+  
+     
+      const newExchangeRates = {
+        usd: data.rates.USD,
+        eur: data.rates.EUR,
+      
+      };
+  
+      setExchangeRates(newExchangeRates);
+    } catch (error) {
+      console.error('Error fetching exchange rates:', error);
+    }
+  };
+
+  const convertPrice = (price, currency) => {
+    if (currency === 'USD') {
+      return (price * exchangeRates.usd).toFixed(0);
+    } else if (currency === 'EUR') {
+      return (price * exchangeRates.eur).toFixed(0);
+    } else {
+     
+      return price;
+    }
+  };
 
   const filteredProducts = filterProductsBySearchQuery(searchQuery, contents);
 
   return (
     <div>
 
-   <PxMainPage></PxMainPage>
+<PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
     
       <div>
-      <ContentPage items={filteredProducts} link='search' materials={allmaterials} types={allsubcategories} page='Пошук' ></ContentPage>
+      <ContentPage selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={filteredProducts} link='search' materials={allmaterials} types={allsubcategories} page='Пошук' ></ContentPage>
 
 
 <Footer />

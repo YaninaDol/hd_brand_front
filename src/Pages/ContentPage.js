@@ -5,6 +5,7 @@ import { Link, Outlet } from "react-router-dom";
 import CartProduct from '../Components/CartProduct';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Slider from 'rc-slider';
@@ -41,6 +42,12 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   const handleRangeChange = (values) => {
     setRangeValues(values);
   };
+  useEffect(() => {
+   
+    
+       
+    
+}, [filteredProducts, sortCollection]);
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
   
@@ -62,30 +69,38 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   const handleSort = (order) => {
     setSortOrder(order);
   
-   
-    const sortedProducts = [...items].sort((a, b) => {
-      if (order === 'asc') {
-        
-        return a.salePrice - b.salePrice;
-      } else {
-        return b.salePrice - a.salePrice;
-      }
-     
-    });
-  
+    let sortedProducts;
+    if (filteredProducts.length > 0) {
+       
+        sortedProducts = [...filteredProducts].sort((a, b) => {
+            if (order === 'asc') {
+                return a.salePrice - b.salePrice;
+            } else {
+                return b.salePrice - a.salePrice;
+            }
+        });
+    } else {
+      
+        sortedProducts = [...items].sort((a, b) => {
+            if (order === 'asc') {
+                return a.salePrice - b.salePrice;
+            } else {
+                return b.salePrice - a.salePrice;
+            }
+        });
+    }
+
+    
     setfilteredProducts(sortedProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
-
-  };
-
+};
 
   const handleSortCollection = (order) => {
+    
     setSortCollection(order);
   
-    setfilteredProducts(items.filter((x) => x[order] === true));
-    setAllHidden('hidden');
-    setFilteredHidden('');
+    
 
   };
 
@@ -96,23 +111,22 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
       const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
       const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
-      
+      const collection=sortCollection===''||(product[sortCollection]&&product[sortCollection]===true);
       const colorIncluded = selectedColor==='' || (product.color && product.color === selectedColor);
-   
+     
     
-      return typeIncluded && materialIncluded && seasonIncluded && colorIncluded;
+      return typeIncluded && materialIncluded && seasonIncluded && colorIncluded&&collection;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
       const priceInRange = product.salePrice >= rangeValues[0] && product.salePrice <= rangeValues[1];
     
       return priceInRange;
     });
-  
+  console.log('apply'+priceFilteredProducts);
     setfilteredProducts(priceFilteredProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
-    setSortOrder('');
-    setSortCollection('');
+    
   };
   const resetFilters = () => {
     setfilteredProducts([]);
