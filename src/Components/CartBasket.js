@@ -27,7 +27,7 @@ class CartBasket extends Component {
     return (
       <MDBCard className="mb-8" style={{marginTop:'5px',borderRadius:'0px'}}>
         <MDBCardBody className="p-4">
-          <MDBRow className="justify-content-between align-items-center">
+          <MDBRow className="justify-content-between align-items-center" >
             <MDBCol md="1" lg="1" xl="1">
               <svg
              onClick={() => this.props.remove(this.props.unic)}
@@ -65,7 +65,7 @@ class CartBasket extends Component {
                 </Button>
               </div>
             </MDBCol>
-            <MDBCol  md="2" lg="2" xl="3">
+            <MDBCol style={{paddingRight:'0px'}}  md="2" lg="2" xl="3">
               <MDBTypography tag="h6" id='price' className="mx-2">
               {this.props.price1 * this.props.quantity} {this.props.selectedCurrency}
               </MDBTypography>

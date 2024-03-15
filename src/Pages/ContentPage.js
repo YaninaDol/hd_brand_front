@@ -134,8 +134,15 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     setAllHidden('');
     setFilteredHidden('hidden');
     setSortOrder('');
+    setSelectedMaterials([]);
+    setSelectedSeasons([]);
+    setSelectedTypes([]); 
     setSortCollection('');
     setSelectedColor('');
+    setRangeValues([0, 10000]); 
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
   };
   function generatePath(categoryId) {
     switch (categoryId) {

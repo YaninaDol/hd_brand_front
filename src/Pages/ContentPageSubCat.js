@@ -127,11 +127,15 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     setAllHidden('');
     setFilteredHidden('hidden');
     setSortOrder('');
-    setSortCollection('');
     setSelectedMaterials([]);
     setSelectedSeasons([]);
-    setSelectedTypes([]);
+    setSelectedTypes([]); 
+    setSortCollection('');
     setSelectedColor('');
+    setRangeValues([0, 10000]); 
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
   };
   function generatePath(categoryId) {
     switch (categoryId) {

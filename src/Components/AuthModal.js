@@ -145,7 +145,7 @@ const handlesend=()=>
     axios.get(`https://localhost:7269/api/Email/sendCustomEmail?mail=${email}`)
     .then(response => {
       console.log(response.data); 
-      
+      handleCloseReset();
     })
     .catch(error => {
       console.error(error); 

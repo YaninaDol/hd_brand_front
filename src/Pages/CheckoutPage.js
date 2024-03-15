@@ -169,7 +169,7 @@ const CheckoutPage = () => {
       setEmail(response.data.email);
       setPhonenumber(response.data.phonenumber);
       setUserDiscount(response.data.discount);
-  count>2?setDiscount(5):setDiscount(response.data.discount);
+      count>=2?setDiscount(5):setDiscount(response.data.discount);
    
     
   })
@@ -249,7 +249,7 @@ setShipment(shippingCost);
 
 
 
-  }, [selectedCountry,count]);
+  }, [selectedCountry,count,discount]);
 
   function removeBasket(id) {
     let prod = arrbuket.find(item => item.id === id);
@@ -339,7 +339,6 @@ const calculateShippingCostAddress = () => {
     case 'Poland':
     case 'Moldova (Republic of)':
       if (count === 1) {
-       
         return 600;
       } else if (count === 2) {
         return 630;
@@ -788,7 +787,7 @@ const calculateShippingCostAddress = () => {
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder="Введіть індекс "
+       placeholder="Введіть індекс або відділення "
        onChange={(e)=>setIndex(e.target.value)}
       
      />
