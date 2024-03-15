@@ -73,7 +73,7 @@ const FilteredProductsPage = () => {
       setSelectedCurrency(savedCurrency);
     }
 
-  },[dispatch,allmaterials,allsubcategories]);
+  },[dispatch]);
 
 
   const filterProductsBySearchQuery = (query, contents) => {

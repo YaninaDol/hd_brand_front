@@ -108,7 +108,6 @@ const SubcategoryPage = () => {
     axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
     .then(response => {
     
-     console.log(response.data);
      setItems(response.data);
     
     })
@@ -129,7 +128,7 @@ const SubcategoryPage = () => {
   })
   .catch(error => console.error('Error fetching products:', error));
   
-  }, [categoryName, subcategoryid, dispatch,items]);
+  }, [categoryName, subcategoryid, dispatch]);
 
 
 

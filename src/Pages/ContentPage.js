@@ -100,8 +100,6 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     
     setSortCollection(order);
   
-    
-
   };
 
   const applyFilters = () => {
@@ -122,10 +120,12 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     
       return priceInRange;
     });
-  console.log('apply'+priceFilteredProducts);
-    setfilteredProducts(priceFilteredProducts);
+    if(priceFilteredProducts.length>0)
+   { setfilteredProducts(priceFilteredProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
+   }
+   else resetFilters();
     
   };
   const resetFilters = () => {
@@ -273,9 +273,14 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         value={rangeValues}
         onChange={handleRangeChange}
       />
-      <p>
-        {rangeValues[0]}&nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
-      </p>
+      <MDBRow>
+        <MDBCol>
+        {rangeValues[0]}
+        </MDBCol>
+        <MDBCol className='text-end'>
+        {rangeValues[1]}
+        </MDBCol>
+      </MDBRow>
     </div>
 
      
@@ -624,9 +629,14 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         value={rangeValues}
         onChange={handleRangeChange}
       />
-      <p>
-        {rangeValues[0]}&nbsp;  &nbsp;    &nbsp; &nbsp;    &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
-      </p>
+       <MDBRow>
+        <MDBCol>
+        {rangeValues[0]}
+        </MDBCol>
+        <MDBCol className='text-end'>
+        {rangeValues[1]}
+        </MDBCol>
+      </MDBRow>
     </div>
 
      

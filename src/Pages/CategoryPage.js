@@ -92,7 +92,6 @@ function generatePathName(categoryName) {
   
   axios.get(`https://localhost:7269/api/Product/GetProductsByCategory?id=${generatePath(categoryName)}`)
   .then(response => {
-  console.log(response.data);
     setAllProducts(response.data);
   })
   .catch(error => console.error('Error fetching products:', error));

@@ -61,30 +61,38 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   const handleSort = (order) => {
     setSortOrder(order);
   
-   
-    const sortedProducts = [...items].sort((a, b) => {
-      if (order === 'asc') {
-        
-        return a.salePrice - b.salePrice;
-      } else {
-        return b.salePrice - a.salePrice;
-      }
-     
-    });
-  
+    let sortedProducts;
+    if (filteredProducts.length > 0) {
+       
+        sortedProducts = [...filteredProducts].sort((a, b) => {
+            if (order === 'asc') {
+                return a.salePrice - b.salePrice;
+            } else {
+                return b.salePrice - a.salePrice;
+            }
+        });
+    } else {
+      
+        sortedProducts = [...items].sort((a, b) => {
+            if (order === 'asc') {
+                return a.salePrice - b.salePrice;
+            } else {
+                return b.salePrice - a.salePrice;
+            }
+        });
+    }
+
+    
     setfilteredProducts(sortedProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
-
-  };
-
+};
 
   const handleSortCollection = (order) => {
+    
     setSortCollection(order);
   
-    setfilteredProducts(items.filter((x) => x[order] === true));
-    setAllHidden('hidden');
-    setFilteredHidden('');
+    
 
   };
 
@@ -95,22 +103,23 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
       const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
       const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
+      const collection=sortCollection===''||(product[sortCollection]&&product[sortCollection]===true);
       const colorIncluded = selectedColor==='' || (product.color && product.color === selectedColor);
-   
+     
     
-      return typeIncluded && materialIncluded && seasonIncluded && colorIncluded;
+      return typeIncluded && materialIncluded && seasonIncluded && colorIncluded&&collection;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
       const priceInRange = product.salePrice >= rangeValues[0] && product.salePrice <= rangeValues[1];
     
       return priceInRange;
     });
-  
-    setfilteredProducts(priceFilteredProducts);
-    setAllHidden('hidden');
-    setFilteredHidden('');
-    setSortOrder('');
-    setSortCollection('');
+    if(priceFilteredProducts.length>0)
+    { setfilteredProducts(priceFilteredProducts);
+     setAllHidden('hidden');
+     setFilteredHidden('');
+    }
+    else resetFilters();
     
   };
   const resetFilters = () => {
@@ -252,9 +261,15 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
         value={rangeValues}
         onChange={handleRangeChange}
       />
-      <p>
-        {rangeValues[0]}&nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
-      </p>
+      <MDBRow>
+        <MDBCol>
+        {rangeValues[0]}
+        </MDBCol>
+        <MDBCol className='text-end'>
+        {rangeValues[1]}
+        </MDBCol>
+      </MDBRow>
+      
     </div>
 
      
@@ -578,9 +593,14 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
         value={rangeValues}
         onChange={handleRangeChange}
       />
-      <p>
-        {rangeValues[0]}&nbsp;  &nbsp;  &nbsp;      &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp;{rangeValues[1]}
-      </p>
+      <MDBRow>
+        <MDBCol>
+        {rangeValues[0]}
+        </MDBCol>
+        <MDBCol className='text-end'>
+        {rangeValues[1]}
+        </MDBCol>
+      </MDBRow>
     </div>
 
      
