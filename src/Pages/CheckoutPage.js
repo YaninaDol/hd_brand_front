@@ -324,7 +324,11 @@ setShipment(shippingCost);
   };
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e.value);
-    await fetchCitiesByCountry(e.value);
+    if(e.value.includes('Moldova'))
+    {
+      await fetchCitiesByCountry('Moldova');
+    }
+   else await fetchCitiesByCountry(e.value);
 
 
 
@@ -335,6 +339,7 @@ const calculateShippingCostAddress = () => {
     case 'Poland':
     case 'Moldova (Republic of)':
       if (count === 1) {
+       
         return 600;
       } else if (count === 2) {
         return 630;
@@ -410,6 +415,7 @@ const calculateShippingCostAddress = () => {
       setCities([]); 
     }
   };
+   
   
   
   const handleChange = (e) => {
@@ -773,7 +779,7 @@ const calculateShippingCostAddress = () => {
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Введіть адресу "
+       placeholder=" Введіть повну адресу "
        onChange={(e)=>setAddress2(e.target.value)}
      />
   </MDBCol>
