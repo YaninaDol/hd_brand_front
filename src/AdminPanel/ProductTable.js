@@ -246,10 +246,10 @@ function ConfirmDelete()
                 method:'post',
                 url:'https://localhost:7269/api/Product/Delete',
                  data:bodyFormData
-                // ,headers: {
-                //   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-                //         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-                // },
+                ,headers: {
+                  'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                        'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                },
                
                 }
 
@@ -257,7 +257,7 @@ function ConfirmDelete()
 
             ).then  (res=>
             {
-              alert("Product deleted successfull")
+              alert("Продукт успішно видалений")
               
                 dispatch(deleteProduct(idToDelete));
                 handleCloseRemove();
@@ -464,15 +464,15 @@ function changeLook()
 
 <Modal show={showRemove} onHide={handleCloseRemove}>
         <Modal.Header closeButton>
-          <Modal.Title>Remove product</Modal.Title>
+          <Modal.Title>Видалити продукт</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure?</Modal.Body>
+        <Modal.Body>Ви впевнені, що хочете видалити ?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseRemove}>
-            Cancel
+            Відмінити
           </Button>
           <Button variant="dark" onClick={ConfirmDelete}>
-            Yes
+            Так
           </Button>
         </Modal.Footer>
       </Modal>

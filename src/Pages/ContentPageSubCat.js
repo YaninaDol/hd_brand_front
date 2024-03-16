@@ -64,22 +64,22 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     let sortedProducts;
     if (filteredProducts.length > 0) {
        
-        sortedProducts = [...filteredProducts].sort((a, b) => {
-            if (order === 'asc') {
-                return a.salePrice - b.salePrice;
-            } else {
-                return b.salePrice - a.salePrice;
-            }
-        });
-    } else {
-      
-        sortedProducts = [...items].sort((a, b) => {
-            if (order === 'asc') {
-                return a.salePrice - b.salePrice;
-            } else {
-                return b.salePrice - a.salePrice;
-            }
-        });
+      sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (order === 'asc') {
+            return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
+        } else {
+            return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
+        }
+    });
+} else {
+  
+    sortedProducts = [...items].sort((a, b) => {
+        if (order === 'asc') {
+          return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
+        } else {
+            return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
+        }
+    });
     }
 
     
@@ -110,7 +110,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       return typeIncluded && materialIncluded && seasonIncluded && colorIncluded&&collection;
     });
     const priceFilteredProducts = filteredProducts1.filter((product) => {
-      const priceInRange = product.salePrice >= rangeValues[0] && product.salePrice <= rangeValues[1];
+      const priceInRange = convertPrice(product.salePrice,selectedCurrency) >= rangeValues[0] && convertPrice(product.salePrice,selectedCurrency) <= rangeValues[1];
     
       return priceInRange;
     });
