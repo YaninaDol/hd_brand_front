@@ -442,7 +442,8 @@ const ProductDetailsPage = () => {
             Виберіть розмір перед додаванням в корзину.
           </div>
         )}
-    <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
+        {category.id!=3&&( <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
+   )}
     
   </MDBRow>
 
