@@ -19,8 +19,6 @@ import CardBox from "../Components/CardBox";
 const CheckoutPage = () => {
 
   const [titleaccount, setTitleAccount] = useState('');
-  const [login, setLogin] = useState("");
-  const [pass1, setPass1] = useState("");
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
@@ -46,6 +44,7 @@ const CheckoutPage = () => {
   const [count, setCount] = useState(0);
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
   const [typeDelivery, setTypeDelivery] = useState('1');
+  const [worldwideTypeDelivery, setWorldwideTypeDelivery] = useState('warehouse');
   const [activeTab, setActiveTab] = useState('longer-tab'); 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("liqpay");
   const [total,setTotal] = useState(0);
@@ -53,6 +52,7 @@ const CheckoutPage = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [errors, setErrors] = useState({});
   const [TotalSum,setTotalSum] = useState(0);
+
   const validateForm = () => {
     const isEnglish = /^[a-zA-Z\s]*$/.test(name,surname);
 
@@ -737,6 +737,7 @@ const calculateShippingCostAddress = () => {
       <Tab eventKey="longer-tab2" title="МІЖНАРОДНА ДОСТАВКА">
        <MDBRow>
             <MDBCol>
+              
             <Select
           className="custom-select-lg"
           onChange={handleChangeCountry}

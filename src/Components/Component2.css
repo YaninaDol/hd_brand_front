@@ -26,8 +26,10 @@
   min-width: 214px;
   min-height: 40px;
   max-width: 100%;
+  
 }
 .div152 {
+  height: 70px;
   flex: 0.9716;
   border-radius: var(--br-8xs);
   border: 1px solid var(--color-darkgray-100);
@@ -36,8 +38,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding: var(--padding-6xl) var(--padding-18xl) var(--padding-6xl)
-    var(--padding-12xl);
+  padding-right: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   gap: var(--gap-5xl);
   min-width: 335px;
   max-width: 100%;

@@ -12,6 +12,9 @@ const ShoppingAssistant = () => {
           <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
         </svg>}
           prop="Усі фото ми робимо власноруч. Товар на 100% відповідає зображенню"
+          propFlex="1"
+          propPadding="var(--padding-6xl) var(--padding-8xl) var(--padding-6xl) var(--padding-11xl)"
+          propMinWidth="222px"
         />
         <Component2
           camera3={<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
