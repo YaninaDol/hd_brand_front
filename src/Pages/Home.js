@@ -141,7 +141,9 @@ const Home = () => {
   const showSection = contents.filter((x) => x.isDiscount === true).length > 4;
   return (
     <div >
-    <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+   <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
+  <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+</div>
     <Carousel >
       <Carousel.Item active>
       <Carousel.Caption>

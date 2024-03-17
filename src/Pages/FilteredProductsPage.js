@@ -115,8 +115,9 @@ const FilteredProductsPage = () => {
 
   return (
     <div>
-
-<PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+  <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
+  <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+</div>
     
       <div>
       <ContentPage selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={filteredProducts} link='search' materials={allmaterials} types={allsubcategories} page='Пошук' ></ContentPage>

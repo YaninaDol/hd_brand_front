@@ -156,13 +156,15 @@ const convertPrice = (price, currency) => {
     <div >
     
 
-   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+    <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
+  <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
+</div>
 
-   <div>
+   <div style={{marginTop:'150px'}}>
+   <ContentPage selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={allproducts} link={categoryName} materials={materials} types={types} page={generatePathName(categoryName)} ></ContentPage>
 
 </div>
 
-<ContentPage selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={allproducts} link={categoryName} materials={materials} types={types} page={generatePathName(categoryName)} ></ContentPage>
 
 
     <Footer />
