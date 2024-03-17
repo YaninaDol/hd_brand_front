@@ -2,6 +2,8 @@ import { useEffect,useState } from "react";
 import React from 'react';
 import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 import { Link} from "react-router-dom";
 import {Button,Form,Modal,Tabs,Tab} from 'react-bootstrap';
 import Select from 'react-select';
@@ -584,7 +586,9 @@ const calculateShippingCostAddress = () => {
               
               
               <MDBRow>
-              <MDBCol><Form.Control
+              <MDBCol  className="col-12 col-md-6">
+                
+                <Form.Control
            
                       type="text"
                       value={name}
@@ -593,7 +597,10 @@ const calculateShippingCostAddress = () => {
                       onChange={(e)=>setName(e.target.value)}
                     /> {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}</MDBCol>
                      
-              <MDBCol><Form.Control
+              <MDBCol className="col-12 col-md-6 py-2 py-md-0">
+                
+                
+                <Form.Control
                value={surname}
                       type="text"
                       id="entersurname"
@@ -601,15 +608,24 @@ const calculateShippingCostAddress = () => {
                       onChange={(e)=>setSurname(e.target.value)}
                     />   {errors.surname && <div style={{ color: 'red' }}>{errors.surname}</div>}</MDBCol>
               </MDBRow>
-              <MDBRow style={{marginTop:'20px'}}>
-              <MDBCol><Form.Control
-              value={phoneNumber}
-                      type="text"
-                      id="enterphone"
-                      placeholder="Номер телефону *"
-                      onChange={(e)=>setPhonenumber(e.target.value)}
-                    />     {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
-              <MDBCol><Form.Control
+
+
+
+              <MDBRow className="mt-1 mt-md-3">
+              <MDBCol  className="col-12 col-md-6">
+                <div className="MDBCol-border"> 
+                <PhoneInput 
+      placeholder="Номер телефону *"
+      id="enterphone"
+      value={phoneNumber}
+      onChange={setPhonenumber}/>
+                </div>
+                     {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
+              <MDBCol className="col-12 col-md-6 py-2 py-md-0">
+                
+                
+                
+                <Form.Control
            value={email}
                       type="email"
                       id="enteremail"
