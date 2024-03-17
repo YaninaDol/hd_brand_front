@@ -42,6 +42,10 @@ class CardBox extends Component {
                 <MDBCol>Розмір: </MDBCol>
                 <MDBCol > {this.props.size}</MDBCol>
             </MDBRow>
+            <MDBRow style={{marginTop:'15px'}}>
+                <MDBCol>Срок : </MDBCol>
+                <MDBCol > 4-7 робочих днів</MDBCol>
+            </MDBRow>
             <MDBRow style={{marginTop:'15px'}}>  <MDBCol   md='6' >
               <div  className="d-flex justify-content-between align-items-center quantity-container">
                 <Button variant="light" style={{borderRadius:'0px'}}  onClick={this.decrementQuantity}>
@@ -53,7 +57,7 @@ class CardBox extends Component {
                 </Button>
               </div>
             </MDBCol> </MDBRow>
-
+           
 <MDBRow  style={{marginTop:'15px'}}>
 <MDBCol>
               <MDBTypography tag="h5" id='price'>
