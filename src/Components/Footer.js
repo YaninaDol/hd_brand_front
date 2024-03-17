@@ -52,7 +52,7 @@ const Footer = () => {
           <div className="div6">покупцям</div>
           <div className="f-a-q-help-questions-programs">
            <Link style={{color:'white'}} to='/faq'><div className="faq">FAQ (часті пітання)</div></Link> 
-            <div className="div7">Програма лояльності</div>
+        
             <div className="div8">Політика конфіденційності</div>
             <div className="div9">Правила роботи сайту</div>
           </div>

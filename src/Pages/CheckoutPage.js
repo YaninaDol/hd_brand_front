@@ -580,12 +580,16 @@ const calculateShippingCostAddress = () => {
  
   <MDBCol md='7'  className="order-lg-1 order-md-1">
               <MDBRow>
-              <MDBCol><div className="h211"> Заповніть ваші данні</div>  </MDBCol>
-              <MDBCol className="text-end" > <div onClick={handleShow2} className="di153">{titleaccount}</div> </MDBCol>
+              <MDBCol className="col-12 col-md-8">
+                <div className="h211"> Заповніть ваші данні</div>  </MDBCol>
+              <MDBCol className="col-12 col-md-4 ">
+              
+              
+              <div onClick={handleShow2} className="di153">{titleaccount}</div> </MDBCol>
               </MDBRow>
               
               
-              <MDBRow>
+              <MDBRow className="mt-3 mt-md-3">
               <MDBCol  className="col-12 col-md-6">
                 
                 <Form.Control
@@ -656,14 +660,20 @@ const calculateShippingCostAddress = () => {
     >
     
       <Tab eventKey="longer-tab" title="ДОСТАВКА ПО УКРАЇНІ">
-       <MDBRow>
-        <MDBCol>   <Form.Select  size="lg" onChange={(e)=> setTypeDelivery(e.target.value) } >
-        <option  value={1}>Нова Пошта - відділення </option>
-        <option value={2}>Нова Пошта - адреса </option>
-        <option value={3}>УкрПошта - відділення </option>
-        <option value={4}>УкрПошта - адреса </option>
+       <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
+          
+            <Form.Select  size="lg" onChange={(e)=> setTypeDelivery(e.target.value) } >
+        <option style={{maxWidth:'100%'}}  value={1}>Нова Пошта - відділення </option>
+        <option style={{maxWidth:'100%'}}  value={2}>Нова Пошта - адреса </option>
+        <option style={{maxWidth:'100%'}}  value={3}>УкрПошта - відділення </option>
+        <option style={{maxWidth:'100%'}}  value={4}>УкрПошта - адреса </option>
       </Form.Select></MDBCol>
-        <MDBCol> <Select
+
+
+        <MDBCol  className="col-12 col-md-6 py-3 py-md-0">
+          
+          <Select
            className="custom-select-lg"
     
      onChange={handleChange}
@@ -679,8 +689,9 @@ const calculateShippingCostAddress = () => {
       }}
     /> </MDBCol>
        </MDBRow>
-       <MDBRow>
-        <MDBCol>
+
+       <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
 
         {typeDelivery === '1' && (
         <Select
@@ -751,8 +762,8 @@ const calculateShippingCostAddress = () => {
        </MDBRow>
       </Tab>
       <Tab eventKey="longer-tab2" title="МІЖНАРОДНА ДОСТАВКА">
-       <MDBRow>
-            <MDBCol>
+      <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
               
             <Select
           className="custom-select-lg"
@@ -769,7 +780,7 @@ const calculateShippingCostAddress = () => {
           }}
         />
             </MDBCol>
-            <MDBCol>
+           
             <MDBCol>
             <Select
           className="custom-select-lg"
@@ -786,11 +797,11 @@ const calculateShippingCostAddress = () => {
           }}
         />
             </MDBCol>
-            </MDBCol>
+      
            
        </MDBRow>
-<MDBRow>
-  <MDBCol>
+       <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
   <Form.Control
           size="lg"
        type="text"
@@ -799,7 +810,7 @@ const calculateShippingCostAddress = () => {
        onChange={(e)=>setAddress2(e.target.value)}
      />
   </MDBCol>
-  <MDBCol>
+  <MDBCol  className="col-12 col-md-6 py-3 py-md-0">
   <Form.Control
           size="lg"
        type="text"
