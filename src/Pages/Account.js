@@ -274,8 +274,11 @@ function goOut()
               </MDBRow>
               
               
-              <MDBRow>
-              <MDBCol><Form.Control
+              <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
+                
+                
+                <Form.Control
            disabled={onEdit}
                       type="text"
                       value={name}
@@ -283,7 +286,10 @@ function goOut()
                       placeholder="Ваше ім'я *"
                       onChange={(e)=>setName(e.target.value)}
                     /> {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}</MDBCol>
-              <MDBCol><Form.Control
+              <MDBCol className="col-12 col-md-6 py-3 py-md-0">
+                
+                
+                <Form.Control
                disabled={onEdit}
                value={surname}
                       type="text"
@@ -292,8 +298,13 @@ function goOut()
                       onChange={(e)=>setSurname(e.target.value)}
                     /> {errors.surname && <div style={{ color: 'red' }}>{errors.surname}</div>} </MDBCol>
               </MDBRow>
-              <MDBRow style={{marginTop:'20px'}}>
-              <MDBCol><Form.Control
+
+
+              <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
+                
+                
+                <Form.Control
                disabled={onEdit}
               value={phoneNumber}
                       type="text"
@@ -301,7 +312,10 @@ function goOut()
                       placeholder="Номер телефону *"
                       onChange={(e)=>setPhonenumber(e.target.value)}
                     /> {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
-              <MDBCol><Form.Control
+              <MDBCol className="col-12 col-md-6 py-3 py-md-0">
+                
+                
+                <Form.Control
                disabled={onEdit}
            value={email}
                       type="email"
@@ -319,13 +333,23 @@ function goOut()
 <MDBRow style={{marginTop:'50px'}}>
               <MDBCol><div className="h211" > Змінити пароль </div>  </MDBCol>
               </MDBRow>
-              <MDBRow style={{marginTop:'20px'}}>
-              <MDBCol><Form.Control  type="password"
+           
+              <MDBRow className="mt-1 mt-md-3">
+        <MDBCol  className="col-12 col-md-6">
+                
+                <Form.Control  type="password"
                 disabled={onEdit}
               placeholder="Введіть  новий пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            />  <Form.Text className="text-danger">{passwordError}</Form.Text> </MDBCol><MDBCol> <Form.Control
+            />  <Form.Text className="text-danger">{passwordError}</Form.Text> </MDBCol>
+            
+            
+            
+            
+            <MDBCol className="col-12 col-md-6 py-3 py-md-0">
+              
+               <Form.Control
             disabled={onEdit}
             type="password"
             placeholder="Повторіть пароль"
