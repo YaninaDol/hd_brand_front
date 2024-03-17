@@ -119,7 +119,7 @@ const FilteredProductsPage = () => {
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
     
-      <div>
+      <div style={{marginTop:'150px'}}>
       <ContentPage selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={filteredProducts} link='search' materials={allmaterials} types={allsubcategories} page='Пошук' ></ContentPage>
 
 
