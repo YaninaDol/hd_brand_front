@@ -906,7 +906,7 @@ const calculateShippingCostAddress = () => {
   {activeTab!='longer-tab' ? (
   <MDBCol className="text-end"><h5>{convertPrice(shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   ): (
-    <MDBCol className="text-end"><a style={{color:'black'}} href="https://novaposhta.ua/basic_tariffs">По тарифам перевізника </a></MDBCol>
+    <MDBCol className="text-end"><a style={{color:'black',textDecoration:'underline'}} href="https://novaposhta.ua/basic_tariffs">По тарифам перевізника </a></MDBCol>
     )
   }
   </MDBRow>
