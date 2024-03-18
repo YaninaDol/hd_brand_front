@@ -44,10 +44,10 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   };
   useEffect(() => {
    
-    
+    applyFilters();
        
     
-}, [filteredProducts, sortCollection]);
+}, [items,filteredProducts, sortCollection]);
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
   

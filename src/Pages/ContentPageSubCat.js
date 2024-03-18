@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from "react";
+import { useEffect } from "react";
 import './ContentPage.css';
 import { Link, Outlet } from "react-router-dom";
 import CartProduct from '../Components/CartProduct';
@@ -37,6 +38,13 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 
   const handleCloseSidebar = () => setShowOffcanvas(false);
   const handleShowSidebar = () => setShowOffcanvas(true);
+
+
+  useEffect(() => {
+    applyFilters();
+  }, [items,filteredProducts,sortCollection]);
+
+
   const handleRangeChange = (values) => {
     setRangeValues(values);
   };

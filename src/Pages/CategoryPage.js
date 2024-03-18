@@ -92,6 +92,7 @@ function generatePathName(categoryName) {
   
   axios.get(`https://localhost:7269/api/Product/GetProductsByCategory?id=${generatePath(categoryName)}`)
   .then(response => {
+   
     setAllProducts(response.data);
   })
   .catch(error => console.error('Error fetching products:', error));
@@ -123,7 +124,7 @@ if (savedCurrency) {
 }
  
 
-}, [dispatch,categoryName]);
+}, [dispatch,categoryName,products]);
 const fetchExchangeRates = async () => {
   try {
     const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
