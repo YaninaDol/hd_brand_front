@@ -10,7 +10,10 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2, isNew, isDi
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
+    if(window.sessionStorage.getItem("AccessToken"))
+{
     axios({method:'post',
     url:`https://localhost:7269/api/Authenticate/getlike?prodId=${id_key}`,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
@@ -18,10 +21,11 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2, isNew, isDi
      .then(response => {
 
  setIsFavourite(response.data);
-
-
 })
 .catch(error => console.error('Error fetching products:', error));
+  
+}
+
     const loadingTimeout = setTimeout(() => {
       setIsLoading(false);
     }, 1000);

@@ -1,24 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Cera+Pro:wght@400;500;700&display=swap");
+
 body {
- 
   margin: 0;
   line-height: normal;
   font-family: 'Cera Pro', sans-serif; /* Apply the imported font */
 }
+
 html {
   overflow: scroll;
   overflow-x: hidden;
-   }
-  ::-webkit-scrollbar {
+}
+
+::-webkit-scrollbar {
   width: 0px;  /* remove scrollbar space */
   background: transparent;  /* optional: just make scrollbar invisible */
-    }
-  /* optional: show position indicator in red */
-  ::-webkit-scrollbar-thumb {
+}
+
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
   background: #FF0000;
-   }
-
-
+}
 
 :root {
   /* fonts */

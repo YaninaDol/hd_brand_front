@@ -144,7 +144,7 @@ const Home = () => {
    <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
-    <Carousel >
+    <Carousel style={{marginTop:'150px'}} >
       <Carousel.Item active>
       <Carousel.Caption>
         <h3>SPRING COLLECTION ‘ 24</h3>
