@@ -35,7 +35,7 @@ const CategoryTable = ({ type,categories, onAddCategory, onDeleteCategory, onUpd
 
       <MDBTable>
         <Button variant='dark' onClick={() => setAddCategoryHide('')}>
-          + Add new category
+          + Додати
         </Button>
 
         <MDBTableHead dark>

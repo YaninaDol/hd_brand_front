@@ -6,6 +6,10 @@ import Form from 'react-bootstrap/Form'
 import { Link} from "react-router-dom";
 import CartProduct from "../Components/CartProduct";
 import axios from 'axios';
+import './CheckoutPage.css';
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+
 import {
  
   MDBContainer,
@@ -306,14 +310,14 @@ function goOut()
         <MDBCol  className="col-12 col-md-6">
                 
                 
-                <Form.Control
-               disabled={onEdit}
-              value={phoneNumber}
-                      type="text"
-                      id="enterphone"
-                      placeholder="Номер телефону *"
-                      onChange={(e)=>setPhonenumber(e.target.value)}
-                    /> {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
+        <div  className="MDBCol-border"> 
+                <PhoneInput 
+                 disabled={onEdit}
+      placeholder="Номер телефону *"
+      id="enterphone"
+      value={phoneNumber}
+      onChange={setPhonenumber}/>
+                </div> {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
               <MDBCol className="col-12 col-md-6 py-3 py-md-0">
                 
                 

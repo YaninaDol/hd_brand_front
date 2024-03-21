@@ -429,6 +429,12 @@ function getOrder()
     window.location.href='/checkout';
   }
 }
+function changeImg(path) {
+  
+  let lastIndex = path.lastIndexOf('/');
+  let fileName = path.substring(lastIndex + 1); 
+  return require(`../assets/${fileName}`);
+}
      return (
      
 <div>
@@ -451,17 +457,17 @@ function getOrder()
              <MDBCol md="3" lg="3" xl="3">
               
              </MDBCol>
-             <MDBCol md="3" lg="3" xl="3"> 
+             <MDBCol md="3" lg="3" xl="3" className="text-center"> 
               Товар
               
              </MDBCol>
              
-             <MDBCol md="2" lg="2" xl="2">
+             <MDBCol md="2" lg="2" xl="2" >
               
                 Кількість
            
              </MDBCol>
-             <MDBCol md="2" lg="2" xl="3">
+             <MDBCol md="2" lg="2" xl="3" className="text-center">
                <MDBTypography tag="h7" className="mx-2">
               Ціна
                </MDBTypography>
@@ -476,7 +482,7 @@ function getOrder()
                   name={x.name}
                   quantity={x.quantity}
                   size={x.size}
-                  picture={x.image}
+                  picture={changeImg(x.image)}
                   price1={convertPrice(x.price,selectedCurrency)}
                   incrementQuantity={incrementQuantity}
                   decrementQuantity={decrementQuantity}
@@ -599,13 +605,15 @@ function getOrder()
         </div>
         <header className="header" >
         <div className="header-container">
-          <div className="logo-menu-navigation">
+          <div className="logo-menu-navigation" >
+            <Link to='/'>
             <img
               className="logo-icon"
               loading="eager"
               alt=""
               src={require('../assets/logo@2x.png')}
             />
+            </Link>
             <div className="menu-navigation">
               <div className="menu-navigation-button-contain">
                <Link to='/shoes'> <div className="button-nav" >взуття</div></Link>

@@ -46,10 +46,12 @@ const CheckoutPage = () => {
   const [count, setCount] = useState(0);
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
   const [typeDelivery, setTypeDelivery] = useState('1');
-  const [worldwideTypeDelivery, setWorldwideTypeDelivery] = useState('warehouse');
+  const [typeDeliveryW, setTypeDeliveryW] = useState('address');
+  const [NovaWorldWare, setNovaWorldWare] = useState(null);
   const [activeTab, setActiveTab] = useState('longer-tab'); 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("liqpay");
   const [total,setTotal] = useState(0);
+  const [countryinExcel,setCountryExcel] = useState('novapost');
   const [showManagerContact, setShowManagerContact] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [errors, setErrors] = useState({});
@@ -89,7 +91,7 @@ const CheckoutPage = () => {
       errors.surname = 'Заповніть прізвище';
     }
 
-    if (!phoneNumber.trim()) {
+    if (!phoneNumber || !phoneNumber.trim()) {
       errors.phoneNumber = 'Заповніть номер телефону';
     }
 
@@ -247,11 +249,11 @@ if (savedCurrency) {
 setSelectedCurrency(savedCurrency);
 }
 const shippingCost = calculateShippingCostAddress();
-setShipment(shippingCost);
+setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
 
-  }, [selectedCountry,count,discount]);
+  }, [selectedCountry,count,discount,typeDeliveryW]);
 
   function removeBasket(id) {
     let prod = arrbuket.find(item => item.id === id);
@@ -324,6 +326,8 @@ setShipment(shippingCost);
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
+
+
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e.value);
     if(e.value.includes('Moldova'))
@@ -335,20 +339,20 @@ setShipment(shippingCost);
 
 
   };
-const calculateShippingCostAddress = () => {
- 
-  switch (selectedCountry) {
-    case 'Poland':
-    case 'Moldova (Republic of)':
-      if (count === 1) {
-        return 600;
-      } else if (count === 2) {
-        return 630;
-      }
-      else {
+  const calculateShippingCostAddress = () => {
+    
+    switch (selectedCountry) {
+      case 'Poland':
+      case 'Moldova (Republic of)':
+        setCountryExcel('novapost');
         
-        return 870;
-      }
+        if (count === 1) {
+          return 600 ;
+        } else if (count === 2) {
+          return 630 ;
+        } else {
+          return 870 ;
+        }
       case 'Romania':
       case 'Czech Republic':
       case 'Germany':
@@ -356,38 +360,38 @@ const calculateShippingCostAddress = () => {
       case 'Estonia':
       case 'Latvia':
       case 'Lithuania':
-      case 'Hungary':    
+      case 'Hungary':
+        setCountryExcel('novapost');
+       
         if (count === 1) {
-          return 900;
+          return 900 ;
         } else if (count === 2) {
-          return 930;
+          return 930 ;
+        } else {
+          return 1970 ;
         }
-        else {
-          
-          return 1970;
-        } 
       case 'Italy':
-          if (count === 1) {
-            return 1300;
-          } else if (count === 2) {
-            return 1330;
-          }
-          else {
-            
-            return 2670;
-          }
-    default:
-    
-      if (count === 1) {
-        return 800;
-      } else if (count === 2) {
-        return 1200;
-      } else {
-        
-        return 1600;
-      }
-  }
-};
+        setCountryExcel('novapost');
+      
+        if (count === 1) {
+          return 1300 ;
+        } else if (count === 2) {
+          return 1330 ;
+        } else {
+          return 2670 ;
+        }
+      default:
+        setCountryExcel('worldwide');
+     
+        if (count === 1) {
+          return 800;
+        } else if (count === 2) {
+          return 1200;
+        } else {
+          return 1600;
+        }
+    }
+  };
   const fetchCitiesByCountry = async (selectedCountry) => {
     try {
       const response = await fetch('https://countriesnow.space/api/v0.1/countries/cities', {
@@ -561,6 +565,12 @@ const calculateShippingCostAddress = () => {
 
 
  }
+ function changeImg(path) {
+  
+  let lastIndex = path.lastIndexOf('/');
+  let fileName = path.substring(lastIndex + 1); 
+  return require(`../assets/${fileName}`);
+}
   return (
     <div >
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
@@ -623,7 +633,7 @@ const calculateShippingCostAddress = () => {
                 <PhoneInput 
       placeholder="Номер телефону *"
       id="enterphone"
-      value={phoneNumber}
+      value={phoneNumber || ''}
       onChange={setPhonenumber}/>
                 </div>
                      {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
@@ -686,14 +696,14 @@ const calculateShippingCostAddress = () => {
         control: (provided) => ({
           ...provided,
          borderRadius: '0%',
-          height: '50px', 
+          height: '40px', 
         }),
       }}
     /> </MDBCol>
        </MDBRow>
 
        <MDBRow className="mt-1 mt-md-3">
-        <MDBCol  className="col-12 col-md-6">
+        <MDBCol  className="col-12 col-md-6 py-0 py-md-0">
 
         {typeDelivery === '1' && (
         <Select
@@ -706,7 +716,7 @@ const calculateShippingCostAddress = () => {
             control: (provided) => ({
               ...provided,
               borderRadius: '0%',
-              height: '50px',
+              height: '40px',
             }),
           }}
         />
@@ -733,26 +743,19 @@ const calculateShippingCostAddress = () => {
             control: (provided) => ({
               ...provided,
               borderRadius: '0%',
-              height: '50px',
+              height: '40px',
             }),
           }}
         />
       )}
       {typeDelivery === '4' && (
-        <Select
-          className="custom-select-lg"
-          onChange={(e)=> setSelectedDepartament(e.value)}
-          options={warehouseDescriptions}
-          isSearchable
-          placeholder="Оберіть відділення"
-          styles={{
-            control: (provided) => ({
-              ...provided,
-              borderRadius: '0%',
-              height: '50px',
-            }),
-          }}
-        />
+       <Form.Control
+       size="lg"
+    type="text"
+    id="enteraddress"
+    placeholder=" Введіть адресу "
+    onChange={(e)=>setAddress2(e.target.value)}
+  />
       )}
  {errors.selectedDepartament && <div style={{ color: 'red' }}>{errors.selectedDepartament}</div>}
  {errors.address  && <div style={{ color: 'red' }}>{errors.address }</div>}
@@ -765,7 +768,7 @@ const calculateShippingCostAddress = () => {
       </Tab>
       <Tab eventKey="longer-tab2" title="МІЖНАРОДНА ДОСТАВКА">
       <MDBRow className="mt-1 mt-md-3">
-        <MDBCol  className="col-12 col-md-6">
+        <MDBCol  className="col-12 col-md-6 ">
               
             <Select
           className="custom-select-lg"
@@ -777,52 +780,71 @@ const calculateShippingCostAddress = () => {
             control: (provided) => ({
               ...provided,
               borderRadius: '0%',
-              height: '50px',
+              height: '40px',
             }),
           }}
         />
             </MDBCol>
            
             <MDBCol>
-            <Select
-          className="custom-select-lg"
-          onChange={(e)=> setSelectedCity2(e.value)}
-          options={cities}
-          isSearchable
-          placeholder="Оберіть місто"
-          styles={{
-            control: (provided) => ({
-              ...provided,
-              borderRadius: '0%',
-              height: '50px',
-            }),
-          }}
-        />
+            {countryinExcel === 'novapost' && ( <Form.Select  onChange={(e)=> setTypeDeliveryW(e.target.value) } size="lg" >
+            <option style={{maxWidth:'100%'}}  value={'address'}>Нова пошта - адреса </option>
+        <option style={{maxWidth:'100%'}} value={'warehouse'}>Нова пошта - відділення </option>
+      
+      </Form.Select>)}
+      {countryinExcel === 'worldwide' && ( <Form.Select  onChange={(e)=> setTypeDeliveryW(e.target.value) }  size="lg" >
+        <option style={{maxWidth:'100%'}}  value={'address'}> Міжнародна пошта </option>
+      </Form.Select>)}
             </MDBCol>
       
            
        </MDBRow>
-       <MDBRow className="mt-1 mt-md-3">
+       <MDBRow className="mt-2 mt-md-3">
         <MDBCol  className="col-12 col-md-6">
-  <Form.Control
+
+        {typeDeliveryW === 'warehouse' && (  <Select
+          className="custom-select-lg"
+          onChange={(e)=> setSelectedCity2(e.value)}
+          options={cities}
+          isSearchable
+          placeholder=" Оберіть місто "
+          styles={{
+            control: (provided) => ({
+              ...provided,
+              borderRadius: '0%',
+              height: '40px',
+            }),
+          }}
+        />)}
+  {typeDeliveryW === 'address' && (<Form.Control
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Введіть повну адресу "
+       placeholder=" Введіть повну адресу"
        onChange={(e)=>setAddress2(e.target.value)}
-     />
+     />)}
   </MDBCol>
-  <MDBCol  className="col-12 col-md-6 py-3 py-md-0">
-  <Form.Control
+  
+  <MDBCol  className="col-12 col-md-6 py-2 py-md-0">
+  {typeDeliveryW === 'address' && (<Form.Control
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder="Введіть індекс або відділення "
+       placeholder=" Вкажіть індекс"
        onChange={(e)=>setIndex(e.target.value)}
       
-     />
-     
+     />)}
+      {typeDeliveryW === 'warehouse' && (<Form.Control
+      
+          size="lg"
+       type="text"
+       id="enteraddress"
+       placeholder=" Вкажіть відділення"
+       onChange={(e)=>setNovaWorldWare(e.target.value)}
+      
+     />)}
   </MDBCol>
+
   {errors.internationalDelivery   && <div style={{ color: 'red' }}>{errors.internationalDelivery  }</div>}
 </MDBRow>
       </Tab>
@@ -881,7 +903,7 @@ const calculateShippingCostAddress = () => {
       name={x.name}
       quantity={x.quantity}
       size={x.size}
-      picture={x.image}
+      picture={changeImg(x.image)}
       price={convertPrice(x.price,selectedCurrency)}
       incrementQuantity={incrementQuantity}
       decrementQuantity={decrementQuantity}

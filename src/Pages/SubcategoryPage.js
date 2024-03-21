@@ -163,6 +163,7 @@ const convertPrice = (price, currency) => {
     return price;
   }
 };
+
   return (
     <div>
       <Modal show={showM} onHide={handleCloseM}>

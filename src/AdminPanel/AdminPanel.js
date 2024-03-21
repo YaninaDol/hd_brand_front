@@ -60,6 +60,7 @@ const AdminPanel = () => {
           <Route path="/categoryspec" element={<CategorySpecification />} />
         </Routes>
       </div>
+     
     </div>
   );
 };

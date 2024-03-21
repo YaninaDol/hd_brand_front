@@ -22,7 +22,9 @@ class CardBox extends Component {
 
   decrementQuantity = () => {
     this.props.decrementQuantity(this.props.unic);
+    
   };
+  
   render() {
     return (
      

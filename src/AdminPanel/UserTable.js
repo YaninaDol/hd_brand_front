@@ -28,7 +28,8 @@ export default function UserTable(){
     const [idUserUpdate,setIdUserUpdate]=useState(0);
     const [userLoginUpdate,setUserLoginUpdate]=useState('');
     const [userEmailUpdate,setUserEmailUpdate]=useState('');
-
+    const [surname, setSurname] = useState("");
+    const [phoneNumber, setPhonenumber] = useState("");
     const [showUp, setShowUp] = useState(false);
     const handleCloseUp = () => setShowUp(false);
     const handleShowUp = () => setShowUp(true);
@@ -37,7 +38,6 @@ export default function UserTable(){
     const handleCloseAddU = () => setShowAddU(false);
     const handleShowAddU = () => setShowAddU(true);
 
-    const [UserLoginAddU,setUserLoginAddU]=useState('');
     const [userEmailAddU,setUserEmailAddU]=useState('');
     const [userPasswordAddU,setUserPasswordAddU]=useState('');
 
@@ -46,7 +46,6 @@ export default function UserTable(){
     const handleCloseAddA = () => setShowAddA(false);
     const handleShowAddA = () => setShowAddA(true);
 
-    const [UserLoginAddA,setUserLoginAddA]=useState('');
     const [userEmailAddA,setUserEmailAddA]=useState('');
     const [userPasswordAddA,setUserPasswordAddA]=useState('');
 
@@ -55,7 +54,7 @@ export default function UserTable(){
 
  
       axios({method:'get',
-        url:'https://localhost:7269/api/Authenticate/getUsers',
+        url:'https://localhost:7269/api/Authenticate/getAllUserInfos',
       headers: {
                       'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
                             'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
@@ -68,6 +67,7 @@ export default function UserTable(){
     {
    
     setIdRemove(id);
+    
     handleShowRemove();
        
     }
@@ -123,11 +123,13 @@ export default function UserTable(){
     {
     
         
-      let user= users.find(item=>item.id == id);
+      let user= users.find(item=>item.userId == id);
     
       setIdUserUpdate(id);
     
-        setUserLoginUpdate(user['userName']);
+        setUserLoginUpdate(user['name']);
+        setSurname(user['surname']);
+        setPhonenumber(user['phonenumber']);
         setUserEmailUpdate(user['email']);
     
     handleShowUp();
@@ -138,46 +140,47 @@ export default function UserTable(){
 {
   if(userEmailUpdate.includes('@'))
 {
-          var bodyFormData = new FormData();
-          bodyFormData.append('userID', idUserUpdate);
-          bodyFormData.append('UserName', userLoginUpdate);
-          bodyFormData.append('email', userEmailUpdate);
-        
-          axios (
+  var bodyFormData = new FormData();
+  bodyFormData.append('userId', idUserUpdate);
+  bodyFormData.append('Name', userLoginUpdate);
+  bodyFormData.append('SurName', surname);
+  bodyFormData.append('email', userEmailUpdate);
+  bodyFormData.append('phonenumber',phoneNumber );
+  axios (
 
-            {
-            method:'post',
-            url:'https://localhost:7269/api/Authenticate/updateUser',
-            data:bodyFormData,
-            headers: {
-              'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-                    'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-            },
-          
-            }
+    {
+    method:'post',
+    url:'https://localhost:7269/api/Authenticate/updateUserbyAdmin',
+    data:bodyFormData,
+    headers: {
+      
+            'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+    },
+  
+    }
 
 
 
-        ).then  (res=>
-        {
-          alert("User updated successfull!")
-            console.log(res.data);
-            window.location.reload();
-          
-        }).catch(error => {
-              
-          if (error.response) {
-          
-            console.error('Response error:', error.response.data);
-          } else if (error.request) {
-          
-            console.error('Request error:', error.request);
-          } else {
-          
-            console.error('Error during request:', error.message);
-          }
-        
-        });   
+).then  (res=>
+{
+  alert("Данні успішно обновлені ")
+   
+    window.location.reload();
+  
+}).catch(error => {
+      
+  if (error.response) {
+  
+    console.error('Response error:', error.response.data);
+  } else if (error.request) {
+  
+    console.error('Request error:', error.request);
+  } else {
+  
+    console.error('Error during request:', error.message);
+  }
+
+});   
       }else alert ("Not correct email!")
 
 
@@ -203,7 +206,7 @@ function confirmAddUser()
           {
           method:'post',
           url:'https://localhost:7269/api/Authenticate/regUser',
-          data: JSON.stringify({ UserName: UserLoginAddU, Password: userPasswordAddU,Email:userEmailAddU}), 
+          data: JSON.stringify({email:userEmailAddU,Password: userPasswordAddU}), 
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         
           }
@@ -213,7 +216,7 @@ function confirmAddUser()
       
       ).then  (res=>
       {
-        alert("User registered successfull!")
+        alert("Успішно зареєстровано !")
           console.log(res.data);
           window.location.reload();
         
@@ -258,7 +261,7 @@ function confirmAddAdmin()
           {
           method:'post',
           url:'https://localhost:7269/api/Authenticate/regMenager',
-          data: JSON.stringify({ UserName: UserLoginAddA, Password: userPasswordAddA,Email:userEmailAddA}), 
+          data: JSON.stringify({ email:userEmailAddA, Password: userPasswordAddA}), 
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json',
           'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken") },
         
@@ -290,13 +293,6 @@ function confirmAddAdmin()
     else alert("Not correct email !")
 
 }
-
-
-
-
-
-
-
     
     return(
         <div>
@@ -305,15 +301,15 @@ function confirmAddAdmin()
 
       <Modal show={showRemove} onHide={handleCloseRemove}>
         <Modal.Header closeButton>
-          <Modal.Title>Remove user</Modal.Title>
+          <Modal.Title>Видалення</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure?</Modal.Body>
+        <Modal.Body>Видалити юзера ?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseRemove}>
-            Cancel
+            Відміна
           </Button>
           <Button variant="dark" onClick={confirmRemove}>
-            Yes
+            Так
           </Button>
         </Modal.Footer>
       </Modal>
@@ -325,24 +321,30 @@ function confirmAddAdmin()
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update user</Modal.Title>
+          <Modal.Title>Оновити данні </Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <MDBInputGroup className='mb-3'  textBefore='User ID'>
       <input disabled value={idUserUpdate} className='form-control' type='text' />
     </MDBInputGroup>
-    <MDBInputGroup className='mb-3' textBefore='Login User'>
+    <MDBInputGroup className='mb-3' textBefore="Ім'я">
       <input onChange={(e)=>setUserLoginUpdate(e.target.value)} value={userLoginUpdate} className='form-control' type='text' />
       </MDBInputGroup>
-      <MDBInputGroup className='mb-3' textBefore='Email User'>
+      <MDBInputGroup className='mb-3' textBefore="Прізвище">
+      <input onChange={(e)=>setSurname(e.target.value)} value={surname} className='form-control' type='text' />
+      </MDBInputGroup>
+      <MDBInputGroup className='mb-3' textBefore="Телефон">
+      <input onChange={(e)=>setPhonenumber(e.target.value)} value={phoneNumber} className='form-control' type='text' />
+      </MDBInputGroup>
+      <MDBInputGroup className='mb-3' textBefore='E-mail '>
       <input onChange={(e)=>setUserEmailUpdate(e.target.value)} value={userEmailUpdate} type='email' className='form-control' />
       </MDBInputGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseUp}>
-            Close
+            Відміна
           </Button>
-          <Button variant="dark" onClick={confirmUp}>Confirm</Button>
+          <Button variant="dark" onClick={confirmUp}>Оновити</Button>
         </Modal.Footer>
       </Modal>
 
@@ -357,9 +359,6 @@ function confirmAddAdmin()
           <Modal.Title>Registration User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-    <MDBInputGroup className='mb-3' textBefore='Login User'>
-      <input onChange={(e)=>setUserLoginAddU(e.target.value)} className='form-control' type='text' />
-      </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Email User'>
       <input onChange={(e)=>setUserEmailAddU(e.target.value)} type='email' className='form-control' />
       </MDBInputGroup>
@@ -385,9 +384,7 @@ function confirmAddAdmin()
           <Modal.Title>Registration Menager</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-    <MDBInputGroup className='mb-3' textBefore='Login'>
-      <input onChange={(e)=>setUserLoginAddA(e.target.value)} className='form-control' type='text' />
-      </MDBInputGroup>
+   
       <MDBInputGroup className='mb-3' textBefore='Email'>
       <input onChange={(e)=>setUserEmailAddA(e.target.value)} type='email' className='form-control' />
       </MDBInputGroup>
@@ -406,7 +403,7 @@ function confirmAddAdmin()
 <div>
 
       
-<Button style={{textAlign:'center',alignItems:'left'}} outline onClick={()=>handleShowAddU()} variant='dark'>
+<Button style={{textAlign:'center',alignItems:'left',marginRight:'30px'}} outline onClick={()=>handleShowAddU()} variant='dark'>
        REGISTER USER
 </Button>
 
@@ -426,7 +423,9 @@ REGISTER MENAGER
   <tr>
   <th scope='col'></th>
     <th scope='col'>#</th>
-    <th scope='col'>User Name</th>
+    <th scope='col'>Ім'я</th>
+    <th scope='col'>Прізвище</th>
+    <th scope='col'>Телефон</th>
     <th scope='col'>Email</th>
     <th scope='col'></th>
     <th scope='col'></th>
@@ -434,7 +433,7 @@ REGISTER MENAGER
 </MDBTableHead>
 <MDBTableBody >
  {
-  users.map((x)=> <UserTableItem id={x.id} unic={x.id} name ={x.userName} email={x.email} remove={removebtn} update={updatebtn}></UserTableItem>)
+  users.map((x)=> <UserTableItem id={x.userId} unic={x.userId} name ={x.name} surname={x.surname} phonenumber={x.phonenumber} email={x.email} remove={removebtn} update={updatebtn}></UserTableItem>)
  }
 </MDBTableBody>
 </MDBTable>

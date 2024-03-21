@@ -36,14 +36,7 @@ const CategorySpecification = () => {
     {
     
 
-      axios.get('https://localhost:7269/api/Specification/GetAllSizes')
-      .then(response => {
-        console.log(response.data)
-        dispatch(setSizes(response.data))
-       
-      })
-      .catch(error => console.error('Error fetching products:', error));
-
+     
      
   
       axios.get('https://localhost:7269/api/Specification/GetAllCategory')
@@ -191,11 +184,11 @@ function updateCategory(type,id,name)
   
 
 
-      <CategoryTable categories={categories} type='Category' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-      <CategoryTable categories={materials} type='Material' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-      <CategoryTable categories={subcategories} type='SubCategory' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-      <CategoryTable categories={sizes} type='Size' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-   
+      <CategoryTable categories={categories} type='Категорія' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={materials} type='Матеріал' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={subcategories} type='Тип виробу' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={seasons} type='Сезон' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+     
     </div>
   );
 };

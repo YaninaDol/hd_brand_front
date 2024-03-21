@@ -2,21 +2,18 @@ import React from 'react';
 import { useState } from "react";
 import { useEffect } from "react";
 import './ContentPage.css';
-import { Link, Outlet } from "react-router-dom";
+import { Link} from "react-router-dom";
 import CartProduct from '../Components/CartProduct';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Slider from 'rc-slider';
 import '../Components/range.css'; 
-import { Navbar, Nav, NavDropdown,Offcanvas  } from 'react-bootstrap';
+import { Offcanvas  } from 'react-bootstrap';
 import {
  
   MDBContainer,
   MDBCol,
-  MDBRow,
-  MDBRange 
+  MDBRow 
 } from 'mdb-react-ui-kit';
 const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrencyChange,convertPrice }) => {
   const [sortOrder, setSortOrder] = useState('');
@@ -42,7 +39,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 
   useEffect(() => {
     applyFilters();
-  }, [items,filteredProducts,sortCollection]);
+  }, [items,sortCollection,sortOrder]);
 
 
   const handleRangeChange = (values) => {
@@ -69,31 +66,31 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   const handleSort = (order) => {
     setSortOrder(order);
   
-    let sortedProducts;
-    if (filteredProducts.length > 0) {
+//     let sortedProducts;
+//     if (filteredProducts.length > 0) {
        
-      sortedProducts = [...filteredProducts].sort((a, b) => {
-        if (order === 'asc') {
-            return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
-        } else {
-            return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
-        }
-    });
-} else {
+//       sortedProducts = [...filteredProducts].sort((a, b) => {
+//         if (order === 'asc') {
+//             return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
+//         } else {
+//             return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
+//         }
+//     });
+// } else {
   
-    sortedProducts = [...items].sort((a, b) => {
-        if (order === 'asc') {
-          return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
-        } else {
-            return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
-        }
-    });
-    }
+//     sortedProducts = [...items].sort((a, b) => {
+//         if (order === 'asc') {
+//           return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
+//         } else {
+//             return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
+//         }
+//     });
+//     }
 
     
-    setfilteredProducts(sortedProducts);
-    setAllHidden('hidden');
-    setFilteredHidden('');
+//     setfilteredProducts(sortedProducts);
+//     setAllHidden('hidden');
+//     setFilteredHidden('');
 };
 
   const handleSortCollection = (order) => {
@@ -105,31 +102,47 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   };
 
   const applyFilters = () => {
-  
-  
     const filteredProducts1 = items.filter((product) => {
-      const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
-      const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
-      const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
-      const collection=sortCollection===''||(product[sortCollection]&&product[sortCollection]===true);
-      const colorIncluded = selectedColor==='' || (product.color && product.color === selectedColor);
-     
-    
-      return typeIncluded && materialIncluded && seasonIncluded && colorIncluded&&collection;
+        const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
+        const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
+        const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
+        const collection = sortCollection === '' || (product[sortCollection] && product[sortCollection] === true);
+        const colorIncluded = selectedColor === '' || (product.color && product.color === selectedColor);
+
+        return typeIncluded && materialIncluded && seasonIncluded && colorIncluded && collection;
     });
+
     const priceFilteredProducts = filteredProducts1.filter((product) => {
-      const priceInRange = convertPrice(product.salePrice,selectedCurrency) >= rangeValues[0] && convertPrice(product.salePrice,selectedCurrency) <= rangeValues[1];
-    
-      return priceInRange;
+        const priceInRange = convertPrice(product.salePrice, selectedCurrency) >= rangeValues[0] && convertPrice(product.salePrice, selectedCurrency) <= rangeValues[1];
+        return priceInRange;
     });
-    if(priceFilteredProducts.length>0)
-    { setfilteredProducts(priceFilteredProducts);
-     setAllHidden('hidden');
-     setFilteredHidden('');
+
+    let sortedProducts;
+    if (priceFilteredProducts.length > 0) {
+        sortedProducts = [...priceFilteredProducts].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return convertPrice(a.salePrice, selectedCurrency) - convertPrice(b.salePrice, selectedCurrency);
+            } else {
+                return convertPrice(b.salePrice, selectedCurrency) - convertPrice(a.salePrice, selectedCurrency);
+            }
+        });
+    } else {
+        sortedProducts = [...items].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return convertPrice(a.salePrice, selectedCurrency) - convertPrice(b.salePrice, selectedCurrency);
+            } else {
+                return convertPrice(b.salePrice, selectedCurrency) - convertPrice(a.salePrice, selectedCurrency);
+            }
+        });
+
+       
+        resetFilters();
     }
-    else resetFilters();
-    
-  };
+
+    setfilteredProducts(sortedProducts);
+    setAllHidden('hidden');
+    setFilteredHidden('');
+};
   const resetFilters = () => {
     setfilteredProducts([]);
     setAllHidden('');
@@ -435,7 +448,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-{(selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
+{(sortOrder !== '' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
   <div style={{marginTop:'10px',opacity:'0.5',textDecoration:'underline'}} onClick={resetFilters} >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -457,6 +470,8 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       id_key={x.id}
       imageSrc1={x.image}
       imageSrc2={x.image2}
+      imageSrc3={x.image3}
+      video={x.video}
       isNew={x.isNew}
       isDiscount={x.isDiscount}
       isLiked={false}
@@ -479,6 +494,8 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       id_key={x.id}
       imageSrc1={x.image}
       imageSrc2={x.image2}
+      imageSrc3={x.image3}
+      video={x.video}
       isNew={x.isNew}
       isDiscount={x.isDiscount}
       isLiked={false}
@@ -766,7 +783,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-{(selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
+{(sortOrder !== '' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
     <div style={{marginTop:'10px',opacity:'0.5',textDecoration:'underline'}} onClick={resetFilters} >
        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>

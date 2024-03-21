@@ -22,6 +22,10 @@ const ProductDetailsPage = () => {
     const { id, subcategoryid } = useParams();
     const [isFavourite, setIsFavourite] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [img1, setImg1] = useState(null);
+    const [img2, setImg2] = useState(null);
+    const [img3, setImg3] = useState(null);
+
   const dispatch = useDispatch();
   const productsizes = useSelector(state => state.productsizes);
   const product = useSelector(state => state.product);
@@ -126,6 +130,7 @@ const ProductDetailsPage = () => {
   useEffect(()=>
 
   {
+    window.scrollTo(0, 0);
     fetchExchangeRates();
 
     const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
@@ -173,7 +178,11 @@ const ProductDetailsPage = () => {
     axios.get(`https://localhost:7269/api/Product/GetProductById?id=${id}`)
     .then(res => {
       
-        dispatch(setProduct(res.data.value))
+        dispatch(setProduct(res.data.value));
+        console.log(res.data.value);
+        setImg1(changeImg(res.data.value.image));
+        setImg2(changeImg(res.data.value.image2));
+        setImg3(changeImg(res.data.value.image3));
   
       axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
       .then(resp => {
@@ -292,14 +301,16 @@ const ProductDetailsPage = () => {
       window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
   
      
-      alert("Додано!");
+      handleShowM();
   
     
      setNewProd(null);
      setShowValidation(false);
      
     
+     setTimeout(() => {
       window.location.reload();
+    }, 1500); 
   
   };
  
@@ -318,12 +329,24 @@ const ProductDetailsPage = () => {
     }
   }
 
+
+function changeImg(path) {
+   
+    if(path)
+    {let lastIndex = path.lastIndexOf('/');
+    console.log(lastIndex);
+    let fileName = path.substring(lastIndex + 1); 
+    console.log(fileName);
+    return require(`../assets/${fileName}`);
+}
+  }
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
 
   return (
     <div>
+      
       <Modal show={showM} onHide={handleCloseM}>
         <Modal.Header closeButton>
         <Modal.Body>Товар додано до кошику </Modal.Body>
@@ -366,41 +389,47 @@ const ProductDetailsPage = () => {
    
 
     <MDBCol id='photocolumn'>
-            <MDBRow>
+    {product.image&&(<MDBRow>
+  
+             <MDBCol  ><img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+            </MDBRow>)}
+           
+            {product.image2&&(  <MDBRow>
    
-    <MDBCol  ><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-             </MDBRow>
-             <MDBRow>
-   
-   <MDBCol  ><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-            </MDBRow>
+   <MDBCol  ><img src={img2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+            </MDBRow>)}
    </MDBCol>
+   {(product.image3 || product.video)&&(
    <MDBCol  id='photocolumn'>
-            <MDBRow>
+   {product.image3&&(    <MDBRow>
    
-    <MDBCol  id='photocolumn'><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-             </MDBRow>
-             <MDBRow>
+    <MDBCol  id='photocolumn'><img src={img3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+             </MDBRow>)}
+             {product.video&&(      <MDBRow>
    
-   <MDBCol  id='photocolumn'><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
-            </MDBRow>
-   </MDBCol>
+   <MDBCol  id='photocolumn'><img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+            </MDBRow>)}
+   </MDBCol>)}
 <MDBCol style={{margin:'25px'}}>
 
 <MDBRow >
 <Carousel id='photocolumnmob'>
+{product.image&&(
 <Carousel.Item>
-<img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
-</Carousel.Item>
+<img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>)}
+{product.image2&&(
 <Carousel.Item>
-<img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
-</Carousel.Item>
+<img src={img2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>)}
+{product.image3&&(
 <Carousel.Item>
-<img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
-</Carousel.Item>
+<img src={img3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>)}
+{product.video&&(
 <Carousel.Item>
-<img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
-</Carousel.Item>
+<img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+</Carousel.Item>)}
 </Carousel>
 
               { isFavourite

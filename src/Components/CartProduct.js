@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card,Spinner } from 'react-bootstrap';
 import axios from 'axios';
-import Carousel from 'react-bootstrap/Carousel';
 import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
-const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked, descriprion, price1, price2,currency }) => {
+const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDiscount, isLiked, descriprion, price1, price2,currency }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [loading, setLoading] = useState(true);
   const discountPercentage = ((parseInt(price1) - parseInt(price2)) / parseInt(price1)) * 100;
@@ -28,7 +27,7 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked,
       setLoading(false);
     }, 1000);
 
-    // Cleanup timeout to avoid memory leaks
+   
     return () => clearTimeout(loadingTimeout);
   }, []);
 
@@ -50,7 +49,12 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked,
 
 
   };
-
+  function changeImg(path) {
+  
+    let lastIndex = path.lastIndexOf('/');
+    let fileName = path.substring(lastIndex + 1); 
+    return require(`../assets/${fileName}`);
+  }
   return (
     <Card id={id_key} className='cart-item' style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', border: 'none', marginBottom: '25px', position: 'relative' }}>
       {loading ? (
@@ -60,12 +64,18 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2, isNew, isDiscount, isLiked,
       
         <>
           <MDBCarousel>
-            <MDBCarouselItem itemId={1}>
-              <Card.Img id='id_img' variant="top" style={{  borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc1} />
-            </MDBCarouselItem>
-            <MDBCarouselItem itemId={2}>
-              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={imageSrc2} />
-            </MDBCarouselItem>
+          {imageSrc1 && (   <MDBCarouselItem itemId={1}>
+              <Card.Img id='id_img' variant="top" style={{  borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} src={changeImg(imageSrc1)} />
+            </MDBCarouselItem>)}
+            {imageSrc2 && (   <MDBCarouselItem itemId={2}>
+              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={changeImg(imageSrc2)} />
+            </MDBCarouselItem>)}
+            {imageSrc3 && (   <MDBCarouselItem itemId={3}>
+              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={changeImg(imageSrc2)} />
+            </MDBCarouselItem>)}
+            {video && (   <MDBCarouselItem itemId={4}>
+              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={changeImg(imageSrc2)} />
+            </MDBCarouselItem>)}
           </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
             {isDiscount ? (

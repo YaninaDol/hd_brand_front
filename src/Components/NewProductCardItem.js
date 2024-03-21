@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Spinner } from 'react-bootstrap'; // Import Spinner from react-bootstrap
-import Carousel from 'react-bootstrap/Carousel';
+import { Card, Spinner } from 'react-bootstrap'; 
 import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import axios from 'axios';
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
-const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
+const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,7 +53,12 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2, isNew, isDi
 
 
   };
-
+  function changeImg(path) {
+  
+    let lastIndex = path.lastIndexOf('/');
+    let fileName = path.substring(lastIndex + 1); 
+    return require(`../assets/${fileName}`);
+  }
   return (
     <Card className="no-gutters" style={{ marginLeft: '15px', marginRight: '15px', border: 'none' }}>
       {isLoading ? (
@@ -62,24 +66,48 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2, isNew, isDi
       ) : (
       
         <>
-          <MDBCarousel>
-            <MDBCarouselItem itemId={1}>
-              <Card.Img
-                variant="top"
-                style={{ objectFit: 'cover', border: 'none' }}
-                className='cardIMG'
-                src={imageSrc1}
-              />
-            </MDBCarouselItem>
-            <MDBCarouselItem itemId={2}>
-              <Card.Img
-                variant="top"
-                style={{ objectFit: 'cover', border: 'none' }}
-                className='cardIMG'
-                src={imageSrc2}
-              />
-            </MDBCarouselItem>
-          </MDBCarousel>
+        <MDBCarousel>
+  {imageSrc1 && (
+    <MDBCarouselItem itemId={1}>
+      <Card.Img
+        variant="top"
+        style={{ objectFit: 'cover', border: 'none' }}
+        className='cardIMG'
+        src={changeImg(imageSrc1)}
+      />
+    </MDBCarouselItem>
+  )}
+  {imageSrc2 && (
+    <MDBCarouselItem itemId={2}>
+      <Card.Img
+        variant="top"
+        style={{ objectFit: 'cover', border: 'none' }}
+        className='cardIMG'
+        src={changeImg(imageSrc2)}
+      />
+    </MDBCarouselItem>
+  )}
+  {imageSrc3 && (
+    <MDBCarouselItem itemId={3}>
+      <Card.Img
+        variant="top"
+        style={{ objectFit: 'cover', border: 'none' }}
+        className='cardIMG'
+        src={changeImg(imageSrc3)}
+      />
+    </MDBCarouselItem>
+  )}
+  {video && (
+    <MDBCarouselItem itemId={4}>
+      <Card.Img
+        variant="top"
+        style={{ objectFit: 'cover', border: 'none' }}
+        className='cardIMG'
+        src={changeImg(video)}
+      />
+    </MDBCarouselItem>
+  )}
+</MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
             {isDiscount ? (
               <div className="card3">

@@ -5,7 +5,7 @@ import { setProducts, setUsers, addProduct, deleteUser,setSizes,setProductSizes,
 import axios from 'axios';
 import React from 'react';
 import ProductTableItem from '../Components/ProductTableItem';
-import {MDBBtn,MDBInputGroup,MDBInput,MDBCheckbox , MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import {MDBBtn,MDBInputGroup,MDBInput,MDBCheckbox , MDBTable, MDBTableHead, MDBTableBody, MDBRow, MDBCol, MDBCard } from 'mdb-react-ui-kit';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -28,12 +28,12 @@ export default function ProductTable(){
     const [inputSearch, setInputSearch] = useState('');
     const [findproducts,setFindProducts] = useState([]);
     const [colors,setColors] = useState([]);
-    const [AddProductImage3,setAddProductImage3] = useState("");
+   
     const [AddProductName,setAddProductName] = useState("");
-    const [AddProductImage,setAddProductImage] = useState("");
-    const [AddProductImage2,setAddProductImage2] = useState("");
-
-    const [AddProductVideo,setAddProductVideo] = useState("");
+    const [AddProductImage,setAddProductImage] = useState(null);
+    const [AddProductImage2,setAddProductImage2] = useState(null);
+    const [AddProductImage3,setAddProductImage3] = useState(null);
+    const [AddProductVideo,setAddProductVideo] = useState(null);
     const [AddproductPrice,setAddproductPrice] = useState(0);
     const [AddproductSalePrice,setAddproductSalePrice] = useState(0);
     const [addProductRow,setaddProductRow] = useState("hidden");
@@ -47,10 +47,11 @@ export default function ProductTable(){
     const [idToDelete,setIdToDelete]=useState(0);
 
     const [nametoUpdate,setNameToUpdate] = useState("");
-    const [image3toUpdate,setImage3ToUpdate] = useState("");
-    const [imagetoUpdate,setImageToUpdate] = useState("");
-    const [image2toUpdate,setImage2ToUpdate] = useState("");
-    const [videotoUpdate,setVideoToUpdate] = useState("");
+  
+    const [imagetoUpdate,setImageToUpdate] = useState(null);
+    const [image2toUpdate,setImage2ToUpdate] = useState(null);
+    const [image3toUpdate,setImage3ToUpdate] = useState(null);
+    const [videotoUpdate,setVideoToUpdate] = useState(null);
     const [subCategoryUpdate,setSubCategoryUpdate] = useState("");
     const [priceUpdate,setPriceUpdate] = useState(0);
     const [salepriceUpdate,setSalePriceUpdate] = useState(0);
@@ -62,10 +63,11 @@ export default function ProductTable(){
     const [SizesUpdate,setSizesUpdate] = useState("");
     const [prodIdUpdate,setProdIdUpdate] = useState(0);
     const [allproducts,setAllProducts] = useState([]);
-
-
-  
-
+    const [Video,setVideo] = useState(null);
+    const [VideoURL,setVideoURL] = useState(null);
+    const [contentVideo,setContentVideo] = useState(null);
+    const [selectedProductIdVideo, setSelectedProductIdVideo] = useState(null);
+    const [selectedProductIdImage, setSelectedProductIdImage] = useState('');
     const [showRemove, setshowRemove] = useState(false);
     const handleCloseRemove = () => setshowRemove(false);
     const handleShowRemove = () => setshowRemove(true);
@@ -73,12 +75,17 @@ export default function ProductTable(){
     const [showUp, setShowUp] = useState(false);
     const handleCloseUp = () => setShowUp(false);
     const handleShowUp = () => setShowUp(true);
-
+    
     const [showChange, setShowChange] = useState(false);
     const handleCloseChange = () => setShowChange(false);
     const handleShowChange = () => setShowChange(true);
     const [oldLookId,setOldLookId] = useState(0);
     const [selectedProductId, setSelectedProductId] = useState(null);
+
+    const [showChangeProdContent, setShowChangeProdContent] = useState(false);
+    const handleCloseChangeProdContent = () => setShowChangeProdContent(false);
+    const handleShowChangeProdContent = () => setShowChangeProdContent(true);
+
 
   const setNewLookId = (productId) => {
     setSelectedProductId(productId);
@@ -88,6 +95,7 @@ export default function ProductTable(){
 
     {
     
+   
 
       axios.get('https://localhost:7269/api/Specification/GetAllSizes')
       .then(response => {
@@ -110,6 +118,35 @@ export default function ProductTable(){
         console.log(response.data)
         dispatch(setProducts(response.data))
         setAllProducts(response.data);
+        
+        axios.get('https://localhost:7269/api/Product/GetContentVideo', {
+          headers: {
+            'Accept': 'text/plain', 
+            'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken")
+          }
+        })
+        .then(res => {
+       
+          setVideoURL(changeImg(res.data[0].url));
+          setSelectedProductIdVideo(res.data[0].prodId);
+          
+         
+          let productf = response.data.find(x => x.id === res.data[0].prodId);
+        
+          if (productf) {
+           
+            setSelectedProductIdImage(changeImg(productf.image));
+          } else {
+          
+            setSelectedProductIdImage('default_image.jpg');
+          }
+          
+          setContentVideo(res.data[0]);
+        })
+        .catch(error => {
+         
+          console.error('Error fetching data:', error);
+        });
       })
       .catch(error => console.error('Error fetching products:', error));
   
@@ -295,7 +332,22 @@ function deletecategory(id)
             });  
 
 }
-
+const handleFileChange = (event) => {
+  setAddProductImage(event.target.files[0]);
+  console.log(event.target.files[0]);
+};
+const handleFileChange2 = (event) => {
+  setAddProductImage2(event.target.files[0]);
+  console.log(event.target.files[0]);
+};
+const handleFileChange3 = (event) => {
+  setAddProductImage3(event.target.files[0]);
+  console.log(event.target.files[0]);
+};
+const handleFileChangeVideo = (event) => {
+  setAddProductVideo(event.target.files[0]);
+  console.log(event.target.files[0]);
+};
 
 const confirmUpdate = () => {
 
@@ -382,6 +434,7 @@ setOldLookId(id);
  handleShowChange();
 }
 
+
 function changeLook()
 { 
  var bodyFormData = new FormData();
@@ -416,11 +469,132 @@ function changeLook()
  handleCloseChange();
 
 }
+function changeVideoContent()
+{ 
+ var bodyFormData = new FormData();
+ bodyFormData.append('id', contentVideo.id);
+  bodyFormData.append('video', Video);
 
+              axios (
+
+                {
+                method:'post',
+                url:`https://localhost:7269/api/Product/UpdateVideoContent`,
+                data:bodyFormData,
+                headers: {
+                  'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                        'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                },
+               
+                }
+
+
+
+            ).then  (res=>
+            {
+              
+                window.location.reload();
+               
+               
+            });  
+
+
+ setSelectedProductIdVideo(null);
+ handleCloseChange();
+
+}
+function changeProductVideoContent()
+{ 
+ var bodyFormData = new FormData();
+ bodyFormData.append('id', contentVideo.id);
+  bodyFormData.append('prodId', selectedProductIdVideo);
+
+              axios (
+
+                {
+                method:'post',
+                url:`https://localhost:7269/api/Product/UpdateProductContent`,
+                data:bodyFormData,
+                headers: {
+                  'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
+                        'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                },
+               
+                }
+
+
+
+            ).then  (res=>
+            {
+              
+                window.location.reload();
+               
+               
+            });  
+
+
+ setSelectedProductIdVideo(null);
+ handleCloseChange();
+
+}
+function changeImg(path) {
+  if(path)
+ { let lastIndex = path.lastIndexOf('/');
+  let fileName = path.substring(lastIndex + 1); 
+  return require(`../assets/${fileName}`);
+}
+}
     return(
 
         <div>
-
+<Modal
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      show={showChangeProdContent}
+      onHide={handleCloseChangeProdContent}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Оберіть товар для заміни </Modal.Title>
+        <Form  className="d-flex small " style={{marginLeft:'20px'}} >
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              onChange={(e)=>setInputSearch(e.target.value)}
+            />
+            <Button onClick={getSearch} variant="outline-success">Search</Button>
+          </Form>
+      </Modal.Header>
+      <Modal.Body>
+        <Container style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {allproducts.map((product) => (
+    <Card
+    onClick={() => setSelectedProductIdVideo(product.id)} 
+      key={product.id}
+      style={{
+        width: '12rem',
+        margin: '10px',
+        alignItems: 'center',
+        backgroundColor: selectedProductIdVideo === product.id ? 'lightblue' : 'white',
+      }}
+    >
+      <Card.Img variant="center" style={{ width: 100 }} src={changeImg(product.image)} />
+     
+    </Card>
+  ))}
+        </Container>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleCloseChangeProdContent}>
+          Відміна
+        </Button>
+        <Button variant="dark" onClick={()=>changeProductVideoContent()}>
+          Підтвердити
+        </Button>
+      </Modal.Footer>
+    </Modal>
 <Modal
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -430,6 +604,7 @@ function changeLook()
     >
       <Modal.Header closeButton>
         <Modal.Title>Оберіть товар для заміни </Modal.Title>
+        
       </Modal.Header>
       <Modal.Body>
         <Container style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -446,7 +621,7 @@ function changeLook()
         backgroundColor: selectedProductId === product.id ? 'lightblue' : 'white',
       }}
     >
-      <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
+      <Card.Img variant="center" style={{ width: 100 }} src={changeImg(product.image)} />
      
     </Card>
   ))}
@@ -492,16 +667,16 @@ function changeLook()
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
     </MDBInputGroup>
     <MDBInputGroup className='mb-3' textBefore='Image URL'>
-    <input  onChange={(e)=>setImageToUpdate(e.target.value)} value={imagetoUpdate} className='form-control' type='text' />
+    <input  onChange={(e)=>setImageToUpdate(e.target.files[0])}  className='form-control' type='file' />
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
-    <input  onChange={(e)=>setImage2ToUpdate(e.target.value)} value={image2toUpdate} className='form-control' type='text' />
+    <input  onChange={(e)=>setImage2ToUpdate(e.target.files[0])}  className='form-control' type='file' />
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
-    <input  onChange={(e)=>setImage3ToUpdate(e.target.value)} value={image3toUpdate} className='form-control' type='text' />
+    <input  onChange={(e)=>setImage3ToUpdate(e.target.files[0])}  className='form-control' type='file' />
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Video URL'>
-      <input  onChange={(e)=>setVideoToUpdate(e.target.value)} value={videotoUpdate} className='form-control' type='text' />
+      <input  onChange={(e)=>setVideoToUpdate(e.target.files[0])}  className='form-control' type='file' />
       </MDBInputGroup>
       <MDBInputGroup className='mb-3' textBefore='Category'>
       <div  className="mb-6 pb-2">
@@ -610,13 +785,43 @@ function changeLook()
           <Button variant="dark" onClick={confirmUpdate}>Confirm</Button>
         </Modal.Footer>
       </Modal>
+
+
+
+
+      <h1 className='text-center'>CONTENT</h1>
+
+      
+      
+      
+      <MDBRow className='justify-content-center text-center' style={{margin:'50px'}}>
+  <MDBCol>
+    <Card style={{width:'500px'}}>
+    <video  controls >
+      <source src={VideoURL} type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+      <input onChange={(e)=>setVideo(e.target.files[0])} className='form-control' type='file' />
+      <Button style={{marginTop:'15px'}} onClick={changeVideoContent} variant="dark">Confirm</Button>
+    </Card>
+  </MDBCol>
+  <MDBCol>
+  <Card style={{width:'300px',height:'280px'}}>
+      <img src={selectedProductIdImage} style={{height:'335px'}}></img>
+      <Button onClick={handleShowChangeProdContent} variant="dark">CHANGE</Button>
+    </Card>
+  </MDBCol>
+</MDBRow>
+     
+
+
       <h1 style={{textAlign:'center',alignItems:'center'}} >WEEKLY LOOK</h1>
      
    <CardGroup style={{height:300}}>
     {
       allproducts.filter((x) => x.weeklyLook === true).map((product) => (
         <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> 
-          <Card.Img variant="center" style={{height:'80%'}}  src={product.image}></Card.Img>
+          <Card.Img variant="center" style={{height:'80%'}}  src={changeImg(product.image)}></Card.Img>
         <Button style={{marginTop:'15px'}} onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
         </Card>
       ))
@@ -667,10 +872,10 @@ function changeLook()
           
                
             <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/> </td>
-            <td > <MDBInput onChange={((e)=>setAddProductImage(e.target.value))} type='text'/> </td>
-            <td > <MDBInput onChange={((e)=>setAddProductImage2(e.target.value))} type='text'/> </td>
-            <td > <MDBInput onChange={((e)=>setAddProductImage3(e.target.value))} type='text'/> </td>
-            <td > <MDBInput onChange={((e)=>setAddProductVideo(e.target.value))} type='text'/> </td>
+            <td > <MDBInput onChange={(e) => handleFileChange(e, {AddProductName})} type='file'/> </td>
+            <td > <MDBInput  onChange={(e) => handleFileChange2(e, {AddProductName})} type='file'/> </td>
+            <td > <MDBInput  onChange={(e) => handleFileChange3(e, {AddProductName})} type='file'/> </td>
+            <td > <MDBInput  onChange={(e) => handleFileChangeVideo(e, {AddProductName})} type='file'/> </td>
  <td>   <MDBCheckbox  label='NEW' onChange={(e)=>setAddAddIsNew(e.target.checked)} /></td>
             <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
@@ -782,15 +987,15 @@ function changeLook()
         {x.name}
     </td>
     <td > 
-    <img src={x.image} width={50} height={50} alt="Товар" />
+    <img src={changeImg(x.image)} width={50} height={50} alt="Товар" />
          
     </td>
     <td > 
-    <img src={x.image2} width={50} height={50} alt="Товар" />
+    <img src={changeImg(x.image2)} width={50} height={50} alt="Товар" />
       
     </td>
     <td > 
-    <img src={x.image3} width={50} height={50} alt="Товар" />
+    <img src={changeImg(x.image3)} width={50} height={50} alt="Товар" />
            
     </td>
     <td > 
@@ -942,7 +1147,6 @@ function changeLook()
       }
       </tbody>
     </Table>
-
 
         </div>
     );

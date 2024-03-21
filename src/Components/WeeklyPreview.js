@@ -108,7 +108,12 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
     handleShow();
   };
 
-
+  function changeImg(path) {
+  
+    let lastIndex = path.lastIndexOf('/');
+    let fileName = path.substring(lastIndex + 1); 
+    return require(`../assets/${fileName}`);
+  }
   return (
     <div>
       <Modal id='basket' show={show} onHide={handleClose}>
@@ -122,7 +127,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
               unic={x.id}
               name={x.name}
               sizes={sizes[index]}
-              picture={x.image}
+              picture={changeImg(x.image)}
               price={convertPrice(x.price,selectedCurrency)}
               currency={selectedCurrency}
               choosesize={(size) => addSize(size, index)}
@@ -142,14 +147,14 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
       <CardGroup style={{ marginBottom: '15px' }}>
         {weekly.map((x) => (
           <Card key={x.id} style={{ marginRight: '15px', marginLeft: '15px', border: 'none' }}>
-            <Card.Img variant="center" style={{ height: '90%', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={x.image} />
+            <Card.Img variant="center" style={{ height: '90%', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={changeImg(x.image)} />
           </Card>
         ))}
         <div className="button-block d-flex flex-column align-items-center">
           <div className="block-elements">
             <div className="circle-elements">
               {weekly.map((x) => (
-                <img key={x.id} className="circle-element-icon" alt="" src={x.image} />
+                <img key={x.id} className="circle-element-icon" alt="" src={changeImg(x.image)} />
               ))}
             </div>
             <button onClick={showModal} className="button-container">

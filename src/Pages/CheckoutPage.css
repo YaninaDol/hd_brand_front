@@ -94,11 +94,11 @@
    
   }
   .quantity-container {
-    border: 1px solid #ccc; /* Тонкая рамка с цветом #ccc */
+    border: 1px solid #ccc; 
     
   }
   .col-md-7 {
-    border-right: 1px solid #ccc; /* Тонкая рамка с цветом #ccc */
+    border-right: 1px solid #ccc; 
     padding-right: 70px; 
 }
 .col-md-5 {
