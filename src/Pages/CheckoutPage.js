@@ -898,6 +898,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     <CardBox
       key={x.id}
       remove={removeBasket}
+      article={x.article}
       selectedCurrency={selectedCurrency}
       unic={x.id}
       name={x.name}

@@ -35,7 +35,7 @@ export default function ProductTable(){
     const [AddProductImage3,setAddProductImage3] = useState(null);
     const [AddProductVideo,setAddProductVideo] = useState(null);
     const [AddproductPrice,setAddproductPrice] = useState(0);
-    const [AddproductSalePrice,setAddproductSalePrice] = useState(0);
+    const [AddproductArticle,setAddproductArticle] = useState('');
     const [addProductRow,setaddProductRow] = useState("hidden");
     const [AddProductCategory,setAddProductCategory] = useState("");
     const [AddProductSubCategory,setAddProductSubCategory] = useState("");
@@ -56,6 +56,7 @@ export default function ProductTable(){
     const [priceUpdate,setPriceUpdate] = useState(0);
     const [salepriceUpdate,setSalePriceUpdate] = useState(0);
     const [materialUpdate,setMaterialUpdate] = useState("");
+    const [articleUpdate,setArticleUpdate] = useState("");
     const [colorUpdate,setColorlUpdate] = useState("");
     const [seasonUpdate,setSeasonUpdate] = useState(true);
     const [isNewUpdate,setIsNewUpdate] = useState(true);
@@ -183,6 +184,7 @@ export default function ProductTable(){
      
       let prod= products.find(item=>item.id == id);
     setProdIdUpdate(id);
+    setArticleUpdate(prod['article']);
     setImage3ToUpdate(prod['image3']);
         setNameToUpdate(prod['name']);
         setImageToUpdate(prod['image']);
@@ -209,7 +211,7 @@ function confirmAdd()
 
         { var bodyFormData = new FormData();
           bodyFormData.append('name', AddProductName);
-         
+          bodyFormData.append('article', AddproductArticle);
           bodyFormData.append('image', AddProductImage);
           bodyFormData.append('image2', AddProductImage2);
           bodyFormData.append('image3', AddProductImage3);
@@ -355,12 +357,13 @@ const confirmUpdate = () => {
 
   { var bodyFormData = new FormData();
     bodyFormData.append('id', prodIdUpdate);
+    bodyFormData.append('article', articleUpdate);
     bodyFormData.append('name', nametoUpdate);
-    bodyFormData.append('image3', image3toUpdate);
-    bodyFormData.append('image', imagetoUpdate);
-    bodyFormData.append('image2', image2toUpdate);
+    // bodyFormData.append('image3', image3toUpdate);
+    // bodyFormData.append('image', imagetoUpdate);
+    // bodyFormData.append('image2', image2toUpdate);
+    // bodyFormData.append('video', videotoUpdate);
     bodyFormData.append('isnew', isNewUpdate);
-    bodyFormData.append('video', videotoUpdate);
     bodyFormData.append('subcategoryid', subCategoryUpdate);
     bodyFormData.append('categoryid', categoryUpdate);
     bodyFormData.append('seasonid', seasonUpdate);
@@ -666,6 +669,9 @@ function changeImg(path) {
         <MDBInputGroup className='mb-3'  textBefore='Name'>
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
     </MDBInputGroup>
+    <MDBInputGroup className='mb-3'  textBefore='Article'>
+      <input onChange={(e)=>setArticleUpdate(e.target.value)} value={articleUpdate} className='form-control' type='text' />
+    </MDBInputGroup>
     <MDBInputGroup className='mb-3' textBefore='Image URL'>
     <input  onChange={(e)=>setImageToUpdate(e.target.files[0])}  className='form-control' type='file' />
       </MDBInputGroup>
@@ -846,11 +852,10 @@ function changeImg(path) {
     <Table striped hover>
     <MDBTableHead dark>
         <tr>
-          <th>#</th>
+          <th># Art.</th>
           <th>Name</th>
           <th>Image</th>
-          <th>Image2</th>
-          <th>Image3</th>
+         
           <th>Video</th>
           <th>NEW</th>
           <th>Category</th>
@@ -868,13 +873,13 @@ function changeImg(path) {
         </MDBTableHead>
       <tbody>
       <tr hidden={addProductRow} >
-                 <th  scope='row' ></th>
+                 <th  scope='row' ><MDBInput onChange={((e)=>setAddproductArticle(e.target.value))} type='text'/></th>
           
                
             <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/> </td>
-            <td > <MDBInput onChange={(e) => handleFileChange(e, {AddProductName})} type='file'/> </td>
-            <td > <MDBInput  onChange={(e) => handleFileChange2(e, {AddProductName})} type='file'/> </td>
-            <td > <MDBInput  onChange={(e) => handleFileChange3(e, {AddProductName})} type='file'/> </td>
+            <td > <MDBInput onChange={(e) => handleFileChange(e, {AddProductName})} type='file'/> 
+             <MDBInput  onChange={(e) => handleFileChange2(e, {AddProductName})} type='file'/> 
+            <MDBInput  onChange={(e) => handleFileChange3(e, {AddProductName})} type='file'/> </td>
             <td > <MDBInput  onChange={(e) => handleFileChangeVideo(e, {AddProductName})} type='file'/> </td>
  <td>   <MDBCheckbox  label='NEW' onChange={(e)=>setAddAddIsNew(e.target.checked)} /></td>
             <td > <MDBInputGroup className='mb-3' >
@@ -981,21 +986,19 @@ function changeImg(path) {
       {
         allproducts.map((x, index)=> <tr  >
                 
-        <th scope='row'>{x.id}</th>
+        <th scope='row'>{x.id} art:{x.article}</th>
       
         <td > 
         {x.name}
     </td>
     <td > 
-    <img src={changeImg(x.image)} width={50} height={50} alt="Товар" />
+    <img style={{margin:'2px'}} src={changeImg(x.image)} width={50} height={50} alt="Товар" />
          
-    </td>
-    <td > 
-    <img src={changeImg(x.image2)} width={50} height={50} alt="Товар" />
+     
+    <img  style={{margin:'2px'}} src={changeImg(x.image2)} width={50} height={50} alt="Товар" />
       
-    </td>
-    <td > 
-    <img src={changeImg(x.image3)} width={50} height={50} alt="Товар" />
+    
+    <img  style={{margin:'2px'}} src={changeImg(x.image3)} width={50} height={50} alt="Товар" />
            
     </td>
     <td > 

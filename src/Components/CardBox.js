@@ -40,6 +40,7 @@ class CardBox extends Component {
             </MDBCol>
             <MDBCol   > 
             <MDBRow><div style={{fontWeight:'bold'}}>{this.props.name} </div> </MDBRow> 
+            <MDBRow> <p style={{opacity:'0.5',color:'gray'}}>Арт: {this.props.article}</p></MDBRow> 
             <MDBRow style={{marginTop:'15px'}}>
                 <MDBCol>Розмір: </MDBCol>
                 <MDBCol > {this.props.size}</MDBCol>
