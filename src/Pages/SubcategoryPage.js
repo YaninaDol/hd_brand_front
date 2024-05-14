@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import { Link, Outlet } from "react-router-dom";
 import Carousels from 'react-multi-carousel';
 import Carousel from 'react-bootstrap/Carousel';
+import { API_BASE_URL} from '../config';
 import Modal from 'react-bootstrap/Modal';
 import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
 import { useParams } from 'react-router-dom';
@@ -99,20 +100,20 @@ const SubcategoryPage = () => {
 
   {
   
-    axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
+    axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
     .then(response => {
       dispatch(setSubCategory(response.data.value));
     })
     .catch(error => console.error('Error fetching products:', error));
 
-    axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
+    axios.get(`${API_BASE_URL}/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
     .then(response => {
     
      setItems(response.data);
     
     })
     .catch(error => console.error('Error fetching products:', error));
-    axios.get(`https://localhost:7269/api/Specification/MaterialNamesByCategoryId?id=${generateId(categoryName)}`)
+    axios.get(`${API_BASE_URL}/api/Specification/MaterialNamesByCategoryId?id=${generateId(categoryName)}`)
   .then(response => {
    
     setMaterials(response.data)

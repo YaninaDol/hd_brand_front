@@ -9,7 +9,7 @@ import { connect,useDispatch,useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ContentPage from './ContentPage.js';
 import { setProducts } from '../redux/actions.js';
-
+import { API_BASE_URL} from '../config';
 
 const CategoryPage = () => {
   const [types,setTypes] = useState([]);
@@ -90,7 +90,7 @@ function generatePathName(categoryName) {
  
 
   
-  axios.get(`https://localhost:7269/api/Product/GetProductsByCategory?id=${generatePath(categoryName)}`)
+  axios.get(`${API_BASE_URL}/api/Product/GetProductsByCategory?id=${generatePath(categoryName)}`)
   .then(response => {
    
     setAllProducts(response.data);
@@ -99,7 +99,7 @@ function generatePathName(categoryName) {
 
 
 
-  axios.get(`https://localhost:7269/api/Specification/GetSubCategoryNamesByCategoryId?id=${generatePath(categoryName)}`)
+  axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryNamesByCategoryId?id=${generatePath(categoryName)}`)
   .then(response => {
   
     setTypes(response.data)
@@ -108,7 +108,7 @@ function generatePathName(categoryName) {
 
 
 
-  axios.get(`https://localhost:7269/api/Specification/MaterialNamesByCategoryId?id=${generatePath(categoryName)}`)
+  axios.get(`${API_BASE_URL}/api/Specification/MaterialNamesByCategoryId?id=${generatePath(categoryName)}`)
   .then(response => {
    
     setMaterials(response.data)

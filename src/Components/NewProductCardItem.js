@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Spinner } from 'react-bootstrap'; 
 import './NewProductCardItem.css';
 import "./DiscountItem.css";
+import { API_BASE_URL} from '../config';
 import axios from 'axios';
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
@@ -14,7 +15,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
     if(window.sessionStorage.getItem("AccessToken"))
 {
     axios({method:'post',
-    url:`https://localhost:7269/api/Authenticate/getlike?prodId=${id_key}`,
+    url:`${API_BASE_URL}/api/Authenticate/getlike?prodId=${id_key}`,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
@@ -40,7 +41,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
     
 
       axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/setLike?prodId=${id_key}&like=${!isFavourite}`,
+      url:`${API_BASE_URL}/api/Authenticate/setLike?prodId=${id_key}&like=${!isFavourite}`,
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
@@ -53,12 +54,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
 
 
   };
-  function changeImg(path) {
-  
-    let lastIndex = path.lastIndexOf('/');
-    let fileName = path.substring(lastIndex + 1); 
-    return require(`../assets/${fileName}`);
-  }
+ 
   return (
     <Card className="no-gutters" style={{ marginLeft: '15px', marginRight: '15px', border: 'none' }}>
       {isLoading ? (
@@ -73,7 +69,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
         variant="top"
         style={{ objectFit: 'cover', border: 'none' }}
         className='cardIMG'
-        src={changeImg(imageSrc1)}
+        src={imageSrc1}
       />
     </MDBCarouselItem>
   )}
@@ -83,7 +79,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
         variant="top"
         style={{ objectFit: 'cover', border: 'none' }}
         className='cardIMG'
-        src={changeImg(imageSrc2)}
+        src={imageSrc2}
       />
     </MDBCarouselItem>
   )}
@@ -93,20 +89,27 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
         variant="top"
         style={{ objectFit: 'cover', border: 'none' }}
         className='cardIMG'
-        src={changeImg(imageSrc3)}
+        src={imageSrc3}
       />
     </MDBCarouselItem>
   )}
-  {video && (
-    <MDBCarouselItem itemId={4}>
-      <Card.Img
-        variant="top"
-        style={{ objectFit: 'cover', border: 'none' }}
-        className='cardIMG'
-        src={changeImg(video)}
-      />
-    </MDBCarouselItem>
-  )}
+  {video && (   <MDBCarouselItem itemId={4}>
+              <video
+        id='id_video'
+        playsinline 
+        autoplay="true"
+        preload="auto"
+        style={{
+          borderTopLeftRadius: '0px',
+          borderTopRightRadius: '0px',
+          height: '80%', 
+        }}
+      >
+        
+        <source src={video} type='video/mp4' />
+       
+      </video>
+            </MDBCarouselItem>)}
 </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
             {isDiscount ? (

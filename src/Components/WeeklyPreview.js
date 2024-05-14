@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { CardGroup, Card } from 'react-bootstrap';
 import React from 'react';
+import {setProductSizes } from '../redux/actions';
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './WeeklyPreview.css';
+import { API_BASE_URL} from '../config';
 import WeeklyModalItem from './WeeklyModalItem';
 
 const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
@@ -20,7 +22,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
   const [copy, setCopy] = useState([]);
   const getSizes = async (id) => {
     try {
-      const response = await axios.get(`https://localhost:7269/api/Product/GetSizeofProduct?id=${id}`);
+      const response = await axios.get(`${API_BASE_URL}/api/Product/GetSizeofProduct?id=${id}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching sizes:', error);
@@ -63,7 +65,9 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
    }
 
   };
-
+  const [showM, setshowM] = useState(false);
+  const handleCloseM = () => setshowM(false);
+  const handleShowM = () => setshowM(true);
   const addToBasket = () => {
     const selectedSizes = [size1, size2, size3].filter((size) => size !== null);
   
@@ -89,7 +93,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
       window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
   
      
-      alert("Додано!");
+      handleShowM();
   
     
       setSize1(null);
@@ -98,7 +102,9 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
   
      
       handleClose();
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500); 
     } else {
       
       alert("Оберіть розміри для товарів.");
@@ -108,14 +114,16 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
     handleShow();
   };
 
-  function changeImg(path) {
-  
-    let lastIndex = path.lastIndexOf('/');
-    let fileName = path.substring(lastIndex + 1); 
-    return require(`../assets/${fileName}`);
-  }
+
   return (
     <div>
+       <Modal show={showM} onHide={handleCloseM}>
+        <Modal.Header closeButton>
+        <Modal.Body>Товар додано до кошику </Modal.Body>
+        </Modal.Header>
+      
+      
+      </Modal>
       <Modal id='basket' show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Обрані товари</Modal.Title>
@@ -127,7 +135,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
               unic={x.id}
               name={x.name}
               sizes={sizes[index]}
-              picture={changeImg(x.image)}
+              picture={x.image}
               price={convertPrice(x.price,selectedCurrency)}
               currency={selectedCurrency}
               choosesize={(size) => addSize(size, index)}
@@ -147,14 +155,14 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
       <CardGroup style={{ marginBottom: '15px' }}>
         {weekly.map((x) => (
           <Card key={x.id} style={{ marginRight: '15px', marginLeft: '15px', border: 'none' }}>
-            <Card.Img variant="center" style={{ height: '90%', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={changeImg(x.image)} />
+            <Card.Img variant="center" style={{ height: '90%', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={x.image} />
           </Card>
         ))}
         <div className="button-block d-flex flex-column align-items-center">
           <div className="block-elements">
             <div className="circle-elements">
               {weekly.map((x) => (
-                <img key={x.id} className="circle-element-icon" alt="" src={changeImg(x.image)} />
+                <img key={x.id} className="circle-element-icon" alt="" src={x.image} />
               ))}
             </div>
             <button onClick={showModal} className="button-container">

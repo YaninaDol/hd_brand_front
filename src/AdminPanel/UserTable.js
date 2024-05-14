@@ -1,13 +1,12 @@
-import {MDBBtn,MDBInputGroup,MDBCheckbox , MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import {MDBInputGroup,MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
-import { connect,useDispatch,useSelector } from 'react-redux';
+import {useDispatch,useSelector } from 'react-redux';
 import {setUsers, deleteUser } from '../redux/actions';
-import {MDBNavbarItem} from 'mdb-react-ui-kit';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import UserTableItem from './UserTableItem';
 import axios from 'axios';
-
+import { API_BASE_URL} from '../config';
 export default function UserTable(){
 
     const dispatch = useDispatch();
@@ -54,7 +53,7 @@ export default function UserTable(){
 
  
       axios({method:'get',
-        url:'https://localhost:7269/api/Authenticate/getAllUserInfos',
+        url:`${API_BASE_URL}/api/Authenticate/getAllUserInfos`,
       headers: {
                       'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
                             'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
@@ -81,7 +80,7 @@ export default function UserTable(){
     
                     {
                     method:'post',
-                    url:'https://localhost:7269/api/Authenticate/deleteUser',
+                    url:`${API_BASE_URL}/api/Authenticate/deleteUser`,
                     data:bodyFormData
                     ,headers: {
                       'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -150,7 +149,7 @@ export default function UserTable(){
 
     {
     method:'post',
-    url:'https://localhost:7269/api/Authenticate/updateUserbyAdmin',
+    url:`${API_BASE_URL}/api/Authenticate/updateUserbyAdmin`,
     data:bodyFormData,
     headers: {
       
@@ -205,7 +204,7 @@ function confirmAddUser()
       
           {
           method:'post',
-          url:'https://localhost:7269/api/Authenticate/regUser',
+          url:`${API_BASE_URL}/api/Authenticate/regUser`,
           data: JSON.stringify({email:userEmailAddU,Password: userPasswordAddU}), 
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         
@@ -260,7 +259,7 @@ function confirmAddAdmin()
       
           {
           method:'post',
-          url:'https://localhost:7269/api/Authenticate/regMenager',
+          url:`${API_BASE_URL}/api/Authenticate/regMenager`,
           data: JSON.stringify({ email:userEmailAddA, Password: userPasswordAddA}), 
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json',
           'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken") },

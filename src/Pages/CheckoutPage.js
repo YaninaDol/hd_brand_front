@@ -8,8 +8,17 @@ import { Link} from "react-router-dom";
 import {Button,Form,Modal,Tabs,Tab} from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
+import { API_BASE_URL,NOVAPOST_API_KEY} from '../config';
 import './CheckoutPage.css';
 import AuthModal from "../Components/AuthModal";
+
+
+  // import { LiqpayService,PaymentAction,PaymentPeriodicity,Currency } from 'magic-npm-package';
+ import SubscriptionFormComponent from '../Components/SubscriptionFormComponent';
+ import LiqPayModule from 'liqpaymodule';
+ 
+
+
 import {
  
   MDBContainer,
@@ -45,6 +54,8 @@ const CheckoutPage = () => {
   const [checkoutbtn, setCheckoutbtn] = useState(false);
   const [count, setCount] = useState(0);
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
+  const [warehouseDescriptionsUkr, setwarehouseDescriptionsUkr] = useState([]);
+
   const [typeDelivery, setTypeDelivery] = useState('1');
   const [typeDeliveryW, setTypeDeliveryW] = useState('address');
   const [NovaWorldWare, setNovaWorldWare] = useState(null);
@@ -56,7 +67,7 @@ const CheckoutPage = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [errors, setErrors] = useState({});
   const [TotalSum,setTotalSum] = useState(0);
-
+  
   const validateForm = () => {
     const isEnglish = /^[a-zA-Z\s]*$/.test(name,surname);
 
@@ -136,7 +147,6 @@ const CheckoutPage = () => {
   };
 
 
-  const apiKey = '24443d18027301d444ec98b00ef49598';
   const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
 
   useEffect(() => {
@@ -146,7 +156,7 @@ const CheckoutPage = () => {
 
     if (!storedBasket || storedBasket.length < 1) {
      
-      window.location.href = '/';
+      //window.location.href = '/';
     } else {
      
       const parsedBasketData = JSON.parse(storedBasket);
@@ -164,7 +174,7 @@ const CheckoutPage = () => {
     setTitleAccount('');
     
     axios({method:'get',
-    url:`https://localhost:7269/api/Authenticate/getUserbyId`,
+    url:`${API_BASE_URL}/api/Authenticate/getUserbyId`,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
@@ -184,7 +194,7 @@ const CheckoutPage = () => {
  
 
   const requestData = {
-    apiKey: apiKey,
+    apiKey: NOVAPOST_API_KEY,
     modelName: 'Address',
     calledMethod: 'getCities',
     methodProperties: {}
@@ -430,7 +440,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     {
     
             const getWarehousesRequest = {
-              apiKey: apiKey,
+              apiKey: NOVAPOST_API_KEY,
               modelName: 'Address',
               calledMethod: 'getWarehouses',
               methodProperties: {
@@ -482,6 +492,8 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       //     console.log(error);
       //   });
 
+      
+
     }
   };
 
@@ -514,6 +526,71 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       return price;
     }
   };
+  ///
+ // const LiqPay = require('liqpay');
+//   const liqpays = new LiqPay('sandbox_i99834875717', 'sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ');
+//   const params = {
+//     action: 'pay',
+//     amount: '100',
+//     currency: 'USD',
+//     description: 'Test payment',
+//     order_id: 'order12345',
+//     version: '3',
+//     language: 'ru'
+// };
+// const form = liqpays.cnb_form(params);
+  ///
+  const public_key='sandbox_i99834875717'
+  const private_key='sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ';
+  
+//  const liqpayService =new LiqpayService();
+//   const price=1;
+//   const description='test';
+//   const orderId='12345';
+//   const buttonTitle='LiqPay';
+//   const htmlForm =liqpayService.createSubscriptionPaymentForm({
+//     action:PaymentAction.Subscribe,
+//     price,
+//     currency:Currency.UAH,
+//     description,
+//     orderId,
+//     buttonTitle
+
+    
+//   });
+///Использование LiqPay
+const liqpayInstance = new LiqPayModule('sandbox_i99834875717', 'sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ');
+
+
+
+function getPay()
+{
+const params = {
+  version: 3,
+  action: 'pay',
+  amount: 100,
+  currency: 'UAH',
+  description: 'Test payment',
+  order_id: '123456'
+};
+
+// Выполняем запрос с помощью метода api
+liqpayInstance.api( params)
+  .then(response => {
+    console.log('Response:', response);
+    // Обрабатываем ответ здесь
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    console.log('Error:', error);
+    // Обрабатываем ошибку здесь
+  });
+}
+
+
+
+  // Преобразование данных в строку и кодирование в формате BASE64
+ 
  function saveChanges()
  {
   const isValid = validateForm();
@@ -522,8 +599,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     
     if(selectedPaymentMethod === 'liqpay')
     {
-      window.location.href='https://www.liqpay.ua/';
+      // window.location.href='https://www.liqpay.ua/';
       setTotalSum(convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+    
+    
+
     }
     else
     {
@@ -565,12 +645,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
  }
- function changeImg(path) {
-  
-  let lastIndex = path.lastIndexOf('/');
-  let fileName = path.substring(lastIndex + 1); 
-  return require(`../assets/${fileName}`);
-}
+
   return (
     <div >
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
@@ -733,20 +808,28 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       )}
 
   {typeDelivery === '3' && (
-        <Select
-          className="custom-select-lg"
-          onChange={(e)=> setSelectedDepartament(e.value)}
-          options={warehouseDescriptions}
-          isSearchable
-          placeholder="Оберіть відділення"
-          styles={{
-            control: (provided) => ({
-              ...provided,
-              borderRadius: '0%',
-              height: '40px',
-            }),
-          }}
-        />
+        // <Select
+        //   className="custom-select-lg"
+        //   onChange={(e)=> setSelectedDepartament(e.value)}
+        //   options={warehouseDescriptions}
+        //   isSearchable
+        //   placeholder="Оберіть відділення"
+        //   styles={{
+        //     control: (provided) => ({
+        //       ...provided,
+        //       borderRadius: '0%',
+        //       height: '40px',
+        //     }),
+        //   }}
+        // />
+        <Form.Control
+          size="lg"
+       type="text"
+       id="enteraddress"
+       placeholder=" Вкажіть індекс відділення"
+       onChange={(e)=>setIndex(e.target.value)}
+      
+     />
       )}
       {typeDelivery === '4' && (
        <Form.Control
@@ -855,13 +938,16 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
               </MDBRow>
               <MDBRow style={{marginTop:'30px',marginLeft:'10px'}}>
-              <Form.Check 
+              {/* <Form.Check 
             type='checkbox'
             id={`liqpay`}
             checked={selectedPaymentMethod === 'liqpay'}
             onChange={() => handleCheckboxChange('liqpay')}
             label="Банківською карткою на сайті Visa або MasterCard (платіжний сервіс LiqPay)"
-          />
+          /> */}
+       <button onClick={getPay}>Pay</button> 
+
+ {/* <div dangerouslySetInnerHTML={{ __html: htmlForm }}></div> */}
 
               </MDBRow>
               <MDBRow style={{marginTop:'20px',marginLeft:'15px'}}>
@@ -904,7 +990,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       name={x.name}
       quantity={x.quantity}
       size={x.size}
-      picture={changeImg(x.image)}
+      picture={x.image}
       price={convertPrice(x.price,selectedCurrency)}
       incrementQuantity={incrementQuantity}
       decrementQuantity={decrementQuantity}
@@ -946,7 +1032,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
   <MDBRow style={{marginTop:'15px'}}>
-    <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Оформити замовлення </Button>
+    <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>
   </MDBRow>
     </MDBCol>
 

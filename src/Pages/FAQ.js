@@ -31,7 +31,7 @@ const handleCurrencyChange = (selectedCurrency) => {
 useEffect(()=>
 
 {
- 
+  window.scrollTo(0, 0);
   fetchExchangeRates();
 
   const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');

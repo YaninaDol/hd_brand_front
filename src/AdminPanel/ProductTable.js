@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { connect,useDispatch,useSelector } from 'react-redux';
-import { setProducts, setUsers, addProduct, deleteUser,setSizes,setProductSizes,deleteProduct,setCategories,editProduct,setMaterials,setSeasons,setSubCategories, addSubCategory } from '../redux/actions';
+import { useDispatch,useSelector } from 'react-redux';
+import { setProducts, setSizes,deleteProduct,setCategories,setMaterials,setSeasons,setSubCategories} from '../redux/actions';
 import axios from 'axios';
 import React from 'react';
 import ProductTableItem from '../Components/ProductTableItem';
-import {MDBBtn,MDBInputGroup,MDBInput,MDBCheckbox , MDBTable, MDBTableHead, MDBTableBody, MDBRow, MDBCol, MDBCard } from 'mdb-react-ui-kit';
+import {MDBInputGroup,MDBInput,MDBCheckbox ,  MDBTableHead,  MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Card, CardGroup, CardImg, Container} from 'react-bootstrap';
+import { API_BASE_URL} from '../config';
 export default function ProductTable(){
 
 
@@ -95,10 +96,7 @@ export default function ProductTable(){
     useEffect(()=>
 
     {
-    
-   
-
-      axios.get('https://localhost:7269/api/Specification/GetAllSizes')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSizes`)
       .then(response => {
        
         dispatch(setSizes(response.data))
@@ -106,7 +104,7 @@ export default function ProductTable(){
       })
       .catch(error => console.error('Error fetching products:', error));
 
-      axios.get('https://localhost:7269/api/Specification/GetAllColors')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllColors`)
       .then(response => {
        
        setColors(response.data)
@@ -114,13 +112,13 @@ export default function ProductTable(){
       })
       .catch(error => console.error('Error fetching products:', error));
 
-      axios.get('https://localhost:7269/api/Product/GetProducts')
+      axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
       .then(response => {
         console.log(response.data)
         dispatch(setProducts(response.data))
         setAllProducts(response.data);
         
-        axios.get('https://localhost:7269/api/Product/GetContentVideo', {
+        axios.get(`${API_BASE_URL}/api/Product/GetContentVideo`, {
           headers: {
             'Accept': 'text/plain', 
             'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken")
@@ -128,15 +126,14 @@ export default function ProductTable(){
         })
         .then(res => {
        
-          setVideoURL(changeImg(res.data[0].url));
+          setVideoURL(res.data[0].url);
           setSelectedProductIdVideo(res.data[0].prodId);
           
-         
           let productf = response.data.find(x => x.id === res.data[0].prodId);
         
           if (productf) {
            
-            setSelectedProductIdImage(changeImg(productf.image));
+            setSelectedProductIdImage(productf.image);
           } else {
           
             setSelectedProductIdImage('default_image.jpg');
@@ -151,26 +148,26 @@ export default function ProductTable(){
       })
       .catch(error => console.error('Error fetching products:', error));
   
-      axios.get('https://localhost:7269/api/Specification/GetAllCategory')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllCategory`)
       .then(response => {
       
         dispatch(setCategories(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
 
-      axios.get('https://localhost:7269/api/Specification/GetAllMaterials')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllMaterials`)
       .then(response => {
        
         dispatch(setMaterials(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get('https://localhost:7269/api/Specification/GetAllSubCategories')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSubCategories`)
       .then(response => {
        
         dispatch(setSubCategories(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get('https://localhost:7269/api/Specification/GetAllSeasons')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSeasons`)
       .then(response => {
       
         dispatch(setSeasons(response.data));
@@ -232,7 +229,7 @@ function confirmAdd()
 
             {
             method:'post',
-            url:'https://localhost:7269/api/Product/Add',
+           url:`${API_BASE_URL}/api/Product/Add`,
             data:bodyFormData
             ,headers: {
               'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -283,7 +280,7 @@ function ConfirmDelete()
 
                 {
                 method:'post',
-                url:'https://localhost:7269/api/Product/Delete',
+                url:`${API_BASE_URL}/api/Product/Delete`,
                  data:bodyFormData
                 ,headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -314,7 +311,7 @@ function deletecategory(id)
 
                 {
                 method:'post',
-                url:'https://localhost:7211/api/Category/Delete',
+                url:`${API_BASE_URL}/api/Category/Delete`,
                 data:bodyFormData,
                 headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -448,7 +445,7 @@ function changeLook()
 
                 {
                 method:'post',
-                url:'https://localhost:7269/api/Product/WeeklyLook',
+                url:`${API_BASE_URL}/api/Product/WeeklyLook`,
                 data:bodyFormData,
                 headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -482,7 +479,7 @@ function changeVideoContent()
 
                 {
                 method:'post',
-                url:`https://localhost:7269/api/Product/UpdateVideoContent`,
+                url:`${API_BASE_URL}/api/Product/UpdateVideoContent`,
                 data:bodyFormData,
                 headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -516,7 +513,7 @@ function changeProductVideoContent()
 
                 {
                 method:'post',
-                url:`https://localhost:7269/api/Product/UpdateProductContent`,
+                url:`${API_BASE_URL}/api/Product/UpdateProductContent`,
                 data:bodyFormData,
                 headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -540,13 +537,7 @@ function changeProductVideoContent()
  handleCloseChange();
 
 }
-function changeImg(path) {
-  if(path)
- { let lastIndex = path.lastIndexOf('/');
-  let fileName = path.substring(lastIndex + 1); 
-  return require(`../assets/${fileName}`);
-}
-}
+
     return(
 
         <div>
@@ -583,7 +574,7 @@ function changeImg(path) {
         backgroundColor: selectedProductIdVideo === product.id ? 'lightblue' : 'white',
       }}
     >
-      <Card.Img variant="center" style={{ width: 100 }} src={changeImg(product.image)} />
+      <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
      
     </Card>
   ))}
@@ -624,7 +615,7 @@ function changeImg(path) {
         backgroundColor: selectedProductId === product.id ? 'lightblue' : 'white',
       }}
     >
-      <Card.Img variant="center" style={{ width: 100 }} src={changeImg(product.image)} />
+      <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
      
     </Card>
   ))}
@@ -803,20 +794,20 @@ function changeImg(path) {
       <MDBRow className='justify-content-center text-center' style={{margin:'50px'}}>
   <MDBCol>
     <Card style={{width:'500px'}}>
-    <video  controls >
-      <source src={VideoURL} type="video/mp4" />
+    <video  controls autoPlay >
+    <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
       Your browser does not support the video tag.
     </video>
       <input onChange={(e)=>setVideo(e.target.files[0])} className='form-control' type='file' />
       <Button style={{marginTop:'15px'}} onClick={changeVideoContent} variant="dark">Confirm</Button>
     </Card>
   </MDBCol>
-  <MDBCol>
+  {/* <MDBCol>
   <Card style={{width:'300px',height:'280px'}}>
       <img src={selectedProductIdImage} style={{height:'335px'}}></img>
       <Button onClick={handleShowChangeProdContent} variant="dark">CHANGE</Button>
     </Card>
-  </MDBCol>
+  </MDBCol> */}
 </MDBRow>
      
 
@@ -827,7 +818,7 @@ function changeImg(path) {
     {
       allproducts.filter((x) => x.weeklyLook === true).map((product) => (
         <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> 
-          <Card.Img variant="center" style={{height:'80%'}}  src={changeImg(product.image)}></Card.Img>
+          <Card.Img variant="center" style={{height:'80%'}}  src={product.image}></Card.Img>
         <Button style={{marginTop:'15px'}} onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
         </Card>
       ))
@@ -992,13 +983,13 @@ function changeImg(path) {
         {x.name}
     </td>
     <td > 
-    <img style={{margin:'2px'}} src={changeImg(x.image)} width={50} height={50} alt="Товар" />
+    <img style={{margin:'2px'}} src={x.image} width={50} height={50} alt="Товар" />
          
      
-    <img  style={{margin:'2px'}} src={changeImg(x.image2)} width={50} height={50} alt="Товар" />
+    <img  style={{margin:'2px'}} src={x.image2} width={50} height={50} alt="Товар" />
       
     
-    <img  style={{margin:'2px'}} src={changeImg(x.image3)} width={50} height={50} alt="Товар" />
+    <img  style={{margin:'2px'}} src={x.image3} width={50} height={50} alt="Товар" />
            
     </td>
     <td > 

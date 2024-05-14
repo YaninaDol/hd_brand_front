@@ -483,7 +483,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       </Link>
     ))
   ) : (
-    <div>Нічого не знайдено </div>
+    <div> </div>
   )}
             </MDBCol>
             <MDBCol hidden={filteredhidden} className="containerCart">
@@ -507,7 +507,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       </Link>
     ))
   ) : (
-    <div>Нічого не знайдено</div>
+    <div></div>
   )}
             </MDBCol>
           </MDBRow>

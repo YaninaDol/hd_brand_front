@@ -10,6 +10,7 @@ import { Link, useNavigate  } from "react-router-dom";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import AuthModal from "../Components/AuthModal";
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
+import { API_BASE_URL} from '../config';
 import {
   MDBInput,
   MDBCol,
@@ -63,8 +64,6 @@ const expand='false';
   const [result, setResult] = useState("");
   const [department, setDepartment] = useState("");
       const [picture, setPicture] = useState("");
-      const apiKey = '24443d18027301d444ec98b00ef49598';
-      const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
 
       const [subcategory1,setSubcategory1] = useState([]);
       const [subcategory2,setSubcategory2] = useState([]);
@@ -72,19 +71,19 @@ const expand='false';
       const currencies = ['UAH', 'EUR', 'USD'];
     
   useEffect(() => {
-    axios.get('https://localhost:7269/api/Specification/GetSubCategoryNamesByCategoryId?id=1')
+    axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryNamesByCategoryId?id=1`)
   .then(response => {
    
     setSubcategory1(response.data)
   })
   .catch(error => console.error('Error fetching products:', error));
-  axios.get('https://localhost:7269/api/Specification/GetSubCategoryNamesByCategoryId?id=2')
+  axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryNamesByCategoryId?id=2`)
   .then(response => {
    
     setSubcategory2(response.data)
   })
   .catch(error => console.error('Error fetching products:', error));
-  axios.get('https://localhost:7269/api/Specification/GetSubCategoryNamesByCategoryId?id=3')
+  axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryNamesByCategoryId?id=3`)
   .then(response => {
    
     setSubcategory3(response.data)
@@ -131,7 +130,7 @@ const expand='false';
 
                   {
                       method:'post',
-                      url:'https://localhost:7269/api/Authenticate/login',
+                      url:`${API_BASE_URL}/api/Authenticate/login`,
                       data:
                       JSON.stringify({ email:email, Password: pass1}),
                       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
@@ -295,133 +294,8 @@ function redirectToFilteredPage(searchQuery) {
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
-  function savechange()
-  {
-  
-
-    if(FirstName!=""&&LastName!=""&&phoneNumber!="")
-    { 
-     
-     if(phoneNumber.length==10 && FirstName.length>1 && LastName.length>5 )
-               {
-                  alert()
-
-               }
-    }
-    else{
-      alert("Перевірте пусті поля!")
-    }
 
 
-  // for (const iterator of arrBasket) 
-  // {
-  // var bodyFormData = new FormData();
-  // bodyFormData.append('prodID', iterator.id);
-  // bodyFormData.append('userID', userId);
-  //             axios (
-  
-  //               {
-  //               method:'post',
-  //               url:'https://localhost:7211/api/Product/Buy',
-  //               data:bodyFormData,
-  //               headers: {
-  //                 'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-  //                       'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-  //               },
-               
-  //               }
-  
-  
-  
-  //           ).then  (res=>
-  //           {
-  //             alert("Your order is accepted")
-  //               console.log(res.data);
-               
-  //           });  
-  // }
-  // handleClose();
-  // window.location.reload();
-  
-  
-  }  
- 
-function Delivery(postType)
-{
-  if(postType=="1")
-  {
-    const requestData = {
-      apiKey: apiKey,
-      modelName: 'Address',
-      calledMethod: 'getCities',
-      methodProperties: {}
-    };
-    
-    
-    const selectElement = document.getElementById('citySelect');
-    
-   
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestData)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-       
-        const cityDescriptions = data.data.map(city => city.Description);
-    
-       
-        selectElement.innerHTML = '';
-    
-       
-        cityDescriptions.forEach(description => {
-          const optionElement = document.createElement('option');
-          optionElement.value = description;
-          optionElement.text = description;
-          selectElement.appendChild(optionElement);
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
-  else
-  {
-
-  }
-}
-
-
-function generateSubPath(categoryId, subcategory) {
-  const category = subcategory.find(x => x.id === categoryId);
-
-  if (category) {
-    return category.name.toLowerCase();
-  } else {
-    return 'unknown';
-  }
-}
-function generatePath(categoryId) {
-  switch (categoryId) {
-    case 1:
-      return 'clothes';
-    case 2:
-      return 'shoes';
-    case 3:
-      return 'accessorise';
-
-    default:
-      return 'unknown';
-  }
-}
 function getOrder()
 {
   if(arrBasket.length>0)
@@ -429,12 +303,7 @@ function getOrder()
     window.location.href='/checkout';
   }
 }
-function changeImg(path) {
-  
-  let lastIndex = path.lastIndexOf('/');
-  let fileName = path.substring(lastIndex + 1); 
-  return require(`../assets/${fileName}`);
-}
+
      return (
      
 <div>
@@ -482,7 +351,7 @@ function changeImg(path) {
                   name={x.name}
                   quantity={x.quantity}
                   size={x.size}
-                  picture={changeImg(x.image)}
+                  picture={x.image}
                   price1={convertPrice(x.price,selectedCurrency)}
                   incrementQuantity={incrementQuantity}
                   decrementQuantity={decrementQuantity}
@@ -689,12 +558,6 @@ function changeImg(path) {
       </Dropdown.Toggle>
 
     </Dropdown>
-
-    {/* <Form.Select style={{marginLeft:'10px',width:'85px',height:'30px',border:'none'}}  aria-label="Default select example">
-      <option selected value="UAH">UAH</option>
-      <option value="EUR">EUR</option>
-      <option value="USD">USD</option>
-    </Form.Select> */}
                
                 
             </div>

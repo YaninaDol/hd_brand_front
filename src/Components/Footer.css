@@ -248,7 +248,10 @@
   color:white;
   /* font-family: var(--desktop-hyperlink-medium-15); */
 }
-
+.agreement
+{
+  padding: 100px;
+}
 @media screen and (max-width: 1200px) {
   .header-container-container {
     padding-left: var(--padding-6xl);
@@ -292,6 +295,10 @@
   }
 }
 @media screen and (max-width: 750px) {
+  .agreement
+{
+  padding: 20px;
+}
   .search-field-icons {
     gap: 0 100px;
   }

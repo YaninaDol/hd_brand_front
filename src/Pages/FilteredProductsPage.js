@@ -6,6 +6,7 @@ import { useNavigate  } from 'react-router-dom';
 import PxMainPage from './PxMainPage';
 import ContentPage from './ContentPage';
 import Footer from '../Components/Footer';
+import { API_BASE_URL} from '../config';
 const FilteredProductsPage = () => {
   
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,7 +41,7 @@ const FilteredProductsPage = () => {
   const query = searchParams.get('search') || '';
   setSearchQuery(query);
 
-    axios.get('https://localhost:7269/api/Product/GetProducts')
+    axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
       .then(response => {
     
        
@@ -49,17 +50,17 @@ const FilteredProductsPage = () => {
       .catch(error => console.error('Error fetching products:', error));
 
 
-      axios.get('https://localhost:7269/api/Specification/GetAllMaterials')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllMaterials`)
       .then(response => {
-        console.log(response.data)
+      
       
         setAllMAterials(response.data);
       })
       .catch(error => console.error('Error fetching products:', error));
 
-      axios.get('https://localhost:7269/api/Specification/GetAllSubCategories')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSubCategories`)
       .then(response => {
-        console.log(response.data)
+      
       
         seAllSubcategories(response.data);
       })
@@ -77,9 +78,16 @@ const FilteredProductsPage = () => {
 
 
   const filterProductsBySearchQuery = (query, contents) => {
-    return contents.filter(product =>
+    const filteredProducts = contents.filter(product =>
       product.name.toLowerCase().includes(query.toLowerCase())
     );
+  
+  
+    if (filteredProducts.length === 0) {
+      return contents;
+    }
+  
+    return filteredProducts;
   };
 
   const fetchExchangeRates = async () => {

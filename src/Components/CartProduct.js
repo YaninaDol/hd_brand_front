@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card,Spinner } from 'react-bootstrap';
 import axios from 'axios';
+import { API_BASE_URL} from '../config';
 import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
@@ -11,8 +12,10 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDi
   const discountPercentage = ((parseInt(price1) - parseInt(price2)) / parseInt(price1)) * 100;
 
   useEffect(() => {
+    if(window.sessionStorage.getItem("AccessToken"))
+    {
     axios({method:'post',
-    url:`https://localhost:7269/api/Authenticate/getlike?prodId=${id_key}`,
+    url:`${API_BASE_URL}/api/Authenticate/getlike?prodId=${id_key}`,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
@@ -22,13 +25,17 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDi
 
 
 })
-.catch(error => console.error('Error fetching products:', error));
+.catch(error => console.log(''));
+
+
+  }
     const loadingTimeout = setTimeout(() => {
       setLoading(false);
     }, 1000);
 
    
     return () => clearTimeout(loadingTimeout);
+  
   }, []);
 
   const handleLikeClick = () => {
@@ -36,7 +43,7 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDi
     
 
       axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/setLike?prodId=${id_key}&like=${!isFavourite}`,
+      url:`${API_BASE_URL}/api/Authenticate/setLike?prodId=${id_key}&like=${!isFavourite}`,
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
@@ -44,17 +51,12 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDi
 
   
   })
-  .catch(error => console.error('Error fetching products:', error));
+  .catch(error => console.log(''));
     
 
 
   };
-  function changeImg(path) {
   
-    let lastIndex = path.lastIndexOf('/');
-    let fileName = path.substring(lastIndex + 1); 
-    return require(`../assets/${fileName}`);
-  }
   return (
     <Card id={id_key} className='cart-item' style={{ marginLeft: '15px', marginRight: '15px', marginTop: '5px', border: 'none', marginBottom: '25px', position: 'relative' }}>
       {loading ? (
@@ -65,16 +67,30 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDi
         <>
           <MDBCarousel>
           {imageSrc1 && (   <MDBCarouselItem itemId={1}>
-              <Card.Img id='id_img' variant="top" style={{  borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} src={changeImg(imageSrc1)} />
+              <Card.Img id='id_img' variant="top" style={{  borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} src={imageSrc1} />
             </MDBCarouselItem>)}
             {imageSrc2 && (   <MDBCarouselItem itemId={2}>
-              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={changeImg(imageSrc2)} />
+              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={imageSrc2} />
             </MDBCarouselItem>)}
             {imageSrc3 && (   <MDBCarouselItem itemId={3}>
-              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={changeImg(imageSrc2)} />
+              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={imageSrc3} />
             </MDBCarouselItem>)}
             {video && (   <MDBCarouselItem itemId={4}>
-              <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={changeImg(imageSrc2)} />
+              <video
+        id='id_video'
+        playsinline 
+        autoplay="true"
+        preload="auto"
+        style={{
+          borderTopLeftRadius: '0px',
+          borderTopRightRadius: '0px',
+          height: '80%', 
+        }}
+      >
+        
+        <source src={video} type='video/mp4' />
+       
+      </video>
             </MDBCarouselItem>)}
           </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>

@@ -51,10 +51,11 @@ const Footer = () => {
         <div className="for-buyers">
           <div className="div6">покупцям</div>
           <div className="f-a-q-help-questions-programs">
-           <Link style={{color:'white'}} to='/faq'><div className="faq">FAQ (часті пітання)</div></Link> 
+           <Link style={{color:'white'}} to='/faq'><div className="faq">FAQ </div></Link> 
         
-            <div className="div8">Політика конфіденційності</div>
-            <div className="div9">Правила роботи сайту</div>
+           <Link style={{color:'white'}} to='/agreement'><div className="div8">Політика конфіденційності</div></Link> 
+            <Link style={{color:'white'}} to='/public-agreement'><div className="div9">Публічний договір (оферта)</div></Link> 
+          
           </div>
         </div>
       </div>

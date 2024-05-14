@@ -2,6 +2,7 @@ import { MDBRow } from 'mdb-react-ui-kit';
 import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
+import { API_BASE_URL} from '../config';
 const AuthModal = ({ show, handleClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,7 +50,7 @@ const AuthModal = ({ show, handleClose }) => {
 
                 {
                     method:'post',
-                    url:'https://localhost:7269/api/Authenticate/regUser',
+                    url:`${API_BASE_URL}/api/Authenticate/regUser`,
                     data:
                     JSON.stringify({ email:email, Password: password}),
                     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
@@ -85,7 +86,7 @@ const AuthModal = ({ show, handleClose }) => {
 
                 {
                     method:'post',
-                    url:'https://localhost:7269/api/Authenticate/login',
+                    url:`${API_BASE_URL}/api/Authenticate/login`,
                     data:
                     JSON.stringify({ email:email, Password: password}),
                     headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
@@ -142,7 +143,7 @@ const handlesend=()=>
    
   } else {
 
-    axios.get(`https://localhost:7269/api/Email/sendCustomEmail?mail=${email}`)
+    axios.get(`${API_BASE_URL}/api/Email/sendCustomEmail?mail=${email}`)
     .then(response => {
       console.log(response.data); 
       handleCloseReset();

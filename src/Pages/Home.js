@@ -15,6 +15,7 @@ import { setProducts} from '../redux/actions';
 import { CardGroup } from 'react-bootstrap';
 import Footer from '../Components/Footer';
 import { useEffect,useState } from 'react';
+import { API_BASE_URL} from '../config';
 const responsive = {
   desktopLarge: {
     breakpoint: { max: 3000, min: 1400 },
@@ -51,10 +52,7 @@ const responsive = {
 
 const Home = () => {
 
-  const [VideoURL,setVideoURL] = useState(null);
-  const [pathVideo,setPathVideo] = useState('');
   const dispatch = useDispatch();
-  const [selectedProductId, setSelectedProductId] = useState(null);
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
@@ -74,52 +72,24 @@ const Home = () => {
       return newCurrency;
     });
   };
-  function changeImg(path) {
-    if(path)
-   { let lastIndex = path.lastIndexOf('/');
-    let fileName = path.substring(lastIndex + 1); 
-    return require(`../assets/${fileName}`);
-  }
-  }
+ 
 
   useEffect(() => {
     window.scrollTo(0, 0);
     
-    axios.get('https://localhost:7269/api/Product/GetProducts')
+    axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
   .then(response => {
     
     dispatch(setProducts(response.data));
     setContents(response.data);
     
     
-    axios.get('https://localhost:7269/api/Product/GetContentVideo')
-      .then(res => {
-       
-        setVideoURL(changeImg('C:/Users/1/OneDrive/Документы/GitHub/hd_brand_front/src/assets/Epic Adidas shoe commercial concept _ product video B-ROLL (1)_e3cf.mp4'));
-        
-      
-        let productf = response.data.find(x => x.id === res.data[0].prodId);
-        
-        
-        if (productf) {
-          setSelectedProductId(productf);
-          
-         
-          const path = `/${generatePath(productf.categoryid)}/${productf.subCategoryid}/${productf.id}`;
-          setPathVideo(path); 
-        }
-        
-       
-      })
-      .catch(error => {
-        
-        console.error('Error fetching video data:', error);
-      });
+   
   })
   .catch(error => {
     
     console.error('Error fetching products data:', error);
-    window.location.href = '/notfound';
+   // window.location.href = '/notfound';
   });
 
       fetchExchangeRates();
@@ -131,10 +101,7 @@ const Home = () => {
       setSelectedCurrency(savedCurrency);
     }
   },[dispatch]);
-  const handleVideoEnded = (event) => {
-   
-    event.target.load();
-  };
+  
   const fetchExchangeRates = async () => {
     try {
       const response = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
@@ -306,14 +273,14 @@ const Home = () => {
       </section>
     
    <WeeklyPreview convertPrice={convertPrice} selectedCurrency={selectedCurrency}  weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
-  <Link to={pathVideo}>
+ 
   
 
     <video className="d-block w-100" controls autoPlay>
-      <source src={require(`../assets/Epic Adidas shoe commercial concept _ product video B-ROLL (1)_e3cf.mp4`)} type="video/mp4" />
+      <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-  </Link>
+ 
    {showSection && (
       <section className="graphic">
         <div className="new-items">

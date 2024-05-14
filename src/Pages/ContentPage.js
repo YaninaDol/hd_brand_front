@@ -513,7 +513,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       </Link>
     ))
   ) : (
-    <div>Нічого не знайдено </div>
+    <div> </div>
   )}
             </MDBCol>
             <MDBCol hidden={filteredhidden} className="containerCart">
@@ -537,7 +537,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       </Link>
     ))
   ) : (
-    <div>Нічого не знайдено</div>
+    <div></div>
   )}
             </MDBCol>
           </MDBRow>

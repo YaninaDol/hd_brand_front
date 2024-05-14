@@ -9,6 +9,7 @@ import axios from 'axios';
 import { connect,useDispatch,useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { Link, Outlet } from "react-router-dom";
+import { API_BASE_URL} from '../config';
 import Carousels from 'react-multi-carousel';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
@@ -22,9 +23,6 @@ const ProductDetailsPage = () => {
     const { id, subcategoryid } = useParams();
     const [isFavourite, setIsFavourite] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [img1, setImg1] = useState(null);
-    const [img2, setImg2] = useState(null);
-    const [img3, setImg3] = useState(null);
 
   const dispatch = useDispatch();
   const productsizes = useSelector(state => state.productsizes);
@@ -53,7 +51,7 @@ const ProductDetailsPage = () => {
     
 
       axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/setLike?prodId=${id}&like=${!isFavourite}`,
+      url:`${API_BASE_URL}/api/Authenticate/setLike?prodId=${id}&like=${!isFavourite}`,
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
@@ -61,7 +59,7 @@ const ProductDetailsPage = () => {
 
   
   })
-  .catch(error => console.error('Error fetching products:', error));
+  .catch(error => console.log(''));
     
 
 
@@ -139,9 +137,10 @@ const ProductDetailsPage = () => {
   if (savedCurrency) {
     setSelectedCurrency(savedCurrency);
   }
-
+  if(window.sessionStorage.getItem("AccessToken"))
+  {
   axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/getlike?prodId=${id}`,
+      url:`${API_BASE_URL}/api/Authenticate/getlike?prodId=${id}`,
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
@@ -151,10 +150,10 @@ const ProductDetailsPage = () => {
 
   
   })
-  .catch(error => console.error('Error fetching products:', error));
+  .catch(error => console.log(''));
+  }
 
-
-    axios.get(`https://localhost:7269/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
+    axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
     .then(response => {
     
      
@@ -166,7 +165,7 @@ const ProductDetailsPage = () => {
   
   
   
-    axios.get(`https://localhost:7269/api/Product/GetSizeofProduct?id=${id}`)
+    axios.get(`${API_BASE_URL}/api/Product/GetSizeofProduct?id=${id}`)
     .then(respons => {
       dispatch(setProductSizes(respons.data));
      
@@ -175,37 +174,35 @@ const ProductDetailsPage = () => {
   
    
   
-    axios.get(`https://localhost:7269/api/Product/GetProductById?id=${id}`)
+    axios.get(`${API_BASE_URL}/api/Product/GetProductById?id=${id}`)
     .then(res => {
       
         dispatch(setProduct(res.data.value));
-        console.log(res.data.value);
-        setImg1(changeImg(res.data.value.image));
-        setImg2(changeImg(res.data.value.image2));
-        setImg3(changeImg(res.data.value.image3));
+     
+      
   
-      axios.get(`https://localhost:7269/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
+      axios.get(`${API_BASE_URL}/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
       .then(resp => {
      
         dispatch(setCategory(resp.data.value));
      
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get(`https://localhost:7269/api/Specification/GetMaterialById?id=${res.data.value.materialid}`)
+      axios.get(`${API_BASE_URL}/api/Specification/GetMaterialById?id=${res.data.value.materialid}`)
       .then(resp => {
      
         dispatch(setMaterial(resp.data.value));
     
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get(`https://localhost:7269/api/Specification/GetSeasonById?id=${res.data.value.seasonid}`)
+      axios.get(`${API_BASE_URL}/api/Specification/GetSeasonById?id=${res.data.value.seasonid}`)
       .then(resp => {
      
         dispatch(setSeason(resp.data.value));
       
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get(`https://localhost:7269/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
+      axios.get(`${API_BASE_URL}/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
     .then(responses => {
       dispatch(setSimilar(responses.data));
      
@@ -330,16 +327,6 @@ const ProductDetailsPage = () => {
   }
 
 
-function changeImg(path) {
-   
-    if(path)
-    {let lastIndex = path.lastIndexOf('/');
-    console.log(lastIndex);
-    let fileName = path.substring(lastIndex + 1); 
-    console.log(fileName);
-    return require(`../assets/${fileName}`);
-}
-  }
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
@@ -391,23 +378,23 @@ function changeImg(path) {
     <MDBCol id='photocolumn'>
     {product.image&&(<MDBRow>
   
-             <MDBCol  ><img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+             <MDBCol  ><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
             </MDBRow>)}
            
             {product.image2&&(  <MDBRow>
    
-   <MDBCol  ><img src={img2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+   <MDBCol  ><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
             </MDBRow>)}
    </MDBCol>
    {(product.image3 || product.video)&&(
    <MDBCol  id='photocolumn'>
    {product.image3&&(    <MDBRow>
    
-    <MDBCol  id='photocolumn'><img src={img3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+    <MDBCol  id='photocolumn'><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
              </MDBRow>)}
              {product.video&&(      <MDBRow>
    
-   <MDBCol  id='photocolumn'><img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/></MDBCol>
+   <MDBCol  id='photocolumn'><img src={product.video} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
             </MDBRow>)}
    </MDBCol>)}
 <MDBCol style={{margin:'25px'}}>
@@ -416,19 +403,19 @@ function changeImg(path) {
 <Carousel id='photocolumnmob'>
 {product.image&&(
 <Carousel.Item>
-<img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+<img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
 </Carousel.Item>)}
 {product.image2&&(
 <Carousel.Item>
-<img src={img2} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+<img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
 </Carousel.Item>)}
 {product.image3&&(
 <Carousel.Item>
-<img src={img3} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+<img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
 </Carousel.Item>)}
 {product.video&&(
 <Carousel.Item>
-<img src={img1} style={{margin:'5px'}} class="card-img-top" alt="Hollywood Sign on The Hill"/>
+<img src={product.video} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
 </Carousel.Item>)}
 </Carousel>
 
@@ -469,7 +456,7 @@ function changeImg(path) {
     </div>
     {showValidation && (newProd===null || newProd===0)&& (
           <div style={{ color: 'red', marginTop: '10px' }}>
-            Виберіть розмір перед додаванням в корзину.
+            Оберіть розмір перед додаванням в корзину.
           </div>
         )}
         {category.id!=3&&( <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
