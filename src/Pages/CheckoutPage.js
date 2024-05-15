@@ -45,11 +45,11 @@ const CheckoutPage = () => {
   const [selectedDepartament, setSelectedDepartament] = useState(null);
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
-  const [index, setIndex] = useState("");
+  const [indexW, setIndexW] = useState("");
+  const [indexU, setIndexU] = useState("");
   const [checkoutbtn, setCheckoutbtn] = useState(false);
   const [count, setCount] = useState(0);
   const [warehouseDescriptions, setwarehouseDescriptions] = useState([]);
-  const [warehouseDescriptionsUkr, setwarehouseDescriptionsUkr] = useState([]);
 
   const [typeDelivery, setTypeDelivery] = useState('1');
   const [typeDeliveryW, setTypeDeliveryW] = useState('address');
@@ -62,33 +62,51 @@ const CheckoutPage = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [errors, setErrors] = useState({});
   const [TotalSum,setTotalSum] = useState(0);
-  
+  const [proceed, setProceed] = useState(false);
   const validateForm = () => {
     const isEnglish = /^[a-zA-Z\s]*$/.test(name,surname);
-
+   
     const errors = {};
-    if (!typeDelivery) {
-      errors.typeDelivery = 'Оберіть тип доставки';
-    }
-  
-    if (typeDelivery === '1' && !selectedDepartament) {
-      errors.selectedDepartament = 'Оберіть відділення';
-    }
-  
-    if (typeDelivery === '2' && !address) {
-      errors.address = 'Введіть адресу';
-    }
-  
-    if (activeTab=="longer-tab2" && (!selectedCountry || !selectedCity2 || !address2||!index)) {
-      errors.internationalDelivery = 'Заповніть всі поля для міжнародної доставки';
-      if (!/^[a-zA-Z\s]*$/.test(name)) {
-        errors.name = 'Ім\'я повинно містити лише англійські букви'};
-      if (!/^[a-zA-Z\s]*$/.test(surname)) {
-        errors.surname = 'Прізвище повинно містити лише англійські букви';
-      }
-     
-    }
     
+  
+    if (activeTab === "longer-tab") {
+      if (typeDelivery === '1' && !selectedDepartament) {
+          errors.selectedDepartament = 'Оберіть відділення';
+      } else if (typeDelivery === '2' && !address) {
+          errors.address = 'Введіть адресу';
+      } else if (typeDelivery === '3' && !indexU) {
+          errors.indexU = 'Введіть індекс відділення';
+      }
+  }
+  
+  if (countryinExcel === 'novapost' && activeTab === "longer-tab2") {
+    if (typeDeliveryW === 'warehouse' && !selectedCity2) {
+        errors.selectedCity2 = 'Оберіть місто';
+    } else if (typeDeliveryW === 'warehouse' && !NovaWorldWare) {
+      errors.indexW = 'Вкажіть відділеняя';
+  } else if (typeDeliveryW === 'address' && !address2) {
+        errors.address2 = 'Введіть адресу';
+    } else if (typeDeliveryW === 'address' && !indexW) {
+        errors.indexW = 'Вкажіть індекс';
+    }
+    if (!/^[a-zA-Z\s]*$/.test(name)) {
+      errors.name = 'Ім\'я повинно містити лише англійські букви'};
+    if (!/^[a-zA-Z\s]*$/.test(surname)) {
+      errors.surname = 'Прізвище повинно містити лише англійські букви';
+    }
+} else if (countryinExcel === 'worldwide' && activeTab === "longer-tab2") {
+
+    if (!selectedCountry ||  !address2 || !indexW) {
+        errors.internationalDelivery = 'Заповніть всі поля для міжнародної доставки';
+    }
+    if (!/^[a-zA-Z\s]*$/.test(name)) {
+      errors.name = 'Ім\'я повинно містити лише англійські букви'};
+    if (!/^[a-zA-Z\s]*$/.test(surname)) {
+      errors.surname = 'Прізвище повинно містити лише англійські букви';
+    }
+}
+
+ 
     if (!name.trim()) {
       errors.name = 'Заповніть ім\'я';
     }
@@ -175,9 +193,18 @@ const CheckoutPage = () => {
 
 
   const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
-
+const [paymentData, setPaymentData] = useState({
+    version: 3,
+      action: 'pay',
+      amount: total,
+      currency: selectedCurrency,
+      description: 'Test payment',
+      order_id: 'ord123456',
+      language: 'UK'
+});
   useEffect(() => {
-    
+    const isValid = validateForm();
+    setProceed(isValid);
     const storedBasket = window.sessionStorage.getItem("Basket");
      
 
@@ -291,17 +318,9 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
 
-  }, [selectedCountry,count,discount,typeDeliveryW,TotalSum]);
+  }, [selectedCountry,count,discount,typeDeliveryW,TotalSum,paymentData,countryinExcel,selectedDepartament,address,phoneNumber,email,selectedCity2,address2,indexW,NovaWorldWare,indexU,activeTab]);
   var instanse_liq = new LiqPaY(public_key, private_key);
-  const [paymentData, setPaymentData] = useState({
-    version: 3,
-      action: 'pay',
-      amount: total,
-      currency: selectedCurrency,
-      description: 'Test payment',
-      order_id: 'ord123456',
-      language: 'UK'
-});
+
 
   function removeBasket(id) {
     let prod = arrbuket.find(item => item.id === id);
@@ -594,7 +613,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       }
       else if(activeTab=='longer-tab2')
       {
-        console.log(selectedCountry,selectedCity2,address2);
+        console.log(selectedCountry,selectedCity2,address2,indexW);
       }
   } else {
    
@@ -786,7 +805,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
        type="text"
        id="enteraddress"
        placeholder=" Вкажіть індекс відділення"
-       onChange={(e)=>setIndex(e.target.value)}
+       onChange={(e)=>setIndexU(e.target.value)}
       
      />
       )}
@@ -826,6 +845,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
             }),
           }}
         />
+         {errors.selectedCountry   && <div style={{ color: 'red' }}>{errors.selectedCountry  }</div>}
             </MDBCol>
            
             <MDBCol>
@@ -858,6 +878,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
             }),
           }}
         />)}
+         {errors.selectedCity2    && <div style={{ color: 'red' }}>{errors.selectedCity2   }</div>}
   {typeDeliveryW === 'address' && (<Form.Control
           size="lg"
        type="text"
@@ -865,6 +886,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
        placeholder=" Введіть повну адресу"
        onChange={(e)=>setAddress2(e.target.value)}
      />)}
+      {errors.address2     && <div style={{ color: 'red' }}>{errors.address2    }</div>}
   </MDBCol>
   
   <MDBCol  className="col-12 col-md-6 py-2 py-md-0">
@@ -873,9 +895,9 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
        type="text"
        id="enteraddress"
        placeholder=" Вкажіть індекс"
-       onChange={(e)=>setIndex(e.target.value)}
+       onChange={(e)=>setIndexW(e.target.value)}
       
-     />)}
+     />)} 
       {typeDeliveryW === 'warehouse' && (<Form.Control
       
           size="lg"
@@ -885,9 +907,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
        onChange={(e)=>setNovaWorldWare(e.target.value)}
       
      />)}
+      {errors.indexW      && <div style={{ color: 'red' }}>{errors.indexW     }</div>}
+      {errors.internationalDelivery      && <div style={{ color: 'red' }}>{errors.internationalDelivery     }</div>}
   </MDBCol>
 
-  {errors.internationalDelivery   && <div style={{ color: 'red' }}>{errors.internationalDelivery  }</div>}
+
 </MDBRow>
       </Tab>
     </Tabs>
@@ -994,7 +1018,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
   <MDBRow style={{marginTop:'15px'}}>
-    {selectedPaymentMethod==='liqpay'?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
+    {selectedPaymentMethod==='liqpay'?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
    
   </MDBRow>
     </MDBCol>
