@@ -11,13 +11,7 @@ import axios from 'axios';
 import { API_BASE_URL,NOVAPOST_API_KEY} from '../config';
 import './CheckoutPage.css';
 import AuthModal from "../Components/AuthModal";
-
-
-  // import { LiqpayService,PaymentAction,PaymentPeriodicity,Currency } from 'magic-npm-package';
- import SubscriptionFormComponent from '../Components/SubscriptionFormComponent';
- import LiqPayModule from 'liqpaymodule';
- 
-
+import LiqPaY from 'liqpayservice';
 
 import {
  
@@ -27,6 +21,7 @@ import {
   MDBRange 
 } from 'mdb-react-ui-kit';
 import CardBox from "../Components/CardBox";
+import { version } from "process";
 const CheckoutPage = () => {
 
   const [titleaccount, setTitleAccount] = useState('');
@@ -60,7 +55,7 @@ const CheckoutPage = () => {
   const [typeDeliveryW, setTypeDeliveryW] = useState('address');
   const [NovaWorldWare, setNovaWorldWare] = useState(null);
   const [activeTab, setActiveTab] = useState('longer-tab'); 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("liqpay");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cardpay");
   const [total,setTotal] = useState(0);
   const [countryinExcel,setCountryExcel] = useState('novapost');
   const [showManagerContact, setShowManagerContact] = useState(false);
@@ -121,9 +116,22 @@ const CheckoutPage = () => {
     return Object.keys(errors).length === 0; 
   };
 
+  const convertPrice = (price, currency) => {
+    if (currency === 'USD') {
+      return (price * exchangeRates.usd).toFixed(0);
+    } else if (currency === 'EUR') {
+      return (price * exchangeRates.eur).toFixed(0);
+    } else {
+     
+      return price;
+    }
+  };
   
+  const public_key='sandbox_i99834875717'
+  const private_key='sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ';
+ 
 
-
+ 
 
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
@@ -143,6 +151,25 @@ const CheckoutPage = () => {
   };
   const handleCheckboxChange = (method) => {
     setSelectedPaymentMethod(method);
+    if(method === 'liqpay')
+      {
+       
+        activeTab!='longer-tab' ?
+        
+        setPaymentData({
+          ...paymentData,
+          amount:convertPrice(total -total*(discount/100)+shipment,selectedCurrency),
+          currency: selectedCurrency
+          
+      }): setPaymentData({
+        ...paymentData,
+        amount:convertPrice(total -total*(discount/100),selectedCurrency),
+        currency: selectedCurrency
+        
+    });
+    
+  
+      }
     setShowManagerContact(method === 'cardpay');
   };
 
@@ -156,7 +183,7 @@ const CheckoutPage = () => {
 
     if (!storedBasket || storedBasket.length < 1) {
      
-      //window.location.href = '/';
+      window.location.href = '/';
     } else {
      
       const parsedBasketData = JSON.parse(storedBasket);
@@ -165,8 +192,9 @@ const CheckoutPage = () => {
       setTotal(totalCost);
       const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
       setCount(totalCount);
+      setTotalSum(convertPrice(total -total*(discount/100),selectedCurrency));
     }
-
+    
 
     if(!window.sessionStorage.getItem("AccessToken"))
     setTitleAccount('У мене вже є аккаунт');
@@ -263,7 +291,17 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
 
-  }, [selectedCountry,count,discount,typeDeliveryW]);
+  }, [selectedCountry,count,discount,typeDeliveryW,TotalSum]);
+  var instanse_liq = new LiqPaY(public_key, private_key);
+  const [paymentData, setPaymentData] = useState({
+    version: 3,
+      action: 'pay',
+      amount: total,
+      currency: selectedCurrency,
+      description: 'Test payment',
+      order_id: 'ord123456',
+      language: 'UK'
+});
 
   function removeBasket(id) {
     let prod = arrbuket.find(item => item.id === id);
@@ -516,80 +554,12 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     }
   };
 
-  const convertPrice = (price, currency) => {
-    if (currency === 'USD') {
-      return (price * exchangeRates.usd).toFixed(0);
-    } else if (currency === 'EUR') {
-      return (price * exchangeRates.eur).toFixed(0);
-    } else {
-     
-      return price;
-    }
-  };
-  ///
- // const LiqPay = require('liqpay');
-//   const liqpays = new LiqPay('sandbox_i99834875717', 'sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ');
-//   const params = {
-//     action: 'pay',
-//     amount: '100',
-//     currency: 'USD',
-//     description: 'Test payment',
-//     order_id: 'order12345',
-//     version: '3',
-//     language: 'ru'
-// };
-// const form = liqpays.cnb_form(params);
-  ///
-  const public_key='sandbox_i99834875717'
-  const private_key='sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ';
   
-//  const liqpayService =new LiqpayService();
-//   const price=1;
-//   const description='test';
-//   const orderId='12345';
-//   const buttonTitle='LiqPay';
-//   const htmlForm =liqpayService.createSubscriptionPaymentForm({
-//     action:PaymentAction.Subscribe,
-//     price,
-//     currency:Currency.UAH,
-//     description,
-//     orderId,
-//     buttonTitle
-
-    
-//   });
-///Использование LiqPay
-const liqpayInstance = new LiqPayModule('sandbox_i99834875717', 'sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ');
+  
+  
 
 
 
-function getPay()
-{
-const params = {
-  version: 3,
-  action: 'pay',
-  amount: 100,
-  currency: 'UAH',
-  description: 'Test payment',
-  order_id: '123456'
-};
-
-// Выполняем запрос с помощью метода api
-liqpayInstance.api( params)
-  .then(response => {
-    console.log('Response:', response);
-    // Обрабатываем ответ здесь
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    console.log('Error:', error);
-    // Обрабатываем ошибку здесь
-  });
-}
-
-
-
-  // Преобразование данных в строку и кодирование в формате BASE64
  
  function saveChanges()
  {
@@ -597,18 +567,7 @@ liqpayInstance.api( params)
 
   if (isValid) {
     
-    if(selectedPaymentMethod === 'liqpay')
-    {
-      // window.location.href='https://www.liqpay.ua/';
-      setTotalSum(convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
     
-    
-
-    }
-    else
-    {
-      setTotalSum(convertPrice(total -total*(discount/100),selectedCurrency));
-    }
 
     console.log(name,surname,phoneNumber,email,arrbuket);
       if(activeTab=='longer-tab')
@@ -938,16 +897,19 @@ liqpayInstance.api( params)
 
               </MDBRow>
               <MDBRow style={{marginTop:'30px',marginLeft:'10px'}}>
-              {/* <Form.Check 
+              <Form.Check 
+             
             type='checkbox'
             id={`liqpay`}
             checked={selectedPaymentMethod === 'liqpay'}
             onChange={() => handleCheckboxChange('liqpay')}
             label="Банківською карткою на сайті Visa або MasterCard (платіжний сервіс LiqPay)"
-          /> */}
-       <button onClick={getPay}>Pay</button> 
+          />
+      
+       
+            
 
- {/* <div dangerouslySetInnerHTML={{ __html: htmlForm }}></div> */}
+
 
               </MDBRow>
               <MDBRow style={{marginTop:'20px',marginLeft:'15px'}}>
@@ -1032,7 +994,8 @@ liqpayInstance.api( params)
 
 
   <MDBRow style={{marginTop:'15px'}}>
-    <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>
+    {selectedPaymentMethod==='liqpay'?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
+   
   </MDBRow>
     </MDBCol>
 

@@ -9,7 +9,7 @@ import axios from 'axios';
 import './CheckoutPage.css';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-
+import { API_BASE_URL,NOVAPOST_API_KEY} from '../config';
 import {
  
   MDBContainer,
@@ -97,7 +97,7 @@ const Account = () => {
     }
     else{
       axios({method:'get',
-      url:`https://localhost:7269/api/Authenticate/getUserbyId`,
+      url:`${API_BASE_URL}/api/Authenticate/getUserbyId`,
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
@@ -112,7 +112,7 @@ const Account = () => {
 
 
     axios({method:'get',
-    url:`https://localhost:7269/api/Authenticate/getAllLikes`,
+    url:`${API_BASE_URL}/api/Authenticate/getAllLikes`,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
@@ -184,7 +184,7 @@ function savechanges()
 
     {
     method:'post',
-    url:'https://localhost:7269/api/Authenticate/updateUserInfo',
+    url:`${API_BASE_URL}/api/Authenticate/updateUserInfo`,
     data:bodyFormData,
     headers: {
       
@@ -244,7 +244,7 @@ function savepass()
   const isvalid=validateFormPass();
   if(isvalid)
  { axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/v1?password=${password}`,
+      url:`${API_BASE_URL}/api/Authenticate/v1?password=${password}`,
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
