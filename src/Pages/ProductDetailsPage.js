@@ -6,9 +6,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import {setProductSizes } from '../redux/actions';
 import axios from 'axios';
-import { connect,useDispatch,useSelector } from 'react-redux';
+import {useDispatch,useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
-import { Link, Outlet } from "react-router-dom";
+import { Spinner } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import { API_BASE_URL} from '../config';
 import Carousels from 'react-multi-carousel';
 import Carousel from 'react-bootstrap/Carousel';
@@ -20,6 +21,7 @@ import ShoppingAssistant from '../Components/ShoppingAssistant';
 import '../Pages/ProductdetailPage.css';
 import CartProduct from '../Components/CartProduct';
 const ProductDetailsPage = () => {
+  const [loading, setLoading] = useState(true);
     const { id, subcategoryid } = useParams();
     const [isFavourite, setIsFavourite] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -213,7 +215,9 @@ const ProductDetailsPage = () => {
     })
     .catch(error => console.error('Error fetching products:', error));
 
-
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
    
   
   }, [id, subcategoryid, dispatch]);
@@ -354,6 +358,12 @@ const ProductDetailsPage = () => {
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
+<div>
+   {loading ? (
+       <div  style={{marginTop:'250px'}} class="d-flex justify-content-center">
+       <Spinner  variant="secondary"  animation="border"  />
+       </div>
+      ) : (<>
    <div className="stock-status" style={{marginTop:'150px'}}>
       <Link to="/"><div className="div33">Головна </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
@@ -369,8 +379,9 @@ const ProductDetailsPage = () => {
 </svg>
  {product.name}
 </div>
-   <div>
-
+   
+      
+        
 <MDBContainer id='container50'>
 <MDBRow id='rowmargin50' >
    
@@ -512,7 +523,8 @@ onClick={addToBasket}
    </Carousels>
 </MDBRow>
 </MDBContainer>
-
+</>
+      )}
 
 </div>
 

@@ -148,7 +148,22 @@ const CheckoutPage = () => {
   const public_key='sandbox_i99834875717'
   const private_key='sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ';
  
-
+  function updateDate()
+  {
+     activeTab!='longer-tab' ?
+        
+        setPaymentData({
+          ...paymentData,
+          amount:convertPrice(total -total*(discount/100)+shipment,selectedCurrency),
+          currency: selectedCurrency
+          
+      }): setPaymentData({
+        ...paymentData,
+        amount:convertPrice(total -total*(discount/100),selectedCurrency),
+        currency: selectedCurrency
+        
+    });
+  }
  
 
   const [exchangeRates, setExchangeRates] = useState({
@@ -199,14 +214,15 @@ const [paymentData, setPaymentData] = useState({
       amount: total,
       currency: selectedCurrency,
       description: 'Test payment',
-      language: 'UK'
+      language: 'UK',
+      result_url:'https://hdbrand.com.ua/status'
 });
   useEffect(() => {
     const isValid = validateForm();
     setProceed(isValid);
     const storedBasket = window.sessionStorage.getItem("Basket");
      
-
+    updateDate();
     if (!storedBasket || storedBasket.length < 1) {
      
       window.location.href = '/';
@@ -223,7 +239,9 @@ const [paymentData, setPaymentData] = useState({
     
 
     if(!window.sessionStorage.getItem("AccessToken"))
-    setTitleAccount('У мене вже є аккаунт');
+   { setTitleAccount('У мене вже є аккаунт');
+    count>=2?setDiscount(5):setDiscount(null);
+   }
   else{
     setTitleAccount('');
     
@@ -317,7 +335,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
 
-  }, [selectedCountry,count,discount,typeDeliveryW,TotalSum,paymentData,countryinExcel,selectedDepartament,address,phoneNumber,email,selectedCity2,address2,indexW,NovaWorldWare,indexU,activeTab]);
+  }, [selectedCountry,count,discount,typeDeliveryW,TotalSum,countryinExcel,selectedDepartament,address,phoneNumber,email,selectedCity2,address2,indexW,NovaWorldWare,indexU,activeTab]);
   var instanse_liq = new LiqPaY(public_key, private_key);
 
 
@@ -574,10 +592,6 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
   
   
-  
-
-
-
  
  function saveChanges()
  {
