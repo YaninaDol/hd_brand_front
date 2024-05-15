@@ -13,6 +13,7 @@ import CheckoutPage from './Pages/CheckoutPage';
 import NotFound from './Pages/NotFound';
 import PublicOfert from './Pages/PublicOfert';
 import Agreement from './Pages/Agreement';
+import StatusPage from './Pages/Status200';
 const App = () => {
   return (
     <BrowserRouter>
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/notfound" element={<NotFound />} />
           <Route path='/public-agreement' element={<PublicOfert />} />
           <Route path='/agreement' element={<Agreement />} />
+          <Route path='/status' element={<StatusPage />} />
         </Routes>
       </div>
     </BrowserRouter>

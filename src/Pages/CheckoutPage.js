@@ -199,7 +199,6 @@ const [paymentData, setPaymentData] = useState({
       amount: total,
       currency: selectedCurrency,
       description: 'Test payment',
-      order_id: 'ord123456',
       language: 'UK'
 });
   useEffect(() => {

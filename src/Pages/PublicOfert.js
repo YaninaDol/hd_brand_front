@@ -6,17 +6,6 @@ import Footer from '../Components/Footer';
 import { useState } from "react";
 import { useEffect } from "react";
 
-///
-// import { LiqpayService,PaymentAction,PaymentPeriodicity,Currency } from 'magic-npm-package';
-// import SubscriptionFormComponent from '../Components/SubscriptionFormComponent';
-// import LiqPayModule from 'liqpaymodule';
-
-// const liqpayService =new LiqpayService();
-
-
-// Использование LiqPay
-// const liqpayInstance = new LiqPayModule('sandbox_i99834875717', 'sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ');
-///
 const PublicOfert = () => {
   
 const [selectedCurrency, setSelectedCurrency] = useState('UAH');
@@ -83,71 +72,10 @@ const convertPrice = (price, currency) => {
   }
 };
 
-//liqpay
-
-
-  // const price=1;
-  // const description='test';
-  // const orderId='12345';
-  // const buttonTitle='LiqPay';
-
-// function getPay()
-// {
-// const params = {
-//   version: 3,
-//   action: 'pay',
-//   amount: 100,
-//   currency: 'UAH',
-//   description: 'Test payment',
-//   order_id: '123456'
-// };
-
-// // Выполняем запрос с помощью метода api
-// liqpayInstance.api( params)
-//   .then(response => {
-//     console.log('Response:', response);
-//     // Обрабатываем ответ здесь
-//   })
-//   .catch(error => {
-//     console.error('Error:', error);
-//     // Обрабатываем ошибку здесь
-//   });
-// }
-
-
 
 
   return (
-//     <div>
-// {/* <button onClick={getPay}>Pay</button> */}
-// {/* <form method="POST" action="https://www.liqpay.ua/api/3/checkout" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 0 }} acceptCharset="utf-8" target="_blank">
-//   <input type="hidden" name="data" value="eyJ2ZXJzaW9uIjozLCJhY3Rpb24iOiJzdWJzY3JpYmUiLCJzdWJzY3JpYmVfZGF0ZV9zdGFydCI6IjIwMjQtMDUtMTAgMTg6MjY6NDciLCJzdWJzY3JpYmVfcGVyaW9kaWNpdHkiOiJtb250aCIsImFtb3VudCI6MSwiY3VycmVuY3kiOiJVQUgiLCJkZXNjcmlwdGlvbiI6InRlc3QiLCJvcmRlcl9pZCI6MTIzNH0="/> 
-//   <input type="hidden" name="signature" value="bya3fUzoME/6WlicrDMc05cpF6A=" />
-//   <input type="submit" style={{ minWidth: '150px', backgroundColor: '#a056fc', border: 'none', outline: 'none', lineHeight: '2.5rem', color: '#fff', cursor: 'pointer', fontSize: '1rem', borderRadius: '10px', padding: '0 10px' }} value="Liqpay button" />
-// </form>
 
-
-
-//       <SubscriptionFormComponent
-//       price={1}
-//       description={'test'}
-//       orderId={1234}
-//       buttonTitle={"Liqpay button2"}
-//     /> */}
-// {/* {
-//   liqpayService.createSubscriptionPaymentForm({
-//     action:PaymentAction.Subscribe,
-//     subscribePeriodicity:PaymentPeriodicity.Month,
-//     price,
-//     currency:Currency.UAH,
-//     description,
-//     orderId,
-//     buttonTitle
-
-    
-//   })
-// } */}
-//     </div>
     <div >
        <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
