@@ -591,38 +591,45 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     
       if(activeTab=='longer-tab')
       {
+        const sum=convertPrice(total -total*(discount/100),selectedCurrency);
         if(typeDelivery==='1')
         {
         
          
-          confirmOrder("НП-відділення","Україна, "+selectedCity+selectedDepartament)
+          confirmOrder("НП-відділення","Україна, "+selectedCity+selectedDepartament,sum)
         }
         else if(typeDelivery==='2')
         {
         
-          confirmOrder("НП-адреса"+"Україна, "+selectedCity+address)
+          confirmOrder("НП-адреса"+"Україна, "+selectedCity+address,sum)
         }
         else if(typeDelivery==='3')
         {
           
-          confirmOrder("Укрпошта-відділення"+"Україна, "+selectedCity+indexU);
+          confirmOrder("Укрпошта-відділення"+"Україна, "+selectedCity+indexU,sum);
         }
         else if(typeDelivery==='4')
         {
          
-          confirmOrder("Укрпошта-адреса"+"Україна, "+selectedCity+address2);
+          confirmOrder("Укрпошта-адреса"+"Україна, "+selectedCity+address2,sum);
         }
       }
       else if(activeTab=='longer-tab2')
       {
-        if(typeDeliveryW=="warehouse")
+      if(  countryinExcel === 'worldwide')
+        {
+          confirmOrder("Міжнародна пошта",selectedCountry+address2+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+        }
+        else
+       { if(typeDeliveryW=="warehouse")
        { 
-        confirmOrder(selectedCountry,selectedCity2,'відділення',NovaWorldWare);
+        confirmOrder('НоваПошта-відділення',selectedCountry+selectedCity2+NovaWorldWare,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
        }
        else if(typeDeliveryW=="address")
         {
-          confirmOrder(selectedCountry,"адресна",address2,indexW);
+          confirmOrder("НоваПошта-адресна",selectedCountry+address2+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
         }
+      }
       }
   
      
@@ -632,13 +639,13 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
  }
- function confirmOrder(delivery,fulladdress)
+ function confirmOrder(delivery,fulladdress,toplam)
  {
   const jsonString = JSON.stringify(arrbuket);
   if(!window.sessionStorage.getItem("AccessToken"))
     { 
       axios({method:'post',
-      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `
+      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount} `
    })
        .then(response => {
        
@@ -659,7 +666,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
    else{
    
     axios({method:'post',
-    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `,
+    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount}  `,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
