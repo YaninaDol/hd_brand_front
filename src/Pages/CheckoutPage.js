@@ -70,13 +70,18 @@ const CheckoutPage = () => {
     
   
     if (activeTab === "longer-tab") {
-      if (typeDelivery === '1' && !selectedDepartament) {
+      if(!selectedCity)
+      {
+        errors.selectedCity = 'Оберіть місто';
+        if (typeDelivery === '1' && !selectedDepartament) {
           errors.selectedDepartament = 'Оберіть відділення';
       } else if (typeDelivery === '2' && !address) {
           errors.address = 'Введіть адресу';
       } else if (typeDelivery === '3' && !indexU) {
           errors.indexU = 'Введіть індекс відділення';
-      }
+      }else if (typeDelivery === '4' && !address2) {
+        errors.indexU = 'Введіть адресу ';
+    }}
   }
   
   if (countryinExcel === 'novapost' && activeTab === "longer-tab2") {
@@ -184,26 +189,12 @@ const CheckoutPage = () => {
   };
   const handleCheckboxChange = (method) => {
     setSelectedPaymentMethod(method);
-    if(method === 'liqpay')
-      {
-       
-        activeTab!='longer-tab' ?
-        
-        setPaymentData({
-          ...paymentData,
-          amount:convertPrice(total -total*(discount/100)+shipment,selectedCurrency),
-          currency: selectedCurrency
-          
-      }): setPaymentData({
-        ...paymentData,
-        amount:convertPrice(total -total*(discount/100),selectedCurrency),
-        currency: selectedCurrency
-        
-    });
     
-  
-      }
     setShowManagerContact(method === 'cardpay');
+    if(method === 'cardpay')
+      {
+        setProceed(false);
+      }
   };
 
 
@@ -218,11 +209,9 @@ const [paymentData, setPaymentData] = useState({
       result_url:'https://hdbrand.com.ua/status'
 });
   useEffect(() => {
-    const isValid = validateForm();
-    setProceed(isValid);
+  
     const storedBasket = window.sessionStorage.getItem("Basket");
-     
-    updateDate();
+     updateDate();
     if (!storedBasket || storedBasket.length < 1) {
      
       window.location.href = '/';
@@ -302,18 +291,18 @@ const [paymentData, setPaymentData] = useState({
 
    
 async function fetchCountries() {
-  try {
-    const response = await axios.get('https://restcountries.com/v2/all');
-    return response.data.map(country => ({
-      label:country.name,
-      name: country.name,
-      value: country.name,
-      alpha3Code: country.alpha3Code,
-    }));
-  } catch (error) {
-    console.error('Error fetching countries:', error.message);
-    return [];
-  }
+  // try {
+  //   const response = await axios.get('https://restcountries.com/v2/all');
+  //   return response.data.map(country => ({
+  //     label:country.name,
+  //     name: country.name,
+  //     value: country.name,
+  //     alpha3Code: country.alpha3Code,
+  //   }));
+  // } catch (error) {
+  //   console.error('Error fetching countries:', error.message);
+  //   return [];
+  // }
 }
 
 async function fetchData() {
@@ -595,48 +584,101 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
  
  function saveChanges()
  {
-  const isValid = validateForm();
-
+  //const isValid = validateForm();
+  const isValid = true;
   if (isValid) {
     
     
-
-    console.log(name,surname,phoneNumber,email,arrbuket);
       if(activeTab=='longer-tab')
       {
         if(typeDelivery==='1')
         {
         
-          console.log(selectedDepartament);
+         
+          confirmOrder("НП-відділення","Україна, "+selectedCity+selectedDepartament)
         }
         else if(typeDelivery==='2')
         {
-          console.log(selectedCity,address);
+        
+          confirmOrder("НП-адреса"+"Україна, "+selectedCity+address)
         }
         else if(typeDelivery==='3')
         {
           
-          console.log(selectedDepartament);
+          confirmOrder("Укрпошта-відділення"+"Україна, "+selectedCity+indexU);
         }
         else if(typeDelivery==='4')
         {
          
-          console.log(selectedCity,address);
+          confirmOrder("Укрпошта-адреса"+"Україна, "+selectedCity+address2);
         }
       }
       else if(activeTab=='longer-tab2')
       {
-        console.log(selectedCountry,selectedCity2,address2,indexW);
+        if(typeDeliveryW=="warehouse")
+       { 
+        confirmOrder(selectedCountry,selectedCity2,'відділення',NovaWorldWare);
+       }
+       else if(typeDeliveryW=="address")
+        {
+          confirmOrder(selectedCountry,"адресна",address2,indexW);
+        }
       }
-  } else {
-   
+  
+     
+  
   }
 
 
 
-
  }
+ function confirmOrder(delivery,fulladdress)
+ {
+  const jsonString = JSON.stringify(arrbuket);
+  if(!window.sessionStorage.getItem("AccessToken"))
+    { 
+      axios({method:'post',
+      url:`https://localhost:7269/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `
+   })
+       .then(response => {
+       
+       window.sessionStorage.setItem("order",response.data.id);
+       if(selectedPaymentMethod==='liqpay')
+        {  updateDate();
+          setProceed(true);
+        }
+        else
+        {
+          window.location.href="/status2";
+        }
+  
+  })
+  .catch(error => console.log(''));
+  
+    }
+   else{
+   
+    axios({method:'post',
+    url:`https://localhost:7269/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `,
+  headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+                }})
+     .then(response => {
+     
+     window.sessionStorage.setItem("order",response.data.id);
+     if(selectedPaymentMethod==='liqpay')
+      {  updateDate();
+        setProceed(true);
+      }
+      else
+      {
+        window.location.href="/status2";
+      }
+})
+.catch(error => console.log(''));
 
+
+   }
+ }
   return (
     <div >
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
@@ -765,7 +807,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           height: '40px', 
         }),
       }}
-    /> </MDBCol>
+    />  {errors.selectedCity    && <div style={{ color: 'red' }}>{errors.selectedCity   }</div>} </MDBCol>
        </MDBRow>
 
        <MDBRow className="mt-1 mt-md-3">
@@ -1031,7 +1073,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
   <MDBRow style={{marginTop:'15px'}}>
-    {selectedPaymentMethod==='liqpay'?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
+    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
    
   </MDBRow>
     </MDBCol>
