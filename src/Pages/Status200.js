@@ -10,7 +10,7 @@ const Status200 = () => {
       url:`https://localhost:7269/api/Authenticate/ConfirmPayment?orderId=${window.sessionStorage.getItem('order')}`
    })
        .then(response => {
-  
+        window.sessionStorage.removeItem("order");
   })
   .catch(error => console.log(''));
     
