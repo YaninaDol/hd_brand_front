@@ -1,9 +1,18 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+
+import axios from 'axios';
 const Status200 = () => {
   window.sessionStorage.removeItem("Basket");
 
+ 
+      axios({method:'post',
+      url:`https://localhost:7269/api/Authenticate/ConfirmPayment?orderId=${window.sessionStorage.getItem('order')}`
+   })
+       .then(response => {
   
+  })
+  .catch(error => console.log(''));
     
       return (
     
