@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 const Status201 = () => {
   window.sessionStorage.removeItem("Basket");
-
+  window.sessionStorage.removeItem("order");
   
     
       return (

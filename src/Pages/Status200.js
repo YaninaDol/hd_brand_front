@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-
+import { API_BASE_URL} from '../config';
 import axios from 'axios';
 const Status200 = () => {
   window.sessionStorage.removeItem("Basket");
 
  
       axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/ConfirmPayment?orderId=${window.sessionStorage.getItem('order')}`
+      url:`${API_BASE_URL}/api/Authenticate/ConfirmPayment?orderId=${window.sessionStorage.getItem('order')}`
    })
        .then(response => {
         window.sessionStorage.removeItem("order");

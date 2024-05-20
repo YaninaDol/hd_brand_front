@@ -73,6 +73,7 @@ const CheckoutPage = () => {
       if(!selectedCity)
       {
         errors.selectedCity = 'Оберіть місто';
+      }
         if (typeDelivery === '1' && !selectedDepartament) {
           errors.selectedDepartament = 'Оберіть відділення';
       } else if (typeDelivery === '2' && !address) {
@@ -81,7 +82,7 @@ const CheckoutPage = () => {
           errors.indexU = 'Введіть індекс відділення';
       }else if (typeDelivery === '4' && !address2) {
         errors.indexU = 'Введіть адресу ';
-    }}
+    }
   }
   
   if (countryinExcel === 'novapost' && activeTab === "longer-tab2") {
@@ -584,8 +585,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
  
  function saveChanges()
  {
-  //const isValid = validateForm();
-  const isValid = true;
+  const isValid = validateForm();
   if (isValid) {
     
     
@@ -638,7 +638,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   if(!window.sessionStorage.getItem("AccessToken"))
     { 
       axios({method:'post',
-      url:`https://localhost:7269/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `
+      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `
    })
        .then(response => {
        
@@ -659,7 +659,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
    else{
    
     axios({method:'post',
-    url:`https://localhost:7269/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `,
+    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${convertPrice(total -total*(discount/100)+shipment,selectedCurrency) +selectedCurrency}&payment=${selectedPaymentMethod} `,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
