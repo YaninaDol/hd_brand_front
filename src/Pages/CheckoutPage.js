@@ -304,6 +304,23 @@ async function fetchCountries() {
   //   console.error('Error fetching countries:', error.message);
   //   return [];
   // }
+  try {
+    const response = await axios.get('https://rest-countries10.p.rapidapi.com/countries', {
+      headers: {
+        'X-RapidAPI-Key': '7cbadc8e22mshe3912405bc0a0acp1979e8jsn213aacb6928a',
+        'X-RapidAPI-Host': 'rest-countries10.p.rapidapi.com'
+      }
+    });
+    return response.data.map(country => ({
+      label: country.name.shortnamelowercase,
+      name: country.name.shortnamelowercase,
+      value: country.name.shortnamelowercase,
+      alpha3Code: country.code.alpha3Code,
+    }));
+  } catch (error) {
+    console.error('Error fetching countries:', error.message);
+    return [];
+  }
 }
 
 async function fetchData() {
@@ -417,7 +434,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     
     switch (selectedCountry) {
       case 'Poland':
-      case 'Moldova (Republic of)':
+      case 'Moldova (the Republic of)':
         setCountryExcel('novapost');
         
         if (count === 1) {
