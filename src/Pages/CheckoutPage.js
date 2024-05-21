@@ -89,7 +89,7 @@ const CheckoutPage = () => {
     if (typeDeliveryW === 'warehouse' && !selectedCity2) {
         errors.selectedCity2 = 'Оберіть місто';
     } else if (typeDeliveryW === 'warehouse' && !NovaWorldWare) {
-      errors.indexW = 'Вкажіть відділеняя';
+      errors.indexW = 'Вкажіть відділення';
   } else if (typeDeliveryW === 'address' && !address2) {
         errors.address2 = 'Введіть адресу';
     } else if (typeDeliveryW === 'address' && !indexW) {
@@ -613,38 +613,38 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
         {
         
          
-          confirmOrder("НП-відділення","Україна, "+selectedCity+selectedDepartament,sum)
+          confirmOrder("НП-відділення","Україна, "+selectedCity+" "+selectedDepartament,sum)
         }
         else if(typeDelivery==='2')
         {
         
-          confirmOrder("НП-адреса"+"Україна, "+selectedCity+address,sum)
+          confirmOrder("НП-адреса"+"Україна, "+selectedCity+" "+address,sum)
         }
         else if(typeDelivery==='3')
         {
           
-          confirmOrder("Укрпошта-відділення"+"Україна, "+selectedCity+indexU,sum);
+          confirmOrder("Укрпошта-відділення"+"Україна, "+selectedCity+" "+indexU,sum);
         }
         else if(typeDelivery==='4')
         {
          
-          confirmOrder("Укрпошта-адреса"+"Україна, "+selectedCity+address2,sum);
+          confirmOrder("Укрпошта-адреса"+"Україна, "+selectedCity+" "+address2,sum);
         }
       }
       else if(activeTab=='longer-tab2')
       {
       if(  countryinExcel === 'worldwide')
         {
-          confirmOrder("Міжнародна пошта",selectedCountry+address2+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+          confirmOrder("Міжнародна пошта",selectedCountry+" "+address2+" "+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
         }
         else
        { if(typeDeliveryW=="warehouse")
        { 
-        confirmOrder('НоваПошта-відділення',selectedCountry+selectedCity2+NovaWorldWare,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+        confirmOrder('НоваПошта-відділення',selectedCountry+" "+selectedCity2+" "+NovaWorldWare,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
        }
        else if(typeDeliveryW=="address")
         {
-          confirmOrder("НоваПошта-адресна",selectedCountry+address2+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+          confirmOrder("НоваПошта-адресна",selectedCountry+" "+address2+" "+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
         }
       }
       }
@@ -798,7 +798,10 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       
       defaultActiveKey={activeTab}
       id="delivery-tabs"
-      onSelect={(key) => setActiveTab(key)}
+      onSelect={(key) => {
+        setActiveTab(key);
+        setProceed(false);
+      }}
       className="mb-3"
       justify
     >
