@@ -15,7 +15,6 @@ import { setProducts} from '../redux/actions';
 import { CardGroup } from 'react-bootstrap';
 import Footer from '../Components/Footer';
 import { useEffect,useState } from 'react';
-import { API_BASE_URL} from '../config';
 const responsive = {
   desktopLarge: {
     breakpoint: { max: 3000, min: 1400 },
@@ -51,7 +50,7 @@ const responsive = {
 };
 
 const Home = () => {
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);

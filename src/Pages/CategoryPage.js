@@ -9,14 +9,13 @@ import { connect,useDispatch,useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ContentPage from './ContentPage.js';
 import { setProducts } from '../redux/actions.js';
-import { API_BASE_URL} from '../config';
 
 const CategoryPage = () => {
   const [types,setTypes] = useState([]);
   const [materials,setMaterials] = useState([]);
   const [popular,setPopular] = useState([]);
   const [arrBasket,setArrBasket] = useState([]);
- 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);

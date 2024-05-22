@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { API_BASE_URL} from '../config';
 import axios from 'axios';
 const Status200 = () => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   window.sessionStorage.removeItem("Basket");
 
  

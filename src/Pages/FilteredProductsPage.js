@@ -6,9 +6,8 @@ import { useNavigate  } from 'react-router-dom';
 import PxMainPage from './PxMainPage';
 import ContentPage from './ContentPage';
 import Footer from '../Components/Footer';
-import { API_BASE_URL} from '../config';
 const FilteredProductsPage = () => {
-  
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const subcategories = useSelector(state => state.subcategories);

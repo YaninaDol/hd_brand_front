@@ -6,12 +6,12 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import UserTableItem from './UserTableItem';
 import axios from 'axios';
-import { API_BASE_URL} from '../config';
+
 export default function UserTable(){
 
     const dispatch = useDispatch();
     const users = useSelector(state => state.users);
-  
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
 

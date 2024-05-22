@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './WeeklyPreview.css';
-import { API_BASE_URL} from '../config';
 import WeeklyModalItem from './WeeklyModalItem';
 
 const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

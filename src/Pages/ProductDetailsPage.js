@@ -10,7 +10,6 @@ import {useDispatch,useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { Spinner } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import { API_BASE_URL} from '../config';
 import Carousels from 'react-multi-carousel';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
@@ -25,7 +24,7 @@ const ProductDetailsPage = () => {
     const { id, subcategoryid } = useParams();
     const [isFavourite, setIsFavourite] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const dispatch = useDispatch();
   const productsizes = useSelector(state => state.productsizes);
   const product = useSelector(state => state.product);

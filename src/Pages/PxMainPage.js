@@ -10,7 +10,6 @@ import { Link, useNavigate  } from "react-router-dom";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import AuthModal from "../Components/AuthModal";
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
-import { API_BASE_URL} from '../config';
 import {
   MDBInput,
   MDBCol,
@@ -39,7 +38,7 @@ const expand='false';
   const [phoneNumber, setPhoneNumber] = useState("");
   const [notice, setNotice] = useState("none");
   const [payInfo, setPayInfo] = useState("");
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [showQr, setShowQr] = useState(false);
   const handleCloseQr = () => setShowQr(false);
   const handleShowQr = () => setShowQr(true);

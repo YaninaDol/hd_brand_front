@@ -2,8 +2,8 @@ import { MDBRow } from 'mdb-react-ui-kit';
 import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { API_BASE_URL} from '../config';
 const AuthModal = ({ show, handleClose }) => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');

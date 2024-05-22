@@ -4,24 +4,16 @@ import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
 import { useState } from "react";
 import { useEffect } from "react";
-import {setProductSizes, setSubCategories } from '../redux/actions';
 import axios from 'axios';
 import { connect,useDispatch,useSelector } from 'react-redux';
-import Button from 'react-bootstrap/Button';
 import { Link, Outlet } from "react-router-dom";
-import Carousels from 'react-multi-carousel';
-import Carousel from 'react-bootstrap/Carousel';
-import { API_BASE_URL} from '../config';
 import Modal from 'react-bootstrap/Modal';
-import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
+import { setSubCategory} from '../redux/actions';
 import { useParams } from 'react-router-dom';
-import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
-import ShoppingAssistant from '../Components/ShoppingAssistant';
 
-import CartProduct from '../Components/CartProduct';
-import ContentPage from './ContentPage';
 import ContentPageSubCat from './ContentPageSubCat';
 const SubcategoryPage = () => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const { categoryName, subcategoryid } = useParams();
     const [materials,setMaterials] = useState([]);
     const [items,setItems] = useState([]);

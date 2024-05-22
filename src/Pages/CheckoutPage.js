@@ -8,7 +8,6 @@ import { Link} from "react-router-dom";
 import {Button,Form,Modal,Tabs,Tab} from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
-import { API_BASE_URL,NOVAPOST_API_KEY} from '../config';
 import './CheckoutPage.css';
 import AuthModal from "../Components/AuthModal";
 import LiqPaY from 'liqpayservice';
@@ -63,6 +62,9 @@ const CheckoutPage = () => {
   const [errors, setErrors] = useState({});
   const [TotalSum,setTotalSum] = useState(0);
   const [proceed, setProceed] = useState(false);
+
+  const NOVAPOST_API_KEY=process.env.REACT_APP_NOVAPOST_API_KEY;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const validateForm = () => {
     const isEnglish = /^[a-zA-Z\s]*$/.test(name,surname);
    
@@ -151,9 +153,8 @@ const CheckoutPage = () => {
     }
   };
   
-  const public_key='sandbox_i99834875717'
-  const private_key='sandbox_FBbhjvz9JPNTjEmSLUHTnk2TzhMPdP22mgziuWgJ';
- 
+
+
   function updateDate()
   {
      activeTab!='longer-tab' ?
@@ -205,7 +206,7 @@ const [paymentData, setPaymentData] = useState({
       action: 'pay',
       amount: total,
       currency: selectedCurrency,
-      description: 'Test payment',
+      description: 'Плата за товар',
       language: 'UK',
       result_url:'https://hdbrand.com.ua/status'
 });
@@ -341,9 +342,14 @@ const shippingCost = calculateShippingCostAddress();
 setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
-
   }, [selectedCountry,count,discount,typeDeliveryW,TotalSum,countryinExcel,selectedDepartament,address,phoneNumber,email,selectedCity2,address2,indexW,NovaWorldWare,indexU,activeTab]);
-  var instanse_liq = new LiqPaY(public_key, private_key);
+
+
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+  const publicKey = process.env.REACT_APP_PUBLIC_KEY;
+  const privateKey = process.env.REACT_APP_PRIVATE_KEY;
+
+  var instanse_liq = new LiqPaY(publicKey, privateKey);
 
 
   function removeBasket(id) {

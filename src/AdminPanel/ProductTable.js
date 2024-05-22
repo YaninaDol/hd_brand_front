@@ -11,11 +11,10 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Card, CardGroup, CardImg, Container} from 'react-bootstrap';
-import { API_BASE_URL} from '../config';
 export default function ProductTable(){
 
 
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   const categories = useSelector(state => state.categories);

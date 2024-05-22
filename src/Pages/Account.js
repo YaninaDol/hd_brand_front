@@ -9,7 +9,6 @@ import axios from 'axios';
 import './CheckoutPage.css';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
-import { API_BASE_URL,NOVAPOST_API_KEY} from '../config';
 import {
  
   MDBContainer,
@@ -33,7 +32,7 @@ const Account = () => {
   const [showFirstColumn, setShowFirstColumn] = useState(true); 
   const [showFavorColumn, setShowFavorColumn] = useState(false); 
   const [favourite, setFavourite] = useState([]); 
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
