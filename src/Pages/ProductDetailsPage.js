@@ -404,7 +404,13 @@ const ProductDetailsPage = () => {
              </MDBRow>)}
              {product.video&&(      <MDBRow>
    
-   <MDBCol  id='photocolumn'><img src={product.video} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
+   <MDBCol  id='photocolumn'> <video 
+        src={product.video} 
+        style={{ margin: '5px' }} 
+        className="card-img-top" 
+        controls
+        alt="product video"
+      /></MDBCol>
             </MDBRow>)}
    </MDBCol>)}
 <MDBCol style={{margin:'25px'}}>
@@ -425,7 +431,20 @@ const ProductDetailsPage = () => {
 </Carousel.Item>)}
 {product.video&&(
 <Carousel.Item>
-<img src={product.video} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
+<video 
+  muted
+  autoPlay
+  preload="auto"
+  loop
+        src={product.video} 
+        style={{ margin: '5px' }} 
+        className="card-img-top" 
+    
+        alt="product video"
+        onEnded={(e) => {
+          e.target.play();
+        }}
+      />
 </Carousel.Item>)}
 </Carousel>
 

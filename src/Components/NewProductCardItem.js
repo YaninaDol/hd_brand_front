@@ -92,23 +92,29 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
       />
     </MDBCarouselItem>
   )}
-  {video && (   <MDBCarouselItem itemId={4}>
-              <video
-        id='id_video'
-        playsinline 
-        autoplay="true"
-        preload="auto"
-        style={{
-          borderTopLeftRadius: '0px',
-          borderTopRightRadius: '0px',
-          height: '80%', 
-        }}
-      >
-        
-        <source src={video} type='video/mp4' />
-       
-      </video>
-            </MDBCarouselItem>)}
+  {video && (  <MDBCarouselItem itemId={4} >
+  <div className="embed-responsive embed-responsive-16by9">
+    <video
+      id='id_video'
+      className='cardIMG'
+      autoPlay
+      preload="auto"
+      loop
+      style={{
+        width: '100%',
+        objectFit: 'cover',
+        borderTopLeftRadius: '0px',
+        borderTopRightRadius: '0px',
+      }}
+      onEnded={(e) => {
+        e.target.play();
+      }}
+    >
+      <source src={video} type='video/mp4' />
+    </video>
+  </div>
+</MDBCarouselItem>
+)}
 </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
             {isDiscount ? (

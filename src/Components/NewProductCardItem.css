@@ -209,7 +209,7 @@
 }
 #id_img
 {
-  width: 200px; height: 250px;
+  width: 200px; height: 300px;
 }
 .cart-item
 {
@@ -238,15 +238,15 @@
   @media screen and (max-width: 464px) {
     #id_img
 {
-  width: 150px; height: 200px;
+  width: 150px; height: 250px;
 }
 .cart-item
 {
-  width: 150px; height: 280px;
+  width: 150px; 
 }
     .cardIMG
  {
-      height: 200px;
+      height: 300px;
   }
     .image-elements {
       padding-bottom: var(--padding-190xl);
