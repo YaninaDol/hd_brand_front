@@ -15,7 +15,7 @@ import Modal from 'react-bootstrap/Modal';
 
 const CategorySpecification = () => {
   
-
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const [addCategoryHide,setAddCategoryHide] = useState("hidden");
     const [addCatName,setAddCatName] = useState("");
@@ -39,28 +39,28 @@ const CategorySpecification = () => {
      
      
   
-      axios.get('https://localhost:7269/api/Specification/GetAllCategory')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllCategory`)
       .then(response => {
-        console.log(response.data)
+        
         dispatch(setCategories(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
 
-      axios.get('https://localhost:7269/api/Specification/GetAllMaterials')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllMaterials`)
       .then(response => {
-        console.log(response.data)
+       
         dispatch(setMaterials(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get('https://localhost:7269/api/Specification/GetAllSubCategories')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSubCategories`)
       .then(response => {
-        console.log(response.data)
+       
         dispatch(setSubCategories(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
-      axios.get('https://localhost:7269/api/Specification/GetAllSeasons')
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSeasons`)
       .then(response => {
-        console.log(response.data)
+       
         dispatch(setSeasons(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
@@ -78,7 +78,7 @@ const CategorySpecification = () => {
   
                   {
                   method:'post',
-                  url:`https://localhost:7269/api/Specification/Delete${type}`,
+                  url:`${API_BASE_URL}/api/Specification/Delete${type}`,
                   data:bodyFormData,
                   headers: {
                     'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -114,7 +114,7 @@ function addCategory(type,name)
 
                 {
                 method:'post',
-                url:`https://localhost:7269/api/Specification/Add${type}`,
+                url:`${API_BASE_URL}/api/Specification/Add${type}`,
                 data:bodyFormData,
                 headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -148,7 +148,7 @@ function updateCategory(type,id,name)
 
                 {
                 method:'post',
-                url:`https://localhost:7269/api/Specification/Update${type}`,
+                url:`${API_BASE_URL}/api/Specification/Update${type}`,
                 data:bodyFormData,
                 headers: {
                   'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -184,10 +184,10 @@ function updateCategory(type,id,name)
   
 
 
-      <CategoryTable categories={categories} type='Категорія' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-      <CategoryTable categories={materials} type='Матеріал' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-      <CategoryTable categories={subcategories} type='Тип виробу' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
-      <CategoryTable categories={seasons} type='Сезон' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={categories} type='Category' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={materials} type='Material' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={subcategories} type='Subcategory' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={seasons} type='Season' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
      
     </div>
   );

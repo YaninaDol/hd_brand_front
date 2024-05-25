@@ -42,7 +42,7 @@ const CategoryTable = ({ type,categories, onAddCategory, onDeleteCategory, onUpd
           <tr>
             <th scope='col'></th>
             <th scope='col'>#</th>
-            <th scope='col'>Category Name</th>
+            <th scope='col'>Name</th>
             <th scope='col'>Actions</th>
             <th scope='col'></th>
           </tr>

@@ -113,7 +113,7 @@ export default function ProductTable(){
 
       axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
       .then(response => {
-        console.log(response.data)
+      
         dispatch(setProducts(response.data))
         setAllProducts(response.data);
         
@@ -203,6 +203,7 @@ export default function ProductTable(){
 
 function confirmAdd()
 {
+  console.log(AddProductImage,AddProductImage2,AddProductVideo);
   if(AddProductCategory!=0 &&AddProductSubCategory!=0&&AddProductSeason!=0&&AddProductMaterial!=0)
 
         { var bodyFormData = new FormData();
@@ -331,20 +332,42 @@ function deletecategory(id)
 
 }
 const handleFileChange = (event) => {
-  setAddProductImage(event.target.files[0]);
-  console.log(event.target.files[0]);
+  const file = event.target.files[0];
+
+  if (file && file.type === 'image/webp' && file.size <= 500 * 1024) {
+    setAddProductImage(file);
+  } else {
+    alert('Файл должен быть формата webp и не больше 500 КБ');
+  }
 };
+
 const handleFileChange2 = (event) => {
-  setAddProductImage2(event.target.files[0]);
-  console.log(event.target.files[0]);
+  const file = event.target.files[0];
+
+  if (file && file.type === 'image/webp' && file.size <= 500 * 1024) {
+    setAddProductImage2(file);
+  } else {
+    alert('Файл должен быть формата webp и не больше 500 КБ');
+  }
 };
+
 const handleFileChange3 = (event) => {
-  setAddProductImage3(event.target.files[0]);
-  console.log(event.target.files[0]);
+  const file = event.target.files[0];
+
+  if (file && file.type === 'image/webp' && file.size <= 500 * 1024) {
+    setAddProductImage3(file);
+  } else {
+    alert('Файл должен быть формата webp и не больше 500 КБ');
+  }
 };
+
 const handleFileChangeVideo = (event) => {
-  setAddProductVideo(event.target.files[0]);
-  console.log(event.target.files[0]);
+  const file = event.target.files[0];
+  if (file && file.size <= 3 * 1024 * 1024) {
+    setAddProductVideo(event.target.files[0]);
+  } else {
+    alert('Файл должен быть не больше 4 MB');
+  }
 };
 
 const confirmUpdate = () => {
@@ -656,25 +679,14 @@ function changeProductVideoContent()
         </Modal.Header>
         <Modal.Body>
      
-        <MDBInputGroup className='mb-3'  textBefore='Name'>
+        <MDBInputGroup className='mb-3'  textBefore='Назва'>
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
     </MDBInputGroup>
-    <MDBInputGroup className='mb-3'  textBefore='Article'>
+    <MDBInputGroup className='mb-3'  textBefore='Арт:'>
       <input onChange={(e)=>setArticleUpdate(e.target.value)} value={articleUpdate} className='form-control' type='text' />
     </MDBInputGroup>
-    <MDBInputGroup className='mb-3' textBefore='Image URL'>
-    <input  onChange={(e)=>setImageToUpdate(e.target.files[0])}  className='form-control' type='file' />
-      </MDBInputGroup>
-      <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
-    <input  onChange={(e)=>setImage2ToUpdate(e.target.files[0])}  className='form-control' type='file' />
-      </MDBInputGroup>
-      <MDBInputGroup className='mb-3' textBefore='Image URL 2'>
-    <input  onChange={(e)=>setImage3ToUpdate(e.target.files[0])}  className='form-control' type='file' />
-      </MDBInputGroup>
-      <MDBInputGroup className='mb-3' textBefore='Video URL'>
-      <input  onChange={(e)=>setVideoToUpdate(e.target.files[0])}  className='form-control' type='file' />
-      </MDBInputGroup>
-      <MDBInputGroup className='mb-3' textBefore='Category'>
+   
+      <MDBInputGroup className='mb-3' textBefore='Категорія'>
       <div  className="mb-6 pb-2">
         <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setCategoryUpdate(e.target.value)} value={categoryUpdate}>
        
@@ -690,7 +702,7 @@ function changeProductVideoContent()
       </MDBInputGroup>
      
    
-      <MDBInputGroup className='mb-3'  textBefore='Sub Category'>
+      <MDBInputGroup className='mb-3'  textBefore='Тип'>
       <div className="mb-6 pb-2">
                 <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSubCategoryUpdate(e.target.value)} value={subCategoryUpdate}>
                
@@ -704,7 +716,7 @@ function changeProductVideoContent()
                 </select>
                 </div>
       </MDBInputGroup >
-      <MDBInputGroup className='mb-3'  textBefore='Material'>
+      <MDBInputGroup className='mb-3'  textBefore='Матеріал'>
       <div className="mb-6 pb-2">
                 <select  className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setMaterialUpdate(e.target.value)} value={materialUpdate}>
             
@@ -718,7 +730,7 @@ function changeProductVideoContent()
                 </select>
                 </div>
       </MDBInputGroup>
-      <MDBInputGroup className='mb-3'  textBefore='Season'>
+      <MDBInputGroup className='mb-3'  textBefore='Сезонність'>
       <div className="mb-6 pb-2">
                 <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSeasonUpdate(e.target.value)} value={seasonUpdate}>
                
@@ -732,7 +744,7 @@ function changeProductVideoContent()
                 </select>
                 </div>
       </MDBInputGroup>
-      <MDBInputGroup className='mb-3'  textBefore='Sizes' >
+      <MDBInputGroup className='mb-3'  textBefore='Розмір' >
       <div className="mb-6 pb-2">
                 <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate((e.target.value))} value={SizesUpdate}>
                
@@ -749,13 +761,13 @@ function changeProductVideoContent()
        
     
 
-        <MDBInputGroup className='mb-3'  textBefore='Price'>
+        <MDBInputGroup className='mb-3'  textBefore='Ціна товару'>
       <input  onChange={(e)=>setPriceUpdate(e.target.value)} value={priceUpdate} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
       </MDBInputGroup>
-      <MDBInputGroup className='mb-3'  textBefore='Sale Price'>
+      <MDBInputGroup className='mb-3'  textBefore='Ціна на сайті'>
       <input  onChange={(e)=>setSalePriceUpdate(e.target.value)} value={salepriceUpdate} className='form-control' type='number' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '')" />
       </MDBInputGroup>
-      <MDBInputGroup className='mb-3'  textBefore='Colors' >
+      <MDBInputGroup className='mb-3'  textBefore='Колір' >
       <div className="mb-6 pb-2">
                 <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setColorlUpdate((e.target.value))} value={colorUpdate}>
                
@@ -770,15 +782,15 @@ function changeProductVideoContent()
                 </div>
       </MDBInputGroup>
        
-      <MDBInputGroup className='mb-3'  textBefore='New Product'>
+      <MDBInputGroup className='mb-3'  textBefore='Новинка'>
       <MDBCheckbox  label='NEW' checked={isNewUpdate} onChange={(e)=>setIsNewUpdate(e.target.checked)} />
       </MDBInputGroup>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseUp}>
-            Close
+            Закрити
           </Button>
-          <Button variant="dark" onClick={confirmUpdate}>Confirm</Button>
+          <Button variant="dark" onClick={confirmUpdate}>Підтвердити</Button>
         </Modal.Footer>
       </Modal>
 
@@ -793,7 +805,7 @@ function changeProductVideoContent()
       <MDBRow className='justify-content-center text-center' style={{margin:'50px'}}>
   <MDBCol>
     <Card style={{width:'500px'}}>
-    <video  controls autoPlay >
+    <video  controls preload="auto">
     <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
       Your browser does not support the video tag.
     </video>
@@ -843,20 +855,19 @@ function changeProductVideoContent()
     <MDBTableHead dark>
         <tr>
           <th># Art.</th>
-          <th>Name</th>
-          <th>Image</th>
+          <th>Назва</th>
+          <th>Контент</th>
          
-          <th>Video</th>
           <th>NEW</th>
-          <th>Category</th>
-          <th>Sub Category</th>
-          <th>Material</th>
-          <th>Season</th>
-          <th>Sizes</th>
-          <th>Price</th>
-          <th>For sale</th>
-          <th>Color</th>
-          <th>Function</th>
+          <th>Категорія</th>
+          <th>Тип виробу</th>
+          <th>Матеріал</th>
+          <th>Сезон</th>
+          <th>Розміри</th>
+          <th>Ціна</th>
+          <th>На сайті</th>
+          <th>Колір</th>
+          <th>Функції</th>
           <th></th>
 
         </tr>
@@ -867,15 +878,17 @@ function changeProductVideoContent()
           
                
             <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/> </td>
-            <td > <MDBInput onChange={(e) => handleFileChange(e, {AddProductName})} type='file'/> 
-             <MDBInput  onChange={(e) => handleFileChange2(e, {AddProductName})} type='file'/> 
-            <MDBInput  onChange={(e) => handleFileChange3(e, {AddProductName})} type='file'/> </td>
-            <td > <MDBInput  onChange={(e) => handleFileChangeVideo(e, {AddProductName})} type='file'/> </td>
+            <td > <MDBInput size='sm'  onChange={(e) => handleFileChange(e, {AddProductName})} type='file'/> 
+            <p>Фото1</p> <MDBInput size='sm'   onChange={(e) => handleFileChange2(e, {AddProductName})} type='file'/> 
+            <p>Фото2</p> 
+            <MDBInput size='sm'   onChange={(e) => handleFileChange3(e, {AddProductName})} type='file'/> <p>Фото3</p> 
+         
+            <MDBInput size='sm'   onChange={(e) => handleFileChangeVideo(e, {AddProductName})} type='file'/>    <p>Відео</p></td>
  <td>   <MDBCheckbox  label='NEW' onChange={(e)=>setAddAddIsNew(e.target.checked)} /></td>
             <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductCategory(e.target.value)}>
-                <option selected value="0">Choose item</option>
+                <option selected value="0">Обрати</option>
                       {
                       categories.map((x) => 
                         <option  value={x.id}>
@@ -890,7 +903,7 @@ function changeProductVideoContent()
             <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductSubCategory(e.target.value)}>
-                <option selected value="0">Choose item</option>
+                <option selected value="0">Обрати</option>
                       {
                       subcategories.map((x) => 
                         <option  value={x.id}>
@@ -906,7 +919,7 @@ function changeProductVideoContent()
            <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductMaterial(e.target.value)}>
-                <option selected value="0">Choose item</option>
+                <option selected value="0">Обрати</option>
                       {
                       materials.map((x) => 
                         <option  value={x.id}>
@@ -922,7 +935,7 @@ function changeProductVideoContent()
            <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductSeason(e.target.value)}>
-                <option selected value="0">Choose item</option>
+                <option selected value="0">Обрати</option>
                       {
                       seasons.map((x) => 
                         <option  value={x.id}>
@@ -937,7 +950,7 @@ function changeProductVideoContent()
            <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductSizes(e.target.value)}>
-                <option selected value="0">Choose item</option>
+                <option selected value="0">Обрати</option>
                       {
                       sizes.map((x) => 
                         <option  value={x.id}>
@@ -951,11 +964,11 @@ function changeProductVideoContent()
            </td>
            <td > <MDBInput onChange={((e)=>setAddproductPrice(e.target.value))} type='number' min='0' onkeyup="this.value  = this.value.replace(/[^0-9]/gi, '');"/> </td>
         
-<td > Same price </td>
+<td > {AddproductPrice} </td>
 <td > <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
                 <select className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setAddProductColor(e.target.value)}>
-                <option selected value="0">Choose item</option>
+                <option selected value="0">Обрати</option>
                       {
                       colors.map((x) => 
                         <option  value={x.name}>
@@ -976,26 +989,27 @@ function changeProductVideoContent()
       {
         allproducts.map((x, index)=> <tr  >
                 
-        <th scope='row'>{x.id} art:{x.article}</th>
+        <th scope='row'>{x.id} {x.article}</th>
       
         <td > 
         {x.name}
     </td>
     <td > 
-    <img style={{margin:'2px'}} src={x.image} width={50} height={50} alt="Товар" />
-         
+      {x.image && ( <img style={{margin:'2px'}} src={x.image} width={50} height={50} alt="Товар" />)}
+   
+      {x.image2 && ( <img style={{margin:'2px'}} src={x.image2} width={50} height={50} alt="Товар" />)}
      
-    <img  style={{margin:'2px'}} src={x.image2} width={50} height={50} alt="Товар" />
-      
+
+      {x.image3 && ( <img style={{margin:'2px'}} src={x.image3} width={50} height={50} alt="Товар" />)}
     
-    <img  style={{margin:'2px'}} src={x.image3} width={50} height={50} alt="Товар" />
+      <input value={x.video} className='form-control' type='text' />
            
     </td>
-    <td > 
+    {/* <td > 
            <MDBInputGroup  className='mb-3'  >
       <input value={x.video} className='form-control' type='text' />
     </MDBInputGroup>
-    </td>
+    </td> */}
     <td>   <MDBCheckbox checked={x.isNew} /></td>
     <td >
 

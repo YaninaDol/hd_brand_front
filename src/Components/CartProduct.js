@@ -5,7 +5,7 @@ import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
-const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDiscount, isLiked, descriprion, price1, price2,currency }) => {
+const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video,isNew, isDiscount, isLiked, descriprion, price1, price2,currency }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [loading, setLoading] = useState(true);
   const discountPercentage = ((parseInt(price1) - parseInt(price2)) / parseInt(price1)) * 100;
@@ -74,29 +74,7 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDi
             {imageSrc3 && (   <MDBCarouselItem itemId={3}>
               <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={imageSrc3} />
             </MDBCarouselItem>)}
-            {video && (   <MDBCarouselItem itemId={4} >
- 
-    <video
-      id='id_img' 
-      className="embed-responsive-item"
-      muted
-      autoPlay
-      preload="auto"
-      loop
-      style={{
-        objectFit: 'cover',
-        borderTopLeftRadius: '0px',
-        borderTopRightRadius: '0px',
-      }}
-      onEnded={(e) => {
-        e.target.play();
-      }}
-    >
-      <source src={video} type='video/mp4' />
-    </video>
-
-</MDBCarouselItem>
-)}
+          
           </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
             {isDiscount ? (

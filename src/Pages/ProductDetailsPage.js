@@ -413,40 +413,62 @@ const ProductDetailsPage = () => {
       /></MDBCol>
             </MDBRow>)}
    </MDBCol>)}
+
+
+
+
+
+
 <MDBCol style={{margin:'25px'}}>
 
 <MDBRow >
 <Carousel id='photocolumnmob'>
-{product.image&&(
-<Carousel.Item>
-<img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
-</Carousel.Item>)}
-{product.image2&&(
-<Carousel.Item>
-<img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
-</Carousel.Item>)}
-{product.image3&&(
-<Carousel.Item>
-<img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="photo"/>
-</Carousel.Item>)}
-{product.video&&(
-<Carousel.Item>
-<video 
-  muted
-  autoPlay
-  preload="auto"
-  loop
-        src={product.video} 
-        style={{ margin: '5px' }} 
+  {product.image && (
+    <Carousel.Item style={{ height: '400px' }}>
+      <img 
+        src={product.image} 
+        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
         className="card-img-top" 
-    
-        alt="product video"
-        onEnded={(e) => {
-          e.target.play();
-        }}
+        alt="photo" 
       />
-</Carousel.Item>)}
+    </Carousel.Item>
+  )}
+  {product.image2 && (
+    <Carousel.Item style={{ height: '400px' }}>
+      <img 
+        src={product.image2} 
+        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
+        className="card-img-top" 
+        alt="photo" 
+      />
+    </Carousel.Item>
+  )}
+  {product.image3 && (
+    <Carousel.Item style={{ height: '400px' }}>
+      <img 
+        src={product.image3} 
+        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
+        className="card-img-top" 
+        alt="photo" 
+      />
+    </Carousel.Item>
+  )}
+  {product.video && (
+    <Carousel.Item style={{ height: '400px' }}>
+      <video
+       controls
+       preload="auto"
+       poster={product.image} 
+      
+        src={product.video}
+        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
+        className="card-img-top"
+        alt="product video"
+      />
+    </Carousel.Item>
+  )}
 </Carousel>
+
 
               { isFavourite
                   ? <div  onClick={handleLikeClick} className='text-end'><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">

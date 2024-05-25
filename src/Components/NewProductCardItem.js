@@ -5,7 +5,7 @@ import "./DiscountItem.css";
 import axios from 'axios';
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
-const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,video, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
+const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [isLoading, setIsLoading] = useState(true);
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -92,29 +92,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3,vi
       />
     </MDBCarouselItem>
   )}
-  {video && (  <MDBCarouselItem itemId={4} >
-  <div className="embed-responsive embed-responsive-16by9">
-    <video
-      id='id_video'
-      className='cardIMG'
-      autoPlay
-      preload="auto"
-      loop
-      style={{
-        width: '100%',
-        objectFit: 'cover',
-        borderTopLeftRadius: '0px',
-        borderTopRightRadius: '0px',
-      }}
-      onEnded={(e) => {
-        e.target.play();
-      }}
-    >
-      <source src={video} type='video/mp4' />
-    </video>
-  </div>
-</MDBCarouselItem>
-)}
+  
 </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
             {isDiscount ? (

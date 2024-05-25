@@ -6,7 +6,7 @@ import UsersTable from './UserTable';
 import CategorySpecification from './CategorySpecification';
 
 const AdminPanel = () => {
-  const [activeTab, setActiveTab] = useState('"/admin/products');
+  const [activeTab, setActiveTab] = useState('/admin/products');
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);

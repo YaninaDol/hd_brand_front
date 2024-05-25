@@ -245,7 +245,7 @@ const Home = () => {
                imageSrc1={x.image}
                imageSrc2={x.image2}
                imageSrc3={x.image3}
-               video={x.video}
+             
                isNew={x.isNew}
                isDiscount={x.isDiscount}
                isLiked={false}
@@ -275,7 +275,7 @@ const Home = () => {
  
   
 
-    <video className="d-block w-100" controls autoPlay>
+    <video className="d-block w-100" controls  autoPlay>
       <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
       Your browser does not support the video tag.
     </video>
@@ -304,7 +304,7 @@ const Home = () => {
                imageSrc1={x.image}
                imageSrc2={x.image2}
                imageSrc3={x.image3}
-               video={x.video}
+            
                isNew={x.isNew}
                isDiscount={x.isDiscount}
                isLiked={false}
