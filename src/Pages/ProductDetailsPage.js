@@ -2,7 +2,7 @@
 import React from 'react';
 import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { useEffect } from "react";
 import {setProductSizes } from '../redux/actions';
 import axios from 'axios';
@@ -47,6 +47,7 @@ const ProductDetailsPage = () => {
     usd: 1, 
     eur: 1,
   });
+  
   const handleLikeClick = () => {
     setIsFavourite(!isFavourite);
     
@@ -65,9 +66,58 @@ const ProductDetailsPage = () => {
 
 
   };
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef2 = useRef(null);
+  const [isPlaying2, setIsPlaying2] = useState(false);
 
+  // Функция для запуска и остановки видео
+  const handleVideoToggle = () => {
+    const video = videoRef.current;
+    if (video.paused || video.ended) {
+      video.play(); // Если видео на паузе или завершено, запускаем его
+      setIsPlaying(true);
+    } else {
+      video.pause(); // Если видео воспроизводится, ставим его на паузу
+      setIsPlaying(false);
+    }
+  };
 
+  // Функция для запуска видео при клике на само видео
+  const handleVideoClick = () => {
+    const video = videoRef.current;
+    if (!video.paused) {
+      video.pause();
+      setIsPlaying(false);
+    }
+    else{
+      video.play();
+      setIsPlaying(true);
+    }
+  };
+  const handleVideoToggle2 = () => {
+    const video = videoRef2.current;
+    if (video.paused || video.ended) {
+      video.play(); // Если видео на паузе или завершено, запускаем его
+      setIsPlaying2(true);
+    } else {
+      video.pause(); // Если видео воспроизводится, ставим его на паузу
+      setIsPlaying2(false);
+    }
+  };
 
+  // Функция для запуска видео при клике на само видео
+  const handleVideoClick2 = () => {
+    const video = videoRef2.current;
+    if (!video.paused) {
+      video.pause();
+      setIsPlaying2(false);
+    }
+    else {
+      video.play(); // Если видео воспроизводится, ставим его на паузу
+      setIsPlaying2(true);
+    }
+  };
   const handleCurrencyChange = (selectedCurrency) => {
     setSelectedCurrency((prevCurrency) => {
      
@@ -131,6 +181,10 @@ const ProductDetailsPage = () => {
   {
     window.scrollTo(0, 0);
     fetchExchangeRates();
+   
+     
+      setIsPlaying2(true);
+    
 
     const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
 
@@ -404,13 +458,43 @@ const ProductDetailsPage = () => {
              </MDBRow>)}
              {product.video&&(      <MDBRow>
    
-   <MDBCol  id='photocolumn'> <video 
-        src={product.video} 
-        style={{ margin: '5px' }} 
-        className="card-img-top" 
-        controls
-        alt="product video"
-      /></MDBCol>
+   <MDBCol  id='photocolumn'> <div style={{ position: 'relative' }}>
+   <video
+      
+      ref={videoRef}
+      preload="auto"
+      className="card-img-top"
+      playsInline
+      muted
+      loop
+      src={product.video}
+      onClick={handleVideoClick}
+      style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
+    />
+
+    
+    <button
+      onClick={handleVideoToggle}
+      style={{
+        position: 'absolute',
+        bottom: '25px',
+        right: '10px',
+        background: 'transparent', 
+        border: 'none', 
+        cursor: 'pointer' 
+      }}
+    >
+      {isPlaying ? (
+       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"  color='black' fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
+       <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+     </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"  color='black' fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+      </svg>
+        )}
+      </button>
+    </div></MDBCol>
             </MDBRow>)}
    </MDBCol>)}
 
@@ -455,7 +539,44 @@ const ProductDetailsPage = () => {
   )}
   {product.video && (
     <Carousel.Item style={{ height: '400px' }}>
+      
       <video
+      
+      ref={videoRef2}
+      preload="auto"
+      className="card-img-top"
+      playsInline
+      muted
+      loop
+      autoPlay
+      src={product.video}
+      onClick={handleVideoClick2}
+      style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
+    />
+
+    
+    <button
+      onClick={handleVideoToggle2}
+      style={{
+        position: 'absolute',
+        bottom: '35px',
+        right: '5px',
+        background: 'transparent', 
+        border: 'none', 
+        cursor: 'pointer' 
+      }}
+    >
+      {isPlaying2 ? (
+       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" color='black' class="bi bi-pause" viewBox="0 0 16 16">
+       <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+     </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" color='black' fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+      </svg>
+        )}
+      </button>
+      {/* <video
        controls
        preload="auto"
        poster={product.image} 
@@ -464,7 +585,7 @@ const ProductDetailsPage = () => {
         style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
         className="card-img-top"
         alt="product video"
-      />
+      /> */}
     </Carousel.Item>
   )}
 </Carousel>

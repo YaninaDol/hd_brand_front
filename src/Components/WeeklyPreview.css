@@ -4,7 +4,7 @@
     font-size: var(--button-regular-15-uppercase-size);
     text-transform: uppercase;
     font-family: var(--h2-bold-28-uppercase);
-    color: var(--default-black);
+    color: black;
     text-align: center;
     display: inline-block;
     box-sizing: border-box;

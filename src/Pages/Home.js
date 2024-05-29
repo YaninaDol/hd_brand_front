@@ -206,15 +206,15 @@ const Home = () => {
       
 
     </Carousel>
-    <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}>
-    
+    {/* <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}> */}
+    <CardGroup style={{ display: 'flex', justifyContent:'space-between', alignItems:'center' }}>
       <div className="something">
         <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop="взуття" />
       </div>
    
-      <div className="something">
+      {/* <div className="something">
         <CatalogsItemContainer link='/clothes' image={require('../assets/categoryImage2.png')} prop="одяг" />
-      </div>
+      </div> */}
       <div className="something">
         <CatalogsItemContainer link='/accessorise' image={require('../assets/categoryImage3.png')} prop="аксесуари" />
       </div>
@@ -274,11 +274,25 @@ const Home = () => {
    <WeeklyPreview convertPrice={convertPrice} selectedCurrency={selectedCurrency}  weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
  
   
-
-    <video className="d-block w-100" controls  autoPlay>
-      <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
+   <div style={{
+      position: 'relative',
+      width: '100%',
+      overflow: 'hidden'
+    }}>
+      <video 
+        className="d-block w-100" 
+        autoPlay 
+        preload="auto"
+        muted 
+        loop
+        playsInline
+      
+      >
+        <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+ 
  
    {showSection && (
       <section className="graphic">

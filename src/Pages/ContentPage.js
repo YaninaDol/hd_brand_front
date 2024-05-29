@@ -142,6 +142,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     setfilteredProducts(sortedProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
+    handleCloseSidebar();
 };
   const resetFilters = () => {
     setfilteredProducts([]);

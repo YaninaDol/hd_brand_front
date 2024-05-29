@@ -143,9 +143,9 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
           ))}
         </Modal.Body>
         <Modal.Footer>
-          <Button style={{borderRadius:'0px'}} variant="outline-dark" onClick={handleClose}>
+          {/* <Button style={{borderRadius:'0px'}} variant="outline-dark" onClick={handleClose}>
           Продовжити
-          </Button>
+          </Button> */}
           <Button style={{borderRadius:'0px'}} variant="dark" onClick={addToBasket}>
             Додати у кошик
           </Button>

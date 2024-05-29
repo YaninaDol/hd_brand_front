@@ -24,10 +24,10 @@ const AuthModal = ({ show, handleClose }) => {
       setEmailError('');
     }
 
-    if (!password || password.length < 8 || !/(?=.*[A-Za-z])(?=.*\d)/.test(password)) {
-  setPasswordError('Пароль повинен містити принаймні 8 символів і включати хоча б одну букву і одну цифру');
-  isValid = false;
-} else {
+    if (!password || password.length < 8 || !/(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      setPasswordError('Пароль повинен містити принаймні 8 символів, включати хоча б одну велику латинську літеру та одну цифру');
+       isValid = false;
+    }else {
   setPasswordError('');
 }
 
@@ -64,22 +64,29 @@ const AuthModal = ({ show, handleClose }) => {
                     
                     {
                          
-                                           
-                            window.location.href='/account';
-                            
+                      handleClose();             
+                      alert("Данні успішно зареєстровані");
+                      window.location.href = "/";
                         
                         
-                            handleClose();
+                           
 
                            
 
 
                     })
                     .catch(function (error) {
-                        alert("Сталась помилка. Перевірте данні");
-                      window.location.href = "/";
+                      if (error.response) {
+                      
+                       alert("Помилка: " + error.response.data);
+                    }
+                    else {
+                      // Что-то произошло при настройке запроса, который вызвал ошибку
+                      alert("Помилка: " + error.message);
+                  }
+                     window.location.href = "/";
                     
-                        console.log("Error:"+error);
+                       
                       });
           } else {
             axios (

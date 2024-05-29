@@ -233,6 +233,9 @@
   font-size: var(--desktop-hyperlink-medium-15-size);
   color: var(--default-gray-1);
 }
+a:link {
+  color: rgb(0, 0, 0);
+}
 .footer {
   margin-top: 100px;
   align-self: stretch;
@@ -293,6 +296,7 @@
     padding-left: var(--padding-6xl);
     box-sizing: border-box;
   }
+ 
 }
 @media screen and (max-width: 750px) {
   .agreement

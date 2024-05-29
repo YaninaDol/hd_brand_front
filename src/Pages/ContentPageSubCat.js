@@ -142,6 +142,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     setfilteredProducts(sortedProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
+    handleCloseSidebar();
 };
   const resetFilters = () => {
     setfilteredProducts([]);

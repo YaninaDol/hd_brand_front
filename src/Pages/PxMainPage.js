@@ -360,9 +360,7 @@ function getOrder()
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-dark" style={{ borderRadius: '0px' }} onClick={() => { handleCloseBasket() }}>
-            Продовжити
-          </Button>
+         
           <Button variant="dark" style={{ borderRadius: '0px' }} onClick={getOrder}>
             Оформити замовлення
           </Button>
@@ -486,9 +484,9 @@ function getOrder()
               <div className="menu-navigation-button-contain">
                <Link to='/shoes'> <div className="button-nav" >взуття</div></Link>
               </div>
-              <div className="menu-navigation-button-contain1">
+              {/* <div className="menu-navigation-button-contain1">
               <Link to='/clothes'>  <div className="button-nav1">одяг</div></Link>
-              </div>
+              </div> */}
               <div className="menu-navigation-button-contain2">
               <Link to='/accessorise'>   <div className="button-nav2">аксесуари</div></Link>
               </div>
@@ -623,7 +621,7 @@ function getOrder()
         </div>
       </div>
       </div>
-      <div class="accordion-item">
+      {/* <div class="accordion-item">
   <h2 class="accordion-header" id="flush-headingClothes">
     <button
       class="accordion-button collapsed"
@@ -653,7 +651,7 @@ function getOrder()
   </NavDropdown.Item>
     </div>
   </div>
-</div>
+</div> */}
 <div class="accordion-item">
   <h2 class="accordion-header" id="flush-headingAccessorise">
     <button

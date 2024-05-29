@@ -55,7 +55,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
   };
  
   return (
-    <Card className="no-gutters" style={{ marginLeft: '15px', marginRight: '15px', border: 'none' }}>
+    <Card className="no-gutters" style={{ marginLeft: '5px', marginRight: '5px', border: 'none' }}>
       {isLoading ? (
        <Spinner variant="secondary"  animation="grow" />
       ) : (

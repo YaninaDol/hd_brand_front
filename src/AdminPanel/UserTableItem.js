@@ -12,7 +12,7 @@ import { Button } from 'react-bootstrap';
         return(
             <tr  >
                  <th  scope='row'></th>
-            <th  scope='row'>{this.props.unic}</th>
+            <th onClick={() => this.props.search(this.props.unic)}  scope='row'>{this.props.unic}</th>
             <td  >{this.props.name}</td>
             <td  >{this.props.surname}</td>
             <td  >{this.props.phonenumber}</td>

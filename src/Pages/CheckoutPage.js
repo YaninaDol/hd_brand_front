@@ -208,6 +208,7 @@ const [paymentData, setPaymentData] = useState({
       currency: selectedCurrency,
       description: 'Плата за товар',
       language: 'UK',
+      order_id:'',
       result_url:'https://hdbrand.com.ua/status'
 });
   useEffect(() => {
@@ -671,10 +672,16 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount} `
    })
        .then(response => {
-       
+     
        window.sessionStorage.setItem("order",response.data.id);
        if(selectedPaymentMethod==='liqpay')
         {  updateDate();
+          setPaymentData({
+            ...paymentData,
+            
+            order_id: response.data.id
+            
+        })
           setProceed(true);
         }
         else
@@ -697,6 +704,12 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
      window.sessionStorage.setItem("order",response.data.id);
      if(selectedPaymentMethod==='liqpay')
       {  updateDate();
+         setPaymentData({
+            ...paymentData,
+            
+            order_id: response.data.id
+            
+        })
         setProceed(true);
       }
       else

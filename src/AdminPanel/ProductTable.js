@@ -28,7 +28,12 @@ export default function ProductTable(){
     const [inputSearch, setInputSearch] = useState('');
     const [findproducts,setFindProducts] = useState([]);
     const [colors,setColors] = useState([]);
-   
+    const [inputSearchTable, setInputSearchTable] = useState('');
+    const [inputSearchCards, setInputSearchCards] = useState('');
+    const [findProductsTable, setFindProductsTable] = useState([]);
+    const [findProductsCards, setFindProductsCards] = useState([]);
+
+
     const [AddProductName,setAddProductName] = useState("");
     const [AddProductImage,setAddProductImage] = useState(null);
     const [AddProductImage2,setAddProductImage2] = useState(null);
@@ -408,7 +413,7 @@ const confirmUpdate = () => {
 
       {
       method:'post',
-      url:'https://localhost:7269/api/Product/Update',
+      url:`${API_BASE_URL}/api/Product/Update`,
       data:bodyFormData
       ,headers: {
         'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
@@ -431,24 +436,21 @@ else alert("You need to choose !")
 
 }
 
- function getSearch()
-      {
-        let Copy = [...findproducts];
+useEffect(() => {
+  setFindProductsTable(
+    allproducts.filter((product) =>
+      product.article.toLowerCase().includes(inputSearchTable.toLowerCase())
+    )
+  );
+}, [inputSearchTable, allproducts]);
 
-        for (const iterator of allproducts) {
-          let name = iterator['name'].toLowerCase();
-          if (name.includes(inputSearch.toLowerCase())) {
-            Copy.push(iterator);
-          }
-        }
-        
-        if (inputSearch !== "") {
-          setAllProducts([...Copy]); 
-        } else {
-          setAllProducts([...products]); 
-        }
-
-      }
+useEffect(() => {
+  setFindProductsCards(
+    allproducts.filter((product) =>
+      product.article.toLowerCase().includes(inputSearchCards.toLowerCase())
+    )
+  );
+}, [inputSearchCards, allproducts]);
 
 function btnChange(id)
 {
@@ -563,7 +565,7 @@ function changeProductVideoContent()
     return(
 
         <div>
-<Modal
+{/* <Modal
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -610,7 +612,7 @@ function changeProductVideoContent()
           Підтвердити
         </Button>
       </Modal.Footer>
-    </Modal>
+    </Modal> */}
 <Modal
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -620,11 +622,21 @@ function changeProductVideoContent()
     >
       <Modal.Header closeButton>
         <Modal.Title>Оберіть товар для заміни </Modal.Title>
-        
+        <Form  className="d-flex small " style={{marginLeft:'20px'}} >
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              value={inputSearchCards}
+              onChange={(e) => setInputSearchCards(e.target.value)}
+            />
+            
+          </Form>
       </Modal.Header>
       <Modal.Body>
         <Container style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {allproducts
+        {findProductsCards
   .filter((x) => x.categoryid === allproducts.find((x) => x.id === oldLookId)?.categoryid)
   .map((product) => (
     <Card
@@ -638,7 +650,7 @@ function changeProductVideoContent()
       }}
     >
       <Card.Img variant="center" style={{ width: 100 }} src={product.image} />
-     
+     <Card.Text>{product.article}</Card.Text>
     </Card>
   ))}
         </Container>
@@ -839,16 +851,17 @@ function changeProductVideoContent()
     <Button   variant='dark'  onClick={(()=>setaddProductRow(""))}>
                            + Add new product
                         </Button>
-    <Form  className="d-flex small">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-              onChange={(e)=>setInputSearch(e.target.value)}
-            />
-            <Button onClick={getSearch} variant="outline-success">Search</Button>
-          </Form>
+                        <Form className="search-table">
+        <Form.Group controlId="searchInput">
+        
+          <Form.Control
+            type="text"
+            placeholder="Пошук за артикулом:"
+            value={inputSearchTable}
+            onChange={(e) => setInputSearchTable(e.target.value)}
+          />
+        </Form.Group>
+      </Form>
 
          
     <Table striped hover>
@@ -987,7 +1000,7 @@ function changeProductVideoContent()
 <td></td>
       </tr>
       {
-        allproducts.map((x, index)=> <tr  >
+        findProductsTable.map((x, index)=> <tr  >
                 
         <th scope='row'>{x.id} {x.article}</th>
       
