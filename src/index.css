@@ -1,9 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Cera+Pro:wght@400;500;700&display=swap");
-
+/* @import url(https://db.onlinewebfonts.com/c/917a69d24b88e2d4d2ca803c0605bd59?family=Cera+PRO+Regular); */
 body {
   margin: 0;
   line-height: normal;
-  font-family: 'Cera Pro', sans-serif; /* Apply the imported font */
+  font-family: 'Cera Pro', sans-serif; 
+  /* font-family: "Cera PRO Regular"; */
+  /* Apply the imported font */
 }
 
 html {
@@ -23,7 +25,8 @@ html {
 
 :root {
   /* fonts */
-  --desktop-hyperlink-medium-15: "Cera Pro";
+  --desktop-hyperlink-medium-15: "Cera Pro"; /* font-family: "Cera PRO Regular";
+
 
   /* font sizes */
   --body-regular-15-size: 15px;

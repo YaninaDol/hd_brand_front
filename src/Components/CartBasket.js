@@ -46,6 +46,7 @@ class CartBasket extends Component {
               fluid
               src={this.props.picture}
               alt="Cotton T-shirt"
+              style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
             />
           </MDBCol>
           <MDBCol md="3" lg="3" xl="3"> 

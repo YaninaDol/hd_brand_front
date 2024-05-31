@@ -183,7 +183,12 @@ const ProductDetailsPage = () => {
     fetchExchangeRates();
    
      
-      setIsPlaying2(true);
+    setIsPlaying2(true);
+    if (videoRef2.current) {
+     
+        videoRef2.current.play(); // Начать воспроизведение видео сразу после загрузки
+       
+      };
     
 
     const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
@@ -442,19 +447,19 @@ const ProductDetailsPage = () => {
     <MDBCol id='photocolumn'>
     {product.image&&(<MDBRow>
   
-             <MDBCol  ><img src={product.image} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
+             <MDBCol  ><img src={product.image} style={{margin:'5px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
             </MDBRow>)}
            
             {product.image2&&(  <MDBRow>
    
-   <MDBCol  ><img src={product.image2} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
+   <MDBCol  ><img src={product.image2} style={{margin:'5px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
             </MDBRow>)}
    </MDBCol>
    {(product.image3 || product.video)&&(
    <MDBCol  id='photocolumn'>
    {product.image3&&(    <MDBRow>
    
-    <MDBCol  id='photocolumn'><img src={product.image3} style={{margin:'5px'}} class="card-img-top" alt="photo"/></MDBCol>
+    <MDBCol  id='photocolumn'><img src={product.image3} style={{margin:'5px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
              </MDBRow>)}
              {product.video&&(      <MDBRow>
    

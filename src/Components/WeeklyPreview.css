@@ -256,10 +256,10 @@
 @media screen and (max-width: 450px) {
   
  
-        .div1 {
+        /* .div1 {
          
             font-size: 9px !important; 
-        }
+        } */
    
         .button-block {
           width: 100%; /* Ширина 100% на мобильных устройствах */
