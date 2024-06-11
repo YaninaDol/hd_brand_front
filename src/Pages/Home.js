@@ -152,10 +152,7 @@ const Home = () => {
 </div>
     <Carousel style={{marginTop:'150px'}} >
       <Carousel.Item active>
-      <Carousel.Caption>
-        <h3>SPRING COLLECTION ‘ 24</h3>
-          <p>Створи свій власний стиль з HD BRAND</p>
-        </Carousel.Caption>
+   
         <img
           className="d-block w-100"
           src={require('../assets/bunner@2x.png')}
@@ -207,7 +204,7 @@ const Home = () => {
 
     </Carousel>
     {/* <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}> */}
-    <CardGroup style={{ display: 'flex', justifyContent:'space-between', alignItems:'center' }}>
+    <CardGroup style={{ display: 'flex', justifyContent:'space-around', alignItems:'center' }}>
       <div className="something">
         <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop="взуття" />
       </div>

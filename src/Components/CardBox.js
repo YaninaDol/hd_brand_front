@@ -31,6 +31,7 @@ class CardBox extends Component {
                 fluid
                 src={this.props.picture}
                 alt="Cotton T-shirt"
+                style={{aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
               />
             </MDBCol>
             <MDBCol   > 
@@ -42,7 +43,7 @@ class CardBox extends Component {
             </MDBRow>
             <MDBRow style={{marginTop:'15px'}}>
                 <MDBCol>Срок : </MDBCol>
-                <MDBCol > 4-7 робочих днів</MDBCol>
+                <MDBCol > 7-10 робочих днів</MDBCol>
             </MDBRow>
             <MDBRow style={{marginTop:'15px'}}>  <MDBCol   md='6' >
               <div  className="d-flex justify-content-between align-items-center quantity-container">

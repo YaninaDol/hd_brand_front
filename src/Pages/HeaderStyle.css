@@ -1,4 +1,4 @@
-.ukrainian-brand,
+/* .ukrainian-brand,
 .ukrainian-brand1,
 .ukrainian-brand10,
 .ukrainian-brand2,
@@ -32,6 +32,28 @@
   justify-content: center;
   padding: 15px 20px 16px;
   gap: var(--gap-xl);
+} */
+.ticker-wrapper {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  background-color: #000;
+  padding: 15px 20px;
+  color: #ffffff;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+.ticker {
+  display: inline-block;
+  animation: marquee 30s linear infinite;
+}
+.ticker div {
+  display: inline-block;
+  padding-right: 50px;
+}
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
 }
 .headermob
     {
@@ -200,7 +222,6 @@
 .item-title
 {
   width: 100%;
-  font-family: 'Cera Pro', sans-serif;
     text-transform: uppercase;
     margin-top: 10px;
     border: none;

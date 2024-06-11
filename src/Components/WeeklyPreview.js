@@ -155,7 +155,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
       <CardGroup style={{ marginBottom: '15px' }}>
         {weekly.map((x) => (
           <Card key={x.id} style={{ marginRight: '15px', marginLeft: '15px', border: 'none' }}>
-            <Card.Img variant="center" style={{ height: '90%', borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} className="img-fluid" src={x.image} />
+            <Card.Img variant="center" style={{ height: '90%', borderTopLeftRadius: '0px', borderTopRightRadius: '0px',aspectRatio:'3/4',position:'relative',objectFit:'cover' }} className="img-fluid" src={x.image} />
           </Card>
         ))}
         <div className="button-block d-flex flex-column align-items-center">

@@ -90,8 +90,8 @@ const ProductDetailsPage = () => {
       video.pause();
       setIsPlaying(false);
     }
-    else{
-      video.play();
+    else {
+      video.play(); // Если видео воспроизводится, ставим его на паузу
       setIsPlaying(true);
     }
   };
@@ -182,14 +182,18 @@ const ProductDetailsPage = () => {
     window.scrollTo(0, 0);
     fetchExchangeRates();
    
-     
+     setIsPlaying(true);
     setIsPlaying2(true);
     if (videoRef2.current) {
      
         videoRef2.current.play(); // Начать воспроизведение видео сразу после загрузки
        
       };
-    
+      if (videoRef.current) {
+     
+        videoRef.current.play(); // Начать воспроизведение видео сразу после загрузки
+       
+      };
 
     const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
 
@@ -471,6 +475,7 @@ const ProductDetailsPage = () => {
       className="card-img-top"
       playsInline
       muted
+      autoPlay
       loop
       src={product.video}
       onClick={handleVideoClick}
@@ -595,21 +600,25 @@ const ProductDetailsPage = () => {
   )}
 </Carousel>
 
-
-              { isFavourite
-                  ? <div  onClick={handleLikeClick} className='text-end'><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+<p style={{opacity:'0.5',color:'gray'}} >Арт: {product.article}</p>
+{ isFavourite
+                  ? <div   onClick={handleLikeClick}><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
                 </svg></div>
-                  : <div  onClick={handleLikeClick} className='text-end'><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                  : <div  onClick={handleLikeClick} ><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                   <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/>
                 </svg></div>
           }
-            <p style={{opacity:'0.5',color:'gray'}} className='text-end'>Арт: {product.article}</p>
-     <h1>{product.name} </h1>
+         
+          
+    
+</div>
+<h2>{product.name} </h2>
    
     </MDBRow>
 
-<MDBRow  style={{marginTop:'5px',fontFamily:'monospace',fontSize:'20px'}}> <h7>{convertPrice(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
+<MDBRow  style={{marginTop:'5px',fontSize:'20px'}}> <h7>{convertPrice(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
 <MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol> {season.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>

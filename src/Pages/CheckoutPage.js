@@ -741,7 +741,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 <MDBRow> <h2 className="h25title">Оформлення замовлення</h2></MDBRow>
   <MDBRow>
  
-  <MDBCol md='7'  className="order-lg-1 order-md-1">
+  <MDBCol md='7'  className="order-md-1 order-2">
               <MDBRow>
               <MDBCol className="col-12 col-md-8">
                 <div className="h211"> Заповніть ваші данні</div>  </MDBCol>
@@ -1010,6 +1010,8 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
      />)}
       {errors.indexW      && <div style={{ color: 'red' }}>{errors.indexW     }</div>}
       {errors.internationalDelivery      && <div style={{ color: 'red' }}>{errors.internationalDelivery     }</div>}
+     
+
   </MDBCol>
 
 
@@ -1047,17 +1049,55 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           />
 
               </MDBRow>
-              {showManagerContact && (
+              {selectedPaymentMethod === 'cardpay' && (
         <div style={{ marginTop: '5px',marginLeft:'10px' }}>
           <p style={{fontWeight:'bold',fontSize:'15px'}}> З вами зв'яжеться менеджер для уточнення деталей. </p>
         </div>
       )}
+      <div className="showtotal">
+
+      
+  <MDBRow>
+  {/* <MDBCol>Всього </MDBCol>
+  <MDBCol className="text-end"><h5>{convertPrice(total,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  </MDBRow>
+  {discount>0 && (
+  <MDBRow>
+  <MDBCol>Знижка {discount}%</MDBCol>
+  <MDBCol className="text-end"><h5>{convertPrice(total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  </MDBRow>)}
+ 
+  <MDBRow>
+  
+  <MDBCol>Доставка </MDBCol>
+  {activeTab!='longer-tab' ? (
+  <MDBCol className="text-end"><h5>{convertPrice(shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  ): (
+    <MDBCol className="text-end"><a style={{color:'black',textDecoration:'underline'}} href="https://novaposhta.ua/basic_tariffs">По тарифам перевізника </a></MDBCol>
+    )
+  } */}
+  </MDBRow>
+
+  
+  <hr className="my-4 " />
+  <MDBRow >
+  <MDBCol>До сплати </MDBCol>
+  {activeTab!='longer-tab' ? (
+  <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
+  ):( <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>)}
+  </MDBRow>
+
+  <MDBRow style={{marginTop:'15px'}}>
+    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
+   
+  </MDBRow>
+      </div>
   </MDBCol>
 
 
 
 
-  <MDBCol  md='5' className="order-lg-2 order-md-2">
+  <MDBCol  md='5' className="order-md-2 order-1">
   <MDBRow> <MDBCol><div className="h211"> Ваш кошик </div>  </MDBCol> </MDBRow>
   <MDBRow>
 {
@@ -1109,16 +1149,16 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   }
   </MDBRow>
 
+  
   <hr className="my-4" />
-  <MDBRow>
+  <MDBRow id="totalbtn">
   <MDBCol>До сплати </MDBCol>
   {activeTab!='longer-tab' ? (
   <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   ):( <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>)}
   </MDBRow>
 
-
-  <MDBRow style={{marginTop:'15px'}}>
+  <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
     {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
    
   </MDBRow>
@@ -1126,7 +1166,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
   </MDBRow>
 
-
+ 
 
 
 

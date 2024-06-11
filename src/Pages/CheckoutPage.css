@@ -104,8 +104,16 @@
 .col-md-5 {
 padding-left: 35px;
 }
+.showtotal
+{
+ display: none;
+}
+#totalbtn
+{
+ display: block;
+}
   @media screen and (max-width: 1125px) {
-   
+  
    .h211
 
    {
@@ -128,4 +136,14 @@ padding-left: 35px;
   padding-right: 5px; 
 
   }
+  }
+  @media screen and (max-width: 750px){
+    .showtotal
+    {
+     display: block;
+    }
+    #totalbtn
+    {
+     display: none;
+    }
   }

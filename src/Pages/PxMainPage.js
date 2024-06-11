@@ -360,115 +360,46 @@ function getOrder()
           )}
         </Modal.Body>
         <Modal.Footer>
-         
+        <Button variant="outline-dark" style={{ borderRadius: '0px' }} onClick={handleCloseBasket}>
+            Продовжити
+          </Button>
           <Button variant="dark" style={{ borderRadius: '0px' }} onClick={getOrder}>
             Оформити замовлення
           </Button>
         </Modal.Footer>
       </Modal>
-    
-<Modal show={showPayCard} onHide={handleClosePayCard} >
-
-<MDBCol >
-<Modal.Header  closeButton>
-<Modal.Title>Payment</Modal.Title>
-        </Modal.Header>   
-        <Modal.Body>
-                    <label>Card number</label>
-                    <form className="mb-5">
-                      <MDBInput
-                        className="mb-5"
-                      
-                        type="text"
-                        size="lg"
-                        defaultValue="1234 5678 9012 3457"
-                      />
-                        <label>Name on card</label>
-                      <MDBInput
-                        className="mb-5"
-                        type="text"
-                        size="lg"
-                        defaultValue="John Smith"
-                      />
-                       
-                      <MDBRow>
-                        <MDBCol md="6" className="mb-5">
-                          <MDBInput
-                            className="mb-4"
-                            label="Expiration"
-                            type="text"
-                            size="sm"
-                            minLength="7"
-                            maxLength="7"
-                            defaultValue="01/22"
-                            placeholder="MM/YYYY"
-                          />
-                        </MDBCol>
-                        <MDBCol md="6" className="mb-5">
-                          <MDBInput
-                            className="mb-4"
-                            label="Cvv"
-                            type="text"
-                            size="sm"
-                            minLength="3"
-                            maxLength="3"
-                            placeholder="&#9679;&#9679;&#9679;"
-                            defaultValue="&#9679;&#9679;&#9679;"
-                          />
-                        </MDBCol>
-                      </MDBRow>
-
-                      <MDBRow>
-                      <Button style={{marginTop:30}} onClick={payCard}  size="lg">
-                        Proceed to payment 
-                      </Button>
-                      </MDBRow>
-
-                      </form>
-                      </Modal.Body>
-                      </MDBCol>
-  
-</Modal>
-
-
-
-      <Modal  className="text-center" show={showQr}  onHide={handleCloseQr}>
-        <Modal.Header closeButton>
-          <Modal.Title>QR payment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body> <div>
-   <img src={picture} alt="picture QR"></img>
-    </div>
-    <div >
-			
-			<div >{result}</div>		
-		</div></Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseQr}>
-            Закрити
-          </Button>
-          <Button variant="success" onClick={pay} >
-            Сплатити
-          </Button>
-        </Modal.Footer>
-      </Modal>
+ 
 <AuthModal show={show} handleClose={handleClose}></AuthModal>
  
 
 
              <section className="header-frame">
-        <div className="ticker">
-          <div className="ukrainian-brand" id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand1"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand2"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand3"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand4"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand5" id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand6"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand7"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand8"  id="ukrainianBrand">Ukrainian brand</div>
-          <div className="ukrainian-brand9"  id="ukrainianBrand">Ukrainian brand</div>
-        </div>
+             <div className="ticker-wrapper">
+    <div className="ticker">
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+    
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      <div className="ukrainian-brand">Ukrainian brand</div>
+      
+    </div>
+  </div>
         <header className="header" >
         <div className="header-container">
           <div className="logo-menu-navigation" >

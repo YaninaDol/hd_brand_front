@@ -849,7 +849,7 @@ function changeProductVideoContent()
    </CardGroup>
     <h1 style={{textAlign:'center',alignItems:'center'}} >PRODUCT TABLE</h1>
     <Button   variant='dark'  onClick={(()=>setaddProductRow(""))}>
-                           + Add new product
+                           + Додати новий 
                         </Button>
                         <Form className="search-table">
         <Form.Group controlId="searchInput">
