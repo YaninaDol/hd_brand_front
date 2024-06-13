@@ -17,6 +17,7 @@ import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,set
 import { useParams } from 'react-router-dom';
 import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import ShoppingAssistant from '../Components/ShoppingAssistant';
+import BasketModal from '../Components/BasketModal';
 import '../Pages/ProductdetailPage.css';
 import CartProduct from '../Components/CartProduct';
 const ProductDetailsPage = () => {
@@ -337,44 +338,29 @@ const ProductDetailsPage = () => {
 
   
   const addToBasket = () => {
-  
-    if (!newProd)
-      {
-        setShowValidation(true);
-        return;
-      }
-    
-    
-      const storedBasket = window.sessionStorage.getItem("Basket");
-      const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
-  
-      
-        const existingItem = existingBasket.find((item) => item.id === newProd.id);
-  
-        if (existingItem) {
-         
-          existingItem.quantity += 1;
-        } else {
-         
-          existingBasket.push({ ...newProd, quantity: 1 });
-        }
-     
-  
-      
-      window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
-  
-     
-      handleShowM();
-  
-    
-     setNewProd(null);
-     setShowValidation(false);
-     
-    
-     setTimeout(() => {
-      window.location.reload();
-    }, 1500); 
-  
+    if (!newProd) {
+      setShowValidation(true);
+      return;
+    }
+
+    const storedBasket = window.sessionStorage.getItem("Basket");
+    const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
+    const existingItem = existingBasket.find((item) => item.id === newProd.id);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      existingBasket.push({ ...newProd, quantity: 1 });
+    }
+
+    window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+    handleShowM();
+    setNewProd(null);
+    setShowValidation(false);
+
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1500); 
   };
  
   function getTableImage(sizeId) {
@@ -400,13 +386,13 @@ const ProductDetailsPage = () => {
   return (
     <div>
       
-      <Modal show={showM} onHide={handleCloseM}>
+      {/* <Modal show={showM} onHide={handleCloseM}>
         <Modal.Header closeButton>
         <Modal.Body>Товар додано до кошику </Modal.Body>
         </Modal.Header>
       
       
-      </Modal>
+      </Modal> */}
       <Modal show={showTableSize} onHide={handleClosetableSize}>
         <Modal.Header closeButton>
         <Modal.Body>
@@ -418,6 +404,11 @@ const ProductDetailsPage = () => {
       
       </Modal>
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
+
+      <BasketModal show={showM} handleClose={handleCloseM} convertPrice={convertPrice} />
+
+
+
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
 <div>

@@ -21,7 +21,7 @@ import {
           <MDBCardBody className="p-4">
             <MDBRow className="align-items-center">
               <MDBCol md="2" lg="2" xl="2">
-                <MDBCardImage className="rounded-3" fluid src={this.props.picture} alt="Cotton T-shirt" />
+                <MDBCardImage className="rounded-3"style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}} fluid src={this.props.picture} alt="Cotton T-shirt" />
               </MDBCol>
               <MDBCol md="3" lg="3" xl="3">
                 <p hidden="hidden">{this.props.unic}</p>

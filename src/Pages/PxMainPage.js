@@ -98,13 +98,29 @@ const expand='false';
    
     const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
     setCount(totalCount);
-    
   }
   
  
   }, []);
 
 
+  const [showBasket, setShowBasket] = useState(false);
+  const handleCloseBasket = () => setShowBasket(false);
+  const handleShowBasket = () => setShowBasket(true);
+
+  useEffect(() => {
+  const storedBasket = window.sessionStorage.getItem("Basket");
+  if (storedBasket && storedBasket.length > 0) {
+    const parsedBasketData = JSON.parse(storedBasket);
+    setArrBasket(parsedBasketData);
+
+   
+    const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
+    setCount(totalCount);
+  }
+  
+ 
+  }, [handleShowBasket]);
 
 
 
@@ -120,130 +136,12 @@ const expand='false';
 
   }
 
-  function SubmitLogIn() 
-  {
-     
-    if(email.includes('@'))
-      {
-              axios (
-
-                  {
-                      method:'post',
-                      url:`${API_BASE_URL}/api/Authenticate/login`,
-                      data:
-                      JSON.stringify({ email:email, Password: pass1}),
-                      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
-
-                  }
-
-
-
-              ).then  (res=>
-
-                      
-                      {
-                         
-                       
-                         
-                              window.sessionStorage.setItem("AccessToken", res.data.token);
-                           
-                             if(res.data.userRole[0]=="User")
-
-                             {
-                                             
-                              window.location.href='/account';
-                              
-                          
-                          
-                              handleClose();
-
-                             }
-
-                             if(res.data.userRole[0]=="Admin")
-                             {
-                             
-                                window.location.href='/admin';
-                             }
-                             if(res.data.userRole[0]=="Menager")
-                             {
-                             
-                                window.location.href='/admin';
-                             }
-
-
-                      })
-                      .catch(function (error) {
-                          alert("Error password or email");
-                        window.location.href = "/";
-                      
-                          console.log("Error:"+error);
-                        });
-                      
-                      
-                      ;
-
-                      }
-                      else alert('Не корректна поштова адреса')
-
-  };
-
-  function CreateQr()
-  {
-    handleShowQr();
-
-
-   var QRCode = require('qrcode')
- var str=`https://www.ipay.ua/ru/charger?bill_id=1663&acc=021018496&invoice=${payamount}.00&order_id=100506`;
-   QRCode.toDataURL(str, function (err, url) {
-    setPicture(url);
-     console.log(url)
-     setPayInfo('order_id=100506');
-   })
-  
-  }
-
-
-function pay()
-{
-// setPayInfo('order_id=100506');
-// var notice_str=notice+payInfo;
-// setNotice(notice_str);
-arrBasket.splice(0, arrBasket.length);
-window.sessionStorage.removeItem("Basket");
-
-
-alert("Замовлення відправленне на опрацювання!")
-
-window.location.reload();
-handleCloseQr();
-}
-function payCard()
-{
-// setPayInfo('order_id=100506');
-// var notice_str=notice+payInfo;
-// setNotice(notice_str);
-arrBasket.splice(0, arrBasket.length);
-window.sessionStorage.removeItem("Basket");
-
-
-alert("Замовлення відправленне на опрацювання!")
-
-window.location.href = "https://www.liqpay.ua/en";
-
-
-handleClosePayCard();
-}
 const [searchQuery,setSearchQuery] = useState("");
 function redirectToFilteredPage(searchQuery) {
   const baseUrl = '/search';
   navigate(`${baseUrl}?search=${encodeURIComponent(searchQuery)}`);
   window.location.reload();
 }
-
-
-  const [showBasket, setShowBasket] = useState(false);
-  const handleCloseBasket = () => setShowBasket(false);
-  const handleShowBasket = () => setShowBasket(true);
 
 
 

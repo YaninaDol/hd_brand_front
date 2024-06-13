@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { CardGroup, Card } from 'react-bootstrap';
 import React from 'react';
-import {setProductSizes } from '../redux/actions';
-import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './WeeklyPreview.css';
 import WeeklyModalItem from './WeeklyModalItem';
+import BasketModal from '../Components/BasketModal';
 
 const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -45,6 +44,11 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
     }
   }, [weekly]);
 
+
+
+
+
+
   const addSize = (size,index) => {
    if (index==0)
    {
@@ -68,6 +72,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
   const [showM, setshowM] = useState(false);
   const handleCloseM = () => setshowM(false);
   const handleShowM = () => setshowM(true);
+
   const addToBasket = () => {
     const selectedSizes = [size1, size2, size3].filter((size) => size !== null);
   
@@ -92,19 +97,16 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
       
       window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
   
-     
-      handleShowM();
+     handleClose();
+      
   
     
       setSize1(null);
       setSize2(null);
       setSize3(null);
-  
+      handleShowM();
      
-      handleClose();
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500); 
+     
     } else {
       
       alert("Оберіть розміри для товарів.");
@@ -117,13 +119,14 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
 
   return (
     <div>
-       <Modal show={showM} onHide={handleCloseM}>
+        <BasketModal show={showM} handleClose={handleCloseM} convertPrice={convertPrice} />
+       {/* <Modal show={showM} onHide={handleCloseM}>
         <Modal.Header closeButton>
         <Modal.Body>Товар додано до кошику </Modal.Body>
         </Modal.Header>
       
       
-      </Modal>
+      </Modal> */}
       <Modal id='basket' show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Обрані товари</Modal.Title>
