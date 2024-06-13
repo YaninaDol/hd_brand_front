@@ -108,19 +108,19 @@ const expand='false';
   const handleCloseBasket = () => setShowBasket(false);
   const handleShowBasket = () => setShowBasket(true);
 
-  useEffect(() => {
-  const storedBasket = window.sessionStorage.getItem("Basket");
-  if (storedBasket && storedBasket.length > 0) {
-    const parsedBasketData = JSON.parse(storedBasket);
-    setArrBasket(parsedBasketData);
 
-   
-    const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
-    setCount(totalCount);
-  }
-  
- 
-  }, [handleShowBasket]);
+   useEffect(() => {
+    if (showBasket) {
+      const storedBasket = window.sessionStorage.getItem("Basket");
+      if (storedBasket && storedBasket.length > 0) {
+        const parsedBasketData = JSON.parse(storedBasket);
+        setArrBasket(parsedBasketData);
+
+        const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
+        setCount(totalCount);
+      }
+    }
+  }, [showBasket]);
 
 
 

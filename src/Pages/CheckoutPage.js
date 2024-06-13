@@ -242,11 +242,27 @@ const [paymentData, setPaymentData] = useState({
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
-      setName(response.data.name);
-      setSurname(response.data.surname);
-      setEmail(response.data.email);
-      setPhonenumber(response.data.phonenumber);
-      setUserDiscount(response.data.discount);
+      if (response.data.name !== null) {
+        setName(response.data.name);
+    }
+    
+    if (response.data.surname !== null) {
+        setSurname(response.data.surname);
+    }
+    
+    if (response.data.email !== null) {
+        setEmail(response.data.email);
+    }
+    
+    if (response.data.phonenumber ) {
+        setPhonenumber(response.data.phonenumber);
+        console.log(response.data.phonenumber)
+    }
+    
+    if (response.data.discount !== null) {
+        setUserDiscount(response.data.discount);
+    }
+    
       count>=2?setDiscount(5):setDiscount(response.data.discount);
    
     
