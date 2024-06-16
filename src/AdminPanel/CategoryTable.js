@@ -7,25 +7,28 @@ import Button from 'react-bootstrap/Button';
 const CategoryTable = ({ type,categories, onAddCategory, onDeleteCategory, onUpdateCategory }) => {
   const [addCategoryHide, setAddCategoryHide] = useState('hidden');
   const [addCatName, setAddCatName] = useState('');
+  const [addCatNameEng, setAddCatNameEng] = useState('');
 
   const [updateCategoryHide, setUpdateCategoryHide] = useState('hihdden');
   const [updateCatId, setUpdateCatId] = useState(0);
   const [updateCatName, setUpdateCatName] = useState('');
+  const [updateCatNameEng, setUpdateCatNameEng] = useState('');
 
   const handleAddCategory = () => {
-    onAddCategory(type,addCatName);
+    onAddCategory(type,addCatName,addCatNameEng);
     setAddCatName('');
     setAddCategoryHide('hidden');
   };
 
   const handleUpdateCategory = () => {
-    onUpdateCategory(type,updateCatId,updateCatName);
+    onUpdateCategory(type,updateCatId,updateCatName,updateCatNameEng);
     setUpdateCategoryHide('hidden');
   };
 
-  const handleUpdateBtn = (id, name) => {
+  const handleUpdateBtn = (id, name,nameEng) => {
     setUpdateCatId(id);
     setUpdateCatName(name);
+    setUpdateCatNameEng(nameEng);
     setUpdateCategoryHide('');
   };
   
@@ -42,6 +45,7 @@ const CategoryTable = ({ type,categories, onAddCategory, onDeleteCategory, onUpd
           <tr>
             <th scope='col'></th>
             <th scope='col'>#</th>
+            <th scope='col'>Назва</th>
             <th scope='col'>Name</th>
             <th scope='col'>Actions</th>
             <th scope='col'></th>
@@ -49,14 +53,16 @@ const CategoryTable = ({ type,categories, onAddCategory, onDeleteCategory, onUpd
         </MDBTableHead>
         <MDBTableBody>
           {categories.map((x) => (
-            <CategoryTableItem key={x.id} id={x.id} unic={x.id} type={type} name={x.name?x.name:x.value} delete={onDeleteCategory} updateBtn={handleUpdateBtn} />
+            <CategoryTableItem key={x.id} id={x.id} unic={x.id} type={type} name={x.name?x.name:x.value} nameEng={x.nameEng?x.nameEng:x.value} delete={onDeleteCategory} updateBtn={handleUpdateBtn} />
           ))}
           <tr hidden={addCategoryHide}>
             <th scope='row'></th>
             <td></td>
             <td>
               <MDBInput onChange={(e) => setAddCatName(e.target.value)} type='text' />
+             
             </td>
+            <td> <MDBInput onChange={(e) => setAddCatNameEng(e.target.value)} type='text' /></td>
             <td>
               <Button onClick={handleAddCategory} variant='dark'>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
@@ -74,7 +80,9 @@ const CategoryTable = ({ type,categories, onAddCategory, onDeleteCategory, onUpd
             </td>
             <td>
               <MDBInput onChange={(e) => setUpdateCatName(e.target.value)} value={updateCatName} type='text' />
+            
             </td>
+            <td>  <MDBInput onChange={(e) => setUpdateCatNameEng(e.target.value)} value={updateCatNameEng} type='text' /></td>
             <td>
               <Button onClick={handleUpdateCategory} variant='dark'>
                 Confirm to database

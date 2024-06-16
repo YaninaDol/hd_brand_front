@@ -103,13 +103,13 @@ const CategorySpecification = () => {
               });  
   
   }
-function addCategory(type,name)
+function addCategory(type,name,nameEng)
 {
 
     
     var bodyFormData = new FormData();
   bodyFormData.append('Name', name);
-
+  bodyFormData.append('NameEng', nameEng);
     axios (
 
                 {
@@ -138,12 +138,13 @@ function addCategory(type,name)
 }
 
 
-function updateCategory(type,id,name)
+function updateCategory(type,id,name,nameEng)
 {
     
     var bodyFormData = new FormData();
   bodyFormData.append('id', id);
   bodyFormData.append('newName', name);
+  bodyFormData.append('newNameEng', nameEng);
               axios (
 
                 {
