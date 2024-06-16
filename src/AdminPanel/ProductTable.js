@@ -35,6 +35,7 @@ export default function ProductTable(){
 
 
     const [AddProductName,setAddProductName] = useState("");
+    const [AddProductNameEng,setAddProductNameEng] = useState("");
     const [AddProductImage,setAddProductImage] = useState(null);
     const [AddProductImage2,setAddProductImage2] = useState(null);
     const [AddProductImage3,setAddProductImage3] = useState(null);
@@ -121,7 +122,7 @@ export default function ProductTable(){
       
         dispatch(setProducts(response.data))
         setAllProducts(response.data);
-        
+        console.log(response.data);
         axios.get(`${API_BASE_URL}/api/Product/GetContentVideo`, {
           headers: {
             'Accept': 'text/plain', 
@@ -213,6 +214,7 @@ function confirmAdd()
 
         { var bodyFormData = new FormData();
           bodyFormData.append('name', AddProductName);
+          bodyFormData.append('nameEng', AddProductNameEng);
           bodyFormData.append('article', AddproductArticle);
           bodyFormData.append('image', AddProductImage);
           bodyFormData.append('image2', AddProductImage2);
@@ -869,6 +871,7 @@ function changeProductVideoContent()
         <tr>
           <th># Art.</th>
           <th>Назва</th>
+          <th>Name</th>
           <th>Контент</th>
          
           <th>NEW</th>
@@ -890,7 +893,8 @@ function changeProductVideoContent()
                  <th  scope='row' ><MDBInput onChange={((e)=>setAddproductArticle(e.target.value))} type='text'/></th>
           
                
-            <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/> </td>
+            <td > <MDBInput onChange={((e)=>setAddProductName(e.target.value))} type='text'/></td>
+            <td > <MDBInput onChange={((e)=>setAddProductNameEng(e.target.value))} type='text'/></td>
             <td > <MDBInput size='sm'  onChange={(e) => handleFileChange(e, {AddProductName})} type='file'/> 
             <p>Фото1</p> <MDBInput size='sm'   onChange={(e) => handleFileChange2(e, {AddProductName})} type='file'/> 
             <p>Фото2</p> 
@@ -1006,6 +1010,9 @@ function changeProductVideoContent()
       
         <td > 
         {x.name}
+    </td>
+    <td > 
+        {x.nameEng}
     </td>
     <td > 
       {x.image && ( <img style={{margin:'2px'}} src={x.image} width={50} height={50} alt="Товар" />)}

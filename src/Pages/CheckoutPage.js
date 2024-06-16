@@ -54,10 +54,9 @@ const CheckoutPage = () => {
   const [typeDeliveryW, setTypeDeliveryW] = useState('address');
   const [NovaWorldWare, setNovaWorldWare] = useState(null);
   const [activeTab, setActiveTab] = useState('longer-tab'); 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("cardpay");
-  const [total,setTotal] = useState(0);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("liqpay");
+  const [total,setTotal] = useState(250);
   const [countryinExcel,setCountryExcel] = useState('novapost');
-  const [showManagerContact, setShowManagerContact] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [errors, setErrors] = useState({});
   const [TotalSum,setTotalSum] = useState(0);
@@ -157,6 +156,13 @@ const CheckoutPage = () => {
 
   function updateDate()
   {
+    selectedPaymentMethod=='cardpay'?
+    setPaymentData({
+      ...paymentData,
+      amount:convertPrice(250,selectedCurrency),
+      currency: selectedCurrency
+      
+  }):
      activeTab!='longer-tab' ?
         
         setPaymentData({
@@ -192,7 +198,7 @@ const CheckoutPage = () => {
   const handleCheckboxChange = (method) => {
     setSelectedPaymentMethod(method);
     
-    setShowManagerContact(method === 'cardpay');
+   
     if(method === 'cardpay')
       {
         setProceed(false);
@@ -350,7 +356,8 @@ fetchData();
 fetchExchangeRates();
 
 const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
-
+if(activeTab=='longer-tab2')
+{setSelectedPaymentMethod('liqpay')}
 
 if (savedCurrency) {
 setSelectedCurrency(savedCurrency);
@@ -627,11 +634,15 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
  {
   const isValid = validateForm();
   if (isValid) {
-    
+    const sum = selectedPaymentMethod === 'cardpay' 
+    ? convertPrice(250, selectedCurrency) 
+    : activeTab !== 'longer-tab' 
+      ? convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)
+      : convertPrice(total - total * (discount / 100), selectedCurrency);
     
       if(activeTab=='longer-tab')
       {
-        const sum=convertPrice(total -total*(discount/100),selectedCurrency);
+       
         if(typeDelivery==='1')
         {
         
@@ -658,16 +669,16 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       {
       if(  countryinExcel === 'worldwide')
         {
-          confirmOrder("Міжнародна пошта",selectedCountry+" "+address2+" "+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+          confirmOrder("Міжнародна пошта",selectedCountry+" "+address2+" "+indexW,sum);
         }
         else
        { if(typeDeliveryW=="warehouse")
        { 
-        confirmOrder('НоваПошта-відділення',selectedCountry+" "+selectedCity2+" "+NovaWorldWare,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+        confirmOrder('НоваПошта-відділення',selectedCountry+" "+selectedCity2+" "+NovaWorldWare,sum);
        }
        else if(typeDeliveryW=="address")
         {
-          confirmOrder("НоваПошта-адресна",selectedCountry+" "+address2+" "+indexW,convertPrice(total -total*(discount/100)+shipment,selectedCurrency));
+          confirmOrder("НоваПошта-адресна",selectedCountry+" "+address2+" "+indexW,sum);
         }
       }
       }
@@ -685,25 +696,14 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   if(!window.sessionStorage.getItem("AccessToken"))
     { 
       axios({method:'post',
-      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount} `
+      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=liqpay&discount=${discount} `
    })
        .then(response => {
      
        window.sessionStorage.setItem("order",response.data.id);
-       if(selectedPaymentMethod==='liqpay')
-        {  updateDate();
-          setPaymentData({
-            ...paymentData,
-            
-            order_id: response.data.id
-            
-        })
+        updateDate();
           setProceed(true);
-        }
-        else
-        {
-          window.location.href="/status2";
-        }
+       
   
   })
   .catch(error => console.log(''));
@@ -712,26 +712,15 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
    else{
    
     axios({method:'post',
-    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount}  `,
+    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount}  `,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
      
+    
      window.sessionStorage.setItem("order",response.data.id);
-     if(selectedPaymentMethod==='liqpay')
-      {  updateDate();
-         setPaymentData({
-            ...paymentData,
-            
-            order_id: response.data.id
-            
-        })
-        setProceed(true);
-      }
-      else
-      {
-        window.location.href="/status2";
-      }
+     updateDate();
+       setProceed(true);
 })
 .catch(error => console.log(''));
 
@@ -1046,7 +1035,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
             id={`liqpay`}
             checked={selectedPaymentMethod === 'liqpay'}
             onChange={() => handleCheckboxChange('liqpay')}
-            label="Банківською карткою на сайті Visa або MasterCard (платіжний сервіс LiqPay)"
+            label="Повна передоплата (платіжний сервіс LiqPay)"
           />
       
        
@@ -1055,21 +1044,17 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
               </MDBRow>
-              <MDBRow style={{marginTop:'20px',marginLeft:'15px'}}>
+           { activeTab=='longer-tab'&&  <MDBRow style={{marginTop:'20px',marginLeft:'15px'}}>
               <Form.Check 
             type='checkbox'
             id={`cardpay`}
             checked={selectedPaymentMethod === 'cardpay'}
             onChange={() => handleCheckboxChange('cardpay')}
-            label="Передоплата або повна оплата на картку (ПриватБанк або Monobank)"
+            label="Часткова передоплата (платіжний сервіс Liqpay)"
           />
 
-              </MDBRow>
-              {selectedPaymentMethod === 'cardpay' && (
-        <div style={{ marginTop: '5px',marginLeft:'10px' }}>
-          <p style={{fontWeight:'bold',fontSize:'15px'}}> З вами зв'яжеться менеджер для уточнення деталей. </p>
-        </div>
-      )}
+              </MDBRow>}
+             
       <div className="showtotal">
 
       
@@ -1098,10 +1083,23 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   <hr className="my-4 " />
   <MDBRow >
   <MDBCol>До сплати </MDBCol>
-  {activeTab!='longer-tab' ? (
-  <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
-  ):( <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>)}
-  </MDBRow>
+  <MDBRow>
+  {selectedPaymentMethod === 'cardpay' ? (
+    <MDBCol className="text-end">
+      <h5>{convertPrice(250, selectedCurrency)} {selectedCurrency}</h5>
+    </MDBCol>
+  ) : (
+    activeTab !== 'longer-tab' ? (
+      <MDBCol className="text-end">
+        <h5>{convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)} {selectedCurrency}</h5>
+      </MDBCol>
+    ) : (
+      <MDBCol className="text-end">
+        <h5>{convertPrice(total - total * (discount / 100), selectedCurrency)} {selectedCurrency}</h5>
+      </MDBCol>
+    )
+  )}
+</MDBRow></MDBRow>
 
   <MDBRow style={{marginTop:'15px'}}>
     {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
@@ -1169,10 +1167,25 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   <hr className="my-4" />
   <MDBRow id="totalbtn">
   <MDBCol>До сплати </MDBCol>
-  {activeTab!='longer-tab' ? (
-  <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100)+shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
-  ):( <MDBCol className="text-end"><h5>{convertPrice(total -total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>)}
+  <MDBRow>
+  {selectedPaymentMethod === 'cardpay' ? (
+    <MDBCol className="text-end">
+      <h5>{convertPrice(250, selectedCurrency)} {selectedCurrency}</h5>
+    </MDBCol>
+  ) : (
+    activeTab !== 'longer-tab' ? (
+      <MDBCol className="text-end">
+        <h5>{convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)} {selectedCurrency}</h5>
+      </MDBCol>
+    ) : (
+      <MDBCol className="text-end">
+        <h5>{convertPrice(total - total * (discount / 100), selectedCurrency)} {selectedCurrency}</h5>
+      </MDBCol>
+    )
+  )}
+</MDBRow>
   </MDBRow>
+ 
 
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
     {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}

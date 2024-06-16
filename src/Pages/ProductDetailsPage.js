@@ -182,7 +182,7 @@ const ProductDetailsPage = () => {
   {
     window.scrollTo(0, 0);
     fetchExchangeRates();
-   
+  
      setIsPlaying(true);
     setIsPlaying2(true);
     if (videoRef2.current) {
@@ -285,6 +285,15 @@ const ProductDetailsPage = () => {
   
   }, [id, subcategoryid, dispatch]);
 
+  useEffect(() => {
+    if (product.isDiscount && productsizes.length > 0) {
+      var prod=productsizes[0];
+     prod.size='';
+      setNewProd(prod);
+    }
+  }, [product.isDiscount, productsizes]);
+
+
   // const fetchExchangeRates = async () => {
   //   try {
     
@@ -342,26 +351,36 @@ const ProductDetailsPage = () => {
       setShowValidation(true);
       return;
     }
-
+  
     const storedBasket = window.sessionStorage.getItem("Basket");
     const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
     const existingItem = existingBasket.find((item) => item.id === newProd.id);
-
+  
+    if (product.isDiscount) {
+      if (existingItem) {
+        alert('Товар вже доданий до кошика');
+      } else {
+        existingBasket.push({ ...newProd, quantity: 1 });
+        window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+        handleShowM();
+        setNewProd(null);
+        setShowValidation(false);
+      }
+      return;
+    }
+  
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
       existingBasket.push({ ...newProd, quantity: 1 });
     }
-
+  
     window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
     handleShowM();
     setNewProd(null);
     setShowValidation(false);
-
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 1500); 
   };
+  
  
   function getTableImage(sizeId) {
     switch (sizeId) {
@@ -616,6 +635,7 @@ const ProductDetailsPage = () => {
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol> {subcategory.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol> {material.name} </MDBCol> </MDBRow>
 
+                {!product.isDiscount && (
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
@@ -639,7 +659,7 @@ const ProductDetailsPage = () => {
         {category.id!=3&&( <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
    )}
     
-  </MDBRow>
+  </MDBRow>)}
 
 
 <MDBRow className='text-center'  style={{marginTop:'55px'}}> <Button
