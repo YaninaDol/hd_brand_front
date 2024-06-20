@@ -64,6 +64,12 @@ const CategorySpecification = () => {
         dispatch(setSeasons(response.data));
       })
       .catch(error => console.error('Error fetching products:', error));
+      axios.get(`${API_BASE_URL}/api/Specification/GetAllSizes`)
+      .then(response => {
+       
+        dispatch(setSizes(response.data));
+      })
+      .catch(error => console.error('Error fetching products:', error));
     }, [dispatch]);
 
 
@@ -189,6 +195,7 @@ function updateCategory(type,id,name,nameEng)
       <CategoryTable categories={materials} type='Material' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
       <CategoryTable categories={subcategories} type='Subcategory' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
       <CategoryTable categories={seasons} type='Season' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
+      <CategoryTable categories={sizes} type='Size' onAddCategory={addCategory} onDeleteCategory={deletecategory} onUpdateCategory={updateCategory} />
      
     </div>
   );

@@ -49,7 +49,7 @@ export default function ProductTable(){
     const [AddProductMaterial,setAddProductMaterial] = useState("");
     const [AddProductSizes,setAddProductSizes] = useState("");
     const [AddProductColor,setAddProductColor] = useState("");
-    const [AddIsNew,setAddAddIsNew] = useState(true);
+    const [AddIsNew,setAddAddIsNew] = useState(false);
     const [idToDelete,setIdToDelete]=useState(0);
 
     const [nametoUpdate,setNameToUpdate] = useState("");
@@ -122,7 +122,7 @@ export default function ProductTable(){
       
         dispatch(setProducts(response.data))
         setAllProducts(response.data);
-        console.log(response.data);
+       
         axios.get(`${API_BASE_URL}/api/Product/GetContentVideo`, {
           headers: {
             'Accept': 'text/plain', 
@@ -341,30 +341,30 @@ function deletecategory(id)
 const handleFileChange = (event) => {
   const file = event.target.files[0];
 
-  if (file && file.type === 'image/webp' && file.size <= 500 * 1024) {
+  if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
     setAddProductImage(file);
   } else {
-    alert('Файл должен быть формата webp и не больше 500 КБ');
+    alert('Файл должен быть формата webp и не больше 200 КБ');
   }
 };
 
 const handleFileChange2 = (event) => {
   const file = event.target.files[0];
 
-  if (file && file.type === 'image/webp' && file.size <= 500 * 1024) {
+  if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
     setAddProductImage2(file);
   } else {
-    alert('Файл должен быть формата webp и не больше 500 КБ');
+    alert('Файл должен быть формата webp и не больше 200 КБ');
   }
 };
 
 const handleFileChange3 = (event) => {
   const file = event.target.files[0];
 
-  if (file && file.type === 'image/webp' && file.size <= 500 * 1024) {
+  if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
     setAddProductImage3(file);
   } else {
-    alert('Файл должен быть формата webp и не больше 500 КБ');
+    alert('Файл должен быть формата webp и не больше 200 КБ');
   }
 };
 
@@ -373,7 +373,7 @@ const handleFileChangeVideo = (event) => {
   if (file && file.size <= 3 * 1024 * 1024) {
     setAddProductVideo(event.target.files[0]);
   } else {
-    alert('Файл должен быть не больше 4 MB');
+    alert('Файл должен быть не больше 3 MB');
   }
 };
 
@@ -1107,7 +1107,7 @@ function changeProductVideoContent()
 
         <MDBInputGroup className='mb-3' >
       <div className="mb-6 pb-2">
-                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate(e.target.value)} value={x.seasonid}>
+                <select   className="select p-2 rounded bg-grey" style={{ width: "100%" }} onChange={(e)=>setSizesUpdate(e.target.value)} value={x.sizes}>
                
                       {
                       sizes.map((x) => 

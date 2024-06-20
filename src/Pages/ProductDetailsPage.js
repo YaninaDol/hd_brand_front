@@ -72,7 +72,6 @@ const ProductDetailsPage = () => {
   const videoRef2 = useRef(null);
   const [isPlaying2, setIsPlaying2] = useState(false);
 
-  // Функция для запуска и остановки видео
   const handleVideoToggle = () => {
     const video = videoRef.current;
     if (video.paused || video.ended) {
@@ -84,7 +83,6 @@ const ProductDetailsPage = () => {
     }
   };
 
-  // Функция для запуска видео при клике на само видео
   const handleVideoClick = () => {
     const video = videoRef.current;
     if (!video.paused) {
@@ -107,7 +105,6 @@ const ProductDetailsPage = () => {
     }
   };
 
-  // Функция для запуска видео при клике на само видео
   const handleVideoClick2 = () => {
     const video = videoRef2.current;
     if (!video.paused) {
@@ -176,10 +173,10 @@ const ProductDetailsPage = () => {
 
 
 
-
   useEffect(()=>
 
   {
+    
     window.scrollTo(0, 0);
     fetchExchangeRates();
   
@@ -243,7 +240,7 @@ const ProductDetailsPage = () => {
     .then(res => {
       
         dispatch(setProduct(res.data.value));
-     
+        
       
   
       axios.get(`${API_BASE_URL}/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
@@ -268,19 +265,20 @@ const ProductDetailsPage = () => {
       })
       .catch(error => console.error('Error fetching products:', error));
       axios.get(`${API_BASE_URL}/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
-    .then(responses => {
-      dispatch(setSimilar(responses.data));
-     
-    })
+      .then(responses => {
+       
+        dispatch(setSimilar(responses.data));
+        const loadingTimeout = setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      })
     .catch(error => console.error('Error fetching products:', error));
   
       
     })
     .catch(error => console.error('Error fetching products:', error));
 
-    const loadingTimeout = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    
    
   
   }, [id, subcategoryid, dispatch]);
@@ -685,27 +683,53 @@ onClick={addToBasket}
   <div style={{marginBottom:35,fontSize:20}}>Вам також може сподобатись :</div>
 
 <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
-  
 {silimarproducts.length > 0 ? (
-    silimarproducts.map((x) => (
-      <Link to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
-      <CartProduct
-      id_key={x.id}
-      imageSrc1={x.image}
-      imageSrc2={x.image2}
-      isNew={x.isNew}
-      isDiscount={x.isDiscount}
-      isLiked={false}
-      descriprion={x.name}
-      price1={convertPrice(x.price,selectedCurrency)}
-      currency={selectedCurrency}
-      price2={convertPrice(x.salePrice,selectedCurrency)}
-      />
-      </Link>
-    ))
-  ) : (
-    <div></div>
-  )}
+        silimarproducts
+          .filter(_product => {
+            const productArticlePrefix = _product.article.split('-')[0];
+            const targetArticlePrefix = product.article.split('-')[0];
+            return productArticlePrefix === targetArticlePrefix;
+          })
+          .map((x, index, array) => {
+            if (array.length === 1) {
+              return silimarproducts.map((x) => (
+                <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
+                  <CartProduct
+                    id_key={x.id}
+                    imageSrc1={x.image}
+                    imageSrc2={x.image2}
+                    isNew={x.isNew}
+                    isDiscount={x.isDiscount}
+                    isLiked={false}
+                    descriprion={x.name}
+                    price1={convertPrice(x.price, selectedCurrency)}
+                    currency={selectedCurrency}
+                    price2={convertPrice(x.salePrice, selectedCurrency)}
+                  />
+                </Link>
+              ));
+            } else {
+              return (
+                <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
+                  <CartProduct
+                    id_key={x.id}
+                    imageSrc1={x.image}
+                    imageSrc2={x.image2}
+                    isNew={x.isNew}
+                    isDiscount={x.isDiscount}
+                    isLiked={false}
+                    descriprion={x.name}
+                    price1={convertPrice(x.price, selectedCurrency)}
+                    currency={selectedCurrency}
+                    price2={convertPrice(x.salePrice, selectedCurrency)}
+                  />
+                </Link>
+              );
+            }
+          })
+      ) : (
+        <div></div>
+      )}
    </Carousels>
 </MDBRow>
 </MDBContainer>

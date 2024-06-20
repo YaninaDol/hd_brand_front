@@ -37,15 +37,17 @@ class CardBox extends Component {
             <MDBCol   > 
             <MDBRow><div style={{fontWeight:'bold'}}>{this.props.name} </div> </MDBRow> 
             <MDBRow> <p style={{opacity:'0.5',color:'gray'}}>Арт: {this.props.article}</p></MDBRow> 
-            <MDBRow style={{marginTop:'15px'}}>
+            {this.props.size !== '' && (  <MDBRow style={{marginTop:'15px'}}>
                 <MDBCol>Розмір: </MDBCol>
                 <MDBCol > {this.props.size}</MDBCol>
-            </MDBRow>
-            <MDBRow style={{marginTop:'15px'}}>
-                <MDBCol>Срок : </MDBCol>
-                <MDBCol > 7-10 робочих днів</MDBCol>
-            </MDBRow>
-            <MDBRow style={{marginTop:'15px'}}>  <MDBCol   md='6' >
+            </MDBRow>)}
+            {this.props.size !== '' && (
+          <MDBRow style={{ marginTop: '15px' }}>
+            <MDBCol>Срок : </MDBCol>
+            <MDBCol>7-10 робочих днів</MDBCol>
+          </MDBRow>
+        )}
+           {this.props.size !== '' && (   <MDBRow style={{marginTop:'15px'}}>  <MDBCol   md='6' >
               <div  className="d-flex justify-content-between align-items-center quantity-container">
                 <Button variant="light" style={{borderRadius:'0px'}}  onClick={this.decrementQuantity}>
                 -
@@ -56,7 +58,7 @@ class CardBox extends Component {
                 </Button>
               </div>
             </MDBCol> </MDBRow>
-           
+            )}
 <MDBRow  style={{marginTop:'15px'}}>
 <MDBCol>
               <MDBTypography tag="h5" id='price'>

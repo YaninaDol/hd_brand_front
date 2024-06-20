@@ -1035,7 +1035,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
             id={`liqpay`}
             checked={selectedPaymentMethod === 'liqpay'}
             onChange={() => handleCheckboxChange('liqpay')}
-            label="Повна передоплата (платіжний сервіс LiqPay)"
+            label="Повна оплата (платіжний сервіс LiqPay)"
           />
       
        

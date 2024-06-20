@@ -55,7 +55,7 @@ class CartBasket extends Component {
             <MDBCardText className="text-center">{this.props.size}</MDBCardText>
           </MDBCol>
           
-          <MDBCol md="2" lg="2" xl="2">
+          {this.props.size !== '' && (  <MDBCol md="2" lg="2" xl="2">
             <div className="d-flex justify-content-between align-items-center">
               <Button variant="light" size="sm" onClick={this.decrementQuantity}>
                 -
@@ -66,6 +66,7 @@ class CartBasket extends Component {
               </Button>
             </div>
           </MDBCol>
+          )}
           <MDBCol style={{paddingRight:'0px'}}  md="2" lg="2" xl="3">
             <MDBTypography tag="h6" id='price' className="mx-2 text-center">
               {this.props.price1 * this.props.quantity} {this.props.selectedCurrency}
