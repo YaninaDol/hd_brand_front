@@ -390,6 +390,8 @@ const ProductDetailsPage = () => {
         return require('../assets/table3.png');
       case "12":
         return require('../assets/table1.png');
+        case "13":
+        return require('../assets/table5.JPG');
       default:
         return  require('../assets/table1.png');
     }

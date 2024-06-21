@@ -25,8 +25,6 @@ export default function ProductTable(){
   const productsizes = useSelector(state => state.productsizes);
 
   
-    const [inputSearch, setInputSearch] = useState('');
-    const [findproducts,setFindProducts] = useState([]);
     const [colors,setColors] = useState([]);
     const [inputSearchTable, setInputSearchTable] = useState('');
     const [inputSearchCards, setInputSearchCards] = useState('');
@@ -343,6 +341,7 @@ const handleFileChange = (event) => {
 
   if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
     setAddProductImage(file);
+    alert('Файл додано!');
   } else {
     alert('Файл должен быть формата webp и не больше 200 КБ');
   }
@@ -353,6 +352,7 @@ const handleFileChange2 = (event) => {
 
   if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
     setAddProductImage2(file);
+    alert('Файл додано!');
   } else {
     alert('Файл должен быть формата webp и не больше 200 КБ');
   }
@@ -363,6 +363,7 @@ const handleFileChange3 = (event) => {
 
   if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
     setAddProductImage3(file);
+    alert('Файл додано!');
   } else {
     alert('Файл должен быть формата webp и не больше 200 КБ');
   }
@@ -372,6 +373,7 @@ const handleFileChangeVideo = (event) => {
   const file = event.target.files[0];
   if (file && file.size <= 3 * 1024 * 1024) {
     setAddProductVideo(event.target.files[0]);
+    alert('Файл додано!');
   } else {
     alert('Файл должен быть не больше 3 MB');
   }
@@ -687,11 +689,12 @@ function changeProductVideoContent()
         onHide={handleCloseUp}
         backdrop="static"
         keyboard={false}
+        style={{ maxWidth: '100%', margin: '0 auto' }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Update product</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ maxHeight: '70vh', overflowY: 'auto',overflowX:'hidden' }}>
      
         <MDBInputGroup className='mb-3'  textBefore='Назва'>
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
@@ -816,9 +819,9 @@ function changeProductVideoContent()
       
       
       
-      <MDBRow className='justify-content-center text-center' style={{margin:'50px'}}>
+      <MDBRow className='justify-content-center text-center' style={{marginTop:'50px'}}>
   <MDBCol>
-    <Card style={{width:'500px'}}>
+    <Card  style={{width:'500px'}}>
     <video  controls preload="auto">
     <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
       Your browser does not support the video tag.
@@ -839,16 +842,17 @@ function changeProductVideoContent()
 
       <h1 style={{textAlign:'center',alignItems:'center'}} >WEEKLY LOOK</h1>
      
-   <CardGroup style={{height:300}}>
+   <div style={{ display: 'flex', justifyContent:'space-around', alignItems:'center' }}>
+    
     {
       allproducts.filter((x) => x.weeklyLook === true).map((product) => (
-        <Card style={{ width: '18rem',alignItems:'center' }} key={product.id}> 
-          <Card.Img variant="center" style={{height:'80%'}}  src={product.image}></Card.Img>
+        <Card  style={{border:'none' }}  className="text-center d-flex align-items-center" key={product.id}> 
+          <Card.Img  className="img-fluid"  style={ {height:'300px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}}  variant="center" src={product.image}></Card.Img>
         <Button style={{marginTop:'15px'}} onClick={()=>btnChange(product.id)} variant="dark">CHANGE</Button>
         </Card>
       ))
     }
-   </CardGroup>
+   </div>
     <h1 style={{textAlign:'center',alignItems:'center'}} >PRODUCT TABLE</h1>
     <Button   variant='dark'  onClick={(()=>setaddProductRow(""))}>
                            + Додати новий 

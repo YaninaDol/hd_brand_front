@@ -1091,11 +1091,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   ) : (
     activeTab !== 'longer-tab' ? (
       <MDBCol className="text-end">
-        <h5>{convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)} {selectedCurrency}</h5>
+        <h5>{TotalSum+shipment} {selectedCurrency}</h5>
       </MDBCol>
     ) : (
       <MDBCol className="text-end">
-        <h5>{convertPrice(total - total * (discount / 100), selectedCurrency)} {selectedCurrency}</h5>
+        <h5>{TotalSum} {selectedCurrency}</h5>
       </MDBCol>
     )
   )}
@@ -1175,11 +1175,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   ) : (
     activeTab !== 'longer-tab' ? (
       <MDBCol className="text-end">
-        <h5>{convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)} {selectedCurrency}</h5>
+        <h5>{TotalSum+shipment} {selectedCurrency}</h5>
       </MDBCol>
     ) : (
       <MDBCol className="text-end">
-        <h5>{convertPrice(total - total * (discount / 100), selectedCurrency)} {selectedCurrency}</h5>
+        <h5>{TotalSum} {selectedCurrency}</h5>
       </MDBCol>
     )
   )}

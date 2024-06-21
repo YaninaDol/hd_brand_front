@@ -43,7 +43,7 @@ class CardBox extends Component {
             </MDBRow>)}
             {this.props.size !== '' && (
           <MDBRow style={{ marginTop: '15px' }}>
-            <MDBCol>Срок : </MDBCol>
+            <MDBCol>Термін виготовлення: </MDBCol>
             <MDBCol>7-10 робочих днів</MDBCol>
           </MDBRow>
         )}

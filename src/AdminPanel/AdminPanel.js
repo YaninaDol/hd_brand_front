@@ -14,7 +14,7 @@ const AdminPanel = () => {
 
   return (
     <div>
-      <ul className="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+      <ul className="nav nav-pills nav-justified  " id="ex1" role="tablist">
         <li className="nav-item" role="presentation">
           <Link
             className={`nav-link ${activeTab === '/admin/products' ? 'active' : ''}`}
