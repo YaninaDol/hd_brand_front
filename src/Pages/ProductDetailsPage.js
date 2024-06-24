@@ -20,6 +20,7 @@ import ShoppingAssistant from '../Components/ShoppingAssistant';
 import BasketModal from '../Components/BasketModal';
 import '../Pages/ProductdetailPage.css';
 import CartProduct from '../Components/CartProduct';
+import NewProductCardItem from '../Components/NewProductCardItem';
 const ProductDetailsPage = () => {
   const [loading, setLoading] = useState(true);
     const { id, subcategoryid } = useParams();
@@ -453,112 +454,39 @@ const ProductDetailsPage = () => {
 </div>
    
       
-        
-<MDBContainer id='container50'>
-<MDBRow id='rowmargin50' >
-   
-
-    <MDBCol id='photocolumn'>
-    {product.image&&(<MDBRow>
-  
-             <MDBCol  ><img src={product.image} style={{margin:'5px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
-            </MDBRow>)}
-           
-            {product.image2&&(  <MDBRow>
-   
-   <MDBCol  ><img src={product.image2} style={{margin:'5px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
-            </MDBRow>)}
-   </MDBCol>
-   {(product.image3 || product.video)&&(
-   <MDBCol  id='photocolumn'>
-   {product.image3&&(    <MDBRow>
-   
-    <MDBCol  id='photocolumn'><img src={product.image3} style={{margin:'5px', aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
-             </MDBRow>)}
-             {product.video&&(      <MDBRow>
-   
-   <MDBCol  id='photocolumn'> <div style={{ position: 'relative' }}>
-   <video
-      
-      ref={videoRef}
-      preload="auto"
-      className="card-img-top"
-      playsInline
-      muted
-      autoPlay
-      loop
-      src={product.video}
-      onClick={handleVideoClick}
-      style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
-    />
-
-    
-    <button
-      onClick={handleVideoToggle}
-      style={{
-        position: 'absolute',
-        bottom: '25px',
-        right: '10px',
-        background: 'transparent', 
-        border: 'none', 
-        cursor: 'pointer' 
-      }}
-    >
-      {isPlaying ? (
-       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"  color='black' fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
-       <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
-     </svg>
-      ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"  color='black' fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
-      </svg>
-        )}
-      </button>
-    </div></MDBCol>
-            </MDBRow>)}
-   </MDBCol>)}
-
-
-
-
-
-
-<MDBCol style={{margin:'25px'}}>
-
-<MDBRow >
 <Carousel id='photocolumnmob'>
   {product.image && (
-    <Carousel.Item style={{ height: '400px' }}>
+    <Carousel.Item style={{ height: '500px' }}>
       <img 
         src={product.image} 
-        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
+        style={{ objectFit: 'cover', width: '100%', height: '100%' }} 
         className="card-img-top" 
         alt="photo" 
       />
     </Carousel.Item>
   )}
   {product.image2 && (
-    <Carousel.Item style={{ height: '400px' }}>
+    <Carousel.Item style={{ height: '500px' }}>
       <img 
         src={product.image2} 
-        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
+        style={{  objectFit: 'cover', width: '100%', height: '100%' }} 
         className="card-img-top" 
         alt="photo" 
       />
     </Carousel.Item>
   )}
   {product.image3 && (
-    <Carousel.Item style={{ height: '400px' }}>
+    <Carousel.Item style={{ height: '500px' }}>
       <img 
         src={product.image3} 
-        style={{ margin: '5px', objectFit: 'cover', width: '100%', height: '100%' }} 
+        style={{  objectFit: 'cover', width: '100%', height: '100%' }} 
         className="card-img-top" 
         alt="photo" 
       />
     </Carousel.Item>
   )}
   {product.video && (
-    <Carousel.Item style={{ height: '400px' }}>
+    <Carousel.Item style={{ height: '500px' }}>
       
       <video
       
@@ -608,7 +536,79 @@ const ProductDetailsPage = () => {
       /> */}
     </Carousel.Item>
   )}
-</Carousel>
+</Carousel>      
+<MDBContainer id='container50'>
+<MDBRow id='rowmargin50' >
+   
+
+    <MDBCol id='photocolumn'>
+    {product.image&&(<MDBRow>
+  
+             <MDBCol  ><img src={product.image} style={{ aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
+            </MDBRow>)}
+           
+            {product.image2&&(  <MDBRow>
+   
+   <MDBCol  ><img src={product.image2} style={{ aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
+            </MDBRow>)}
+   </MDBCol>
+   {(product.image3 || product.video)&&(
+   <MDBCol  id='photocolumn'>
+   {product.image3&&(    <MDBRow>
+   
+    <MDBCol  id='photocolumn'><img src={product.image3} style={{ aspectRatio:'3/4',position:'relative',objectFit:'cover'}} class="card-img-top" alt="photo"/></MDBCol>
+             </MDBRow>)}
+             {product.video&&(      <MDBRow>
+   
+   <MDBCol  id='photocolumn'> <div style={{ position: 'relative' }}>
+   <video
+      
+      ref={videoRef}
+      preload="auto"
+      className="card-img-top"
+      playsInline
+      muted
+      autoPlay
+      loop
+      src={product.video}
+      onClick={handleVideoClick}
+      style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
+    />
+
+    
+    <button
+      onClick={handleVideoToggle}
+      style={{
+        position: 'absolute',
+        bottom: '25px',
+        right: '10px',
+        background: 'transparent', 
+        border: 'none', 
+        cursor: 'pointer' 
+      }}
+    >
+      {isPlaying ? (
+       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"  color='black' fill="currentColor" class="bi bi-pause" viewBox="0 0 16 16">
+       <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z"/>
+     </svg>
+      ) : (
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"  color='black' fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+      </svg>
+        )}
+      </button>
+    </div></MDBCol>
+            </MDBRow>)}
+   </MDBCol>)}
+
+
+
+
+
+
+<MDBCol style={{margin:'5px'}}>
+
+<MDBRow >
 
 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 <p style={{opacity:'0.5',color:'gray'}} >Арт: {product.article}</p>
@@ -630,16 +630,16 @@ const ProductDetailsPage = () => {
 
 <MDBRow  style={{marginTop:'5px',fontSize:'20px'}}> <h7>{convertPrice(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
 <MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol> {season.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol> {category.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol> {subcategory.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol> {material.name} </MDBCol> </MDBRow>
+                <MDBRow  style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol className='text-end'> {season.name} </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol className='text-end'> {category.name} </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol className='text-end'> {subcategory.name} </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol className='text-end'> {material.name} </MDBCol> </MDBRow>
 
                 {!product.isDiscount && (
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
-      <select className="select p-2 bg-grey" style={{ width: "100%" }} onChange={(e) => setNewProd(JSON.parse(e.target.value))}>
+      <select className="select p-3 bg-grey" style={{ width: "100%",marginBottom:'5px' }} onChange={(e) => setNewProd(JSON.parse(e.target.value))}>
       <option selected value="0">Оберіть розмір</option>
       
         {productsizes.map((x) => (
@@ -696,10 +696,11 @@ onClick={addToBasket}
             if (array.length === 1) {
               return silimarproducts.map((x) => (
                 <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
-                  <CartProduct
+                  <NewProductCardItem
                     id_key={x.id}
                     imageSrc1={x.image}
                     imageSrc2={x.image2}
+                    imageSrc3={x.image3}
                     isNew={x.isNew}
                     isDiscount={x.isDiscount}
                     isLiked={false}
@@ -713,7 +714,7 @@ onClick={addToBasket}
             } else {
               return (
                 <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
-                  <CartProduct
+                  <NewProductCardItem
                     id_key={x.id}
                     imageSrc1={x.image}
                     imageSrc2={x.image2}

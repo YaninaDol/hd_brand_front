@@ -121,34 +121,37 @@ export default function ProductTable(){
         dispatch(setProducts(response.data))
         setAllProducts(response.data);
        
-        axios.get(`${API_BASE_URL}/api/Product/GetContentVideo`, {
-          headers: {
-            'Accept': 'text/plain', 
-            'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken")
-          }
-        })
-        .then(res => {
+        // axios.get(`${API_BASE_URL}/api/Product/GetContentVideo`, {
+        //   headers: {
+        //     'Accept': 'text/plain', 
+        //     'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken")
+        //   }
+        // })
+        // .then(res => {
        
-          setVideoURL(res.data[0].url);
-          setSelectedProductIdVideo(res.data[0].prodId);
+        //   setVideoURL(res.data[0].url);
+        //   setSelectedProductIdVideo(res.data[0].prodId);
           
-          let productf = response.data.find(x => x.id === res.data[0].prodId);
+        //   let productf = response.data.find(x => x.id === res.data[0].prodId);
         
-          if (productf) {
+        //   if (productf) {
            
-            setSelectedProductIdImage(productf.image);
-          } else {
+        //     setSelectedProductIdImage(productf.image);
+        //   } else {
           
-            setSelectedProductIdImage('default_image.jpg');
-          }
+        //     setSelectedProductIdImage('default_image.jpg');
+        //   }
           
-          setContentVideo(res.data[0]);
-        })
-        .catch(error => {
+        //   setContentVideo(res.data[0]);
+        // })
+        // .catch(error => {
          
-          console.error('Error fetching data:', error);
-        });
+        //   console.error('Error fetching data:', error);
+        // });
       })
+
+
+
       .catch(error => console.error('Error fetching products:', error));
   
       axios.get(`${API_BASE_URL}/api/Specification/GetAllCategory`)
@@ -339,33 +342,33 @@ function deletecategory(id)
 const handleFileChange = (event) => {
   const file = event.target.files[0];
 
-  if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
+  if (file && file.type === 'image/webp' && file.size <= 300 * 1024) {
     setAddProductImage(file);
     alert('Файл додано!');
   } else {
-    alert('Файл должен быть формата webp и не больше 200 КБ');
+    alert('Файл должен быть формата webp и не больше 300 КБ');
   }
 };
 
 const handleFileChange2 = (event) => {
   const file = event.target.files[0];
 
-  if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
+  if (file && file.type === 'image/webp' && file.size <= 300 * 1024) {
     setAddProductImage2(file);
     alert('Файл додано!');
   } else {
-    alert('Файл должен быть формата webp и не больше 200 КБ');
+    alert('Файл должен быть формата webp и не больше 300 КБ');
   }
 };
 
 const handleFileChange3 = (event) => {
   const file = event.target.files[0];
 
-  if (file && file.type === 'image/webp' && file.size <= 200 * 1024) {
+  if (file && file.type === 'image/webp' && file.size <= 300 * 1024) {
     setAddProductImage3(file);
     alert('Файл додано!');
   } else {
-    alert('Файл должен быть формата webp и не больше 200 КБ');
+    alert('Файл должен быть формата webp и не больше 300 КБ');
   }
 };
 
@@ -500,7 +503,7 @@ function changeLook()
 function changeVideoContent()
 { 
  var bodyFormData = new FormData();
- bodyFormData.append('id', contentVideo.id);
+ bodyFormData.append('id', 1);
   bodyFormData.append('video', Video);
 
               axios (
@@ -823,7 +826,7 @@ function changeProductVideoContent()
   <MDBCol>
     <Card  style={{width:'500px'}}>
     <video  controls preload="auto">
-    <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
+    <source src='https://hdbrandblob.blob.core.windows.net/storage/videoContent.MP4' type="video/mp4" />
       Your browser does not support the video tag.
     </video>
       <input onChange={(e)=>setVideo(e.target.files[0])} className='form-control' type='file' />

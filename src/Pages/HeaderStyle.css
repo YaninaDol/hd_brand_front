@@ -273,15 +273,25 @@
      
       flex-wrap: nowrap;
     }
+    #videocontent
+  {
+    display: none;
+  }
   }
   @media screen and (max-width: 1024px) {
     #price{
       font-size: 15px;
   }
+ 
   }
 
   @media screen and (max-width: 750px) {
-   
+  #carousel-image {
+      height: 400px; /* Задайте высоту, подходящую для мобильных устройств */
+      object-fit: cover; /* Изображение будет обрезаться, чтобы заполнить контейнер */
+      object-position: center; /* Центрирование изображения */
+      
+    }
     #titleRow
 {
   display: none;

@@ -344,15 +344,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
    
-      <Form.Check 
-            type='checkbox'
-         
-            value={3}
-           
-            onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Весна'
-            style={{ marginTop:15}}
-          />
+     
           <Form.Check 
             type='checkbox'
            
@@ -360,6 +352,15 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label='Літо'
+            style={{ marginTop:15}}
+          />
+           <Form.Check 
+            type='checkbox'
+         
+            value={3}
+           
+            onChange={(e) => handleCheckboxChange(e, 'season')}
+            label='Весна-Oсінь'
             style={{ marginTop:15}}
           />
           <Form.Check 
@@ -377,7 +378,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             value={4}
          
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Осінь'
+            label='Зима-Демісезон'
             style={{ marginTop:15}}
           />
       </div>
@@ -703,15 +704,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
    
-      <Form.Check 
-            type='checkbox'
-         
-            value={3}
-           
-            onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Весна'
-            style={{ marginTop:15}}
-          />
+      
           <Form.Check 
             type='checkbox'
            
@@ -719,6 +712,15 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label='Літо'
+            style={{ marginTop:15}}
+          />
+          <Form.Check 
+            type='checkbox'
+         
+            value={3}
+           
+            onChange={(e) => handleCheckboxChange(e, 'season')}
+            label='Весна-Осінь'
             style={{ marginTop:15}}
           />
           <Form.Check 
@@ -736,7 +738,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             value={4}
          
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Осінь'
+            label='Зима-Демісезон'
             style={{ marginTop:15}}
           />
       </div>

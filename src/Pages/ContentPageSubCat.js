@@ -321,7 +321,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             value={3}
            
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Весна'
+            label='Весна-Осінь'
             style={{ marginTop:15}}
           />
           <Form.Check 
@@ -348,7 +348,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             value={4}
          
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Осінь'
+            label='Зима-Демісезон'
             style={{ marginTop:15}}
           />
       </div>
@@ -656,7 +656,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             value={3}
            
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Весна'
+            label='Весна-Осінь'
             style={{ marginTop:15}}
           />
           <Form.Check 
@@ -683,7 +683,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             value={4}
          
             onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Осінь'
+            label='Зима-Демісезон'
             style={{ marginTop:15}}
           />
       </div>

@@ -150,21 +150,23 @@ const Home = () => {
    <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
-    <Carousel style={{marginTop:'150px'}} >
+    <Carousel fade style={{marginTop:'150px'}} >
       <Carousel.Item active>
    
         <img
-          className="d-block w-100"
+        id='carousel-image'
+          className="d-block "
           src={require('../assets/bunner@2x.png')}
           alt="First slide"
+          style={responsive}
         />
        
       </Carousel.Item>
      
       <Carousel.Item>
         <img
-    
-          className="d-block w-100"
+     id='carousel-image'
+          className="d-block "
           src={require('../assets/bunner3@2x.png')}
           alt="Third slide"
         />
@@ -172,32 +174,15 @@ const Home = () => {
       </Carousel.Item>
       <Carousel.Item>
         <img
-      
-          className="d-block w-100"
+       id='carousel-image'
+          className="d-block "
           src={require('../assets/bunner4@2x.png')}
           alt="Third slide"
         />
 
       </Carousel.Item>
 
-      <Carousel.Item>
-        <img
-        
-          className="d-block w-100"
-          src={require('../assets/bunner5@2x.png')}
-          alt="Third slide"
-        />
-
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-        
-          className="d-block w-100"
-          src={require('../assets/bunner2@2x.png')}
-          alt="Third slide"
-        />
-
-      </Carousel.Item>
+     
 
 
       
@@ -271,7 +256,7 @@ const Home = () => {
    <WeeklyPreview convertPrice={convertPrice} selectedCurrency={selectedCurrency}  weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
  
   
-   <div style={{
+   <div id='videocontent' style={{
       position: 'relative',
       width: '100%',
       overflow: 'hidden'
@@ -285,7 +270,7 @@ const Home = () => {
         playsInline
       
       >
-        <source src='https://hdbrandblob.blob.core.windows.net/storage/video' type="video/mp4" />
+        <source src='https://hdbrandblob.blob.core.windows.net/storage/videoContent.MP4' type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
@@ -308,7 +293,7 @@ const Home = () => {
         .map((x) => (
           <React.Fragment key={x.id}>
             {showSection && (
-            
+             <div className="something" >
                 <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
                 <NewProductCardItem
                id_key={x.id}
@@ -325,7 +310,7 @@ const Home = () => {
                price2={convertPrice(x.salePrice,selectedCurrency)}
             />
                 </Link>
-            
+                </div>
             )}
           </React.Fragment>
         ))}

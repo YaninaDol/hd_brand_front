@@ -66,9 +66,8 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
     <MDBCarouselItem itemId={1}>
       <Card.Img
         variant="top"
-        style={{ objectFit: 'cover', border: 'none' }}
-        className='cardIMG'
-        src={imageSrc1}
+        style={{ objectFit: 'cover', border: 'none',aspectRatio:'3/4',position:'relative' }}
+         src={imageSrc1}
       />
     </MDBCarouselItem>
   )}
@@ -76,8 +75,8 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
     <MDBCarouselItem itemId={2}>
       <Card.Img
         variant="top"
-        style={{ objectFit: 'cover', border: 'none' }}
-        className='cardIMG'
+        style={{ objectFit: 'cover', border: 'none',aspectRatio:'3/4',position:'relative' }}
+       
         src={imageSrc2}
       />
     </MDBCarouselItem>
@@ -86,8 +85,8 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
     <MDBCarouselItem itemId={3}>
       <Card.Img
         variant="top"
-        style={{ objectFit: 'cover', border: 'none' }}
-        className='cardIMG'
+        style={{ objectFit: 'cover', border: 'none',aspectRatio:'3/4',position:'relative' }}
+       
         src={imageSrc3}
       />
     </MDBCarouselItem>
