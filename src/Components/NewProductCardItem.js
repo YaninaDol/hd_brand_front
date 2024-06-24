@@ -71,7 +71,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
       />
     </MDBCarouselItem>
   )}
-  {imageSrc2 && (
+  {/* {imageSrc2 && (
     <MDBCarouselItem itemId={2}>
       <Card.Img
         variant="top"
@@ -90,7 +90,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
         src={imageSrc3}
       />
     </MDBCarouselItem>
-  )}
+  )} */}
   
 </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>

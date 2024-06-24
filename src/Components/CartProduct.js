@@ -68,12 +68,12 @@ const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video,isNew, isDis
           {imageSrc1 && (   <MDBCarouselItem itemId={1}>
               <Card.Img id='id_img' variant="top" style={{  borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} src={imageSrc1} />
             </MDBCarouselItem>)}
-            {imageSrc2 && (   <MDBCarouselItem itemId={2}>
+            {/* {imageSrc2 && (   <MDBCarouselItem itemId={2}>
               <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={imageSrc2} />
             </MDBCarouselItem>)}
             {imageSrc3 && (   <MDBCarouselItem itemId={3}>
               <Card.Img   id='id_img'  variant="top" style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }}  src={imageSrc3} />
-            </MDBCarouselItem>)}
+            </MDBCarouselItem>)} */}
           
           </MDBCarousel>
           <div style={{ position: 'absolute', top: '10px', left: '10px' }}>

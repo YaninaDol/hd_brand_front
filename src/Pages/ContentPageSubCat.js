@@ -315,15 +315,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
    
-      <Form.Check 
-            type='checkbox'
-         
-            value={3}
-           
-            onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Весна-Осінь'
-            style={{ marginTop:15}}
-          />
+     
           <Form.Check 
             type='checkbox'
            
@@ -333,6 +325,16 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             label='Літо'
             style={{ marginTop:15}}
           />
+           <Form.Check 
+            type='checkbox'
+         
+            value={3}
+           
+            onChange={(e) => handleCheckboxChange(e, 'season')}
+            label='Весна-Осінь'
+            style={{ marginTop:15}}
+          />
+          
           <Form.Check 
             type='checkbox'
           
@@ -650,15 +652,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     <div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
    
-      <Form.Check 
-            type='checkbox'
-         
-            value={3}
-           
-            onChange={(e) => handleCheckboxChange(e, 'season')}
-            label='Весна-Осінь'
-            style={{ marginTop:15}}
-          />
+      
           <Form.Check 
             type='checkbox'
            
@@ -666,6 +660,15 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label='Літо'
+            style={{ marginTop:15}}
+          />
+          <Form.Check 
+            type='checkbox'
+         
+            value={3}
+           
+            onChange={(e) => handleCheckboxChange(e, 'season')}
+            label='Весна-Осінь'
             style={{ marginTop:15}}
           />
           <Form.Check 
