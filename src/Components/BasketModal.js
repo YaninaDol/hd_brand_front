@@ -94,6 +94,7 @@ const BasketModal = ({
                 name={x.name}
                 quantity={x.quantity}
                 size={x.size}
+                
                 picture={x.image}
                 price1={convertPrice(x.price, selectedCurrency)}
                 incrementQuantity={incrementQuantity}

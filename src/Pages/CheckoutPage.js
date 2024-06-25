@@ -1131,6 +1131,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       name={x.name}
       quantity={x.quantity}
       size={x.size}
+      insulator={x.insulator}
       picture={x.image}
       price={convertPrice(x.price,selectedCurrency)}
       incrementQuantity={incrementQuantity}

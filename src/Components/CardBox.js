@@ -40,6 +40,12 @@ class CardBox extends Component {
             {this.props.size !== '' && (  <MDBRow style={{marginTop:'15px'}}>
                 <MDBCol>Розмір: </MDBCol>
                 <MDBCol > {this.props.size}</MDBCol>
+               
+            </MDBRow>)}
+            {this.props.size !== '' && this.props.insulator &&(  <MDBRow style={{marginTop:'15px'}}>
+                <MDBCol>Утеплювач: </MDBCol>
+                <MDBCol > {this.props.insulator}</MDBCol>
+               
             </MDBRow>)}
             {this.props.size !== '' && (
           <MDBRow style={{ marginTop: '15px' }}>
