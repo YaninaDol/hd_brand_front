@@ -53,6 +53,7 @@ class CartBasket extends Component {
             <p hidden="hidden">{this.props.unic}</p>
             <p className="fw-normal mb-2 text-center">{this.props.name}</p>
             <MDBCardText className="text-center">{this.props.size}</MDBCardText>
+            {this.props.size !== '' &&this.props.insulator && (  <MDBCardText className="text-center">{this.props.insulator}</MDBCardText>)}
           </MDBCol>
           
           {this.props.size !== '' && (  <MDBCol md="2" lg="2" xl="2">
