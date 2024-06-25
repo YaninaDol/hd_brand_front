@@ -45,6 +45,10 @@ const ProductDetailsPage = () => {
   const handleShowtableSize = () => setshowTableSize(true);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [showValidation, setShowValidation] = useState(false);
+  const variant_season = 4;
+  const plus_price = 200;
+  const [selectedInsulator, setSelectedInsulator] = useState('Байка'); 
+  const [availableInsulators, setAvailableInsulators] = useState(['Байка', 'Хутро']); 
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
     eur: 1,
@@ -344,6 +348,23 @@ const ProductDetailsPage = () => {
     }
   };
 
+  const convertPrice1 = (price, currency) => {
+    if (!exchangeRates || Object.keys(exchangeRates).length === 0) {
+      return price;
+    }
+  
+    const usdRate = exchangeRates.usd
+    const eurRate = exchangeRates.eur;
+ price= selectedInsulator=='Хутро'?price+plus_price:price;
+
+    if (currency === 'USD') {
+      return (price * usdRate).toFixed(0);
+    } else if (currency === 'EUR') {
+      return (price * eurRate).toFixed(0);
+    } else {
+      return price;
+    }
+  };
   
   const addToBasket = () => {
     if (!newProd) {
@@ -354,12 +375,19 @@ const ProductDetailsPage = () => {
     const storedBasket = window.sessionStorage.getItem("Basket");
     const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
     const existingItem = existingBasket.find((item) => item.id === newProd.id);
+    
+    const itemToAdd = {
+      ...newProd,
+      quantity: 1,
+      insulator: product.seasonid === variant_season ? selectedInsulator : null,
+      
+    };
   
     if (product.isDiscount) {
       if (existingItem) {
         alert('Товар вже доданий до кошика');
       } else {
-        existingBasket.push({ ...newProd, quantity: 1 });
+        existingBasket.push(itemToAdd);
         window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
         handleShowM();
         setNewProd(null);
@@ -371,7 +399,8 @@ const ProductDetailsPage = () => {
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
-      existingBasket.push({ ...newProd, quantity: 1 });
+      itemToAdd.price = selectedInsulator=='Хутро'? product.price + plus_price : product.price;
+      existingBasket.push(itemToAdd);
     }
   
     window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
@@ -379,6 +408,7 @@ const ProductDetailsPage = () => {
     setNewProd(null);
     setShowValidation(false);
   };
+
   
  
   function getTableImage(sizeId) {
@@ -453,40 +483,39 @@ const ProductDetailsPage = () => {
  {product.name}
 </div>
    
-      
 <Carousel id='photocolumnmob'>
   {product.image && (
-    <Carousel.Item style={{ height: '500px' }}>
+    <Carousel.Item  >
       <img 
         src={product.image} 
-        style={{ objectFit: 'cover', width: '100%', height: '100%' }} 
+        style={{   aspectRatio:'3/4',position:'relative', width: '100%', height: '100%' }} 
         className="card-img-top" 
         alt="photo" 
       />
     </Carousel.Item>
   )}
   {product.image2 && (
-    <Carousel.Item style={{ height: '500px' }}>
+    <Carousel.Item >
       <img 
         src={product.image2} 
-        style={{  objectFit: 'cover', width: '100%', height: '100%' }} 
+        style={{   aspectRatio:'3/4',position:'relative', width: '100%', height: '100%' }} 
         className="card-img-top" 
         alt="photo" 
       />
     </Carousel.Item>
   )}
   {product.image3 && (
-    <Carousel.Item style={{ height: '500px' }}>
+    <Carousel.Item >
       <img 
         src={product.image3} 
-        style={{  objectFit: 'cover', width: '100%', height: '100%' }} 
+        style={{   aspectRatio:'3/4',position:'relative', width: '100%', height: '100%' }} 
         className="card-img-top" 
         alt="photo" 
       />
     </Carousel.Item>
   )}
   {product.video && (
-    <Carousel.Item style={{ height: '500px' }}>
+    <Carousel.Item >
       
       <video
       
@@ -536,7 +565,8 @@ const ProductDetailsPage = () => {
       /> */}
     </Carousel.Item>
   )}
-</Carousel>      
+</Carousel>
+     
 <MDBContainer id='container50'>
 <MDBRow id='rowmargin50' >
    
@@ -575,6 +605,7 @@ const ProductDetailsPage = () => {
       style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
     />
 
+
     
     <button
       onClick={handleVideoToggle}
@@ -606,7 +637,7 @@ const ProductDetailsPage = () => {
 
 
 
-<MDBCol style={{margin:'5px'}}>
+   <MDBCol style={{margin:'5px'}}>
 
 <MDBRow >
 
@@ -628,7 +659,7 @@ const ProductDetailsPage = () => {
    
     </MDBRow>
 
-<MDBRow  style={{marginTop:'5px',fontSize:'20px'}}> <h7>{convertPrice(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
+<MDBRow  style={{marginTop:'5px',fontSize:'20px'}}> <h7>{convertPrice1(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
 <MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
                 <MDBRow  style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol className='text-end'> {season.name} </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol className='text-end'> {category.name} </MDBCol> </MDBRow>
@@ -661,7 +692,19 @@ const ProductDetailsPage = () => {
     
   </MDBRow>)}
 
-
+  {!product.isDiscount && ( <MDBRow className='text-start'  style={{marginTop:'55px'}}>
+                      {product.seasonid === variant_season && (
+                        <div>
+                          <label htmlFor="insulator">Утеплювач:  </label>
+                          <select id="insulator" className="select p-3 bg-grey" style={{ width: "100%" }}  value={selectedInsulator} onChange={(e) => setSelectedInsulator(e.target.value)}>
+                           
+                            {availableInsulators.map((insulator, index) => (
+                              <option key={index} value={insulator}>{insulator}</option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </MDBRow>)}
 <MDBRow className='text-center'  style={{marginTop:'55px'}}> <Button
 onClick={addToBasket}
                   style={{ borderRadius: '0px' }}
@@ -696,11 +739,10 @@ onClick={addToBasket}
             if (array.length === 1) {
               return silimarproducts.map((x) => (
                 <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
-                  <NewProductCardItem
+                 <NewProductCardItem
                     id_key={x.id}
                     imageSrc1={x.image}
                     imageSrc2={x.image2}
-                    imageSrc3={x.image3}
                     isNew={x.isNew}
                     isDiscount={x.isDiscount}
                     isLiked={false}

@@ -5,7 +5,7 @@ import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
 
-const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,video,isNew, isDiscount, isLiked, descriprion, price1, price2,currency }) => {
+const CartProduct = ({ id_key, imageSrc1, imageSrc2,imageSrc3,isNew, isDiscount, isLiked, descriprion, price1, price2,currency }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [loading, setLoading] = useState(true);
   const discountPercentage = ((parseInt(price1) - parseInt(price2)) / parseInt(price1)) * 100;

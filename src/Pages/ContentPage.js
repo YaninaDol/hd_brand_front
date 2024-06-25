@@ -503,7 +503,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       imageSrc1={x.image}
       imageSrc2={x.image2}
       imageSrc3={x.image3}
-      video={x.video}
+  
       isNew={x.isNew}
       isDiscount={x.isDiscount}
       isLiked={false}
@@ -527,7 +527,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       imageSrc1={x.image}
       imageSrc2={x.image2}
       imageSrc3={x.image3}
-      video={x.video}
+     
       isNew={x.isNew}
       isDiscount={x.isDiscount}
       isLiked={false}

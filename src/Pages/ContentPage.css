@@ -421,6 +421,7 @@
   align-items: center;
   justify-content: flex-start;
   padding-left: 30px;
+  padding-right: 5px;
   gap: 0 8px;
   opacity: 0.5;
 }
