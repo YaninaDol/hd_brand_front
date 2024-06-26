@@ -140,6 +140,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     }
 
     setfilteredProducts(sortedProducts);
+  
     setAllHidden('hidden');
     setFilteredHidden('');
     handleCloseSidebar();
@@ -546,8 +547,8 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           <MDBRow >
             <MDBCol className='column-hide'  ></MDBCol>
             <MDBCol  className='showmoreBtn' >
-              {visibleItems < items.length && (
-                <Button
+              {visibleItems < items.length  && (
+                <Button hidden={allhidden}
                   style={{ borderRadius: '0px' }}
                   variant="outline-dark"
                   onClick={showMoreItems}
@@ -555,6 +556,16 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
                   Показати ще товари
                 </Button>
               )}
+               {visibleItems < filteredProducts.length  && (
+                <Button hidden={filteredhidden}
+                  style={{ borderRadius: '0px' }}
+                  variant="outline-dark"
+                  onClick={showMoreItems}
+                >
+                  Показати ще товари
+                </Button>
+              )}
+
             </MDBCol>
 </MDBRow>
  
