@@ -1,8 +1,10 @@
 // Footer.js
 import { Link} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import './Footer.css'
 import React from 'react';
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <footer className="footer">
     <div className="logo-information-icon-paym">
@@ -41,20 +43,20 @@ const Footer = () => {
       </div>
       <div className="text-blocks">
         <div className="category">
-          <div className="div2">категорії</div>
+          <div className="div2">{t('category')}</div>
           <div className="itemline-buttonblock-circleele">
-          <Link style={{color:'white'}} to='/shoes'>  <div className="div3">Взуття</div></Link> 
-          {/* <Link style={{color:'white'}} to='/clothes'>   <div className="div4">Одяг</div></Link>  */}
-          <Link style={{color:'white'}} to='/accessorise'>   <div className="div5">Аксесуари</div></Link> 
+          <Link style={{color:'white'}} to='/shoes'>  <div className="div3">{t('shoes')}</div></Link> 
+          {/* <Link style={{color:'white'}} to='/clothes'>   <div className="div4">{t('clothes')}</div></Link>  */}
+          <Link style={{color:'white'}} to='/accessorise'>   <div className="div5">{t('accessorise')}</div></Link> 
           </div>
         </div>
         <div className="for-buyers">
-          <div className="div6">покупцям</div>
+          <div className="div6">{t('customers')}</div>
           <div className="f-a-q-help-questions-programs">
            <Link style={{color:'white'}} to='/faq'><div className="faq">FAQ </div></Link> 
         
-           <Link style={{color:'white'}} to='/agreement'><div className="div8">Політика конфіденційності</div></Link> 
-            <Link style={{color:'white'}} to='/public-agreement'><div className="div9">Публічний договір (оферта)</div></Link> 
+           <Link style={{color:'white'}} to='/agreement'><div className="div8">{t('privacy_policy')}</div></Link> 
+            <Link style={{color:'white'}} to='/public-agreement'><div className="div9">{t('public_offert')}</div></Link> 
           
           </div>
         </div>
@@ -62,7 +64,7 @@ const Footer = () => {
     </div>
     <div className="contacts" >
       
-      <div className="div10">контакти взуття та аксесуари</div>
+      <div className="div10">{t('contacts')}</div>
       <div className="frame-container">
         <div className="frames">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">

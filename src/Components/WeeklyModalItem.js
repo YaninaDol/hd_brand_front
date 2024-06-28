@@ -8,7 +8,7 @@ import {
     MDBTypography,
   } from "mdb-react-ui-kit";
   import { Component } from "react";
-
+  import { useTranslation } from "react-i18next";
   class WeeklyModalItem extends Component{
     constructor(props){
         super(props);
@@ -16,6 +16,7 @@ import {
 
     render()
     {
+     
         return(
           <MDBCard className="rounded-3 mb-6">
           <MDBCardBody className="p-4">
@@ -30,7 +31,7 @@ import {
               </MDBCol>
               <MDBCol md="4" lg="4" xl="4" className="text-center"> 
                 <select className="select p-2 bg-grey" onChange={(e) => this.props.choosesize(JSON.parse(e.target.value))}>
-                  <option value={JSON.stringify(null)}>Розмір</option>
+                  <option value={JSON.stringify(null)}>{this.props.t('size')}</option>
                   {this.props.sizes.map((x) => (
                     <option key={x.id} value={JSON.stringify(x)}>
                       {x.size}

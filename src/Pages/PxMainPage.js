@@ -1,4 +1,5 @@
 import { useEffect,useState } from "react";
+import { useTranslation } from 'react-i18next';
 import CartBasket from '../Components/CartBasket';
 import "./HeaderStyle.css"
 import axios from 'axios';
@@ -9,6 +10,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Link, useNavigate  } from "react-router-dom";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import AuthModal from "../Components/AuthModal";
+import BasketModal from '../Components/BasketModal';
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import {
   MDBInput,
@@ -33,36 +35,17 @@ const expand='false';
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
   };
-  const [FirstName, setFirstName] = useState("");
-  const [LastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [notice, setNotice] = useState("none");
-  const [payInfo, setPayInfo] = useState("");
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-  const [showQr, setShowQr] = useState(false);
-  const handleCloseQr = () => setShowQr(false);
-  const handleShowQr = () => setShowQr(true);
 
-  const [showPayCard, setShowPayCard] = useState(false);
-  const handleClosePayCard = () => setShowPayCard(false);
-  const handleShowPayCard = () => setShowPayCard(true);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+ 
+
 
   const [arrBasket,setArrBasket] = useState([]);
 
-  const [email, setEmail] = useState("");
-  const [pass1, setPass1] = useState("");
-  const [pass2, setPass2] = useState("");
   const [count, setCount] = useState(0);
-  const [total,setTotal] = useState(0);
-  const [payamount,setPayAmount] = useState(0);
   const [show, setShow] = useState(false);
-  const [delivery,setDelivery] = useState("");
-  const [userId,setUserId] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [result, setResult] = useState("");
-  const [department, setDepartment] = useState("");
-      const [picture, setPicture] = useState("");
 
       const [subcategory1,setSubcategory1] = useState([]);
       const [subcategory2,setSubcategory2] = useState([]);
@@ -103,7 +86,11 @@ const expand='false';
  
   }, []);
 
+  const { i18n,t } = useTranslation();
 
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
   const [showBasket, setShowBasket] = useState(false);
   const handleCloseBasket = () => setShowBasket(false);
   const handleShowBasket = () => setShowBasket(true);
@@ -205,9 +192,9 @@ function getOrder()
      
 <div>
       <div className="px-main-page">
+      <BasketModal show={showBasket} handleClose={handleCloseBasket} convertPrice={convertPrice} />
 
-
-      <Modal className="h-100 h-custom" id='basket' show={showBasket} onHide={handleCloseBasket}>
+      {/* <Modal className="h-100 h-custom" id='basket' show={showBasket} onHide={handleCloseBasket}>
         <Modal.Header closeButton>
           <Modal.Title>Кошик</Modal.Title>
         </Modal.Header>
@@ -266,7 +253,7 @@ function getOrder()
             Оформити замовлення
           </Button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
  
 <AuthModal show={show} handleClose={handleClose}></AuthModal>
  
@@ -312,13 +299,13 @@ function getOrder()
             </Link>
             <div className="menu-navigation">
               <div className="menu-navigation-button-contain">
-               <Link to='/shoes'> <div className="button-nav" >взуття</div></Link>
+               <Link to='/shoes'> <div className="button-nav" >{t('shoes')}</div></Link>
               </div>
               {/* <div className="menu-navigation-button-contain1">
-              <Link to='/clothes'>  <div className="button-nav1">одяг</div></Link>
+              <Link to='/clothes'>  <div className="button-nav1">{t('clothes')}</div></Link>
               </div> */}
               <div className="menu-navigation-button-contain2">
-              <Link to='/accessorise'>   <div className="button-nav2">аксесуари</div></Link>
+              <Link to='/accessorise'>   <div className="button-nav2">{t('accessorise')}</div></Link>
               </div>
               <div className="menu-navigation-button-contain5">
               <Link to='/faq'>   <div className="button-nav5">FAQ</div></Link>
@@ -333,7 +320,7 @@ function getOrder()
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
 </svg>
                 </span>
-                <input type="search" class="form-control" placeholder="Що будемо шукати? "    value={searchQuery} 
+                <input type="search" class="form-control" placeholder={t('search')}    value={searchQuery} 
         onChange={handleInputChange} 
   onBlur={() => redirectToFilteredPage(searchQuery)} aria-label="Input group example" />
               </div>
@@ -347,8 +334,8 @@ function getOrder()
       </Dropdown.Toggle>
 
       <Dropdown.Menu >
-        <Dropdown.Item  href="/">Українська</Dropdown.Item>
-        <Dropdown.Item href="/">English</Dropdown.Item>
+        <Dropdown.Item  onClick={() => changeLanguage('ua')}>Українська</Dropdown.Item>
+        <Dropdown.Item onClick={() => changeLanguage('en')}>English</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   

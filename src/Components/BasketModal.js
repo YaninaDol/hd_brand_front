@@ -1,4 +1,4 @@
-
+import { useTranslation } from 'react-i18next';
 import { Modal, Button } from 'react-bootstrap';
 import { MDBRow, MDBCol, MDBTypography } from 'mdb-react-ui-kit';
 import CartBasket from './CartBasket'; // Adjust the import path according to your project structure
@@ -11,6 +11,7 @@ const BasketModal = ({
 }) => {
     const [arrBasket,setArrBasket] = useState([]);
     const [count, setCount] = useState(0);
+    const {i18n, t } = useTranslation();
   useEffect(() => {
     const storedBasket = window.sessionStorage.getItem("Basket");
     if (storedBasket && storedBasket.length > 0) {
@@ -63,25 +64,25 @@ const BasketModal = ({
   return (
     <Modal className="h-100 h-custom" id='basket' show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Кошик</Modal.Title>
+        <Modal.Title>{t('basket')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {arrBasket.length < 1 ? (
-          <p>Ваш кошик порожній</p>
+          <p>{t('emptybasket')}</p>
         ) : (
           <>
             <MDBRow id='titleRow' className="justify-content-between align-items-center">
               <MDBCol md="1" lg="1" xl="1"></MDBCol>
               <MDBCol md="3" lg="3" xl="3"></MDBCol>
               <MDBCol md="3" lg="3" xl="3" className="text-center">
-                Товар
+              {t('product')}
               </MDBCol>
               <MDBCol md="2" lg="2" xl="2">
-                Кількість
+              {t('count')}
               </MDBCol>
               <MDBCol md="2" lg="2" xl="3" className="text-center">
                 <MDBTypography tag="h7" className="mx-2">
-                  Ціна
+                {t('price')}
                 </MDBTypography>
               </MDBCol>
             </MDBRow>
@@ -91,7 +92,7 @@ const BasketModal = ({
                 selectedCurrency={selectedCurrency}
                 remove={removeBasket}
                 unic={x.id}
-                name={x.name}
+                name={i18n.language === 'en' ? x.nameEng : x.name}
                 quantity={x.quantity}
                 size={x.size}
                 insulator={x.insulator}
@@ -106,10 +107,10 @@ const BasketModal = ({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-dark" style={{ borderRadius: '0px' }} onClick={handleClose}>
-          Продовжити
+        {t('continue')}
         </Button>
         <Button variant="dark" style={{ borderRadius: '0px' }} onClick={getOrder}>
-          Оформити замовлення
+        {t('checkout')}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -15,6 +15,7 @@ import { setProducts} from '../redux/actions';
 import { CardGroup } from 'react-bootstrap';
 import Footer from '../Components/Footer';
 import { useEffect,useState } from 'react';
+import { useTranslation } from 'react-i18next';
 const responsive = {
   desktopLarge: {
     breakpoint: { max: 3000, min: 1400 },
@@ -50,6 +51,7 @@ const responsive = {
 };
 
 const Home = () => {
+  const {i18n, t } = useTranslation(); 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
@@ -191,14 +193,14 @@ const Home = () => {
     {/* <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}> */}
     <CardGroup style={{ display: 'flex', justifyContent:'space-around', alignItems:'center' }}>
       <div className="something">
-        <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop="взуття" />
+        <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop={t('shoes')} />
       </div>
    
       {/* <div className="something">
-        <CatalogsItemContainer link='/clothes' image={require('../assets/categoryImage2.png')} prop="одяг" />
+        <CatalogsItemContainer link='/clothes' image={require('../assets/categoryImage2.png')} prop={t('clothes')} />
       </div> */}
       <div className="something">
-        <CatalogsItemContainer link='/accessorise' image={require('../assets/categoryImage3.png')} prop="аксесуари" />
+        <CatalogsItemContainer link='/accessorise' image={require('../assets/categoryImage3.png')} prop={t('accessorise')}/>
       </div>
     </CardGroup>
 
@@ -208,7 +210,7 @@ const Home = () => {
         <div className="new-items">
           <div className="head">
             <div className="title-h2">
-              <h2 className="h2">новинки</h2>
+              <h2 className="h2">{t('new_items')}</h2>
             </div>
           </div>
         </div>
@@ -231,7 +233,7 @@ const Home = () => {
                isNew={x.isNew}
                isDiscount={x.isDiscount}
                isLiked={false}
-               descriprion={x.name}
+               descriprion={i18n.language === 'en' ? x.nameEng : x.name}
                price1={convertPrice(x.price,selectedCurrency)}
                currency={selectedCurrency}
                price2={convertPrice(x.salePrice,selectedCurrency)}
@@ -247,7 +249,7 @@ const Home = () => {
         <div className="new-items">
           <div className="head">
             <div className="title-h2">
-              <h2 className="h2">образ тижня</h2>
+              <h2 className="h2">{t('weekly_preview')}</h2>
             </div>
           </div>
         </div>
@@ -281,7 +283,7 @@ const Home = () => {
         <div className="new-items">
           <div className="head">
             <div className="title-h2">
-              <h2 className="h2">акційні товари</h2>
+              <h2 className="h2">{t('discount_items')}</h2>
             </div>
           </div>
         </div>
@@ -304,7 +306,8 @@ const Home = () => {
                isNew={x.isNew}
                isDiscount={x.isDiscount}
                isLiked={false}
-               descriprion={x.name}
+             
+               descriprion={i18n.language === 'en' ? x.nameEng : x.name}
                price1={convertPrice(x.price,selectedCurrency)}
                currency={selectedCurrency}
                price2={convertPrice(x.salePrice,selectedCurrency)}

@@ -7,9 +7,10 @@ import Modal from 'react-bootstrap/Modal';
 import './WeeklyPreview.css';
 import WeeklyModalItem from './WeeklyModalItem';
 import BasketModal from '../Components/BasketModal';
-
+import { useTranslation } from 'react-i18next';
 const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const { t,i18n } = useTranslation();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -109,7 +110,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
      
     } else {
       
-      alert("Оберіть розміри для товарів.");
+      alert(t('alert'));
     }
   };
   const showModal = () => {
@@ -129,14 +130,15 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
       </Modal> */}
       <Modal id='basket' show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Обрані товари</Modal.Title>
+          <Modal.Title>{t('chooseitems')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {weekly.map((x, index) => (
             <WeeklyModalItem
               key={index}
               unic={x.id}
-              name={x.name}
+              name={i18n.language === 'en' ? x.nameEng : x.name}
+              t={t}
               sizes={sizes[index]}
               picture={x.image}
               price={convertPrice(x.price,selectedCurrency)}
@@ -150,7 +152,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
           Продовжити
           </Button> */}
           <Button style={{borderRadius:'0px'}} variant="dark" onClick={addToBasket}>
-            Додати у кошик
+          {t('add')}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -169,7 +171,7 @@ const WeeklyPreview = ({ weekly, convertPrice,selectedCurrency }) => {
               ))}
             </div>
             <button onClick={showModal} className="button-container">
-              <div className="div1">Збери весь образ</div>
+              <div className="div1">{t('weekly_orders')}</div>
             </button>
           </div>
         </div>

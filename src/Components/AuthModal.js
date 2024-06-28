@@ -1,9 +1,11 @@
 import { MDBRow } from 'mdb-react-ui-kit';
+import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 const AuthModal = ({ show, handleClose }) => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const {t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -18,21 +20,21 @@ const AuthModal = ({ show, handleClose }) => {
     let isValid = true;
 
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-      setEmailError('Введіть коректний e-mail');
+      setEmailError(t('erorr_mail'));
       isValid = false;
     } else {
       setEmailError('');
     }
 
     if (!password || password.length < 8 || !/(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      setPasswordError('Пароль повинен містити принаймні 8 символів, включати хоча б одну велику латинську літеру та одну цифру');
+      setPasswordError(t('erorr_password'));
        isValid = false;
     }else {
   setPasswordError('');
 }
 
     if (isRegistration && repeatPassword !== password) {
-      setRepeatPasswordError('Паролі не співпадають');
+      setRepeatPasswordError(t('erorr_pass2'));
       isValid = false;
     } else {
       setRepeatPasswordError('');
@@ -65,7 +67,7 @@ const AuthModal = ({ show, handleClose }) => {
                     {
                          
                       handleClose();             
-                      alert("Данні успішно зареєстровані");
+                      alert(t('success'));
                       window.location.href = "/";
                         
                         
@@ -78,11 +80,11 @@ const AuthModal = ({ show, handleClose }) => {
                     .catch(function (error) {
                       if (error.response) {
                       
-                       alert("Помилка: " + error.response.data);
+                       alert(t('erorr') + error.response.data);
                     }
                     else {
-                      // Что-то произошло при настройке запроса, который вызвал ошибку
-                      alert("Помилка: " + error.message);
+                     
+                      alert(t('erorr') + error.message);
                   }
                      window.location.href = "/";
                     
@@ -134,7 +136,7 @@ const AuthModal = ({ show, handleClose }) => {
 
                     })
                     .catch(function (error) {
-                        alert("Сталась помилка. Перевірте данні");
+                        alert(t('erorr'));
                       window.location.href = "/";
                     
                         console.log("Error:"+error);
@@ -146,7 +148,7 @@ const AuthModal = ({ show, handleClose }) => {
 const handlesend=()=>
 {
   if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-    setEmailError('Введіть коректний e-mail');
+    setEmailError(t('erorr_mail'));
    
   } else {
 
@@ -165,17 +167,17 @@ const handlesend=()=>
     <div>
 <Modal show={showReset} onHide={handleCloseReset}>
         <Modal.Header closeButton>
-          <Modal.Title>Відновлення пароля</Modal.Title>
+          <Modal.Title>{t('reset_password')}</Modal.Title>
         </Modal.Header>
         <Modal.Body> <Form.Control
               type="email"
-              placeholder="Введіть e-mail"
+              placeholder={t('enter_email')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             /> <Form.Text className="text-danger">{emailError}</Form.Text> 
             <MDBRow style={{marginTop:'15px',marginLeft:'1px',marginRight:'1px'}}>
             <Button size="lg" variant="dark" onClick={handlesend}>
-            Відновити
+            {t('reset')}
           </Button>
               
             </MDBRow>
@@ -192,7 +194,7 @@ const handlesend=()=>
   
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{isRegistration ? 'Реєстрація' : 'Авторизація'}</Modal.Title>
+        <Modal.Title>{isRegistration ? t('registration') : t('authorization')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
@@ -200,7 +202,7 @@ const handlesend=()=>
             <Form.Label>E-mail</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Введіть e-mail"
+              placeholder={t('enter_email')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -208,23 +210,23 @@ const handlesend=()=>
           </Form.Group>
 
           <Form.Group controlId="formBasicPassword">
-            <Form.Label style={{marginTop:'10px'}}>Пароль</Form.Label>
+            <Form.Label style={{marginTop:'10px'}}>{t('password')}</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Введіть пароль"
+              placeholder={t('enter_password')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {!isRegistration &&( <Form.Text onClick={()=>{handleShowReset();handleClose()}} className="text-end">Забули пароль?</Form.Text>)}
+            {!isRegistration &&( <Form.Text onClick={()=>{handleShowReset();handleClose()}} className="text-end">{t('forgot_password')}</Form.Text>)}
             <Form.Text className="text-danger">{passwordError}</Form.Text>
           </Form.Group>
 
           {isRegistration && (
             <Form.Group controlId="formBasicRepeatPassword">
-              <Form.Label style={{marginTop:'10px'}}>Повторити пароль</Form.Label>
+              <Form.Label style={{marginTop:'10px'}}>{t('repeat_password')}</Form.Label>
               <Form.Control
                 type="password"
-                placeholder="Введіть пароль"
+                placeholder={t('enter_password')}
                 value={repeatPassword}
                 onChange={(e) => setRepeatPassword(e.target.value)}
               />
@@ -233,10 +235,10 @@ const handlesend=()=>
           )}
 <MDBRow className="mx-4">
 <Button variant="dark" type="submit" size='lg' style={{marginTop:'15px'}}>
-            {isRegistration ? 'Зареєструватися' : 'Увійти'}
+            {isRegistration ? t('registration') : t('authorization')}
           </Button>
           <Button variant="outline-dark"  size='lg' onClick={() => setIsRegistration(!isRegistration)}style={{marginTop:'15px'}}>
-            {isRegistration ? 'У мене є акаунт' : 'Реєстрація'}
+            {isRegistration ? t('account') : t('registration') }
           </Button>
 
 </MDBRow>
