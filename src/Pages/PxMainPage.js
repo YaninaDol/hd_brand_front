@@ -399,7 +399,7 @@ function getOrder()
         type="search"
         value={searchQuery} 
         onChange={handleInputChange} 
-        placeholder="Що будемо шукати?"
+        placeholder={t('search')}
         aria-label="Search"
       />
       <Button  onClick={() => redirectToFilteredPage(searchQuery)} style={{border:'none'}} variant="outline-secondary">
@@ -410,12 +410,12 @@ function getOrder()
    
   </Form>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link active className="item-title"  href="/">    Головна</Nav.Link>
+                  <Nav.Link active className="item-title"  href="/">    {t('home')}</Nav.Link>
                   <div class="accordion accordion-flush" id="accordionFlushExample">
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingOne">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-       ВЗУТТЯ
+      <button class="accordion-button collapsed item-title"  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+      {t('shoes')}
       </button>
     </h2>
 <div
@@ -428,11 +428,11 @@ function getOrder()
          
             {subcategory2.map((x) => (
               <NavDropdown.Item  className="item-title" key={x.id} href={`/shoes/${x.id}`}>
-              {x.name}
+             {i18n.language === 'en' ? x.nameEng : x.name}
             </NavDropdown.Item>
             ))}
              <NavDropdown.Item  className="item-title"  href="/shoes">
-    Переглянути все
+             {t('show_all')}
   </NavDropdown.Item>
         
         </div>
@@ -441,14 +441,14 @@ function getOrder()
       {/* <div class="accordion-item">
   <h2 class="accordion-header" id="flush-headingClothes">
     <button
-      class="accordion-button collapsed"
+      class="accordion-button collapsed item-title"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#flush-collapseClothes"
       aria-expanded="false"
       aria-controls="flush-collapseClothes"
     >
-      ОДЯГ
+       {t('clothes')}
     </button>
   </h2>
   <div
@@ -460,7 +460,7 @@ function getOrder()
     <div class="accordion-body">
       {subcategory1.map((x) => (
         <NavDropdown.Item className="item-title" key={x.id} href={`/clothes/${x.id}`}>
-          {x.name}
+          {i18n.language === 'en' ? x.nameEng : x.name}
         </NavDropdown.Item>
       ))}
          <NavDropdown.Item  className="item-title"  href="/clothes">
@@ -472,14 +472,14 @@ function getOrder()
 <div class="accordion-item">
   <h2 class="accordion-header" id="flush-headingAccessorise">
     <button
-      class="accordion-button collapsed"
+      class="accordion-button collapsed item-title"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#flush-collapseAccessorise"
       aria-expanded="false"
       aria-controls="flush-collapseAccessorise"
     >
-      АКСЕСУАРИ
+      {t('accessorise')}
     </button>
   </h2>
   <div
@@ -491,11 +491,11 @@ function getOrder()
     <div class="accordion-body">
       {subcategory3.map((x) => (
         <NavDropdown.Item className="item-title" key={x.id} href={`/accessorise/${x.id}`}>
-          {x.name}
+          {i18n.language === 'en' ? x.nameEng : x.name}
         </NavDropdown.Item>
       ))}
          <NavDropdown.Item  className="item-title"  href="/accessorise">
-    Переглянути все
+         {t('show_all')}
   </NavDropdown.Item>
     </div>
   </div>
@@ -529,8 +529,9 @@ function getOrder()
               
             >
              
-              <NavDropdown.Item  href="/">Українська</NavDropdown.Item>
-              <NavDropdown.Item href="/">English</NavDropdown.Item>
+              <NavDropdown.Item   onClick={() => changeLanguage('ua')}>Українська</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => changeLanguage('en')}>English</NavDropdown.Item>
+             
             </NavDropdown>
             
           

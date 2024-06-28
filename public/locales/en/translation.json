@@ -38,7 +38,9 @@
     "reset_password": "Reset password",
     "forgot_password": "Forgot password ?",
      "reset": "Reset",
-     "account":"I have account"
+     "account":"I have account",
+     "home":"Home",
+     "show_all":"Show all"
 
 
 
