@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import Carousels from 'react-multi-carousel';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
+import { useTranslation } from 'react-i18next';
 import { setProducts,setSimilar,setProduct,setCategory,setSeason,setMaterial,setSubCategory} from '../redux/actions';
 import { useParams } from 'react-router-dom';
 import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
@@ -22,6 +23,7 @@ import '../Pages/ProductdetailPage.css';
 import CartProduct from '../Components/CartProduct';
 import NewProductCardItem from '../Components/NewProductCardItem';
 const ProductDetailsPage = () => {
+  const {i18n, t } = useTranslation();
   const [loading, setLoading] = useState(true);
     const { id, subcategoryid } = useParams();
     const [isFavourite, setIsFavourite] = useState(false);
@@ -47,8 +49,8 @@ const ProductDetailsPage = () => {
   const [showValidation, setShowValidation] = useState(false);
   const variant_season = 4;
   const plus_price = 200;
-  const [selectedInsulator, setSelectedInsulator] = useState('Байка'); 
-  const [availableInsulators, setAvailableInsulators] = useState(['Байка', 'Хутро']); 
+  const [selectedInsulator, setSelectedInsulator] = useState(t('baize')); 
+  const [availableInsulators, setAvailableInsulators] = useState([ t('baize'), t('fur')]); 
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
     eur: 1,
@@ -355,7 +357,7 @@ const ProductDetailsPage = () => {
   
     const usdRate = exchangeRates.usd
     const eurRate = exchangeRates.eur;
- price= selectedInsulator=='Хутро'?price+plus_price:price;
+ price= selectedInsulator==t('fur')?price+plus_price:price;
 
     if (currency === 'USD') {
       return (price * usdRate).toFixed(0);
@@ -399,7 +401,7 @@ const ProductDetailsPage = () => {
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
-      itemToAdd.price = selectedInsulator=='Хутро'? product.price + plus_price : product.price;
+      itemToAdd.price = selectedInsulator==t('fur')? product.price + plus_price : product.price;
       existingBasket.push(itemToAdd);
     }
   
@@ -416,13 +418,18 @@ const ProductDetailsPage = () => {
       case "1":
         return require('../assets/table2.png');
       case "2":
-        return require('../assets/table4.png');
+        return require('../assets/table4.jpg');
       case "11":
         return require('../assets/table3.png');
       case "12":
         return require('../assets/table1.png');
         case "13":
         return require('../assets/table5.JPG');
+        case "14":
+          return require('../assets/table7.jpg');
+        case "16":
+          return require('../assets/table6.jpg');
+
       default:
         return  require('../assets/table1.png');
     }
@@ -468,19 +475,19 @@ const ProductDetailsPage = () => {
        </div>
       ) : (<>
    <div className="stock-status" style={{marginTop:'150px'}}>
-      <Link to="/"><div className="div33">Головна </div></Link>
+      <Link to="/"><div className="div33">{t('home')} </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<a style={{color:'black'}} href={`/${generatePath(category.id)}`}>{category.name}</a>
+<a style={{color:'black'}} href={`/${generatePath(category.id)}`}>{i18n.language === 'en' ? category.nameEng : category.name}</a>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<a style={{color:'black'}} href={`/${generatePath(category.id)}/${subcategory.id}`}>{subcategory.name}</a>
+<a style={{color:'black'}} href={`/${generatePath(category.id)}/${subcategory.id}`}>{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}</a>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
- {product.name}
+{i18n.language === 'en' ? product.nameEng : product.name}
 </div>
    
 <Carousel id='photocolumnmob'>
@@ -642,7 +649,7 @@ const ProductDetailsPage = () => {
 <MDBRow >
 
 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-<p style={{opacity:'0.5',color:'gray'}} >Арт: {product.article}</p>
+<p style={{opacity:'0.5',color:'gray'}} >{t('article')}: {product.article}</p>
 { isFavourite
                   ? <div   onClick={handleLikeClick}><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
@@ -655,23 +662,23 @@ const ProductDetailsPage = () => {
           
     
 </div>
-<h2>{product.name} </h2>
+<h2>{i18n.language === 'en' ? product.nameEng : product.name} </h2>
    
     </MDBRow>
 
 <MDBRow  style={{marginTop:'5px',fontSize:'20px'}}> <h7>{convertPrice1(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
-<MDBRow style={{marginTop:'75px'}}><h6>Характеристика товару: </h6></MDBRow>
-                <MDBRow  style={{marginTop:'5px'}}><MDBCol> Сезон: </MDBCol> <MDBCol className='text-end'> {season.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Категорія: </MDBCol> <MDBCol className='text-end'> {category.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Тип: </MDBCol> <MDBCol className='text-end'> {subcategory.name} </MDBCol> </MDBRow>
-                <MDBRow style={{marginTop:'5px'}}><MDBCol> Матеріал: </MDBCol> <MDBCol className='text-end'> {material.name} </MDBCol> </MDBRow>
-
+<MDBRow style={{marginTop:'75px'}}><h6>{t('product_information')}: </h6></MDBRow>
+                <MDBRow  style={{marginTop:'5px'}}><MDBCol> {t('season')}: </MDBCol> <MDBCol className='text-end'> {i18n.language === 'en' ? season.nameEng : season.name} </MDBCol> </MDBRow>
+                {/* <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('category')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? category.nameEng : category.name}  </MDBCol> </MDBRow> */}
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('type')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}  </MDBCol> </MDBRow>
+                <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('material')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? material.nameEng : material.name}   </MDBCol> </MDBRow>
+          
                 {!product.isDiscount && (
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
       <select className="select p-3 bg-grey" style={{ width: "100%",marginBottom:'5px' }} onChange={(e) => setNewProd(JSON.parse(e.target.value))}>
-      <option selected value="0">Оберіть розмір</option>
+      <option selected value="0">{t('size')}</option>
       
         {productsizes.map((x) => (
             
@@ -684,10 +691,10 @@ const ProductDetailsPage = () => {
     </div>
     {showValidation && (newProd===null || newProd===0)&& (
           <div style={{ color: 'red', marginTop: '10px' }}>
-            Оберіть розмір перед додаванням в корзину.
+            {t('alert')}
           </div>
         )}
-        {category.id!=3&&( <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>Таблиця розмірів</a></MDBRow> </MDBCol>
+        {category.id!=3&&( <MDBCol style={{marginTop:'5px'}}>  <MDBRow><a style={{color:'black',textDecoration:'underline'}} onClick={handleShowtableSize}>{t('size_table')}</a></MDBRow> </MDBCol>
    )}
     
   </MDBRow>)}
@@ -695,7 +702,7 @@ const ProductDetailsPage = () => {
   {!product.isDiscount && ( <MDBRow className='text-start'  style={{marginTop:'55px'}}>
                       {product.seasonid === variant_season && (
                         <div>
-                          <label htmlFor="insulator">Утеплювач:  </label>
+                          <label htmlFor="insulator"> {t('insulator')}:  </label>
                           <select id="insulator" className="select p-3 bg-grey" style={{ width: "100%" }}  value={selectedInsulator} onChange={(e) => setSelectedInsulator(e.target.value)}>
                            
                             {availableInsulators.map((insulator, index) => (
@@ -711,7 +718,7 @@ onClick={addToBasket}
                   variant="dark"
                  
                 >
-                  Додати в кошик
+                  {t('add')}
                 </Button>   </MDBRow>
 
 
@@ -725,7 +732,7 @@ onClick={addToBasket}
 <ShoppingAssistant></ShoppingAssistant>
 </MDBRow>
 <MDBRow style={{marginTop:'35px'}}>
-  <div style={{marginBottom:35,fontSize:20}}>Вам також може сподобатись :</div>
+  <div style={{marginBottom:35,fontSize:20}}>{t('related')} :</div>
 
 <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
 {silimarproducts.length > 0 ? (
@@ -746,7 +753,7 @@ onClick={addToBasket}
                     isNew={x.isNew}
                     isDiscount={x.isDiscount}
                     isLiked={false}
-                    descriprion={x.name}
+                    descriprion={i18n.language === 'en' ? x.nameEng : x.name}
                     price1={convertPrice(x.price, selectedCurrency)}
                     currency={selectedCurrency}
                     price2={convertPrice(x.salePrice, selectedCurrency)}
@@ -763,7 +770,7 @@ onClick={addToBasket}
                     isNew={x.isNew}
                     isDiscount={x.isDiscount}
                     isLiked={false}
-                    descriprion={x.name}
+                    descriprion={i18n.language === 'en' ? x.nameEng : x.name}
                     price1={convertPrice(x.price, selectedCurrency)}
                     currency={selectedCurrency}
                     price2={convertPrice(x.salePrice, selectedCurrency)}

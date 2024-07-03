@@ -5,9 +5,9 @@ import { Link, Outlet } from "react-router-dom";
 import Footer from '../Components/Footer';
 import { useState } from "react";
 import { useEffect } from "react";
-
+import { useTranslation } from 'react-i18next';
 const Agreement = () => {
-  
+  const {t ,i18n} = useTranslation();
 const [selectedCurrency, setSelectedCurrency] = useState('UAH');
 const [exchangeRates, setExchangeRates] = useState({
   usd: 1, 
@@ -78,13 +78,33 @@ const convertPrice = (price, currency) => {
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
      <div className="stock-status" style={{marginTop:'160px'}}>
-      <Link to="/"><div className="div33">Головна </div></Link>
+      <Link to="/"><div className="div33">{t('home')} </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<Link to="/faq"><div className="div34">Договір оферти</div></Link>
+<Link to="/faq"><div className="div34">{t('privacy_policy')}</div></Link>
 </div>
-<div className='agreement'  >
+{i18n.language === 'en' ? <div className='agreement'>
+  <h1>Confidentiality and Personal Data Protection</h1>
+  <div>
+    <p>By providing personal data on the Internet store's website during registration or placing an Order, the Buyer voluntarily consents to the processing, use (including transfer) of their personal data by the Seller, as well as other actions provided for by the Law of Ukraine "On Protection of Personal Data," without limitation of the term of such consent.</p>
+
+    <p>The Seller undertakes not to disclose the information received from the Buyer. Providing information by the Seller to counterparties and third parties acting under a contract with the Seller, including to fulfill obligations to the Buyer, is not considered a violation, as well as in cases where disclosure of such information is required by the current legislation of Ukraine.</p>
+
+    <p>The Buyer is responsible for maintaining their personal data up to date. The Seller is not responsible for improper performance or non-performance of its obligations due to outdated information about the Buyer or its inaccuracy.</p>
+
+    <p>By filling out the "Order Checkout" form and/or completing the registration procedure on the website: <a href="https://hdbrand.com.ua/">https://hdbrand.com.ua/</a> of the Internet store, the Buyer gives their full, complete, and indefinite consent to the processing and use by the Seller of information about the Buyer, including information considered personal data under the current legislation of Ukraine, exclusively for the following purposes:</p>
+
+    <ul>
+      <li>for registration and identification of the Buyer in the Internet store;</li>
+      <li>for the purpose of password recovery of the Buyer's registration in the Internet store;</li>
+      <li>for marketing purposes, namely: informing the Buyer via SMS, email, social networks, etc., about news of the Internet store, promotional offers, and Sales of Goods conducted by the Seller in the Internet store, conducting market analysis of product consumption, identifying potential Buyers, determining the needs of potential Buyers in the Goods offered for sale, etc.;</li>
+      <li>for conscientious performance by the Seller of its contractual obligations to the Buyer, including obligations regarding delivery of the Goods;</li>
+      <li>for the purpose of fulfilling the Seller's obligations under the current legislation of Ukraine, including legislation on consumer rights protection.</li>
+    </ul>
+  </div>
+</div>
+ : <div className='agreement'  >
 <h1>Конфіденційність і захист персональних даних</h1>
 <div>
 <p>Надаючи свої персональні дані на сайті Інтернет-магазину при реєстрації або оформленні Замовлення, Покупець надає Продавцеві свою добровільну згоду на обробку, використання (у тому числі і передачу) своїх персональних даних, а також вчинення інших дій, передбачених Законом України «Про захист персональних даних», без обмеження терміну дії такої згоди.</p>
@@ -103,7 +123,8 @@ const convertPrice = (price, currency) => {
         <li>з метою виконання Продавцем вимог чинного законодавства України, в тому числі законодавства про захист прав споживачів.</li>
     </ul>
 </div>
-</div>
+</div>}
+
 
 <Footer />
     </div>

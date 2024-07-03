@@ -8,6 +8,7 @@ import { Link} from "react-router-dom";
 import {Button,Form,Modal,Tabs,Tab} from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import './CheckoutPage.css';
 import AuthModal from "../Components/AuthModal";
 import LiqPaY from 'liqpayservice';
@@ -22,7 +23,7 @@ import {
 import CardBox from "../Components/CardBox";
 import { version } from "process";
 const CheckoutPage = () => {
-
+  const {t,i18n } = useTranslation();
   const [titleaccount, setTitleAccount] = useState('');
   const [show2, setShow2] = useState(false);
   const handleClose2 = () => setShow2(false);
@@ -237,7 +238,7 @@ const [paymentData, setPaymentData] = useState({
     
 
     if(!window.sessionStorage.getItem("AccessToken"))
-   { setTitleAccount('У мене вже є аккаунт');
+   { setTitleAccount(t('account'));
     count>=2?setDiscount(5):setDiscount(null);
    }
   else{
@@ -735,21 +736,21 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
     <div className="stock-status"style={{marginTop:'150px'}}>
-      <Link to="/"><div className="div33">Головна </div></Link>
+      <Link to="/"><div className="div33">{t('home')} </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<Link to={`/checkout`}><div className="div34">Оформлення замовлення</div></Link>
+<Link to={`/checkout`}><div className="div34">{t('checkout2')}</div></Link>
 </div>
 
 <MDBContainer className="py-5 h-100" >
-<MDBRow> <h2 className="h25title">Оформлення замовлення</h2></MDBRow>
+<MDBRow> <h2 className="h25title">{t('checkout2')}</h2></MDBRow>
   <MDBRow>
  
   <MDBCol md='7'  className="order-md-1 order-2">
               <MDBRow>
               <MDBCol className="col-12 col-md-8">
-                <div className="h211"> Заповніть ваші данні</div>  </MDBCol>
+                <div className="h211"> {t('your_inform')}</div>  </MDBCol>
               <MDBCol className="col-12 col-md-4 ">
               
               
@@ -765,7 +766,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
                       type="text"
                       value={name}
                       id="entername"
-                      placeholder="Ваше ім'я *"
+                      placeholder={t('your_name')}
                       onChange={(e)=>setName(e.target.value)}
                     /> {errors.name && <div style={{ color: 'red' }}>{errors.name}</div>}</MDBCol>
                      
@@ -776,7 +777,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
                value={surname}
                       type="text"
                       id="entersurname"
-                      placeholder="Ваше прізвище *"
+                      placeholder={t('your_surname')}
                       onChange={(e)=>setSurname(e.target.value)}
                     />   {errors.surname && <div style={{ color: 'red' }}>{errors.surname}</div>}</MDBCol>
               </MDBRow>
@@ -787,7 +788,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
               <MDBCol  className="col-12 col-md-6">
                 <div className="MDBCol-border"> 
                 <PhoneInput 
-      placeholder="Номер телефону *"
+      placeholder={t('phonennumner')}
       id="enterphone"
       value={phoneNumber || ''}
       onChange={setPhonenumber}/>
@@ -814,7 +815,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           </MDBCol>
         </MDBRow>
               <MDBRow style={{marginTop:'60px'}}>
-              <MDBCol><div className="h211"> Оберіть зручний спосіб доставки </div>  </MDBCol>
+              <MDBCol><div className="h211"> {t("select_delivery")} </div>  </MDBCol>
 
               </MDBRow>
               <MDBRow>
@@ -830,15 +831,15 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       justify
     >
     
-      <Tab eventKey="longer-tab" title="ДОСТАВКА ПО УКРАЇНІ">
+      <Tab eventKey="longer-tab" title={t('ukraine_delivery')}>
        <MDBRow className="mt-1 mt-md-3">
         <MDBCol  className="col-12 col-md-6">
           
             <Form.Select  size="lg" onChange={(e)=> setTypeDelivery(e.target.value) } >
-        <option style={{maxWidth:'100%'}}  value={1}>Нова Пошта - відділення </option>
-        <option style={{maxWidth:'100%'}}  value={2}>Нова Пошта - адреса </option>
-        <option style={{maxWidth:'100%'}}  value={3}>УкрПошта - відділення </option>
-        <option style={{maxWidth:'100%'}}  value={4}>УкрПошта - адреса </option>
+        <option style={{maxWidth:'100%'}}  value={1}>{t('np-1')} </option>
+        <option style={{maxWidth:'100%'}}  value={2}>{t('np-2')} </option>
+        <option style={{maxWidth:'100%'}}  value={3}>{t('up-1')} </option>
+        <option style={{maxWidth:'100%'}}  value={4}>{t('up-2')} </option>
       </Form.Select></MDBCol>
 
 
@@ -850,7 +851,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
      onChange={handleChange}
       options={cityDescriptions}
       isSearchable
-      placeholder="Оберіть місто"
+      placeholder={t('select_city')}
       styles={{
         control: (provided) => ({
           ...provided,
@@ -870,7 +871,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           onChange={(e)=> setSelectedDepartament(e.value)}
           options={warehouseDescriptions}
           isSearchable
-          placeholder="Оберіть відділення"
+          placeholder={t('select_warehouse')}
           styles={{
             control: (provided) => ({
               ...provided,
@@ -886,7 +887,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Введіть адресу "
+       placeholder={t('enter_address')}
        onChange={(e)=>setAddress(e.target.value)}
      />
       )}
@@ -910,7 +911,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Вкажіть індекс відділення"
+       placeholder={t('enter_index')}
        onChange={(e)=>setIndexU(e.target.value)}
       
      />
@@ -920,7 +921,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
        size="lg"
     type="text"
     id="enteraddress"
-    placeholder=" Введіть адресу "
+    placeholder={t('select_country')}
     onChange={(e)=>setAddress2(e.target.value)}
   />
       )}
@@ -933,7 +934,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       
        </MDBRow>
       </Tab>
-      <Tab eventKey="longer-tab2" title="МІЖНАРОДНА ДОСТАВКА">
+      <Tab eventKey="longer-tab2" title={t('worldwide')}>
       <MDBRow className="mt-1 mt-md-3">
         <MDBCol  className="col-12 col-md-6 ">
               
@@ -942,7 +943,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           onChange={handleChangeCountry}
           options={countries}
           isSearchable
-          placeholder="Оберіть країну"
+          placeholder={t('select_country')}
           styles={{
             control: (provided) => ({
               ...provided,
@@ -956,12 +957,12 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
            
             <MDBCol>
             {countryinExcel === 'novapost' && ( <Form.Select  onChange={(e)=> setTypeDeliveryW(e.target.value) } size="lg" >
-            <option style={{maxWidth:'100%'}}  value={'address'}>Нова пошта - адреса </option>
-        <option style={{maxWidth:'100%'}} value={'warehouse'}>Нова пошта - відділення </option>
+            <option style={{maxWidth:'100%'}}  value={'address'}>{t('np-1')} </option>
+        <option style={{maxWidth:'100%'}} value={'warehouse'}>{t('np-2')} </option>
       
       </Form.Select>)}
       {countryinExcel === 'worldwide' && ( <Form.Select  onChange={(e)=> setTypeDeliveryW(e.target.value) }  size="lg" >
-        <option style={{maxWidth:'100%'}}  value={'address'}> Міжнародна пошта </option>
+        <option style={{maxWidth:'100%'}}  value={'address'}> {t('worldwide')} </option>
       </Form.Select>)}
             </MDBCol>
       
@@ -975,7 +976,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           onChange={(e)=> setSelectedCity2(e.value)}
           options={cities}
           isSearchable
-          placeholder=" Оберіть місто "
+          placeholder={t('np-1')}
           styles={{
             control: (provided) => ({
               ...provided,
@@ -989,7 +990,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Введіть повну адресу"
+       placeholder={t('enter_address')}
        onChange={(e)=>setAddress2(e.target.value)}
      />)}
       {errors.address2     && <div style={{ color: 'red' }}>{errors.address2    }</div>}
@@ -1000,7 +1001,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Вкажіть індекс"
+       placeholder={t('enter_index')}
        onChange={(e)=>setIndexW(e.target.value)}
       
      />)} 
@@ -1009,7 +1010,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
           size="lg"
        type="text"
        id="enteraddress"
-       placeholder=" Вкажіть відділення"
+       placeholder={t('enter_warehouse')}
        onChange={(e)=>setNovaWorldWare(e.target.value)}
       
      />)}
@@ -1025,7 +1026,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     </Tabs>
               </MDBRow>
               <MDBRow style={{marginTop:'60px'}}>
-              <MDBCol><div className="h211"> Оберіть зручний спосіб оплати </div>  </MDBCol>
+              <MDBCol><div className="h211"> {t('select_payment')} </div>  </MDBCol>
 
               </MDBRow>
               <MDBRow style={{marginTop:'30px',marginLeft:'10px'}}>
@@ -1035,7 +1036,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
             id={`liqpay`}
             checked={selectedPaymentMethod === 'liqpay'}
             onChange={() => handleCheckboxChange('liqpay')}
-            label="Повна оплата (платіжний сервіс LiqPay)"
+            label={t('full')}
           />
       
        
@@ -1044,13 +1045,13 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
               </MDBRow>
-           { activeTab=='longer-tab'&&  <MDBRow style={{marginTop:'20px',marginLeft:'15px'}}>
+           { activeTab=='longer-tab'&&  <MDBRow style={{marginTop:'20px',marginLeft:'10px'}}>
               <Form.Check 
             type='checkbox'
             id={`cardpay`}
             checked={selectedPaymentMethod === 'cardpay'}
             onChange={() => handleCheckboxChange('cardpay')}
-            label="Часткова передоплата (платіжний сервіс Liqpay)"
+            label={t('half_price')}
           />
 
               </MDBRow>}
@@ -1082,8 +1083,8 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   
   <hr className="my-4 " />
   <MDBRow >
-  <MDBCol>До сплати </MDBCol>
-  <MDBRow>
+  <MDBCol>{t('to_payment')} </MDBCol>
+  <MDBCol> <MDBRow>
   {selectedPaymentMethod === 'cardpay' ? (
     <MDBCol className="text-end">
       <h5>{convertPrice(250, selectedCurrency)} {selectedCurrency}</h5>
@@ -1099,10 +1100,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       </MDBCol>
     )
   )}
-</MDBRow></MDBRow>
+</MDBRow> </MDBCol>
+ </MDBRow>
 
   <MDBRow style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
+    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')}  </Button>)}
    
   </MDBRow>
       </div>
@@ -1112,12 +1114,12 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
   <MDBCol  md='5' className="order-md-2 order-1">
-  <MDBRow> <MDBCol><div className="h211"> Ваш кошик </div>  </MDBCol> </MDBRow>
+  <MDBRow> <MDBCol><div className="h211"> {t('basket')} </div>  </MDBCol> </MDBRow>
   <MDBRow>
 {
   arrbuket.length < 1 ? (
     <>
-    <p>Ваш кошик порожній </p>
+    <p>{t('emptybasket')} </p>
     {errors.buket && <div style={{ color: 'red' }}>{errors.buket}</div>}
   </>
   ) : (
@@ -1128,9 +1130,10 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       article={x.article}
       selectedCurrency={selectedCurrency}
       unic={x.id}
-      name={x.name}
+      name={i18n.language === 'en' ? x.nameEng : x.name}
       quantity={x.quantity}
       size={x.size}
+      t={t}
       insulator={x.insulator}
       picture={x.image}
       price={convertPrice(x.price,selectedCurrency)}
@@ -1144,31 +1147,31 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   </MDBRow>
   <hr className="my-4" />
   <MDBRow>
-  <MDBCol>Всього </MDBCol>
+  <MDBCol>{t('total')} </MDBCol>
   <MDBCol className="text-end"><h5>{convertPrice(total,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   </MDBRow>
   {discount>0 && (
   <MDBRow>
-  <MDBCol>Знижка {discount}%</MDBCol>
+  <MDBCol>{t('discount')} {discount}%</MDBCol>
   <MDBCol className="text-end"><h5>{convertPrice(total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   </MDBRow>)}
  
   <MDBRow>
   
-  <MDBCol>Доставка </MDBCol>
+  <MDBCol>{t('delivery')} </MDBCol>
   {activeTab!='longer-tab' ? (
   <MDBCol className="text-end"><h5>{convertPrice(shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
   ): (
-    <MDBCol className="text-end"><a style={{color:'black',textDecoration:'underline'}} href="https://novaposhta.ua/basic_tariffs">По тарифам перевізника </a></MDBCol>
+    <MDBCol className="text-end"><a style={{color:'black',textDecoration:'underline'}} href="https://novaposhta.ua/basic_tariffs">{t('price_delivery')} </a></MDBCol>
     )
   }
   </MDBRow>
 
   
   <hr className="my-4" />
-  <MDBRow id="totalbtn">
-  <MDBCol>До сплати </MDBCol>
-  <MDBRow>
+  <MDBRow id='totalbtn' >
+  <MDBCol>{t('to_payment')} </MDBCol>
+  <MDBCol> <MDBRow>
   {selectedPaymentMethod === 'cardpay' ? (
     <MDBCol className="text-end">
       <h5>{convertPrice(250, selectedCurrency)} {selectedCurrency}</h5>
@@ -1184,12 +1187,12 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       </MDBCol>
     )
   )}
-</MDBRow>
-  </MDBRow>
+</MDBRow> </MDBCol>
+ </MDBRow>
  
 
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> Підтвердити замовлення </Button>)}
+    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button>)}
    
   </MDBRow>
     </MDBCol>

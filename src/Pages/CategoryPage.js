@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import PxMainPage from './PxMainPage.js';
 import Footer from '../Components/Footer.js';
 import { useState } from "react";
@@ -8,28 +9,16 @@ import axios from 'axios';
 import { connect,useDispatch,useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ContentPage from './ContentPage.js';
-import { setProducts } from '../redux/actions.js';
 
 const CategoryPage = () => {
   const [types,setTypes] = useState([]);
   const [materials,setMaterials] = useState([]);
-  const [popular,setPopular] = useState([]);
-  const [arrBasket,setArrBasket] = useState([]);
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+  const { t } = useTranslation();
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState( 0);
   
-  const [userId,setUserId] = useState("");
   const [showM, setShowM] = useState(false);
-  const [total,setTotal] = useState(0);
-  const [range,setRange]=useState(0);
   const [allproducts,setAllProducts] = useState([]);
-const handleCloseM = () => setShowM(false);
-const handleShowM = () => setShowM(true);
 
 const dispatch = useDispatch();
 const products = useSelector(state => state.products);
@@ -72,11 +61,11 @@ function generatePath(categoryName) {
 function generatePathName(categoryName) {
   switch (categoryName) {
     case 'clothes':
-      return 'Одяг';
+      return t('clothes');
     case'shoes':
-      return 'Взуття';
+      return t('shoes');
     case 'accessorise':
-      return 'Аксесуари';
+      return t('accessorise');
 
     default:
       return 'unknown';

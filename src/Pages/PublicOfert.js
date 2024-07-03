@@ -5,9 +5,9 @@ import { Link, Outlet } from "react-router-dom";
 import Footer from '../Components/Footer';
 import { useState } from "react";
 import { useEffect } from "react";
-
+import { useTranslation } from 'react-i18next';
 const PublicOfert = () => {
-  
+  const {t ,i18n} = useTranslation();
 const [selectedCurrency, setSelectedCurrency] = useState('UAH');
 const [exchangeRates, setExchangeRates] = useState({
   usd: 1, 
@@ -81,14 +81,108 @@ const convertPrice = (price, currency) => {
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
      <div className="stock-status" style={{marginTop:'160px'}}>
-      <Link to="/"><div className="div33">Головна </div></Link>
+      <Link to="/"><div className="div33">{t('home')} </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<Link to="/faq"><div className="div34">Договір оферти</div></Link>
+<Link to="/faq"><div className="div34">{t('public_offert')}</div></Link>
 </div>
-<div className='agreement'  >
-<h1>Публічний договір (оферта)</h1>
+{i18n.language === 'en' ? <div className='agreement'>
+    <h1>{t('public_offert')}</h1>
+    <div>  This contract is the official and public offer of the Seller to conclude a contract of sale of Goods presented on the website hdbrand.com.ua. This contract is public, meaning that according to Article 633 of the Civil Code of Ukraine, its terms are the same for all buyers regardless of their status (individual, legal entity, individual entrepreneur) without giving preference to one buyer over another. By entering into this Agreement, the buyer fully accepts the terms and conditions of ordering, payment for goods, delivery of goods, return of goods, liability for improper ordering, and all other terms of the contract. The contract is considered concluded from the moment of pressing the "Confirm Order" button on the order processing page in the "Cart" section and the Buyer receiving confirmation of the order from the Seller in electronic form. 
+    <h2>1. Definitions</h2>
+    <p>1.1. Public offer (hereinafter - "Offer") - a public offer of the Seller addressed to an indefinite circle of persons to conclude a contract of sale of goods remotely (hereinafter - "Contract") on the terms contained in this Offer.</p>
+    <p>1.2. Goods or Services – the subject matter of the agreement between the parties, which has been selected by the buyer on the website of the Internet store and placed in the cart, or already purchased by the Buyer from the Seller remotely.</p>
+    <p>1.3. Internet store – the Seller's website at https://hdbrand.com.ua/ created for the conclusion of contracts for retail and wholesale sale and purchase based on the Buyer's acquaintance with the Seller's proposed description of the Goods through the Internet.</p>
+    <p>1.4. Buyer – a capable natural person who has reached the age of 18, receives information from the Seller, places an order for the purchase of goods presented on the website of the Internet store for purposes not related to entrepreneurial activity, or a legal entity or individual entrepreneur.</p>
+    <p>1.5. Seller – Individual entrepreneur "Honcharenko Yaroslav Oleksandrovych" Address: 49000, Dnipro City Korobova Street, Building 8 Tel. (+380) 63 722 39 20 r/r UA953052990000026002050592268, PJSC KB "PrivatBank", Dnipro City, EDRPOU 3264604374 Bank code 305299 EDRPOU of the bank 14360570 The payer of a single tax-2 group, not a VAT payer.</p>
+
+    <h2>2. Subject Matter of the Agreement</h2>
+    <p>2.1. The Seller undertakes to transfer the Goods to the ownership of the Buyer, and the Buyer undertakes to pay for and accept the Goods on the terms of this Agreement.</p>
+    <p>2.2. The date of conclusion of the Contract-offer (acceptance of the offer) and the moment of full and unconditional acceptance of the conditions of the Contract by the Buyer are considered to be the date of filling in the Buyer's order form located on the website of the Internet store, provided that the Buyer receives confirmation of the order from the Seller in electronic form. If necessary, at the Buyer's request, the Contract may be executed in writing.</p>
+
+    <h2>3. Order Processing</h2>
+    <p>3.1. The Buyer independently places an order in the Internet store through the "Cart" form, or by placing an order by email or by phone number indicated in the contact section of the Internet store.</p>
+    <p>3.2. The Seller has the right to refuse to transfer the order to the Buyer if the information provided by the Buyer during the order processing is incomplete or raises suspicion about its authenticity.</p>
+    <p>3.3. When placing an order on the website of the Internet store, the Buyer undertakes to provide the following mandatory information necessary for the Seller to fulfill the order:</p>
+    <p>3.3.1. Last name, first name of the Buyer;</p>
+    <p>3.3.2. Address to which the Goods should be delivered (if delivery to the Buyer's address);</p>
+    <p>3.3.3. Contact phone number.</p>
+    <p>3.3.4. Identification code for a legal entity or individual entrepreneur.</p>
+
+    <p>3.4. The name, quantity, article, price of the Goods chosen by the Buyer are specified in the Buyer's cart on the website of the Internet store.</p>
+    <p>3.5. If either Party to the contract requires additional information, it has the right to request it from the other Party. In case of failure to provide the necessary information by the Buyer, the Seller is not responsible for providing quality service to the Buyer when purchasing goods in an online store.</p>
+    <p>3.6. When placing an order through the Seller's operator (clause 3.1 of this Offer), the Buyer undertakes to provide the information specified in clauses 3.3 – 3.4 of this Offer.</p>
+    <p>3.7. The acceptance by the Buyer of the terms of this Offer is carried out by the Buyer entering the relevant data in the registration form on the website of the Internet store or when placing an order through an operator. After placing the Order through the Operator, the Buyer's data is entered into the Seller's database.</p>
+    <p>3.8. The Buyer is responsible for the accuracy of the information provided when placing the Order.</p>
+    <p>3.9. By concluding the Contract, i.e., by accepting the terms of this proposal (the proposed conditions for the purchase of the Goods) by placing an Order, the Buyer confirms the following:</p>
+
+    <p>a - The Buyer is fully familiar with and agrees to the terms of this proposal (offer);</p>
+    <p>b - The Buyer gives permission for the collection, processing, and transfer of personal data, permission for the processing of personal data for the entire term of the Contract, as well as for an unlimited period after its expiration. In addition, by concluding the contract, the Buyer confirms that he has been informed (without additional notification) about the rights established by the Law of Ukraine "On Protection of Personal Data," about the purposes of data collection, and that his personal data is transferred to the Seller for the purpose of fulfilling the conditions of this Contract, the possibility of conducting settlements, as well as for obtaining invoices, acts, and other documents. The Buyer also agrees that the Seller has the right to provide access to and transfer his personal data to third parties without any additional notices to the Buyer for the purpose of fulfilling the Buyer's order. The extent of the Buyer's rights as a subject of personal data under the Law of Ukraine "On Protection of Personal Data" is known and understood by him.</p>
+
+    <h2>4. Price and Delivery of Goods</h2>
+    <p>4.1. Prices for Goods and services are determined by the Seller independently and indicated on the website of the Internet store. All prices for Goods and services are indicated on the website in UAH including VAT.</p>
+    <p>4.2. Prices for Goods and services may be changed by the Seller unilaterally depending on market conditions. At the same time, the price of a separate unit of Goods, the cost of which has been paid by the Buyer in full, cannot be changed by the Seller unilaterally.</p>
+    <p>4.3. The cost of the Goods indicated on the website of the Internet store does not include the cost of delivery of the Goods to the Buyer. The cost of delivery of the Goods is paid by the Buyer according to the current tariffs of delivery services (carriers) directly chosen by him.</p>
+    <p>4.4. The cost of the Goods indicated on the website of the Internet store does not include the cost of delivery of the Goods to the Buyer's address.</p>
+    <p>4.5. The Seller may indicate the approximate cost of delivery of the Goods to the Buyer's address when the Buyer applies with the corresponding request to the Seller by sending an email or when placing an order through an Internet store operator.</p>
+    <p>4.6. The Buyer's obligation to pay for the Goods is considered fulfilled from the moment the funds are received by the Seller.</p>
+    <p>4.7. Settlements between the Seller and the Buyer for the Goods are made by the methods indicated on the website of the Internet store in the "Payment and Delivery" section.</p>
+
+    <p>4.8. Upon receipt of the Goods, the Buyer must, in the presence of a representative of the delivery service (carrier), check the compliance of the Goods with qualitative and quantitative characteristics (name of the Goods, quantity, completeness, shelf life).</p>
+    <p>4.9. The Buyer or his representative, upon receipt of the Goods, confirms by his signature on the sales receipt/order/transportation bill for the delivery of goods that there are no claims to the quantity of goods, appearance, and completeness of the goods.</p>
+    <p>4.10. The right of ownership and the risk of accidental loss or damage to the Goods pass to the Buyer or his Representative from the moment of receipt of the Goods by the Buyer in the city of delivery of the Goods in case of self-delivery of the Goods from the Seller, or when transferring the Goods by the Seller to the delivery service (carrier) chosen by the Buyer.</p>
+
+    <h2>5. Seller's Rights and Obligations</h2>
+    <p>5.1. The Seller has the right to unilaterally change the terms of this Offer without notifying the Buyer. At the same time, all changes take effect from the moment of posting the new version of the Offer on the Seller's website.</p>
+    <p>5.2. The Seller has the right to refuse to fulfill its obligations under this Offer in case of force majeure circumstances, as well as in other cases specified in this Offer.</p>
+    <p>5.3. The Seller has the right to suspend or terminate the operation of the Internet store, unilaterally change the terms of the Offer, and unilaterally terminate this Offer. All changes take effect from the moment of posting a new version of the Offer on the Seller's website.</p>
+    <p>5.4. The Seller undertakes to transfer the Goods to the Buyer in accordance with the terms of this Offer.</p>
+    <p>5.5. The Seller undertakes to transfer the Goods to the Buyer at the prices and on the terms specified in this Offer.</p>
+    <p>5.6. The Seller undertakes to inform the Buyer about the terms of payment and delivery of the Goods.</p>
+    <p>5.7. The Seller undertakes to maintain the confidentiality of the Buyer's personal data in accordance with the Law of Ukraine "On Protection of Personal Data" and not to transfer the Buyer's personal data to third parties without the Buyer's consent, except as provided by the legislation of Ukraine.</p>
+
+    <h2>6. Buyer's Rights and Obligations</h2>
+    <p>6.1. The Buyer has the right to order and receive the Goods on the terms of this Offer.</p>
+    <p>6.2. The Buyer undertakes to pay for the Goods and accept the Goods on the terms of this Offer.</p>
+    <p>6.3. The Buyer undertakes to familiarize himself with the terms of this Offer and the prices for the Goods before placing an order on the website of the Internet store.</p>
+    <p>6.4. The Buyer undertakes to check the completeness and condition of the Goods upon receipt and pay for the Goods in the amount and on the terms specified in this Offer.</p>
+    <p>6.5. The Buyer undertakes to comply with the terms of payment for the Goods and take measures to prevent unauthorized access to information about his registration in the Internet store.</p>
+    <p>6.6. The Buyer undertakes not to use the website of the Internet store and the Goods for entrepreneurial activities, except in cases stipulated by the legislation of Ukraine.</p>
+    <p>6.7. The Buyer undertakes to comply with the provisions of this Offer and all applicable legislation of Ukraine.</p>
+
+    <h2>7. Responsibility of the Parties</h2>
+    <p>7.1. In case of non-fulfillment or improper fulfillment of obligations under this Offer, the Parties shall be liable in accordance with the legislation of Ukraine.</p>
+    <p>7.2. The Seller is not responsible for the content and accuracy of information provided by the Buyer when placing an order in the Internet store.</p>
+    <p>7.3. The Seller is not responsible for the Buyer's use of the Goods purchased in the Internet store.</p>
+    <p>7.4. The Seller or the Buyer shall be exempt from liability for complete or partial non-performance of their obligations if such non-performance is a consequence of force majeure circumstances such as: war or military actions, earthquake, flood, fire, and other natural disasters that occurred independently of the Seller's and/or Buyer's will after the conclusion of this contract. The Party unable to fulfill its obligations shall immediately notify the other Party thereof.</p>
+
+<h2>8. Confidentiality and Personal Data Protection.</h2>
+<p>8.1. By providing their personal data on the website of the Internet store during registration or when placing an Order, the Buyer voluntarily gives consent to the Seller for the processing, use (including transfer) of their personal data, as well as taking other actions provided by the Law of Ukraine "On Protection of Personal Data," without limitation of the term of such consent.</p>
+<p>8.2. The Seller undertakes not to disclose the information received from the Buyer. The provision by the Seller of information to contractors and third parties acting on the basis of a contract with the Seller, including for the performance of obligations to the Buyer, and in cases where the disclosure of such information is established by the requirements of applicable Ukrainian legislation, is not considered a violation.</p>
+<p>8.3. The Buyer is responsible for keeping their personal data up to date. The Seller is not responsible for improper performance or non-performance of its obligations due to the obsolescence of information about the Buyer or its mismatch with reality.</p>
+
+<h2>9. Other Conditions</h2>
+<p>9.1. This contract is concluded in Ukraine and is governed by the current legislation of Ukraine.</p>
+<p>9.2. All disputes arising between the Buyer and the Seller shall be resolved through negotiations. In case of failure to settle the dispute through negotiations, the Buyer and/or the Seller have the right to apply to the courts in accordance with the current legislation of Ukraine.</p>
+<p>9.3. The Seller has the right to make changes to this Agreement unilaterally as provided in clause 5.2.1. of the Agreement. In addition, changes to the Agreement may also be made by mutual agreement of the Parties in accordance with the current legislation of Ukraine.</p>
+<p></p>
+<h7>SELLER'S ADDRESS AND DETAILS:</h7>
+<p>
+Individual Entrepreneur "Honcharenko Yaroslav Oleksandrovych"<br/>
+Address: 49000, Dnipro City, Korobova Street, Building 8<br/>
+Tel. (+380)63 722 39 20<br/>
+r/r UA953052990000026002050592268, <br/>
+PJSC KB "PrivatBank", Dnipro City, <br/>
+EDRPOU 3264604374 <br/>
+Bank code 305299 <br/>
+EDRPOU of the bank 14360570 <br/>
+Payer of a single tax - 2 group,<br/>
+not a VAT payer.
+</p>
+
+ </div>  </div>: <div className='agreement'  >
+<h1>{t('public_offert')}</h1>
 <div>
 Цей договір є офіційною та публічною пропозицією Продавця укласти договір купівлі-продажу Товару, представленого на сайті hdbrand.com.ua . Даний договір є публічним, тобто відповідно до статті 633 Цивільного кодексу України, його умови є однаковими для всіх покупців незалежно від їх статусу (фізична особа, юридична особа, фізична особа-підприємець) без надання переваги одному покупцю перед іншим. Шляхом укладення цього Договору покупець в повному обсязі приймає умови та порядок оформлення замовлення, оплати товару, доставки товару, повернення товару, відповідальності за недобросовісне замовлення та усі інші умови договору. Договір вважається укладеним з моменту натискання кнопки «Підтвердити Замовлення» на сторінці оформлення замовлення в Розділі «Кошик» і отримання Покупцем від Продавця підтвердження замовлення в електронному вигляді.
 
@@ -193,7 +287,8 @@ const convertPrice = (price, currency) => {
 
 </p>
 </div>
-</div>
+</div>}
+
 
 <Footer />
     </div>

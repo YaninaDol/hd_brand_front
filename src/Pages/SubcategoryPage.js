@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import { setSubCategory} from '../redux/actions';
 import { useParams } from 'react-router-dom';
 
+import { useTranslation } from 'react-i18next';
 import ContentPageSubCat from './ContentPageSubCat';
 const SubcategoryPage = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -22,10 +23,7 @@ const SubcategoryPage = () => {
   const category = useSelector(state => state.category);
   const material = useSelector(state => state.material);
   const season = useSelector(state => state.season);
-  const [showM, setshowM] = useState(false);
-  const handleCloseM = () => setshowM(false);
-  const handleShowM = () => setshowM(true);
-
+  const {i18n, t } = useTranslation();
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
@@ -61,11 +59,11 @@ const SubcategoryPage = () => {
   function generatePathName(categoryName) {
     switch (categoryName) {
       case 'clothes':
-        return 'Одяг';
+        return t('clothes');
       case'shoes':
-        return 'Взуття';
+        return t('shoes');
       case 'accessorise':
-        return 'Аксесуари';
+        return t('accessorise');
   
       default:
         return 'unknown';
@@ -159,18 +157,12 @@ const convertPrice = (price, currency) => {
 
   return (
     <div>
-      <Modal show={showM} onHide={handleCloseM}>
-        <Modal.Header closeButton>
-        <Modal.Body>Товар додано до кошику </Modal.Body>
-        </Modal.Header>
-      
-      
-      </Modal>
+     
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
    <div className="stock-status" style={{marginTop:'150px'}}>
-      <Link to="/"><div className="div33">Головна </div></Link>
+      <Link to="/"><div className="div33">{t('home')} </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
@@ -178,10 +170,10 @@ const convertPrice = (price, currency) => {
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-{subcategory.name}
+{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}
 </div>
  
-<ContentPageSubCat selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={items} link={categoryName} materials={materials}  page={subcategory.name} ></ContentPageSubCat>
+<ContentPageSubCat selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={items} link={categoryName} materials={materials}  page={i18n.language === 'en' ? subcategory.nameEng : subcategory.name} ></ContentPageSubCat>
 
 
 

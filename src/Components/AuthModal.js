@@ -125,12 +125,13 @@ const AuthModal = ({ show, handleClose }) => {
                            if(res.data.userRole[0]=="Admin")
                            {
                            
-                              window.location.href='/admin';
+                              window.location.href='/admin/products';
+                              window.sessionStorage.setItem("Role", 1);
                            }
                            if(res.data.userRole[0]=="Menager")
                            {
                            
-                              window.location.href='/admin';
+                              window.location.href='/admin/products';
                            }
 
 

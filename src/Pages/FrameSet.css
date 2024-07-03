@@ -191,6 +191,22 @@
   overflow: hidden;
   flex-shrink: 0;
 }
+.color-child11 {
+  height: 16px;
+  width: 16px;
+  position: relative;
+  background-color:orange;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.color-child12 {
+  height: 16px;
+  width: 16px;
+  position: relative;
+  background-color:yellow;
+  overflow: hidden;
+  flex-shrink: 0;
+}
 .div140 {
   flex: 1;
   position: relative;

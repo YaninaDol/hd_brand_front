@@ -187,7 +187,8 @@ const Home = () => {
      
 
 
-      
+
+
 
     </Carousel>
     {/* <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}> */}

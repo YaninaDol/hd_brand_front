@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import {
   MDBCol,
   MDBRow,
@@ -38,19 +39,19 @@ class CardBox extends Component {
             <MDBRow><div style={{fontWeight:'bold'}}>{this.props.name} </div> </MDBRow> 
             <MDBRow> <p style={{opacity:'0.5',color:'gray'}}>Арт: {this.props.article}</p></MDBRow> 
             {this.props.size !== '' && (  <MDBRow style={{marginTop:'15px'}}>
-                <MDBCol>Розмір: </MDBCol>
+                <MDBCol>{this.props.t('size')}: </MDBCol>
                 <MDBCol > {this.props.size}</MDBCol>
                
             </MDBRow>)}
             {this.props.size !== '' && this.props.insulator &&(  <MDBRow style={{marginTop:'15px'}}>
-                <MDBCol>Утеплювач: </MDBCol>
+                <MDBCol>{this.props.t('insulator')}: </MDBCol>
                 <MDBCol > {this.props.insulator}</MDBCol>
                
             </MDBRow>)}
             {this.props.size !== '' && (
           <MDBRow style={{ marginTop: '15px' }}>
-            <MDBCol>Термін виготовлення: </MDBCol>
-            <MDBCol>7-10 робочих днів</MDBCol>
+            <MDBCol>{this.props.t('term')}: </MDBCol>
+            <MDBCol>{this.props.t('7-10')}</MDBCol>
           </MDBRow>
         )}
            {this.props.size !== '' && (   <MDBRow style={{marginTop:'15px'}}>  <MDBCol   md='6' >
