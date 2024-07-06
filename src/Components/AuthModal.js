@@ -180,7 +180,7 @@ const handlesend=()=>
             <Button size="lg" variant="dark" onClick={handlesend}>
             {t('reset')}
           </Button>
-              
+          
             </MDBRow>
            </Modal.Body>
              
@@ -232,6 +232,7 @@ const handlesend=()=>
                 onChange={(e) => setRepeatPassword(e.target.value)}
               />
               <Form.Text className="text-danger">{repeatPasswordError}</Form.Text>
+              <Form.Text style={{fontSize:'12px'}}>{t('auth_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text>
             </Form.Group>
           )}
 <MDBRow className="mx-4">
@@ -241,7 +242,7 @@ const handlesend=()=>
           <Button variant="outline-dark"  size='lg' onClick={() => setIsRegistration(!isRegistration)}style={{marginTop:'15px'}}>
             {isRegistration ? t('account') : t('registration') }
           </Button>
-
+         
 </MDBRow>
          
         </Form>

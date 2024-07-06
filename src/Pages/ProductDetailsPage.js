@@ -82,10 +82,10 @@ const ProductDetailsPage = () => {
   const handleVideoToggle = () => {
     const video = videoRef.current;
     if (video.paused || video.ended) {
-      video.play(); // Если видео на паузе или завершено, запускаем его
+      video.play(); 
       setIsPlaying(true);
     } else {
-      video.pause(); // Если видео воспроизводится, ставим его на паузу
+      video.pause(); 
       setIsPlaying(false);
     }
   };
@@ -665,8 +665,20 @@ const ProductDetailsPage = () => {
 <h2>{i18n.language === 'en' ? product.nameEng : product.name} </h2>
    
     </MDBRow>
-
-<MDBRow  style={{marginTop:'5px',fontSize:'20px'}}> <h7>{convertPrice1(product.salePrice, selectedCurrency)} {selectedCurrency}</h7> </MDBRow>
+    {product.isDiscount ? (
+  <>
+    <MDBRow style={{ marginTop: '5px', fontSize: '20px', textDecoration: 'line-through',opacity:'0.5' }}>
+      <h7>{convertPrice1(product.price, selectedCurrency)} {selectedCurrency}</h7>
+    </MDBRow>
+    <MDBRow style={{ marginTop: '5px', fontSize: '20px',color:'var(--typography-additional)' }}>
+      <h7>{convertPrice1(product.salePrice, selectedCurrency)} {selectedCurrency}</h7>
+    </MDBRow>
+  </>
+) : (
+  <MDBRow style={{ marginTop: '5px', fontSize: '20px' }}>
+    <h7>{convertPrice1(product.salePrice, selectedCurrency)} {selectedCurrency}</h7>
+  </MDBRow>
+)}
 <MDBRow style={{marginTop:'75px'}}><h6>{t('product_information')}: </h6></MDBRow>
                 <MDBRow  style={{marginTop:'5px'}}><MDBCol> {t('season')}: </MDBCol> <MDBCol className='text-end'> {i18n.language === 'en' ? season.nameEng : season.name} </MDBCol> </MDBRow>
                 {/* <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('category')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? category.nameEng : category.name}  </MDBCol> </MDBRow> */}

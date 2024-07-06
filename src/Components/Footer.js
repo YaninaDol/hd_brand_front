@@ -3,6 +3,7 @@ import { Link} from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import './Footer.css'
 import React from 'react';
+import i18n from "../i18n";
 const Footer = () => {
   const { t } = useTranslation();
   return (
@@ -16,15 +17,27 @@ const Footer = () => {
             alt=""
             src={require('../assets/logo-white Container.png')}
           />
-          <div className="hd-brand-2022-container">
-            <p className="hd-brand-2022">
-              hd_brand © 2024 | Всі права захищені.
-            </p>
-            <p className="p">
-              Використання будь-яких матеріалів сайту можливе лише з
-              письмового дозволу власника!
-            </p>
-          </div>
+
+
+           {i18n.language === 'en' ?  <div className="hd-brand-2022-container">
+         
+         <p className="hd-brand-2022">
+           hd_brand © 2024 | All Rights Reserved.
+         </p>
+         <p className="p">
+         The use of any materials from the site is only allowed with the written permission of the owner!
+         </p>
+       </div>: <div className="hd-brand-2022-container">
+         
+         <p className="hd-brand-2022">
+           hd_brand © 2024 | Всі права захищені.
+         </p>
+         <p className="p">
+           Використання будь-яких матеріалів сайту можливе лише з
+           письмового дозволу власника!
+         </p>
+       </div>}
+         
         </div>
         <div className="icon-payment">
           <img

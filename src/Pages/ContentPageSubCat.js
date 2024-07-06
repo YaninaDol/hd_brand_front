@@ -14,10 +14,12 @@ import {
  
   MDBContainer,
   MDBCol,
-  MDBRow 
+  MDBRow,
+  MDBSpinner
 } from 'mdb-react-ui-kit';
 const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrencyChange,convertPrice }) => {
   const {i18n, t } = useTranslation();
+  const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState('');
   const [sortCollection, setSortCollection] = useState('');
   const [itemsPerRow, setItemsPerRow] = useState(12);
@@ -41,6 +43,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 
   useEffect(() => {
     applyFilters();
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
   }, [items,sortCollection,sortOrder]);
 
 
@@ -477,76 +482,72 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
    
 
             <MDBCol hidden={allhidden} className="containerCart">
-            {items.length > 0 ? (
-    items.slice(0, visibleItems).map((x) => (
-      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-      <CartProduct
-      id_key={x.id}
-      imageSrc1={x.image}
-      imageSrc2={x.image2}
-      imageSrc3={x.image3}
-      video={x.video}
-      isNew={x.isNew}
-      isDiscount={x.isDiscount}
-      isLiked={false}
-      descriprion={i18n.language === 'en' ? x.nameEng : x.name}
-      price1={convertPrice(x.price,selectedCurrency)}
-      currency={selectedCurrency}
-      price2={convertPrice(x.salePrice,selectedCurrency)}
-      />
-      </Link>
-    ))
-  ) : (
-    <div> </div>
-  )}
-            </MDBCol>
-            <MDBCol hidden={filteredhidden} className="containerCart">
-            {filteredProducts.length > 0 ? (
-    filteredProducts.slice(0, visibleItems).map((x) => (
-      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-      <CartProduct
-      id_key={x.id}
-      imageSrc1={x.image}
-      imageSrc2={x.image2}
-      imageSrc3={x.image3}
-      video={x.video}
-      isNew={x.isNew}
-      isDiscount={x.isDiscount}
-      isLiked={false}
-      descriprion={i18n.language === 'en' ? x.nameEng : x.name}
-      price1={convertPrice(x.price,selectedCurrency)}
-      currency={selectedCurrency}
-      price2={convertPrice(x.salePrice,selectedCurrency)}
-      />
-      </Link>
-    ))
-  ) : (
-    <div></div>
-  )}
-            </MDBCol>
-          </MDBRow>
-          <MDBRow >
-            <MDBCol className='column-hide'  ></MDBCol>
-            <MDBCol  className='showmoreBtn' >
-            {visibleItems < items.length  && (
-                <Button hidden={allhidden}
-                  style={{ borderRadius: '0px' }}
-                  variant="outline-dark"
-                  onClick={showMoreItems}
-                >
-                   {t('show_more')}
-                </Button>
-              )}
-               {visibleItems < filteredProducts.length  && (
-                <Button hidden={filteredhidden}
-                  style={{ borderRadius: '0px' }}
-                  variant="outline-dark"
-                  onClick={showMoreItems}
-                >
-                   {t('show_more')}
-                </Button>
-              )}
-            </MDBCol>
+        {loading ? (
+          <MDBSpinner big />
+        ) : items.length > 0 ? (
+          items.slice(0, visibleItems).map((x) => (
+            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+              <CartProduct
+                id_key={x.id}
+                imageSrc1={x.image}
+                imageSrc2={x.image2}
+                imageSrc3={x.image3}
+                isNew={x.isNew}
+                isDiscount={x.isDiscount}
+                isLiked={false}
+                descriprion={i18n.language === 'en' ? x.nameEng : x.name}
+                price1={convertPrice(x.price, selectedCurrency)}
+                currency={selectedCurrency}
+                price2={convertPrice(x.salePrice, selectedCurrency)}
+              />
+            </Link>
+          ))
+        ) : (
+          <div>{t('no_items')}</div>
+        )}
+      </MDBCol>
+      <MDBCol hidden={filteredhidden} className="containerCart">
+        {loading ? (
+          <MDBSpinner big />
+        ) : filteredProducts.length > 0 ? (
+          filteredProducts.slice(0, visibleItems).map((x) => (
+            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+              <CartProduct
+                id_key={x.id}
+                imageSrc1={x.image}
+                imageSrc2={x.image2}
+                imageSrc3={x.image3}
+                isNew={x.isNew}
+                isDiscount={x.isDiscount}
+                isLiked={false}
+                descriprion={i18n.language === 'en' ? x.nameEng : x.name}
+                price1={convertPrice(x.price, selectedCurrency)}
+                currency={selectedCurrency}
+                price2={convertPrice(x.salePrice, selectedCurrency)}
+              />
+            </Link>
+          ))
+        ) : (
+          <div>{t('no_items')}</div>
+        )}
+      </MDBCol>
+      {loading ? (
+          <></>
+        ) :   <MDBRow>
+        <MDBCol className='column-hide'></MDBCol>
+        <MDBCol className='showmoreBtn'>
+          {visibleItems < items.length && (
+            <Button hidden={allhidden} style={{ borderRadius: '0px' }} variant="outline-dark" onClick={showMoreItems}>
+              {t('show_more')}
+            </Button>
+          )}
+          {visibleItems < filteredProducts.length && (
+            <Button hidden={filteredhidden} style={{ borderRadius: '0px' }} variant="outline-dark" onClick={showMoreItems}>
+              {t('show_more')}
+            </Button>
+          )}
+        </MDBCol>
+      </MDBRow>}
 </MDBRow>
  
 </MDBContainer>

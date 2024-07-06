@@ -307,6 +307,9 @@ function getOrder()
               <div className="menu-navigation-button-contain2">
               <Link to='/accessorise'>   <div className="button-nav2">{t('accessorise')}</div></Link>
               </div>
+              <div className="menu-navigation-button-contain2">
+              <Link to='/sale'>   <div style={{color:'red'}} className="button-nav2">{t('sale')}</div></Link>
+              </div>
               <div className="menu-navigation-button-contain5">
               <Link to='/faq'>   <div className="button-nav5">FAQ</div></Link>
               </div>
@@ -501,7 +504,7 @@ function getOrder()
   </div>
 </div>
       </div>
-      
+      <Nav.Link className="item-title" active style={{color:'red'}} href="/sale">{t('sale')}</Nav.Link>
                   <Nav.Link className="item-title" active  href="/faq">FAQ</Nav.Link>
                 
                 </Nav>

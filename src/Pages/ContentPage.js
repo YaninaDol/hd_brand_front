@@ -16,10 +16,11 @@ import {
   MDBContainer,
   MDBCol,
   MDBRow,
-  MDBRange 
+  MDBSpinner 
 } from 'mdb-react-ui-kit';
 const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertPrice }) => {
   const { i18n,t } = useTranslation();
+  const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState('');
   const [sortCollection, setSortCollection] = useState('');
   const [itemsPerRow, setItemsPerRow] = useState(12);
@@ -45,7 +46,9 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   useEffect(() => {
     window.scrollTo(0, 0);
     applyFilters();
-       
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
     
 }, [items,sortCollection,sortOrder]);
   const handleCheckboxChange = (event, type) => {
@@ -508,77 +511,72 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
    
 
             <MDBCol hidden={allhidden} className="containerCart">
-            {items.length > 0 ? (
-    items.slice(0, visibleItems).map((x) => (
-      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-      <CartProduct
-      id_key={x.id}
-      imageSrc1={x.image}
-      imageSrc2={x.image2}
-      imageSrc3={x.image3}
-  
-      isNew={x.isNew}
-      isDiscount={x.isDiscount}
-      isLiked={false}
-      descriprion={i18n.language === 'en' ? x.nameEng : x.name}
-      price1={convertPrice(x.price,selectedCurrency)}
-      currency={selectedCurrency}
-      price2={convertPrice(x.salePrice,selectedCurrency)}
-      />
-      </Link>
-    ))
-  ) : (
-    <div> </div>
-  )}
-            </MDBCol>
-            <MDBCol hidden={filteredhidden} className="containerCart">
-            {filteredProducts.length > 0 ? (
-    filteredProducts.slice(0, visibleItems).map((x) => (
-      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-      <CartProduct
-      id_key={x.id}
-      imageSrc1={x.image}
-      imageSrc2={x.image2}
-      imageSrc3={x.image3}
-     
-      isNew={x.isNew}
-      isDiscount={x.isDiscount}
-      isLiked={false}
-      descriprion={i18n.language === 'en' ? x.nameEng : x.name}
-      price1={convertPrice(x.price,selectedCurrency)}
-      currency={selectedCurrency}
-      price2={convertPrice(x.salePrice,selectedCurrency)}
-      />
-      </Link>
-    ))
-  ) : (
-    <div></div>
-  )}
-            </MDBCol>
-          </MDBRow>
-          <MDBRow >
-            <MDBCol className='column-hide'  ></MDBCol>
-            <MDBCol  className='showmoreBtn' >
-              {visibleItems < items.length  && (
-                <Button hidden={allhidden}
-                  style={{ borderRadius: '0px' }}
-                  variant="outline-dark"
-                  onClick={showMoreItems}
-                >
-                  {t('show_more')}
-                </Button>
-              )}
-               {visibleItems < filteredProducts.length  && (
-                <Button hidden={filteredhidden}
-                  style={{ borderRadius: '0px' }}
-                  variant="outline-dark"
-                  onClick={showMoreItems}
-                >
-                  {t('show_more')}
-                </Button>
-              )}
-
-            </MDBCol>
+        {loading ? (
+          <MDBSpinner big />
+        ) : items.length > 0 ? (
+          items.slice(0, visibleItems).map((x) => (
+            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+              <CartProduct
+                id_key={x.id}
+                imageSrc1={x.image}
+                imageSrc2={x.image2}
+                imageSrc3={x.image3}
+                isNew={x.isNew}
+                isDiscount={x.isDiscount}
+                isLiked={false}
+                descriprion={i18n.language === 'en' ? x.nameEng : x.name}
+                price1={convertPrice(x.price, selectedCurrency)}
+                currency={selectedCurrency}
+                price2={convertPrice(x.salePrice, selectedCurrency)}
+              />
+            </Link>
+          ))
+        ) : (
+          <div>{t('no_items')}</div>
+        )}
+      </MDBCol>
+      <MDBCol hidden={filteredhidden} className="containerCart">
+        {loading ? (
+          <MDBSpinner big />
+        ) : filteredProducts.length > 0 ? (
+          filteredProducts.slice(0, visibleItems).map((x) => (
+            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+              <CartProduct
+                id_key={x.id}
+                imageSrc1={x.image}
+                imageSrc2={x.image2}
+                imageSrc3={x.image3}
+                isNew={x.isNew}
+                isDiscount={x.isDiscount}
+                isLiked={false}
+                descriprion={i18n.language === 'en' ? x.nameEng : x.name}
+                price1={convertPrice(x.price, selectedCurrency)}
+                currency={selectedCurrency}
+                price2={convertPrice(x.salePrice, selectedCurrency)}
+              />
+            </Link>
+          ))
+        ) : (
+          <div>{t('no_items')}</div>
+        )}
+      </MDBCol>
+      {loading ? (
+          <></>
+        ) : <MDBRow>
+        <MDBCol className='column-hide'></MDBCol>
+        <MDBCol className='showmoreBtn'>
+          {visibleItems < items.length && (
+            <Button hidden={allhidden} style={{ borderRadius: '0px' }} variant="outline-dark" onClick={showMoreItems}>
+              {t('show_more')}
+            </Button>
+          )}
+          {visibleItems < filteredProducts.length && (
+            <Button hidden={filteredhidden} style={{ borderRadius: '0px' }} variant="outline-dark" onClick={showMoreItems}>
+              {t('show_more')}
+            </Button>
+          )}
+        </MDBCol>
+      </MDBRow>}
 </MDBRow>
  
 </MDBContainer>
@@ -613,19 +611,19 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         <Form.Check
             type="checkbox"
             name="sorting"
-            id="newcollection"
-            label={t('new_items')}
-            checked={sortCollection === 'isNew'}
-            onChange={() => handleSortCollection('isNew')}
+            id="cheapToExpensive"
+            label={t('ascending')}
+            checked={sortOrder === 'asc'}
+            onChange={() => handleSort('asc')}
             style={{ marginTop: 15 }}
           />
           <Form.Check
             type="checkbox"
             name="sorting"
-            id="salecollection"
-            label={t('discount_items')}
-            checked={sortCollection === 'isDiscount'}
-            onChange={() => handleSortCollection('isDiscount')}
+            id="expensiveToCheap"
+            label={t('decreasing')}
+            checked={sortOrder === 'desc'}
+            onChange={() => handleSort('desc')}
             style={{ marginTop: 15 }}
           />
         </div>
