@@ -296,6 +296,12 @@ const ProductDetailsPage = () => {
      prod.size='';
       setNewProd(prod);
     }
+    // else if (category.id===3)
+    //   {
+    //     var prod=productsizes[0];
+    
+    //    setNewProd(prod);
+    //   };
   }, [product.isDiscount, productsizes]);
 
 
@@ -680,7 +686,7 @@ const ProductDetailsPage = () => {
   </MDBRow>
 )}
 <MDBRow style={{marginTop:'75px'}}><h6>{t('product_information')}: </h6></MDBRow>
-                <MDBRow  style={{marginTop:'5px'}}><MDBCol> {t('season')}: </MDBCol> <MDBCol className='text-end'> {i18n.language === 'en' ? season.nameEng : season.name} </MDBCol> </MDBRow>
+{category.id!=3&&( <MDBRow  style={{marginTop:'5px'}}><MDBCol> {t('season')}: </MDBCol> <MDBCol className='text-end'> {i18n.language === 'en' ? season.nameEng : season.name} </MDBCol> </MDBRow>)}
                 {/* <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('category')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? category.nameEng : category.name}  </MDBCol> </MDBRow> */}
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('type')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}  </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('material')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? material.nameEng : material.name}   </MDBCol> </MDBRow>
@@ -690,8 +696,8 @@ const ProductDetailsPage = () => {
     <div>
      <MDBCol>
       <select className="select p-3 bg-grey" style={{ width: "100%",marginBottom:'5px' }} onChange={(e) => setNewProd(JSON.parse(e.target.value))}>
-      <option selected value="0">{t('size')}</option>
-      
+     <option selected value="0">{t('size')}</option>
+     
         {productsizes.map((x) => (
             
           <option key={x.id} value={JSON.stringify(x)}>

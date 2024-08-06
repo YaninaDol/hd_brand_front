@@ -152,13 +152,13 @@ const Home = () => {
    <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
-    <Carousel fade style={{marginTop:'150px'}} >
+    <Carousel fade style={{marginTop:'135px'}} >
       <Carousel.Item active>
    
         <img
         id='carousel-image'
-          className="d-block "
-          src={require('../assets/bunner@2x.png')}
+          className="d-block  w-100"
+          src={require('../assets/bunner1.jpg')}
           alt="First slide"
           style={responsive}
         />
@@ -168,7 +168,7 @@ const Home = () => {
       <Carousel.Item>
         <img
      id='carousel-image'
-          className="d-block "
+          className="d-block  w-100"
           src={require('../assets/bunner3@2x.png')}
           alt="Third slide"
         />
@@ -177,7 +177,7 @@ const Home = () => {
       <Carousel.Item>
         <img
        id='carousel-image'
-          className="d-block "
+          className="d-block  w-100"
           src={require('../assets/bunner4@2x.png')}
           alt="Third slide"
         />
@@ -194,14 +194,14 @@ const Home = () => {
     {/* <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}> */}
     <CardGroup style={{ display: 'flex', justifyContent:'space-around', alignItems:'center' }}>
       <div className="something">
-        <CatalogsItemContainer link='/shoes' image={require('../assets/categoryImage1.png')} prop={t('shoes')} />
+        <CatalogsItemContainer link='/shoes' image={require('../assets/category1.webp')} prop={t('shoes')} />
       </div>
    
       {/* <div className="something">
         <CatalogsItemContainer link='/clothes' image={require('../assets/categoryImage2.png')} prop={t('clothes')} />
       </div> */}
       <div className="something">
-        <CatalogsItemContainer link='/accessorise' image={require('../assets/categoryImage3.png')} prop={t('accessorise')}/>
+        <CatalogsItemContainer  link='/accessorise' image={require('../assets/category2.webp')} prop={t('accessorise')}/>
       </div>
     </CardGroup>
 

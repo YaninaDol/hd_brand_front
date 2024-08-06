@@ -45,12 +45,15 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   };
   useEffect(() => {
     window.scrollTo(0, 0);
-    applyFilters();
+    
+   applyFilters();
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-    
-}, [items,sortCollection,sortOrder]);
+
+}, [items,sortOrder]);
+
+
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
   
@@ -123,7 +126,8 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     });
 
     let sortedProducts;
-    if (priceFilteredProducts.length > 0) {
+    if(sortOrder != '')
+    {if (priceFilteredProducts.length > 0) {
         sortedProducts = [...priceFilteredProducts].sort((a, b) => {
             if (sortOrder === 'asc') {
                 return convertPrice(a.salePrice, selectedCurrency) - convertPrice(b.salePrice, selectedCurrency);
@@ -139,11 +143,11 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
                 return convertPrice(b.salePrice, selectedCurrency) - convertPrice(a.salePrice, selectedCurrency);
             }
         });
-
+      
        
         resetFilters();
     }
-
+  }else sortedProducts = [...priceFilteredProducts];
     setfilteredProducts(sortedProducts);
   
     setAllHidden('hidden');
@@ -341,8 +345,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     </div>
   </div>
 
-
-  <div class="accordion-item">
+{page!=t('accessorise')&&(<div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingFive">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
       {t('season')}
@@ -390,7 +393,8 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           />
       </div>
     </div>
-  </div>
+  </div>)}
+  
 
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingSix">
@@ -715,7 +719,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     </div>
   </div>
 
-
+  {page!=t('accessorise')&&(
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingFive">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
@@ -765,7 +769,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       </div>
     </div>
   </div>
-
+  )}
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingSix">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">

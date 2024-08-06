@@ -173,7 +173,7 @@ const convertPrice = (price, currency) => {
 {i18n.language === 'en' ? subcategory.nameEng : subcategory.name}
 </div>
  
-<ContentPageSubCat selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={items} link={categoryName} materials={materials}  page={i18n.language === 'en' ? subcategory.nameEng : subcategory.name} ></ContentPageSubCat>
+<ContentPageSubCat selectedCurrency={selectedCurrency} convertPrice={convertPrice} items={items} link={generatePathName(categoryName)} materials={materials}  page={i18n.language === 'en' ? subcategory.nameEng : subcategory.name} ></ContentPageSubCat>
 
 
 

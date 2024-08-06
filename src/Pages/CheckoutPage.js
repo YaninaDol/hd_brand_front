@@ -653,17 +653,17 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
         else if(typeDelivery==='2')
         {
         
-          confirmOrder("НП-адреса"+"Україна, "+selectedCity+" "+address,sum)
+          confirmOrder("НП-адреса","Україна, "+selectedCity+" "+address,sum)
         }
         else if(typeDelivery==='3')
         {
           
-          confirmOrder("Укрпошта-відділення"+"Україна, "+selectedCity+" "+indexU,sum);
+          confirmOrder("Укрпошта-відділення","Україна, "+selectedCity+" "+indexU,sum);
         }
         else if(typeDelivery==='4')
         {
          
-          confirmOrder("Укрпошта-адреса"+"Україна, "+selectedCity+" "+address2,sum);
+          confirmOrder("Укрпошта-адреса","Україна, "+selectedCity+" "+address2,sum);
         }
       }
       else if(activeTab=='longer-tab2')

@@ -374,7 +374,7 @@ const handleFileChange3 = (event) => {
 
 const handleFileChangeVideo = (event) => {
   const file = event.target.files[0];
-  if (file && file.size <= 3 * 1024 * 1024) {
+  if (file && file.type === 'video/mp4' && file.size <= 3 * 1024 * 1024) {
     setAddProductVideo(event.target.files[0]);
     alert('Файл додано!');
   } else {
@@ -824,12 +824,12 @@ function changeProductVideoContent()
       
       <MDBRow className='justify-content-center text-center' style={{marginTop:'50px'}}>
   <MDBCol>
-    <Card  style={{width:'500px'}}>
+    <Card  style={{width:'400px'}}>
     <video  controls preload="auto">
     <source src='https://hdbrandblob.blob.core.windows.net/storage/videoContent.MP4' type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-      <input onChange={(e)=>setVideo(e.target.files[0])} className='form-control' type='file' />
+      <input onChange={(e)=>{if(e.target.files[0].type === 'video/mp4'){setVideo(e.target.files[0]);alert("Файл обрано!")}else alert('Not correct format mp4')}} className='form-control' type='file' />
       <Button style={{marginTop:'15px'}} onClick={changeVideoContent} variant="dark">Confirm</Button>
     </Card>
   </MDBCol>

@@ -17,7 +17,7 @@ import {
   MDBRow,
   MDBSpinner
 } from 'mdb-react-ui-kit';
-const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrencyChange,convertPrice }) => {
+const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrencyChange,convertPrice,link }) => {
   const {i18n, t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState('');
@@ -46,7 +46,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-  }, [items,sortCollection,sortOrder]);
+  }, [items,sortOrder]);
 
 
   const handleRangeChange = (values) => {
@@ -125,6 +125,8 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     });
 
     let sortedProducts;
+    if(sortOrder != '')
+      {
     if (priceFilteredProducts.length > 0) {
         sortedProducts = [...priceFilteredProducts].sort((a, b) => {
             if (sortOrder === 'asc') {
@@ -145,7 +147,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
        
         resetFilters();
     }
-
+  }else sortedProducts = [...priceFilteredProducts];
     setfilteredProducts(sortedProducts);
     setAllHidden('hidden');
     setFilteredHidden('');
@@ -313,7 +315,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     </div>
   </div>
 
-
+  {link!=t('accessorise')&&(
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingFive">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
@@ -363,7 +365,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       </div>
     </div>
   </div>
-
+  )}
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingSix">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
@@ -663,7 +665,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     </div>
   </div>
 
-
+  {link!=t('accessorise')&&(
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingFive">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
@@ -713,7 +715,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       </div>
     </div>
   </div>
-
+  )}
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingSix">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
