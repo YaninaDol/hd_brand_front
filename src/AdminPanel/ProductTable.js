@@ -210,7 +210,10 @@ export default function ProductTable(){
 
 function confirmAdd()
 {
-  console.log(AddProductImage,AddProductImage2,AddProductVideo);
+  if (!AddproductArticle.includes('-')) {
+    alert('Артикул має містити тире (-)');
+    return;
+  }
   if(AddProductCategory!=0 &&AddProductSubCategory!=0&&AddProductSeason!=0&&AddProductMaterial!=0)
 
         { var bodyFormData = new FormData();
@@ -250,13 +253,13 @@ function confirmAdd()
 
         ).then  (response=>
         {
-          alert("Product  added successfull!")
+          alert("Товар додано успішно!")
         
           window.location.reload();
           
         });  
       }
-      else alert("You need to choose !")      
+      else alert("Оберіть!")      
 }
  function showTable(id)
  {
@@ -383,7 +386,10 @@ const handleFileChangeVideo = (event) => {
 };
 
 const confirmUpdate = () => {
-
+  if (!articleUpdate.includes('-')) {
+    alert('Артикул має містити тире (-)');
+    return;
+  }
   if(categoryUpdate!=0 &&subCategoryUpdate!=0&&seasonUpdate!=0&&materialUpdate!=0)
 
   { var bodyFormData = new FormData();
@@ -433,13 +439,13 @@ const confirmUpdate = () => {
 
   ).then  (response=>
   {
-    alert("Product  updated successfull!")
+    alert("Товар оновлено успішно!")
 
     window.location.reload();
     
   });  
 }
-else alert("You need to choose !")   
+else alert("Оберіть !")   
 
 }
 

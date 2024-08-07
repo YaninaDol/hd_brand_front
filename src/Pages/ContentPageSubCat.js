@@ -54,19 +54,21 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   };
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
-  
+    const numericValue = parseInt(value, 10);
     if (type === 'type') {
       setSelectedTypes((prev) => {
         return checked ? [...prev, value] : prev.filter((item) => item !== value);
       });
     } else if (type === 'material') {
       setSelectedMaterials((prev) => {
-        return checked ? [...prev, value] : prev.filter((item) => item !== value);
+        return checked
+        ? [...prev, numericValue]
+        : prev.filter((item) => item !== numericValue);
       });
     } else if (type === 'season') {
     
       setSelectedSeasons((prev) => {
-        return checked ? [...prev, value] : prev.filter((item) => item !== value);
+        return checked ? [...prev, numericValue] : prev.filter((item) => item !== numericValue);
       });
     }
   };
@@ -110,9 +112,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 
   const applyFilters = () => {
     const filteredProducts1 = items.filter((product) => {
-        const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
-        const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
-        const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
+        const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(parseInt(product.subCategoryid, 10)));
+        const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid));
+        const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid));
         const collection = sortCollection === '' || (product[sortCollection] && product[sortCollection] === true);
         const colorIncluded = selectedColor === '' || (product.color && product.color === selectedColor);
 
@@ -329,7 +331,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       <Form.Check 
             type='checkbox'
            
-           
+            checked={selectedSeasons.includes(1)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label={i18n.language === 'en' ? 'Summer' : 'Літо'}
@@ -339,7 +341,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             type='checkbox'
          
             value={3}
-           
+            checked={selectedSeasons.includes(3)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Spring-Autumn' : 'Весна-Осінь'}
             style={{ marginTop:15}}
@@ -348,7 +350,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             type='checkbox'
           
             value={2}
-          
+            checked={selectedSeasons.includes(2)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter' : 'Зима'}
             style={{ marginTop:15}}
@@ -357,7 +359,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             type='checkbox'
            
             value={4}
-         
+            checked={selectedSeasons.includes(4)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter-Demiseason' : 'Зима-Демісезон'}
             style={{ marginTop:15}}
@@ -381,6 +383,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     value={x.id}
     type="checkbox"
     id={x.id}
+    checked={selectedMaterials.includes(x.id)}
     label={i18n.language === 'en' ? x.nameEng : x.name}
     style={{ marginTop: 15 }}
     onChange={(e) => handleCheckboxChange(e, 'material')}
@@ -679,7 +682,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       <Form.Check 
             type='checkbox'
            
-           
+            checked={selectedSeasons.includes(1)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label={i18n.language === 'en' ? 'Summer' : 'Літо'}
@@ -689,7 +692,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             type='checkbox'
          
             value={3}
-           
+            checked={selectedSeasons.includes(3)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Spring-Autumn' : 'Весна-Осінь'}
             style={{ marginTop:15}}
@@ -698,7 +701,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             type='checkbox'
           
             value={2}
-          
+            checked={selectedSeasons.includes(2)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter' : 'Зима'}
             style={{ marginTop:15}}
@@ -707,7 +710,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             type='checkbox'
            
             value={4}
-         
+            checked={selectedSeasons.includes(4)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter-Demiseason' : 'Зима-Демісезон'}
             style={{ marginTop:15}}
@@ -731,6 +734,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     value={x.id}
     type="checkbox"
     id={x.id}
+    checked={selectedMaterials.includes(x.id)}
     label={i18n.language === 'en' ? x.nameEng : x.name}
     style={{ marginTop: 15 }}
     onChange={(e) => handleCheckboxChange(e, 'material')}

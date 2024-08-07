@@ -34,6 +34,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedMaterials, setSelectedMaterials] = useState([]);
   const [selectedSeasons, setSelectedSeasons] = useState([]);
+  const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColor, setSelectedColor] = useState('');
   const [rangeValues, setRangeValues] = useState([0, 10000]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -46,7 +47,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   useEffect(() => {
     window.scrollTo(0, 0);
     
-   applyFilters();
+  applyFilters();
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -56,20 +57,34 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
 
   const handleCheckboxChange = (event, type) => {
     const { value, checked } = event.target;
+    const numericValue = parseInt(value, 10);
   
     if (type === 'type') {
       setSelectedTypes((prev) => {
-        return checked ? [...prev, value] : prev.filter((item) => item !== value);
+        return checked ? [...prev, numericValue] : prev.filter((item) => item !== numericValue);
       });
     } else if (type === 'material') {
       setSelectedMaterials((prev) => {
-        return checked ? [...prev, value] : prev.filter((item) => item !== value);
+        return checked
+          ? [...prev, numericValue]
+          : prev.filter((item) => item !== numericValue);
       });
+      // setSelectedMaterials((prev) => {
+      //   return checked ? [...prev, value] : prev.filter((item) => item !== value);
+      // });
     } else if (type === 'season') {
     
       setSelectedSeasons((prev) => {
-        return checked ? [...prev, value] : prev.filter((item) => item !== value);
+        return checked ? [...prev, numericValue] : prev.filter((item) => item !== numericValue);
       });
+    }
+    else if (type === 'shoeSize') {
+      setSelectedSizes((prev) => {
+        return checked ? [...prev, numericValue] : prev.filter((item) => item !== numericValue);
+      });
+      // setSelectedSizes((prev) => {
+      //   return checked ? [...prev, value] : prev.filter((item) => item !== value);
+      // });
     }
   };
 
@@ -110,13 +125,27 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   };
 
   const applyFilters = () => {
+ 
     const filteredProducts1 = items.filter((product) => {
-        const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(product.subCategoryid.toString()));
-        const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid.toString()));
-        const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid.toString()));
+        const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(parseInt(product.subCategoryid, 10)));
+        const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid));
+        const seasonIncluded = selectedSeasons.length === 0 || (product.seasonid && selectedSeasons.includes(product.seasonid));
         const collection = sortCollection === '' || (product[sortCollection] && product[sortCollection] === true);
         const colorIncluded = selectedColor === '' || (product.color && product.color === selectedColor);
-
+       
+        if(page === t('sale'))
+          {
+           
+           // const sizesIncluded = selectedSizes.length === 0 || selectedSizes.some(size => product.name.toString().includes(size.toString()));
+           const sizesIncluded =
+           selectedSizes.length === 0 ||
+           selectedSizes.some((size) => {
+             const sizePattern = new RegExp(`\\b${size}\\b`);
+             return sizePattern.test(product.name.toString());
+           });
+            return typeIncluded && materialIncluded && seasonIncluded && colorIncluded && collection&sizesIncluded;
+          }
+      
         return typeIncluded && materialIncluded && seasonIncluded && colorIncluded && collection;
     });
 
@@ -126,7 +155,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     });
 
     let sortedProducts;
-    if(sortOrder != '')
+    if(sortOrder !== '')
     {if (priceFilteredProducts.length > 0) {
         sortedProducts = [...priceFilteredProducts].sort((a, b) => {
             if (sortOrder === 'asc') {
@@ -161,6 +190,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     setSortOrder('');
     setSelectedMaterials([]);
     setSelectedSeasons([]);
+    setSelectedSizes([]);
     setSelectedTypes([]); 
     setSortCollection('');
     setSelectedColor('');
@@ -335,6 +365,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     key={x.id}
     value={x.id}
     type="checkbox"
+    checked={selectedTypes.includes(x.id)}
     id={x.id}
     label={i18n.language === 'en' ? x.nameEng : x.name}
     style={{ marginTop: 15 }}
@@ -345,7 +376,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     </div>
   </div>
 
-{page!=t('accessorise')&&(<div class="accordion-item">
+{page!==t('accessorise')&&(<div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingFive">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
       {t('season')}
@@ -358,7 +389,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           <Form.Check 
             type='checkbox'
            
-           
+            checked={selectedSeasons.includes(1)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label={i18n.language === 'en' ? 'Summer' : 'Літо'}
@@ -368,7 +399,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             type='checkbox'
          
             value={3}
-           
+            checked={selectedSeasons.includes(3)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Spring-Autumn' : 'Весна-Осінь'}
             style={{ marginTop:15}}
@@ -377,7 +408,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             type='checkbox'
           
             value={2}
-          
+            checked={selectedSeasons.includes(2)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter' : 'Зима'}
             style={{ marginTop:15}}
@@ -386,7 +417,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             type='checkbox'
            
             value={4}
-         
+            checked={selectedSeasons.includes(4)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter-Demiseason' : 'Зима-Демісезон'}
             style={{ marginTop:15}}
@@ -394,7 +425,48 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       </div>
     </div>
   </div>)}
-  
+
+
+  {page === t('sale') && (
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="flush-headingSize">
+      <button
+        className="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#flush-collapseSize"
+        aria-expanded="false"
+        aria-controls="flush-collapseSize"
+      >
+        {t('size')}
+      </button>
+    </h2>
+    <div
+      id="flush-collapseSize"
+      className="accordion-collapse collapse"
+      aria-labelledby="flush-headingSize"
+      data-bs-parent="#accordionFlushExample"
+    >
+      <div className="accordion-body">
+        {[...Array(15)].map((_, index) => {
+          const size = 32 + index;
+          return (
+            <Form.Check
+              key={size}
+              type="checkbox"
+              checked={selectedSizes.includes(size)}
+              onChange={(e) => handleCheckboxChange(e, 'shoeSize')}
+              value={size}
+              label={i18n.language === 'en' ? `Size ${size}` : `${size}`}
+              style={{ marginTop: 15 }}
+            />
+          );
+        })}
+      </div>
+    </div>
+  </div>
+)}
+
 
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingSix">
@@ -410,6 +482,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     key={x.id}
     value={x.id}
     type="checkbox"
+    checked={selectedMaterials.includes(x.id)}
     id={x.id}
     label={i18n.language === 'en' ? x.nameEng : x.name}
     style={{ marginTop: 15 }}
@@ -499,7 +572,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-{(sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
+{(sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedSizes.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
   <div style={{marginTop:'10px', opacity:'0.5', textDecoration:'underline'}} onClick={resetFilters} >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -710,6 +783,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     value={x.id}
     type="checkbox"
     id={x.id}
+    checked={selectedTypes.includes(x.id)}
     label={i18n.language === 'en' ? x.nameEng : x.name}
     style={{ marginTop: 15 }}
     onChange={(e) => handleCheckboxChange(e, 'type')}
@@ -733,7 +807,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           <Form.Check 
             type='checkbox'
            
-           
+            checked={selectedSeasons.includes(1)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             value={1}
             label={i18n.language === 'en' ? 'Summer' : 'Літо'}
@@ -743,7 +817,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             type='checkbox'
          
             value={3}
-           
+            checked={selectedSeasons.includes(3)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Spring-Autumn' : 'Весна-Осінь'}
             style={{ marginTop:15}}
@@ -752,7 +826,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             type='checkbox'
           
             value={2}
-          
+            checked={selectedSeasons.includes(2)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter' : 'Зима'}
             style={{ marginTop:15}}
@@ -761,7 +835,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             type='checkbox'
            
             value={4}
-         
+            checked={selectedSeasons.includes(4)}
             onChange={(e) => handleCheckboxChange(e, 'season')}
             label={i18n.language === 'en' ? 'Winter-Demiseason' : 'Зима-Демісезон'}
             style={{ marginTop:15}}
@@ -770,6 +844,47 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     </div>
   </div>
   )}
+    {page === t('sale') && (
+  <div className="accordion-item">
+    <h2 className="accordion-header" id="flush-headingSize">
+      <button
+        className="accordion-button collapsed"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#flush-collapseSize"
+        aria-expanded="false"
+        aria-controls="flush-collapseSize"
+      >
+        {t('size')}
+      </button>
+    </h2>
+    <div
+      id="flush-collapseSize"
+      className="accordion-collapse collapse"
+      aria-labelledby="flush-headingSize"
+      data-bs-parent="#accordionFlushExample"
+    >
+      <div className="accordion-body">
+        {[...Array(15)].map((_, index) => {
+          const size = 32 + index;
+          return (
+            <Form.Check
+              key={size}
+              type="checkbox"
+              
+              onChange={(e) => handleCheckboxChange(e, 'shoeSize')}
+             
+              value={size}
+              checked={selectedSizes.includes(size)}
+              label={i18n.language === 'en' ? `${size}` : `${size}`}
+              style={{ marginTop: 15 }}
+            />
+          );
+        })}
+      </div>
+    </div>
+  </div>
+)}
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingSix">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
@@ -784,6 +899,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     key={x.id}
     value={x.id}
     type="checkbox"
+    checked={selectedMaterials.includes(x.id)}
     id={x.id}
     label={i18n.language === 'en' ? x.nameEng : x.name}
     style={{ marginTop: 15 }}
@@ -873,7 +989,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-{(sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
+{(sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedSizes.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
   <div style={{marginTop:'10px', opacity:'0.5', textDecoration:'underline'}} onClick={resetFilters} >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>

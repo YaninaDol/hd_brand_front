@@ -68,7 +68,7 @@ function generatePathName(categoryName) {
     case 'accessorise':
       return t('accessorise');
       case 'sale':
-        return t('Sale');
+        return t('sale');
     default:
       return 'unknown';
   }
