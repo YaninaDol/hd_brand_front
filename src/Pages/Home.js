@@ -3,6 +3,7 @@ import React,{Fragment} from 'react';
 import Carousels from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import PxMainPage from './PxMainPage';
+import Button from 'react-bootstrap/Button';
 import Carousel from 'react-bootstrap/Carousel';
 import CatalogsItemContainer from "../Components/CatalogsItemContainer";
 import NewProductCardItem from "../Components/NewProductCardItem";
@@ -56,6 +57,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
   const [contents,setContents] = useState([]);
+  const [sales,setSales] = useState([]);
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
@@ -169,16 +171,17 @@ const Home = () => {
         <img
      id='carousel-image'
           className="d-block  w-100"
-          src={require('../assets/bunner3@2x.png')}
+          src={require('../assets/bunner31.jpg')}
           alt="Third slide"
         />
 
       </Carousel.Item>
-      <Carousel.Item>
+      <Carousel.Item >
         <img
+       
        id='carousel-image'
           className="d-block  w-100"
-          src={require('../assets/bunner4@2x.png')}
+          src={require('../assets/bunner2.webp')}
           alt="Third slide"
         />
 
@@ -290,35 +293,42 @@ const Home = () => {
         </div>
       </section>
     )}
-    <Carousels  responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
-      {contents
-        .filter((x) => x.isDiscount === true)
-        .map((x) => (
-          <React.Fragment key={x.id}>
-            {showSection && (
-             <div className="something" >
-                <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-                <NewProductCardItem
-               id_key={x.id}
-               imageSrc1={x.image}
-               imageSrc2={x.image2}
-               imageSrc3={x.image3}
-            
-               isNew={x.isNew}
-               isDiscount={x.isDiscount}
-               isLiked={false}
-             
-               descriprion={i18n.language === 'en' ? x.nameEng : x.name}
-               price1={convertPrice(x.price,selectedCurrency)}
-               currency={selectedCurrency}
-               price2={convertPrice(x.salePrice,selectedCurrency)}
+   {showSection && ( <Carousels  responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+    {contents
+  .filter((x) => x.isDiscount === true)
+  .slice(-10) 
+  .map((x) => (
+    <React.Fragment key={x.id}>
+     
+        <div className="something">
+          <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+            <NewProductCardItem
+              id_key={x.id}
+              imageSrc1={x.image}
+              imageSrc2={x.image2}
+              imageSrc3={x.image3}
+              isNew={x.isNew}
+              isDiscount={x.isDiscount}
+              isLiked={false}
+              descriprion={i18n.language === 'en' ? x.nameEng : x.name}
+              price1={convertPrice(x.price, selectedCurrency)}
+              currency={selectedCurrency}
+              price2={convertPrice(x.salePrice, selectedCurrency)}
             />
-                </Link>
-                </div>
-            )}
-          </React.Fragment>
-        ))}
-   </Carousels>
+          </Link>
+        </div>
+      
+    </React.Fragment>
+  ))}
+     <Link to='/sale'>
+  <div style={{display:'flex',justifyContent:'center'}}>
+  <Button  style={{ borderRadius: '0px',marginTop:'50%' }}  variant="outline-dark">
+              {t('show_more')}
+            </Button>
+  </div>
+  </Link>
+   </Carousels>)}
+
    <Footer />
     </div>
     

@@ -22,6 +22,7 @@ import {
 } from 'mdb-react-ui-kit';
 import CardBox from "../Components/CardBox";
 import { version } from "process";
+import CartModal from "../Components/CartModal";
 const CheckoutPage = () => {
   const {t,i18n } = useTranslation();
   const [titleaccount, setTitleAccount] = useState('');
@@ -640,7 +641,18 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
     : activeTab !== 'longer-tab' 
       ? convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)
       : convertPrice(total - total * (discount / 100), selectedCurrency);
-    
+
+      const calculateRemainingBalance = () => {
+       
+          const discountedTotal = total - (total * (discount / 100)) - 250;
+          return convertPrice(discountedTotal, selectedCurrency);
+       
+      };
+     
+      const totalString = selectedPaymentMethod === 'cardpay'
+  ? ` залишок: ${calculateRemainingBalance()} ${selectedCurrency}`
+  : ';';
+
       if(activeTab=='longer-tab')
       {
        
@@ -648,38 +660,38 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
         {
         
          
-          confirmOrder("НП-відділення","Україна, "+selectedCity+" "+selectedDepartament,sum)
+          confirmOrder("НП-відділення","Україна, "+selectedCity+" "+selectedDepartament,sum,totalString)
         }
         else if(typeDelivery==='2')
         {
         
-          confirmOrder("НП-адреса","Україна, "+selectedCity+" "+address,sum)
+          confirmOrder("НП-адреса","Україна, "+selectedCity+" "+address,sum,totalString)
         }
         else if(typeDelivery==='3')
         {
           
-          confirmOrder("Укрпошта-відділення","Україна, "+selectedCity+" "+indexU,sum);
+          confirmOrder("Укрпошта-відділення","Україна, "+selectedCity+" "+indexU,sum,totalString);
         }
         else if(typeDelivery==='4')
         {
          
-          confirmOrder("Укрпошта-адреса","Україна, "+selectedCity+" "+address2,sum);
+          confirmOrder("Укрпошта-адреса","Україна, "+selectedCity+" "+address2,sum,totalString);
         }
       }
       else if(activeTab=='longer-tab2')
       {
       if(  countryinExcel === 'worldwide')
         {
-          confirmOrder("Міжнародна пошта",selectedCountry+" "+address2+" "+indexW,sum);
+          confirmOrder("Міжнародна пошта",selectedCountry+" "+address2+" "+indexW,sum,';');
         }
         else
        { if(typeDeliveryW=="warehouse")
        { 
-        confirmOrder('НоваПошта-відділення',selectedCountry+" "+selectedCity2+" "+NovaWorldWare,sum);
+        confirmOrder('НоваПошта-відділення',selectedCountry+" "+selectedCity2+" "+NovaWorldWare,sum,';');
        }
        else if(typeDeliveryW=="address")
         {
-          confirmOrder("НоваПошта-адресна",selectedCountry+" "+address2+" "+indexW,sum);
+          confirmOrder("НоваПошта-адресна",selectedCountry+" "+address2+" "+indexW,sum,';');
         }
       }
       }
@@ -691,13 +703,15 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
  }
- function confirmOrder(delivery,fulladdress,toplam)
+ function confirmOrder(delivery,fulladdress,toplam,comment)
  {
   const jsonString = JSON.stringify(arrbuket);
+  
+
   if(!window.sessionStorage.getItem("AccessToken"))
     { 
       axios({method:'post',
-      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=liqpay&discount=${discount} `
+      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=liqpay&comment=${comment}&discount=${discount} `
    })
        .then(response => {
      
@@ -707,13 +721,22 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
        
   
   })
-  .catch(error => console.log(''));
+  .catch(error => {
+    if (error.response && error.response.status === 400) {
+      console.log('BadRequest error:', error.response.data);
+      alert('Oops..Some products are not in stock.')
+     window.sessionStorage.removeItem("Basket");
+      window.location.href='/';
+    } else {
+      console.error('An unexpected error occurred:', error);
+    }
+  });
   
     }
    else{
    
     axios({method:'post',
-    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=${selectedPaymentMethod}&discount=${discount}  `,
+    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=liqpay&comment=${comment}&discount=${discount}  `,
   headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
@@ -723,7 +746,16 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
      updateDate();
        setProceed(true);
 })
-.catch(error => console.log(''));
+.catch(error => {
+  if (error.response && error.response.status === 400) {
+    console.log('BadRequest error:', error.response.data);
+    alert('Oops..Some products are not in stock.')
+    window.sessionStorage.removeItem("Basket");
+    window.location.href='/';
+  } else {
+    console.error('An unexpected error occurred:', error);
+  }
+});
 
 
    }
@@ -731,7 +763,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   return (
     <div >
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
-         
+        
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>
@@ -1092,11 +1124,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   ) : (
     activeTab !== 'longer-tab' ? (
       <MDBCol className="text-end">
-        <h5>{TotalSum+shipment} {selectedCurrency}</h5>
+        <h5>{convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)} {selectedCurrency}</h5>
       </MDBCol>
     ) : (
       <MDBCol className="text-end">
-        <h5>{TotalSum} {selectedCurrency}</h5>
+        <h5>{convertPrice(total - total * (discount / 100), selectedCurrency)} {selectedCurrency}</h5>
       </MDBCol>
     )
   )}
@@ -1179,11 +1211,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   ) : (
     activeTab !== 'longer-tab' ? (
       <MDBCol className="text-end">
-        <h5>{TotalSum+shipment} {selectedCurrency}</h5>
+        <h5>{convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)} {selectedCurrency}</h5>
       </MDBCol>
     ) : (
       <MDBCol className="text-end">
-        <h5>{TotalSum} {selectedCurrency}</h5>
+        <h5>{convertPrice(total - total * (discount / 100), selectedCurrency)} {selectedCurrency}</h5>
       </MDBCol>
     )
   )}

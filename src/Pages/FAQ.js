@@ -174,7 +174,7 @@ HD brand - це не просто бренд, це спільнота, що об
   <li>Delivery to Ukrposhta branches throughout Ukraine and Ukrposhta - WORLDWIDE, except Russia and Belarus / from $20.</li>
 </ol>
 
-<p>If one of the items in the order is out of stock, the production of your model starts the same day, with order processing times of 5-7 working days (but we strive to ship as soon as possible).</p>
+<p>If one of the items in the order is out of stock, the production of your model starts the same day, with order processing times of 7-10 working days (but we strive to ship as soon as possible).</p>
 
 <p>After placing an order, we will promptly inform you about the availability of the goods and send the order via SMS notification.</p>
 
@@ -213,7 +213,7 @@ HD brand - це не просто бренд, це спільнота, що об
   <li>Доставка до відділення «Укрпошта» по всій Україні та Укрпошта - WORLDWIDE, окрім Росії та Білорусі/від 20$.</li>
 </ol>
 
-<p>Якщо один із товарів у замовленні відсутній на складі, цього ж дня починається пошиття вашої моделі, терміни виготовлення замовлення 5-7 робочих днів (але ми намагаємося надіслати якомога раніше).</p>
+<p>Якщо один із товарів у замовленні відсутній на складі, цього ж дня починається пошиття вашої моделі, терміни виготовлення замовлення 7-10 робочих днів (але ми намагаємося надіслати якомога раніше).</p>
 
 <p>Після оформлення замовлення ми оперативно проінформуємо вас про наявність товару, та відправлення замовлення за допомогою смс повідомлення.</p>
 

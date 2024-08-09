@@ -288,7 +288,7 @@
   @media screen and (max-width: 750px) {
   #carousel-image {
       /* height: 450px;  */
-     height: 250px;
+     height: 260px;
       object-fit: cover; 
       object-position: center; 
       
