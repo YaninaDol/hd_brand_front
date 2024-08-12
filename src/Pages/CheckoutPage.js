@@ -337,16 +337,23 @@ async function fetchCountries() {
         'X-RapidAPI-Host': 'rest-countries10.p.rapidapi.com'
       }
     });
-    return response.data.map(country => ({
-      label: country.name.shortnamelowercase,
-      name: country.name.shortnamelowercase,
-      value: country.name.shortnamelowercase,
-      alpha3Code: country.code.alpha3Code,
-    }));
+  
+    // Filter out Belarus and Russian Federation
+    const countries = response.data
+      .filter(country => country.name.shortnamelowercase !== 'Belarus' && country.name.shortnamelowercase !== 'Russian Federation (the)')
+      .map(country => ({
+        label: country.name.shortnamelowercase,
+        name: country.name.shortnamelowercase,
+        value: country.name.shortnamelowercase,
+        alpha3Code: country.code.alpha3Code,
+      }));
+  
+    return countries;
   } catch (error) {
     console.error('Error fetching countries:', error.message);
     return [];
   }
+  
 }
 
 async function fetchData() {
