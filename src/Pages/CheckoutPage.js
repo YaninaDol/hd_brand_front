@@ -158,26 +158,61 @@ const CheckoutPage = () => {
 
   function updateDate()
   {
-    selectedPaymentMethod=='cardpay'?
-    setPaymentData({
-      ...paymentData,
-      amount:convertPrice(250,selectedCurrency),
-      currency: selectedCurrency
-      
-  }):
-     activeTab!='longer-tab' ?
+
+    const orderId = window.sessionStorage.getItem('order');
+    if(!orderId)
+      {
         
+        selectedPaymentMethod=='cardpay'?
         setPaymentData({
           ...paymentData,
-          amount:convertPrice(total -total*(discount/100)+shipment,selectedCurrency),
+          amount:convertPrice(250,selectedCurrency),
           currency: selectedCurrency
           
-      }): setPaymentData({
-        ...paymentData,
-        amount:convertPrice(total -total*(discount/100),selectedCurrency),
-        currency: selectedCurrency
-        
-    });
+      }):
+         activeTab!='longer-tab' ?
+            
+            setPaymentData({
+              ...paymentData,
+              amount:convertPrice(total -total*(discount/100)+shipment,selectedCurrency),
+              currency: selectedCurrency
+              
+          }): setPaymentData({
+            ...paymentData,
+            amount:convertPrice(total -total*(discount/100),selectedCurrency),
+            currency: selectedCurrency
+            
+        });
+      }
+      else{
+
+       
+        selectedPaymentMethod=='cardpay'?
+        setPaymentData({
+          ...paymentData,
+          amount:convertPrice(250,selectedCurrency),
+          currency: selectedCurrency,
+          order_id:orderId
+          
+      }):
+         activeTab!='longer-tab' ?
+            
+            setPaymentData({
+              ...paymentData,
+              amount:convertPrice(total-total*(discount/100)+shipment,selectedCurrency),
+              currency: selectedCurrency,
+              order_id:orderId
+              
+          }): setPaymentData({
+            ...paymentData,
+            amount:convertPrice(total-total*(discount/100),selectedCurrency),
+            currency: selectedCurrency,
+            order_id:orderId
+            
+        });
+      }
+  
+    
   }
  
 
@@ -210,7 +245,7 @@ const CheckoutPage = () => {
 
   const apiUrl = 'https://api.novaposhta.ua/v2.0/json/';
 const [paymentData, setPaymentData] = useState({
-    version: 3,
+      version: 3,
       action: 'pay',
       amount: total,
       currency: selectedCurrency,
