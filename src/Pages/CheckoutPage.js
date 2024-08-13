@@ -4,6 +4,7 @@ import PxMainPage from './PxMainPage';
 import Footer from '../Components/Footer';
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
+import { isValidPhoneNumber } from 'react-phone-number-input'
 import { Link} from "react-router-dom";
 import {Button,Form,Modal,Tabs,Tab} from 'react-bootstrap';
 import Select from 'react-select';
@@ -124,10 +125,10 @@ const CheckoutPage = () => {
       errors.surname = 'Заповніть прізвище';
     }
 
-    if (!phoneNumber || !phoneNumber.trim()) {
-      errors.phoneNumber = 'Заповніть номер телефону';
+    if (!phoneNumber || !phoneNumber.trim()||!isValidPhoneNumber(phoneNumber)) {
+      errors.phoneNumber = 'Заповніть коректний номер телефону';
     }
-
+   
     if (!email.trim()) {
       errors.email = 'Заповніть E-mail';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
