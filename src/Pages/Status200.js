@@ -4,15 +4,9 @@ import axios from 'axios';
 const Status200 = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   window.sessionStorage.removeItem("Basket");
-
+  window.sessionStorage.removeItem("order");
  
-      axios({method:'post',
-      url:`${API_BASE_URL}/api/Authenticate/ConfirmPayment?orderId=${window.sessionStorage.getItem('order')}`
-   })
-       .then(response => {
-        window.sessionStorage.removeItem("order");
-  })
-  .catch(error => console.log(''));
+  
     
       return (
     
