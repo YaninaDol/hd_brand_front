@@ -13,11 +13,11 @@ class CardBox extends Component {
    
   }
   incrementQuantity = () => {
-    this.props.incrementQuantity(this.props.unic);
+    this.props.incrementQuantity(this.props.unic,this.props.insulator);
   };
 
   decrementQuantity = () => {
-    this.props.decrementQuantity(this.props.unic);
+    this.props.decrementQuantity(this.props.unic,this.props.insulator);
     
   };
   
@@ -79,7 +79,7 @@ class CardBox extends Component {
            
             <MDBCol md='1'>
               <svg
-             onClick={() => this.props.remove(this.props.unic)}
+             onClick={() => this.props.remove(this.props.unic,this.props.insulator)}
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"

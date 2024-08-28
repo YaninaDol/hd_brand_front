@@ -17,11 +17,11 @@ class CartBasket extends Component {
    
   }
   incrementQuantity = () => {
-    this.props.incrementQuantity(this.props.unic);
+    this.props.incrementQuantity(this.props.unic,this.props.insulator);
   };
 
   decrementQuantity = () => {
-    this.props.decrementQuantity(this.props.unic);
+    this.props.decrementQuantity(this.props.unic,this.props.insulator);
   };
   render() {
     return (
@@ -30,7 +30,7 @@ class CartBasket extends Component {
         <MDBRow className="justify-content-between align-items-center">
           <MDBCol md="1" lg="1" xl="1">
             <svg
-              onClick={() => this.props.remove(this.props.unic)}
+              onClick={() => this.props.remove(this.props.unic,this.props.insulator)}
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"

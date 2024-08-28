@@ -4,6 +4,7 @@ import Carousels from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import PxMainPage from './PxMainPage';
 import Button from 'react-bootstrap/Button';
+import { Spinner } from 'react-bootstrap';
 import Carousel from 'react-bootstrap/Carousel';
 import CatalogsItemContainer from "../Components/CatalogsItemContainer";
 import NewProductCardItem from "../Components/NewProductCardItem";
@@ -53,6 +54,7 @@ const responsive = {
 
 const Home = () => {
   const {i18n, t } = useTranslation(); 
+  const [loading, setLoading] = useState(true);
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const dispatch = useDispatch();
   const products = useSelector(state => state.products);
@@ -85,13 +87,16 @@ const Home = () => {
     
     dispatch(setProducts(response.data));
     setContents(response.data);
-    
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
     
    
   })
   .catch(error => {
     
     console.error('Error fetching products data:', error);
+    setLoading(true);
    // window.location.href = '/notfound';
   });
 
@@ -209,8 +214,14 @@ const Home = () => {
     </CardGroup>
 
     
-   <div>
-   <section className="graphic">
+    <div>
+  {loading ? (
+    <div style={{marginTop: '50px'}} className="d-flex justify-content-center">
+      <Spinner variant="secondary" animation="border" />
+    </div>
+  ) : (
+    <>
+      <section className="graphic">
         <div className="new-items">
           <div className="head">
             <div className="title-h2">
@@ -219,36 +230,31 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <Carousels  responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
-        
-      {
-        contents
-        .filter((x) => x.isNew === true)
-        .map((x) => (
-          <div className="something" >
-          <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
-            <NewProductCardItem
 
-               id_key={x.id}
-               imageSrc1={x.image}
-               imageSrc2={x.image2}
-               imageSrc3={x.image3}
-             
-               isNew={x.isNew}
-               isDiscount={x.isDiscount}
-               isLiked={false}
-               descriprion={i18n.language === 'en' ? x.nameEng : x.name}
-               price1={convertPrice(x.price,selectedCurrency)}
-               currency={selectedCurrency}
-               price2={convertPrice(x.salePrice,selectedCurrency)}
-            />
-          </Link>
-          </div>
-        ))
-      }
-     
+      <Carousels responsive={responsive} itemClass="carousel-item-padding" containerClass="carousel-container">
+        {contents
+          .filter((x) => x.isNew)
+          .map((x) => (
+            <div className="something" key={x.id}>
+              <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+                <NewProductCardItem
+                  id_key={x.id}
+                  imageSrc1={x.image}
+                  imageSrc2={x.image2}
+                  imageSrc3={x.image3}
+                  isNew={x.isNew}
+                  isDiscount={x.isDiscount}
+                  isLiked={false}
+                  descriprion={i18n.language === 'en' ? x.nameEng : x.name}
+                  price1={convertPrice(x.price, selectedCurrency)}
+                  currency={selectedCurrency}
+                  price2={convertPrice(x.salePrice, selectedCurrency)}
+                />
+              </Link>
+            </div>
+          ))}
       </Carousels>
-      </div>
+
       <section className="graphic">
         <div className="new-items">
           <div className="head">
@@ -258,10 +264,16 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      <WeeklyPreview 
+        convertPrice={convertPrice} 
+        selectedCurrency={selectedCurrency} 
+        weekly={contents.filter((x) => x.weeklyLook)} 
+        generatePath={generatePath} 
+      />
+   
+
     
-   <WeeklyPreview convertPrice={convertPrice} selectedCurrency={selectedCurrency}  weekly={contents.filter((x) => x.weeklyLook === true)}  generatePath={generatePath} />
- 
-  
    <div id='videocontent' style={{
       position: 'relative',
       width: '100%',
@@ -328,7 +340,9 @@ const Home = () => {
   </div>
   </Link>
    </Carousels>)}
-
+   </>
+  )}
+</div>
    <Footer />
     </div>
     

@@ -158,7 +158,6 @@ HD brand - це не просто бренд, це спільнота, що об
   <li>When ordering through the website, you have the option to choose the payment method:</li>
   <ul>
     <li>By bank card on the website (Visa or MasterCard). We use the LiqPay payment service with Internet data protection technology.</li>
-    <li>Prepayment or full payment to PrivatBank or Monobank card - in this case, you need to wait for a call or message from our manager who will send you the payment details.</li>
   </ul>
 </ol>
 
@@ -197,7 +196,6 @@ HD brand - це не просто бренд, це спільнота, що об
   <li>При оформленні через сайт у вас є можливість зробити вибір способу оплати:</li>
   <ul>
     <li>Банківською карткою на сайті (Visa або MasterCard). Ми використовуємо платіжний сервіс LiqPay з технологією захисту даних в Інтернеті.</li>
-    <li>Передоплата або повна оплата на картку ПриватБанк або Monobank - у цьому випадку вам необхідно дочекатися дзвінка або повідомлення від нашого менеджера, якій надішле вам дані для оплати.</li>
   </ul>
 </ol>
 

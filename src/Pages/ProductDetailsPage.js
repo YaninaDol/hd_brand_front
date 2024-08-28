@@ -48,9 +48,12 @@ const ProductDetailsPage = () => {
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [showValidation, setShowValidation] = useState(false);
   const variant_season = 4;
+  const variant_clogs= 11;
   const plus_price = 200;
   const [selectedInsulator, setSelectedInsulator] = useState(t('baize')); 
   const [availableInsulators, setAvailableInsulators] = useState([ t('baize'), t('fur')]); 
+  const [selectedInsulatorClog, setSelectedInsulatorClog] = useState(t('baize')); 
+  const [availableInsulatorsClog, setAvailableInsulatorsClog] = useState([ t('baize'), t('leather_inside')]); 
   const [exchangeRates, setExchangeRates] = useState({
     usd: 1, 
     eur: 1,
@@ -375,22 +378,27 @@ const ProductDetailsPage = () => {
   };
   
   const addToBasket = () => {
+    
     if (!newProd) {
       setShowValidation(true);
+    
       return;
     }
   
     const storedBasket = window.sessionStorage.getItem("Basket");
     const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
-    const existingItem = existingBasket.find((item) => item.id === newProd.id);
+    
     
     const itemToAdd = {
       ...newProd,
       quantity: 1,
-      insulator: product.seasonid === variant_season ? selectedInsulator : null,
-      
+      insulator: (product.seasonid === variant_season && selectedInsulator) ||
+                 (product.subCategoryid.includes(variant_clogs) && selectedInsulatorClog) || 
+                 null,
     };
-  
+    const existingItem = existingBasket.find(item => 
+      item.id === itemToAdd.id && item.insulator === itemToAdd.insulator
+    );
     if (product.isDiscount) {
       if (existingItem) {
         alert('Товар вже доданий до кошика');
@@ -720,18 +728,41 @@ const ProductDetailsPage = () => {
   </MDBRow>)}
 
   {!product.isDiscount && ( <MDBRow className='text-start'  style={{marginTop:'55px'}}>
-                      {product.seasonid === variant_season && (
-                        <div>
-                          <label htmlFor="insulator"> {t('insulator')}:  </label>
-                          <select id="insulator" className="select p-3 bg-grey" style={{ width: "100%" }}  value={selectedInsulator} onChange={(e) => setSelectedInsulator(e.target.value)}>
-                           
-                            {availableInsulators.map((insulator, index) => (
-                              <option key={index} value={insulator}>{insulator}</option>
-                            ))}
-                          </select>
-                        </div>
-                      )}
+    {product.seasonid === variant_season && (
+  <div>
+    <label htmlFor="insulatorSeason"> {t('insulator')}:  </label>
+    <select
+      id="insulatorSeason"
+      className="select p-3 bg-grey"
+      style={{ width: "100%" }}
+      value={selectedInsulator}
+      onChange={(e) => setSelectedInsulator(e.target.value)}
+    >
+      {availableInsulators.map((insulator, index) => (
+        <option key={index} value={insulator}>{insulator}</option>
+      ))}
+    </select>
+  </div>
+)}
+{product.subCategoryid.includes(variant_clogs) && (
+  <div>
+    <label htmlFor="insulatorClog"> {t('insulator')}:  </label>
+    <select
+      id="insulatorClog"
+      className="select p-3 bg-grey"
+      style={{ width: "100%" }}
+      value={selectedInsulatorClog}
+      onChange={(e) => setSelectedInsulatorClog(e.target.value)}
+    >
+      {availableInsulatorsClog.map((insulator, index) => (
+        <option key={index} value={insulator}>{insulator}</option>
+      ))}
+    </select>
+  </div>
+)}
+
                     </MDBRow>)}
+                    
 <MDBRow className='text-center'  style={{marginTop:'55px'}}> <Button
 onClick={addToBasket}
                   style={{ borderRadius: '0px' }}

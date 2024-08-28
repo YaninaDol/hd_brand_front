@@ -10,6 +10,7 @@ import './CheckoutPage.css';
 import 'react-phone-number-input/style.css'
 import { useTranslation } from 'react-i18next';
 import PhoneInput from 'react-phone-number-input'
+import { isValidPhoneNumber } from 'react-phone-number-input'
 import {
  
   MDBContainer,
@@ -53,21 +54,25 @@ const Account = () => {
   };
   const validateForm = () => {
     const errors = {};
-   
+    const nameRegex = /^[a-zA-Zа-яА-ЯёЁїЇіІєЄґҐ'-]+$/;
     
-    if (!name.trim()) {
+    if (!name || !name.trim()) {
       errors.name = 'Заповніть ім\'я';
+    } else if (!nameRegex.test(name.trim())) {
+      errors.name = 'Ім\'я повинно містити тільки букви';
     }
-
-    if (!surname.trim()) {
+    
+    if (!surname || !surname.trim()) {
       errors.surname = 'Заповніть прізвище';
+    } else if (!nameRegex.test(surname.trim())) {
+      errors.surname = 'Прізвище повинно містити тільки букви';
     }
 
-    if (!phoneNumber.trim()) {
-      errors.phoneNumber = 'Заповніть номер телефону';
+    if (!phoneNumber || !phoneNumber.trim()||!isValidPhoneNumber(phoneNumber)) {
+      errors.phoneNumber = 'Заповніть коректний номер телефону';
     }
 
-    if (!email.trim()) {
+    if (!email||!email.trim()) {
       errors.email = 'Заповніть E-mail';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       errors.email = 'Введіть коректний E-mail';
@@ -319,7 +324,7 @@ function goOut()
                 
       placeholder={t('phonennumner')}
       id="enterphone"
-      value={phoneNumber}
+      value={phoneNumber || ''}
       onChange={setPhonenumber}/>
                 </div> {errors.phoneNumber && <div style={{ color: 'red' }}>{errors.phoneNumber}</div>}</MDBCol>
               <MDBCol className="col-12 col-md-6 py-3 py-md-0">

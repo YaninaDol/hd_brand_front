@@ -117,13 +117,19 @@ const CheckoutPage = () => {
 }
 
  
-    if (!name.trim()) {
-      errors.name = 'Заповніть ім\'я';
-    }
+const nameRegex = /^[a-zA-Zа-яА-ЯёЁїЇіІєЄґҐ'-]+$/;
+    
+if (!name || !name.trim()) {
+  errors.name = 'Заповніть ім\'я';
+} else if (!nameRegex.test(name.trim())) {
+  errors.name = 'Ім\'я повинно містити тільки букви';
+}
 
-    if (!surname.trim()) {
-      errors.surname = 'Заповніть прізвище';
-    }
+if (!surname || !surname.trim()) {
+  errors.surname = 'Заповніть прізвище';
+} else if (!nameRegex.test(surname.trim())) {
+  errors.surname = 'Прізвище повинно містити тільки букви';
+}
 
     if (!phoneNumber || !phoneNumber.trim()||!isValidPhoneNumber(phoneNumber)) {
       errors.phoneNumber = 'Заповніть коректний номер телефону';
@@ -157,64 +163,29 @@ const CheckoutPage = () => {
   
 
 
-  function updateDate()
-  {
-
+  function updateDate() {
     const orderId = window.sessionStorage.getItem('order');
-    if(!orderId)
-      {
-        
-        selectedPaymentMethod=='cardpay'?
-        setPaymentData({
-          ...paymentData,
-          amount:convertPrice(250,selectedCurrency),
-          currency: selectedCurrency
-          
-      }):
-         activeTab!='longer-tab' ?
-            
-            setPaymentData({
-              ...paymentData,
-              amount:convertPrice(total -total*(discount/100)+shipment,selectedCurrency),
-              currency: selectedCurrency
-              
-          }): setPaymentData({
-            ...paymentData,
-            amount:convertPrice(total -total*(discount/100),selectedCurrency),
-            currency: selectedCurrency
-            
-        });
-      }
-      else{
+    let amount;
 
-       
-        selectedPaymentMethod=='cardpay'?
-        setPaymentData({
-          ...paymentData,
-          amount:convertPrice(250,selectedCurrency),
-          currency: selectedCurrency,
-          order_id:orderId
-          
-      }):
-         activeTab!='longer-tab' ?
-            
-            setPaymentData({
-              ...paymentData,
-              amount:convertPrice(total-total*(discount/100)+shipment,selectedCurrency),
-              currency: selectedCurrency,
-              order_id:orderId
-              
-          }): setPaymentData({
-            ...paymentData,
-            amount:convertPrice(total-total*(discount/100),selectedCurrency),
-            currency: selectedCurrency,
-            order_id:orderId
-            
-        });
-      }
-  
-    
-  }
+    if (selectedPaymentMethod === 'cardpay') {
+        amount = convertPrice(250, selectedCurrency);
+    } else {
+        amount = activeTab !== 'longer-tab'
+            ? convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)
+            : convertPrice(total - total * (discount / 100), selectedCurrency);
+    }
+
+    const updatedPaymentData = {
+        ...paymentData,
+        amount: amount,
+        currency: selectedCurrency,
+        ...(selectedPaymentMethod === 'cardpay' && { description: 'Передоплата за товар' }),
+        ...(orderId && { order_id: orderId })
+    };
+
+    setPaymentData(updatedPaymentData);
+}
+
  
 
   const [exchangeRates, setExchangeRates] = useState({
@@ -250,7 +221,7 @@ const [paymentData, setPaymentData] = useState({
       action: 'pay',
       amount: total,
       currency: selectedCurrency,
-      description: 'Плата за товар',
+      description: 'Сплата за товар',
       language: 'UK',
       order_id:'',
       result_url:'https://hdbrand.com.ua/status'
@@ -421,10 +392,10 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   var instanse_liq = new LiqPaY(publicKey, privateKey);
 
 
-  function removeBasket(id) {
-    let prod = arrbuket.find(item => item.id === id);
+  function removeBasket(id,insulator) {
+    let prod = arrbuket.find(item => item.id === id && item.insulator === insulator);
     if (prod) {
-      const updatedBasket = arrbuket.filter(item => item.id !== id);
+      const updatedBasket = arrbuket.filter(item => !(item.id === id && item.insulator === insulator));
       setBuket(updatedBasket);
       const totalCost = updatedBasket.reduce((sum, item) => sum + item.quantity * item.price, 0);
       setTotal(totalCost);
@@ -445,11 +416,13 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
   }
   
   
-  const decrementQuantity = (id) => {
-    let prod = arrbuket.find(item => item.id === id);
+  const decrementQuantity = (id, insulator) => {
+    let prod = arrbuket.find(item => item.id === id && item.insulator === insulator);
     if (prod && prod.quantity > 1) {
       const updatedBasket = arrbuket.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        item.id === id && item.insulator === insulator
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
       );
   
       const filteredBasket = updatedBasket.filter(item => item.quantity > 0);
@@ -465,16 +438,19 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       } else {
         setDiscount(userdiscount);
       }
-    
+  
       window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
     }
   };
   
-  const incrementQuantity = (id) => {
-    let prod = arrbuket.find(item => item.id === id);
+  
+  const incrementQuantity = (id, insulator) => {
+    let prod = arrbuket.find(item => item.id === id && item.insulator === insulator);
     if (prod) {
       const updatedBasket = arrbuket.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === id && item.insulator === insulator
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
   
       setBuket(updatedBasket);
@@ -488,11 +464,11 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       } else {
         setDiscount(userdiscount);
       }
-    
+  
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
-
+  
 
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e.value);
@@ -742,7 +718,10 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
      
   
   }
-
+else
+{
+  alert(t('attention'));
+}
 
 
  }
@@ -760,7 +739,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
      
        window.sessionStorage.setItem("order",response.data.id);
         updateDate();
-          setProceed(true);
+        setProceed(true);
        
   
   })
@@ -1032,8 +1011,8 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
            
             <MDBCol>
             {countryinExcel === 'novapost' && ( <Form.Select  onChange={(e)=> setTypeDeliveryW(e.target.value) } size="lg" >
-            <option style={{maxWidth:'100%'}}  value={'address'}>{t('np-1')} </option>
-        <option style={{maxWidth:'100%'}} value={'warehouse'}>{t('np-2')} </option>
+            <option style={{maxWidth:'100%'}}  value={'address'}>{t('np-2')} </option>
+        <option style={{maxWidth:'100%'}} value={'warehouse'}>{t('np-1')} </option>
       
       </Form.Select>)}
       {countryinExcel === 'worldwide' && ( <Form.Select  onChange={(e)=> setTypeDeliveryW(e.target.value) }  size="lg" >
@@ -1179,7 +1158,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
  </MDBRow>
 
   <MDBRow style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')}  </Button>)}
+    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
    
   </MDBRow>
       </div>
@@ -1267,7 +1246,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
  
 
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button>)}
+    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
    
   </MDBRow>
     </MDBCol>

@@ -1,28 +1,37 @@
-import React from 'react';
-import { Button } from 'react-bootstrap';
-import axios from 'axios';
-const Status200 = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-  window.sessionStorage.removeItem("Basket");
-  window.sessionStorage.removeItem("order");
- 
-  
-    
-      return (
-    
-        <div >
-    <div className="text-center" style={{marginTop:100}}>
-        <h2><svg xmlns="http://www.w3.org/2000/svg" width="86" height="86" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
-  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
-  <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
-</svg></h2>
-      <h2>Платіж прийнятий</h2>
-      <p>Дякуємо за покупку в нашому магазині!</p>
+import React, { useState, useEffect } from 'react';
+import { Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-     <a href='/'> <Button variant='dark' >На головну </Button></a>
-    </div>
-        </div>
-      );
-    };
+const Status200 = () => {
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+   
+    window.sessionStorage.removeItem("Basket");
+    window.sessionStorage.removeItem("order");
+
     
-    export default Status200;
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false);
+      navigate('/'); 
+    }, 1000);
+
+   
+    return () => clearTimeout(loadingTimeout);
+  }, [navigate]);
+
+  return (
+    <div className="text-center" style={{ marginTop: 100 }}>
+      {loading ? (
+        <div style={{ marginTop: '250px' }} className="d-flex justify-content-center">
+          <Spinner variant="secondary" animation="border" />
+        </div>
+      ) : (
+        <> </>
+      )}
+    </div>
+  );
+};
+
+export default Status200;

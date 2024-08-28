@@ -22,21 +22,31 @@ const BasketModal = ({
     }
   }, [show]);
 
-  const removeBasket = (id) => {
-    let prod = arrBasket.find(item => item.id === id);
+  const removeBasket = (id, insulator) => {
+    
+    let prod = arrBasket.find(item => item.id === id && item.insulator === insulator);
+    
     if (prod) {
+      
       setCount(count - prod.quantity);
-      const updatedBasket = arrBasket.filter(item => item.id !== id);
+  
+      
+      const updatedBasket = arrBasket.filter(item => !(item.id === id && item.insulator === insulator));
+      
+     
       setArrBasket(updatedBasket);
+      
+      
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
+  
 
-  const decrementQuantity = (id) => {
-    let prod = arrBasket.find(item => item.id === id);
+  const decrementQuantity = (id,insulator) => {
+    let prod = arrBasket.find(item => item.id === id && item.insulator === insulator);
     if (prod && prod.quantity > 1) {
       const updatedBasket = arrBasket.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+        item.id === id&& item.insulator === insulator ? { ...item, quantity: item.quantity - 1 } : item
       );
       const filteredBasket = updatedBasket.filter(item => item.quantity > 0);
       setArrBasket(filteredBasket);
@@ -44,11 +54,11 @@ const BasketModal = ({
     }
   };
 
-  const incrementQuantity = (id) => {
-    let prod = arrBasket.find(item => item.id === id);
+  const incrementQuantity = (id, insulator) => {
+    let prod = arrBasket.find(item => item.id === id && item.insulator === insulator);
     if (prod) {
       const updatedBasket = arrBasket.map(item =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.id === id && item.insulator === insulator? { ...item, quantity: item.quantity + 1 } : item
       );
       setArrBasket(updatedBasket);
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));

@@ -13,6 +13,7 @@
     "sale":"SALE",
     "privacy_policy":"Privacy policy",
     "auth_msg":"By registering or logging in using my profile in the social network, I hereby consent to linking my account in accordance with the provisions",
+    "check_msg":"By placing an order, I hereby consent to the processing of my personal data in accordance with the provisions",
     "public_offert":"Public offert",
     "contacts":"Contacts",
     "chooseitems":"Choose items",
@@ -67,6 +68,7 @@
      "size_table":"Size guide",
      "insulator":"Insulator",
      "fur":"Fur",
+     "leather_inside":"Leather lining",
      "baize":"Baize",
      "my_account":"Account",
      "your_inform":"Contact information",
@@ -107,7 +109,8 @@
 "7-10":"7-10 working days",
  "about_us":"ABOUT US",
  "return_policy":"RETURN POLICY",
-  "pay_delivery":"PAYMENT AND DELIVERY"
+  "pay_delivery":"PAYMENT AND DELIVERY",
+  "attention":"Check the correctness of entered data"
 
   }
   
