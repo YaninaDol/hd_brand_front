@@ -785,7 +785,7 @@ else
   return (
     <div >
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
-        
+    
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>

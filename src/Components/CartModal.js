@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import BasketModal from '../Components/BasketModal';
 import { useTranslation } from 'react-i18next';
-function Cart({ cartItems, addToCart }) {
+
+function Cart({showM, showB, convertPrice }) {
   const [showModal, setShowModal] = useState(false);
-  const {t,i18n } = useTranslation();
+  const [showModalB, setShowModalB] = useState(false);
+  const { t, i18n } = useTranslation();
+
   useEffect(() => {
-    // Check if any shoe in the cart has an article containing 'z'
-    const hasShoeWithZ = cartItems.some(item => item.article.includes('z'));
+    
+    setShowModal(showM);
+    setShowModalB(showB);
+  }, [showM, showB]);
 
-    if (hasShoeWithZ) {
-      setShowModal(true);
-    }
-  }, [cartItems]);
+  const handleClose = () => {
+   
+    setShowModal(false);  
+    setShowModalB(true);  
+  };
 
-  const handleClose = () => setShowModal(false);
-
+  const handleCloseM = () =>{setShowModalB(false);  };
+  
   const handleAddSpray = () => {
-    // Add spray to the cart
-    addToCart({ id: 'spray', name: 'Shoe Care Spray', price: 10 });
-    handleClose();
+  
+    //addToCart({ id: 'spray', name: 'Shoe Care Spray', price: 100 });
+    handleClose();  
+   
   };
 
   return (
     <>
-      {/* Other cart components */}
-
+      {/* Остальные компоненты корзины */}
+      <BasketModal show={showModalB} handleClose={handleCloseM} convertPrice={convertPrice} />
+      
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Спрей для замшевого взуття</Modal.Title>
@@ -37,7 +46,7 @@ function Cart({ cartItems, addToCart }) {
             Ні, дякую
           </Button>
           <Button variant="primary" onClick={handleAddSpray}>
-          {t('add')}
+            {t('add')}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -20,7 +20,7 @@ import { MDBCardImage, MDBCol, MDBContainer, MDBRow } from 'mdb-react-ui-kit';
 import ShoppingAssistant from '../Components/ShoppingAssistant';
 import BasketModal from '../Components/BasketModal';
 import '../Pages/ProductdetailPage.css';
-import CartProduct from '../Components/CartProduct';
+import CartModal from '../Components/CartModal';
 import NewProductCardItem from '../Components/NewProductCardItem';
 const ProductDetailsPage = () => {
   const {i18n, t } = useTranslation();
@@ -376,7 +376,39 @@ const ProductDetailsPage = () => {
       return price;
     }
   };
+  var spray= {productid:1,article:"spray", id: 5865, name: 'Спрей для замшового взуття',nameEng: 'Shoe Care Spray',image:'https://ralf.ru/upload/iblock/f3a/f3aed76dacbee86b6ca8e8e11f8d3e84.jpg', price: 200, size:'one size' }
+  const [showModalSpray, setShowModalSpray] = useState(false);
   
+  const handleShowModalSpray = () => {
+   
+    setShowModalSpray(true);  
+      
+  };
+  const handleCloseModalSpray = () => {
+   
+    setShowModalSpray(false);  
+    handleShowM();
+  };
+
+  const addSprayToBasket = () => {
+    const sprayItem = {productid:1,article:"spray", id: 5865, name: 'Спрей для замші',nameEng: 'Spray for Suede',image:'https://ralf.ru/upload/iblock/f3a/f3aed76dacbee86b6ca8e8e11f8d3e84.jpg', price: 200, quantity: 1,size:'' };
+    const storedBasket = window.sessionStorage.getItem("Basket");
+    const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
+
+    // Проверка, есть ли уже спрей в корзине
+    const existingItem = existingBasket.find(item => item.id === sprayItem.id);
+
+    if (existingItem) {
+      existingItem.quantity += 1; // Увеличиваем количество, если спрей уже в корзине
+    } else {
+      existingBasket.push(sprayItem); // Добавляем новый спрей, если его ещё нет в корзине
+    }
+
+    // Сохраняем обновлённую корзину в сессии
+    window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+    handleCloseModalSpray(); 
+    handleShowM();
+  };
   const addToBasket = () => {
     
     if (!newProd) {
@@ -399,13 +431,20 @@ const ProductDetailsPage = () => {
     const existingItem = existingBasket.find(item => 
       item.id === itemToAdd.id && item.insulator === itemToAdd.insulator
     );
+
+    const existingSpray = existingBasket.find(item => 
+      item.id === 5865
+    );
+
     if (product.isDiscount) {
       if (existingItem) {
         alert('Товар вже доданий до кошика');
       } else {
         existingBasket.push(itemToAdd);
         window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
-        handleShowM();
+        if(itemToAdd.article.includes('z')&&product.categoryid==2&&!existingSpray)
+       { handleShowModalSpray();}
+        else {handleShowM();}
         setNewProd(null);
         setShowValidation(false);
       }
@@ -420,7 +459,9 @@ const ProductDetailsPage = () => {
     }
   
     window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
-    handleShowM();
+    if(itemToAdd.article.includes('z')&&product.categoryid==2&&!existingSpray)
+      { handleShowModalSpray();}
+       else {handleShowM();}
     setNewProd(null);
     setShowValidation(false);
   };
@@ -459,13 +500,35 @@ const ProductDetailsPage = () => {
   return (
     <div>
       
-      {/* <Modal show={showM} onHide={handleCloseM}>
+      <Modal show={showModalSpray} onHide={handleCloseModalSpray}>
         <Modal.Header closeButton>
-        <Modal.Body>Товар додано до кошику </Modal.Body>
+          <Modal.Title>Спрей для замші </Modal.Title>
         </Modal.Header>
+        <Modal.Body>
+        <MDBCardImage
+              fluid
+              src='https://ralf.ru/upload/iblock/f3a/f3aed76dacbee86b6ca8e8e11f8d3e84.jpg'
+              alt="Cotton T-shirt"
+              style={ { height:'50%',position:'relative',objectFit:'cover'}}
+            />
+       
+       Чи хочете ви додати до кошика?
+        </Modal.Body>
+        
+        <Modal.Footer>
       
-      
-      </Modal> */}
+          <Button variant="outline-secondary" onClick={handleCloseModalSpray}>
+            Ні, дякую
+          </Button>
+          <Button variant="dark" onClick={addSprayToBasket}>
+            {t('add')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+
+
       <Modal show={showTableSize} onHide={handleClosetableSize}>
         <Modal.Header closeButton>
         <Modal.Body>
