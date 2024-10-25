@@ -503,10 +503,41 @@ function getOrder()
     </div>
   </div>
 </div>
+
       </div>
       <Nav.Link className="item-title" active style={{color:'red'}} href="/sale">{t('sale')}</Nav.Link>
                   <Nav.Link className="item-title" active  href="/faq">FAQ</Nav.Link>
-                
+                  <div class="accordion-item">
+  <h2 class="accordion-header" id="flush-headingLanguage">
+    <button
+   style={{textDecoration: 'underline', textDecorationColor: 'red'}}
+      class="accordion-button collapsed item-title"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#flush-collapseLanguage"
+      aria-expanded="false"
+      aria-controls="flush-collapseLanguage"
+    >
+      LANGUAGE 
+    </button>
+  </h2>
+  <div
+    id="flush-collapseLanguage"
+    class="accordion-collapse collapse"
+    aria-labelledby="flush-headingLanguage"
+    data-bs-parent="#accordionFlushExample"
+  >
+    <div class="accordion-body" style={{marginLeft:'15px'}}>
+      
+         <NavDropdown.Item  className="item-title"  onClick={() => changeLanguage('ua')} >
+    УКРАЇНСЬКА
+  </NavDropdown.Item>
+  <NavDropdown.Item  className="item-title"  onClick={() => changeLanguage('en')} >
+    ENGLISH
+  </NavDropdown.Item>
+    </div>
+  </div>
+</div>
                 </Nav>
        
               </Offcanvas.Body>

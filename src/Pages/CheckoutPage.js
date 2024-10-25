@@ -67,6 +67,8 @@ const CheckoutPage = () => {
 
   const NOVAPOST_API_KEY=process.env.REACT_APP_NOVAPOST_API_KEY;
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const X_TOKEN=process.env.REACT_APP_TOKEN;
+
   const validateForm = () => {
     const isEnglish = /^[a-zA-Z\s]*$/.test(name,surname);
    
@@ -205,13 +207,10 @@ if (!surname || !surname.trim()) {
     });
   };
   const handleCheckboxChange = (method) => {
-    setSelectedPaymentMethod(method);
+
     
-   
-    if(method === 'cardpay')
-      {
+        setSelectedPaymentMethod(method);
         setProceed(false);
-      }
   };
 
 
@@ -222,7 +221,7 @@ const [paymentData, setPaymentData] = useState({
       amount: total,
       currency: selectedCurrency,
       description: 'Сплата за товар',
-      language: 'UK',
+      language: 'uk',
       order_id:'',
       result_url:'https://hdbrand.com.ua/status'
 });
@@ -489,36 +488,37 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
         setCountryExcel('novapost');
         
         if (count === 1) {
-          return 600 ;
+          return 700 ;
         } else if (count === 2) {
-          return 630 ;
+          return 730 ;
         } else {
-          return 870 ;
+          return 970 ;
         }
       case 'Romania':
       case 'Czech Republic':
+      case 'Czechia':
       case 'Germany':
       case 'Slovakia':
-      case 'Estonia':
-      case 'Latvia':
       case 'Lithuania':
       case 'Hungary':
         setCountryExcel('novapost');
        
         if (count === 1) {
-          return 900 ;
+          return 950 ;
         } else if (count === 2) {
-          return 930 ;
+          return 980 ;
         } else {
           return 1970 ;
         }
       case 'Italy':
+      case 'Estonia':
+      case 'Latvia':
         setCountryExcel('novapost');
       
         if (count === 1) {
-          return 1300 ;
+          return 1600 ;
         } else if (count === 2) {
-          return 1330 ;
+          return 1630 ;
         } else {
           return 2670 ;
         }
@@ -526,9 +526,9 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
         setCountryExcel('worldwide');
      
         if (count === 1) {
-          return 800;
+          return 900;
         } else if (count === 2) {
-          return 1200;
+          return 1300;
         } else {
           return 1600;
         }
@@ -728,38 +728,50 @@ else
  function confirmOrder(delivery,fulladdress,toplam,comment)
  {
   const jsonString = JSON.stringify(arrbuket);
-  
 
-  if(!window.sessionStorage.getItem("AccessToken"))
-    { 
-      axios({method:'post',
-      url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=liqpay&comment=${comment}&discount=${discount} `
-   })
-       .then(response => {
-     
-       window.sessionStorage.setItem("order",response.data.id);
-        updateDate();
-        setProceed(true);
-       
+  const orderData = {
+    name: name,
+    surname: surname,
+    phone: phoneNumber,
+    email: email,
+    products: jsonString,
+    delivery: delivery,
+    address: fulladdress,
+    total: `${toplam + selectedCurrency}`,
+    payment: "liqpay",
+    comment: comment,
+    discount: `${discount}`||"",
+  };
   
-  })
-  .catch(error => {
-    if (error.response && error.response.status === 400) {
-      console.log('BadRequest error:', error.response.data);
-      alert('Oops..Some products are not in stock.')
-     window.sessionStorage.removeItem("Basket");
-      window.location.href='/';
-    } else {
-      console.error('An unexpected error occurred:', error);
-    }
-  });
+  if (!window.sessionStorage.getItem("AccessToken")) {
+    axios({
+      method: 'post',
+      url: `${API_BASE_URL}/api/Authenticate/ConfirmOrder`,
+      data:orderData
+    })
+    .then(response => {
+      window.sessionStorage.setItem("order", response.data.id);
+      updateDate();
+      setProceed(true);
+    })
+    .catch(error => {
+      if (error.response && error.response.status === 400) {
+        console.log('BadRequest error:', error.response.data);
+        alert('Oops.. Some products are not in stock.');
+        window.sessionStorage.removeItem("Basket");
+        window.location.href = '/';
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+    });
+  }
   
-    }
    else{
    
     axios({method:'post',
-    url:`${API_BASE_URL}/api/Authenticate/ConfirmOrder1?Name=${name}&Surname=${surname}&Phone=${phoneNumber}&email=${email}&products=${jsonString}&delivery=${delivery}&address=${fulladdress}&total=${toplam +selectedCurrency}&payment=liqpay&comment=${comment}&discount=${discount}  `,
-  headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
+      url: `${API_BASE_URL}/api/Authenticate/ConfirmOrder1`,
+      data:orderData,
+      headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                 }})
      .then(response => {
      
@@ -782,6 +794,76 @@ else
 
    }
  }
+
+ async function MonoPay() {
+  let _amount;
+  let currencyCode;
+
+  if (selectedPaymentMethod === 'cardpay') {
+      _amount = convertPrice(250, selectedCurrency);
+  } else {
+      _amount = activeTab !== 'longer-tab'
+          ? convertPrice(total - total * (discount / 100) + shipment, selectedCurrency)
+          : convertPrice(total - total * (discount / 100), selectedCurrency);
+  }
+  switch (selectedCurrency) {
+        case 'UAH':
+            currencyCode = 980;
+            _amount = Math.round(_amount * 100);  
+            break;
+        case 'EUR':
+            currencyCode = 978;
+            _amount = Math.round(_amount * 100);  
+            break;
+        case 'USD':
+            currencyCode = 840;
+            _amount = Math.round(_amount * 100);  
+            break;
+        default:
+            throw new Error('Unsupported currency');
+    }
+    const _comment = selectedPaymentMethod === 'cardpay'
+    ? 'Передоплата за товар'
+    : 'Сплата за товар';
+
+  const paymentData = {
+    amount:_amount,  
+    ccy: currencyCode,  
+    merchantPaymInfo: {
+        reference:window.sessionStorage.getItem('order'),  
+        destination:_comment,  
+        comment: _comment,  
+        customerEmails: [],  
+        basketOrder: []  
+    },
+    redirectUrl: "https://hdbrand.com.ua/status",  
+    webHookUrl: `${API_BASE_URL}/api/MonoPay`,  
+    validity: 3600,  
+    paymentType: "debit"
+};
+
+  const response = await fetch('https://api.monobank.ua/api/merchant/invoice/create', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-Token': `${X_TOKEN}`,  
+      },
+     
+      body: JSON.stringify(paymentData),
+  });
+
+  const result = await response.json();
+  
+  if (response.ok) {
+     
+      window.location.href = result.pageUrl;
+  } else {
+      console.error('Payment creation failed:', result);
+  }
+}
+
+
+
   return (
     <div >
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
@@ -804,7 +886,7 @@ else
   <MDBCol md='7'  className="order-md-1 order-2">
               <MDBRow>
               <MDBCol className="col-12 col-md-8">
-                <div className="h211"> {t('your_inform')}</div>  </MDBCol>
+                <div className="h211"> {t('delivery_inform')}</div>  </MDBCol>
               <MDBCol className="col-12 col-md-4 ">
               
               
@@ -1030,7 +1112,7 @@ else
           onChange={(e)=> setSelectedCity2(e.value)}
           options={cities}
           isSearchable
-          placeholder={t('np-1')}
+          placeholder={t('select_city')}
           styles={{
             control: (provided) => ({
               ...provided,
@@ -1159,7 +1241,12 @@ else
 
   <MDBRow style={{marginTop:'15px'}}>
     {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
-   
+    {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
+  <span className="text-start" style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay by Card, ApplePay, GooglePay' : 'Оплата карткою, ApplePay, GooglePay'}</span>
+  <img width={90} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
+</Button></div>
+)}
+
   </MDBRow>
       </div>
   </MDBCol>
@@ -1246,8 +1333,12 @@ else
  
 
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
-   
+    {proceed===true ?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
+    {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
+  <span style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay with' : 'Оплата карткою, ApplePay, GooglePay'}</span>
+  <img width={110} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
+</Button></div>
+)}
   </MDBRow>
     </MDBCol>
 

@@ -150,14 +150,14 @@ HD brand - це не просто бренд, це спільнота, що об
 <p>Payment is made in the following currencies: Ukrainian Hryvnia (UAH), US Dollar (USD), Euro (EUR).</p>
 
 <ol>
-  <li>Partial prepayment – 250 UAH (per unit per order). The difference is paid upon receipt via cash on delivery with Nova Poshta.</li>
+  <li>Partial prepayment – 250 UAH . The difference is paid upon receipt via cash on delivery with Nova Poshta(Ukraine only).</li>
   <p>Please note, Nova Poshta charges a commission of 2% of the amount + 20 UAH for cash on delivery processing.</p>
 
   <li>Full payment - if you prefer not to pay extra for cash on delivery. Pay the order amount and courier service commission for cash on delivery (delivery cost to Nova Poshta branch or address delivery upon receiving the parcel by courier) after checking the goods at the branch.</li>
 
   <li>When ordering through the website, you have the option to choose the payment method:</li>
   <ul>
-    <li>By bank card on the website (Visa or MasterCard). We use the LiqPay payment service with Internet data protection technology.</li>
+    <li>By bank card on the website (Visa or MasterCard). For the additional payment service LiqPay or Plata by Mono, with technology existing on the Internet.</li>
   </ul>
 </ol>
 
@@ -188,14 +188,17 @@ HD brand - це не просто бренд, це спільнота, що об
 Розрахунок відбувається у валюті - гривнях (UAH), долларах (USD), євро (EUR).</p>
 
 <ol>
-  <li>Часткова передоплата – 250 грн (за кожну одиницю на замовлення). Різниця виставляється в рахунок післяплати на Новій Пошті.</li>
+  <li>Часткова передоплата – 250 грн . Різниця виставляється в рахунок післяплати на Новій Пошті(Тільки по Україні).</li>
   <p>Зверніть увагу, що при цьому способі оплати Нова Пошта бере комісію у розмірі 2% від суми + 20 грн за оформлення післяплати.</p>
 
   <li>Повна оплата - якщо Ви не хочете переплачувати за накладений платіж. Оплатіть вартість замовлення та комісію кур'єрській службі за післяплату (вартість доставки до відділення "Нова Пошта” або адресної доставки при отриманні посилки кур'єром), після того, як перевірите товари у відділенні.</li>
 
+
   <li>При оформленні через сайт у вас є можливість зробити вибір способу оплати:</li>
   <ul>
-    <li>Банківською карткою на сайті (Visa або MasterCard). Ми використовуємо платіжний сервіс LiqPay з технологією захисту даних в Інтернеті.</li>
+    <li>Банківською карткою на сайті (Visa або MasterCard). За допомогою платіжного сервісу LiqPay або Plata by Mono , з технологією захисту даних в Інтернеті.</li>
+    <li>Оплата частинами від АТ КБ "ПриватБанк" за допомогою платіжного сервісу LiqPay .</li>
+    <li>Миттєва розстрочка від АТ КБ "ПриватБанк" за допомогою платіжного сервісу LiqPay .</li>
   </ul>
 </ol>
 
