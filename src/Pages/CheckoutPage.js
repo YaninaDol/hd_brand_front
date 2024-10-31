@@ -166,7 +166,7 @@ if (!surname || !surname.trim()) {
 
 
   function updateDate() {
-    const orderId = window.sessionStorage.getItem('order');
+    const orderId = window.localStorage.getItem("order");
     let amount;
 
     if (selectedPaymentMethod === 'cardpay') {
@@ -750,6 +750,7 @@ else
       data:orderData
     })
     .then(response => {
+      window.localStorage.setItem("order", response.data.id);
       window.sessionStorage.setItem("order", response.data.id);
       updateDate();
       setProceed(true);
@@ -775,8 +776,8 @@ else
                 }})
      .then(response => {
      
-    
-     window.sessionStorage.setItem("order",response.data.id);
+      window.sessionStorage.setItem("order", response.data.id);
+     window.localStorage.setItem("order",response.data.id);
      updateDate();
        setProceed(true);
 })
@@ -830,7 +831,7 @@ else
     amount:_amount,  
     ccy: currencyCode,  
     merchantPaymInfo: {
-        reference:window.sessionStorage.getItem('order'),  
+        reference:window.localStorage.getItem('order'),  
         destination:_comment,  
         comment: _comment,  
         customerEmails: [],  
@@ -879,7 +880,7 @@ else
 <Link to={`/checkout`}><div className="div34">{t('checkout2')}</div></Link>
 </div>
 
-<MDBContainer className="py-5 h-100" >
+<MDBContainer className="py-5 h-100 w-100" >
 <MDBRow> <h2 className="h25title">{t('checkout2')}</h2></MDBRow>
   <MDBRow>
  
@@ -1172,9 +1173,9 @@ else
             id={`liqpay`}
             checked={selectedPaymentMethod === 'liqpay'}
             onChange={() => handleCheckboxChange('liqpay')}
-            label={t('full')}
+            label={t('full') }
           />
-      
+      <p style={{fontStyle:'oblique',fontSize:'13px',marginLeft:'5px'}}>  {t('credit') }  </p>
        
             
 

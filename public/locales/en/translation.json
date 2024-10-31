@@ -98,6 +98,7 @@
 "enter_index":" Enter postal code",
 "select_payment":"Choose a payment method",
 "full":"Full payment ",
+"credit":"",
 "half_price":"Partial prepayment ",
 "total":"Subtotal",
 "discount":"Discount",
