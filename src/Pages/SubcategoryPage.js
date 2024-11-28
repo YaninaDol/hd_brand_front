@@ -156,7 +156,7 @@ const convertPrice = (price, currency) => {
 };
 
   return (
-    <div>
+    <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
      
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />

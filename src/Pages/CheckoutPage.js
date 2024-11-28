@@ -866,7 +866,7 @@ else
 
 
   return (
-    <div >
+    <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
     
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
@@ -1175,7 +1175,7 @@ else
             onChange={() => handleCheckboxChange('liqpay')}
             label={t('full') }
           />
-      <p style={{fontStyle:'oblique',fontSize:'13px',marginLeft:'5px'}}>  {t('credit') }  </p>
+      {/* <p style={{fontStyle:'oblique',fontSize:'13px',marginLeft:'5px'}}>  {t('credit') }  </p> */}
        
             
 
@@ -1241,7 +1241,7 @@ else
  </MDBRow>
 
   <MDBRow style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
+    {proceed===true?( <div > <div style={{display:'none'}}  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
     {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
   <span className="text-start" style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay by Card, ApplePay, GooglePay' : 'Оплата карткою, ApplePay, GooglePay'}</span>
   <img width={90} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
@@ -1257,7 +1257,7 @@ else
 
   <MDBCol  md='5' className="order-md-2 order-1">
   <MDBRow> <MDBCol><div className="h211"> {t('basket')} </div>  </MDBCol> </MDBRow>
-  <MDBRow>
+ 
 {
   arrbuket.length < 1 ? (
     <>
@@ -1286,7 +1286,7 @@ else
 }
 
 
-  </MDBRow>
+ 
   <hr className="my-4" />
   <MDBRow>
   <MDBCol>{t('total')} </MDBCol>
@@ -1334,7 +1334,7 @@ else
  
 
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
-    {proceed===true ?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
+    {proceed===true ?( <div > <div style={{display:'none'}} dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
     {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
   <span style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay with' : 'Оплата карткою, ApplePay, GooglePay'}</span>
   <img width={110} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />

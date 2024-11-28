@@ -1,13 +1,4 @@
-.containerCart{
-    display: flex;
-    justify-content:left;
-    align-items: stretch;
-    margin-left: 5px;
-    flex-flow:row wrap;
-    text-align: center;
-    
-    
-  }
+
   .column-hide{
     display: block;
   }
@@ -420,7 +411,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 15px;
+  padding-left: 40px;
   padding-right: 5px;
   gap: 0 6px;
   opacity: 0.5;
@@ -1311,6 +1302,7 @@
   margin: 0;
 }
 
+
 .main-content-container {
   width: 524px;
   height: 15px;
@@ -1389,10 +1381,53 @@
   {
     display: none;
   }
+  /* Контейнер для карточек */
+.cards-container_ {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(45%, 1fr)); /* 2 карточки в строку */
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+/* Стили для карточек */
+.cart-item_ {
+  background-color: white;
+  border-radius: none;
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Занимает всю высоту родительского элемента */
+  padding: 20px; /* Задает отступы вокруг спиннера */
+}
+.containerCart {
+  display: grid;
+  gap: 15px; /* Отступы между карточками */
+  grid-template-columns: repeat(2, 1fr); /* Две карточки в строку */
+  margin: 0; /* Убираем внешние отступы контейнера */
+  padding: 0; /* Убираем внутренние отступы контейнера */
+  width: 100%; /* Занимает всю ширину родителя */
+}
+@media (min-width: 1024px) {
+  .containerCart {
+    grid-template-columns: repeat(4, 1fr); /* 4 карточки в строку */
+    gap: 20px; /* Увеличиваем расстояние между карточками */
+    padding: 20px; /* Увеличиваем отступы */
+  }
+ 
+}
 @media screen and (max-width: 1125px) {
+  .stock-status
+  {
+    padding-left: 25px;
+  }
   .showmoreBtn
   {
     text-align: center !important;
+    margin-top: 15px;
   }
   #filter_mob
   {

@@ -192,7 +192,7 @@ function getOrder()
      
 <div>
       <div className="px-main-page">
-      <BasketModal show={showBasket} handleClose={handleCloseBasket} convertPrice={convertPrice} />
+      <BasketModal show={showBasket} handleClose={handleCloseBasket} convertPrice={convertPrice} selectedCurrency={selectedCurrency} />
 
       {/* <Modal className="h-100 h-custom" id='basket' show={showBasket} onHide={handleCloseBasket}>
         <Modal.Header closeButton>

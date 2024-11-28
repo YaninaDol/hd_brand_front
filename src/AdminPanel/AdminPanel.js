@@ -4,7 +4,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import ProductsTable from './ProductTable';
 import UsersTable from './UserTable';
 import CategorySpecification from './CategorySpecification';
-
+import Orders from './Orders';
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('/admin/products');
 
@@ -51,12 +51,25 @@ const AdminPanel = () => {
             DASHBOARD OF USERS
           </Link>
         </li>
+        <li className="nav-item" role="presentation">
+          <Link
+            className={`nav-link ${activeTab === '/admin/orders' ? 'active' : ''}`}
+            to="/admin/orders"
+            role="tab"
+            aria-controls="ex3-pills-2"
+            aria-selected={activeTab === '/admin/orders'}
+            onClick={() => handleTabClick('/admin/orders')}
+          >
+            DASHBOARD OF ORDERS
+          </Link>
+        </li>
       </ul>
 
       <div className="tab-content" id="ex2-content">
         <Routes>
           <Route path="/products" element={<ProductsTable />} />
           <Route path="/users" element={<UsersTable />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/categoryspec" element={<CategorySpecification />} />
         </Routes>
       </div>

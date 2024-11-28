@@ -220,16 +220,10 @@ width: 200px; height: 350px;
 }
 
 @media (max-width: 1400px) {
-.cardIMG
-{
-  height: 400px;
-}
+
 }
 @media (max-width: 850px) {
-  .cardIMG
-{
-    height: 300px;
-}
+ 
 .description-price,
 .uah89,
   .uah8,
@@ -239,24 +233,14 @@ width: 200px; height: 350px;
 }
 
 @media screen and (max-width: 464px) {
-  #id_img
-{
-width: 150px; height: 200px;
-}
-.cart-item
-{
-width: 150px; height: 280px;
-}
+ 
 /* banner */
 
 
 
 
 
-  .cardIMG
-{
-    height: 200px;
-}
+ 
   .image-elements {
     padding-bottom: var(--padding-190xl);
     box-sizing: border-box;
@@ -270,8 +254,5 @@ width: 150px; height: 280px;
   
 }
 @media (max-width: 280px) {
-  .cardIMG
-{
-    height: 300px;
-}
+ 
 }

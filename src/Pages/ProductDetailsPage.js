@@ -500,7 +500,7 @@ const ProductDetailsPage = () => {
 //   }
 
   return (
-    <div>
+    <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
       
       <Modal show={showModalSpray} onHide={handleCloseModalSpray}>
         <Modal.Header closeButton>
@@ -543,7 +543,7 @@ const ProductDetailsPage = () => {
       </Modal>
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
 
-      <BasketModal show={showM} handleClose={handleCloseM} convertPrice={convertPrice} />
+      <BasketModal show={showM} handleClose={handleCloseM} convertPrice={convertPrice} selectedCurrency={selectedCurrency} />
 
 
 
@@ -655,7 +655,13 @@ const ProductDetailsPage = () => {
   )}
 </Carousel>
      
-<MDBContainer id='container50'>
+<MDBContainer fluid 
+           
+           style={{
+               margin: '0 auto', // Центрируем контейнер
+               padding: '0 5px', // Отступы внутри контейнера
+               maxWidth: '95%', // Контролируем ширину (оставляем отступы слева и справа)
+           }}>
 <MDBRow id='rowmargin50' >
    
 

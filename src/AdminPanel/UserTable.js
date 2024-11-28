@@ -12,7 +12,7 @@ export default function UserTable() {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users);
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [showRemove, setShowRemove] = useState(false);
     const handleCloseRemove = () => setShowRemove(false);
     const handleShowRemove = () => setShowRemove(true);
@@ -26,7 +26,7 @@ export default function UserTable() {
     const [showUp, setShowUp] = useState(false);
     const handleCloseUp = () => setShowUp(false);
     const handleShowUp = () => setShowUp(true);
-
+    const [searchQuery, setSearchQuery] = useState("");
     const [showAddU, setShowAddU] = useState(false);
     const handleCloseAddU = () => setShowAddU(false);
     const handleShowAddU = () => setShowAddU(true);
@@ -41,53 +41,29 @@ export default function UserTable() {
     const [userEmailAddA, setUserEmailAddA] = useState('');
     const [userPasswordAddA, setUserPasswordAddA] = useState('');
 
-    const [orders, setOrders] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filteredOrders, setFilteredOrders] = useState([]);
+  
+   
 
     useEffect(() => {
-        axios({
-            method: 'get',
-            url: `${API_BASE_URL}/api/Authenticate/getOrders`,
-            headers: {
-                'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken")
-            }
-        })
-            .then(resp => {
-                console.log(resp);
-                setOrders(resp.data);
-                setFilteredOrders(resp.data);
-            })
-            .catch(error => console.error('Error fetching users:', error));
-
         axios({
             method: 'get',
             url: `${API_BASE_URL}/api/Authenticate/getAllUserInfos`,
             headers: {
-                'Accept': 'text/plain', 'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken")
-            }
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + window.sessionStorage.getItem("AccessToken"),
+            },
         })
-            .then(response => dispatch(setUsers(response.data)))
-            .catch(error => console.error('Error fetching users:', error));
-    }, [dispatch]);
+            .then(response => {
+                dispatch(setUsers(response.data)); // Устанавливаем пользователей в глобальное состояние
+                setFilteredUsers(response.data); // Устанавливаем отфильтрованных пользователей
+            })
+            .catch(error => {
+                console.error('Error fetching users:', error);
+            });
+    }, [API_BASE_URL, dispatch]); // API_BASE_URL можно оставить в зависимостях
 
-    useEffect(() => {
-        setFilteredOrders(
-            orders.filter(order =>
-                order.surname.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-        );
-    }, [searchQuery, orders]);
-function search(id)
-{
-  setFilteredOrders(
-    orders.filter(order =>
-        order.userId==id
-    )
-);
-}
+    
+
     function removebtn(id) {
         setIdRemove(id);
         handleShowRemove();
@@ -183,7 +159,7 @@ function search(id)
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
             }).then(res => {
                 alert("Успішно зареєстровано!");
-                console.log(res.data);
+             
                 window.location.reload();
             }).catch(error => {
                 if (error.response) {
@@ -237,6 +213,13 @@ function search(id)
             alert("Not correct email!");
         }
     }
+    useEffect(() => {
+        setFilteredUsers(
+            users.filter(item =>
+                item.email.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+        );
+    }, [searchQuery,filteredUsers]);
 
     return (
         <div>
@@ -332,8 +315,16 @@ function search(id)
                     REGISTER MENAGER
                 </Button>
             </div>
+           
 
+            
             <h1 style={{ textAlign: 'center', alignItems: 'center' }}>TABLE OF USERS</h1>
+            <p> <input
+                type="text"
+                placeholder="Пошук за поштою "
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            /></p>
             <MDBTable>
                 <MDBTableHead dark>
                     <tr>
@@ -349,42 +340,12 @@ function search(id)
                 </MDBTableHead>
                 <MDBTableBody>
                     {
-                        users.map((x) => <UserTableItem  search={search} key={x.userId} id={x.userId} unic={x.userId} name={x.name} surname={x.surname} phonenumber={x.phonenumber} email={x.email} remove={removebtn} update={updatebtn} />)
+                        filteredUsers.map((x) => <UserTableItem   key={x.userId} id={x.userId} unic={x.userId} name={x.name} surname={x.surname} phonenumber={x.phonenumber} email={x.email} remove={removebtn} update={updatebtn} />)
                     }
                 </MDBTableBody>
             </MDBTable>
 
-            <h1 style={{ textAlign: 'center', alignItems: 'center' }}>ORDERS</h1>
-            <p> <input
-                type="text"
-                placeholder="Пошук за прізвищем "
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            /></p>
-           {/* <p> <MDBBtn color='dark' onClick={resetFilter}>Скинути фільтри</MDBBtn></p> */}
-            <MDBTable>
-                <MDBTableHead dark>
-                    <tr>
-                        <th scope='col'></th>
-                        <th scope='col'>#</th>
-                        <th scope='col'>Номер заявки</th>
-                        <th scope='col'>User Id</th>
-                        <th scope='col'>Ім'я</th>
-                        <th scope='col'>Прізвище</th>
-                        <th scope='col'>Телефон</th>
-                        <th scope='col'>Доставка</th>
-                        <th scope='col'>Адреса</th>
-                        <th scope='col'>Сума</th>
-                        <th scope='col'>Статус</th>
-                        <th scope='col'>Замовлення</th>
-                    </tr>
-                </MDBTableHead>
-                <MDBTableBody>
-                    {
-                        filteredOrders.map((x) => <OrderTableItem key={x.id} CrmId={x.crmId} userId={x.userId} unic={x.id} name={x.name} surname={x.surname} phoneNumber={x.phone} delivery={x.delivery} address={x.address} total={x.total} status={x.payment} items={x.orderItems} />)
-                    }
-                </MDBTableBody>
-            </MDBTable>
+      
 
            
         </div>

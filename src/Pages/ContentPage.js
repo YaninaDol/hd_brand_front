@@ -222,9 +222,9 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
 
 
   return (
-    <div >
+    <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
       <section className="h-100 h-custom" >
-      <div className="stock-status">
+      <div className="stock-status" >
       <Link to="/"><div className="div33">{t('home')} </div></Link>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
@@ -233,14 +233,14 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
 </div>
 <MDBContainer className="py-5 h-100">
 <MDBRow > 
-<MDBCol  style={{marginLeft:25}}><h2 className="h25">{page}</h2></MDBCol>
+<MDBCol  style={{marginLeft:15}}><h2 className="h25">{page}</h2></MDBCol>
 <MDBCol style={{marginRight:35}}>  <p  onClick={handleShowSidebar}  id='filter_mob' style={{marginTop:35,textDecoration:'underline',position:'relative'}}  className="text-end">{t('filters')}</p>  </MDBCol>
    
         
        </MDBRow>
        
 
-  <MDBRow className="justify-content-left align-items-left h-100">
+  <MDBRow >
     
  
                  
@@ -589,7 +589,9 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
 
             <MDBCol hidden={allhidden} className="containerCart">
         {loading ? (
+          <div className="spinner-container">
           <MDBSpinner big />
+          </div>
         ) : items.length > 0 ? (
           items.slice(0, visibleItems).map((x) => (
             <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
@@ -614,7 +616,9 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       </MDBCol>
       <MDBCol hidden={filteredhidden} className="containerCart">
         {loading ? (
+           <div className="spinner-container">
           <MDBSpinner big />
+          </div>
         ) : filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleItems).map((x) => (
             <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>

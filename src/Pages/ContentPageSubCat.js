@@ -198,7 +198,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       
 <MDBContainer className="py-5 h-100">
 <MDBRow > 
-<MDBCol  style={{marginLeft:25}}><h2 className="h25">{page}</h2></MDBCol>
+<MDBCol  style={{marginLeft:5}}><h2 className="h25">{page}</h2></MDBCol>
 <MDBCol style={{marginRight:35}}>  <p  onClick={handleShowSidebar}  id='filter_mob' style={{marginTop:35,textDecoration:'underline',position:'relative'}}  className="text-end">{t('filters')}</p>  </MDBCol>
    
         
@@ -488,7 +488,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
 
             <MDBCol hidden={allhidden} className="containerCart">
         {loading ? (
-          <MDBSpinner big />
+         <div className="spinner-container">
+         <MDBSpinner big />
+         </div>
         ) : items.length > 0 ? (
           items.slice(0, visibleItems).map((x) => (
             <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
@@ -513,7 +515,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
       </MDBCol>
       <MDBCol hidden={filteredhidden} className="containerCart">
         {loading ? (
+           <div className="spinner-container">
           <MDBSpinner big />
+          </div>
         ) : filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleItems).map((x) => (
             <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
