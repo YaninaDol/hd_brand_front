@@ -1240,6 +1240,8 @@ else
 </MDBRow> </MDBCol>
  </MDBRow>
 
+
+ 
   <MDBRow style={{marginTop:'15px'}}>
     {proceed===true?( <div > <div style={{display:'none'}}  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
     {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
