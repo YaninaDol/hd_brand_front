@@ -95,7 +95,7 @@ const convertPrice = (price, currency) => {
     <p>1.2. Goods or Services – the subject matter of the agreement between the parties, which has been selected by the buyer on the website of the Internet store and placed in the cart, or already purchased by the Buyer from the Seller remotely.</p>
     <p>1.3. Internet store – the Seller's website at https://hdbrand.com.ua/ created for the conclusion of contracts for retail and wholesale sale and purchase based on the Buyer's acquaintance with the Seller's proposed description of the Goods through the Internet.</p>
     <p>1.4. Buyer – a capable natural person who has reached the age of 18, receives information from the Seller, places an order for the purchase of goods presented on the website of the Internet store for purposes not related to entrepreneurial activity, or a legal entity or individual entrepreneur.</p>
-    <p>1.5. Seller – Individual entrepreneur "Kravets Natalia Anatolyivna" Address: 49019, Dnipro City , 13 Recordny lane, Tel. (+380) 97 974 01 85 r/r UA833052990000026004050640334, PJSC KB "PrivatBank", Dnipro City, EDRPOU 2976418205 Bank code 305299 EDRPOU of the bank 14360570 The payer of a single tax-2 group, not a VAT payer.</p>
+    <p>1.5. Seller – Individual entrepreneur "Honcharenko Yaroslav Oleksandrovych" Address: 49000, Dnipro City Korobova Street, Building 8 Tel. (+380) 63 722 39 20 r/r UA953052990000026002050592268, PJSC KB "PrivatBank", Dnipro City, EDRPOU 3264604374 Bank code 305299 EDRPOU of the bank 14360570 The payer of a single tax-2 group, not a VAT payer.</p>
 
     <h2>2. Subject Matter of the Agreement</h2>
     <p>2.1. The Seller undertakes to transfer the Goods to the ownership of the Buyer, and the Buyer undertakes to pay for and accept the Goods on the terms of this Agreement.</p>
@@ -169,12 +169,12 @@ const convertPrice = (price, currency) => {
 <p></p>
 <h7>SELLER'S ADDRESS AND DETAILS:</h7>
 <p>
-Individual Entrepreneur "Kravets Natalia Anatolyivna"<br/>
-Address: 49019, Dnipro City, 13 Recordny lane<br/>
-Tel. (+380) 97 974 01 85 <br/>
-r/r UA833052990000026004050640334, <br/>
+Individual Entrepreneur "Honcharenko Yaroslav Oleksandrovych"<br/>
+Address: 49000, Dnipro City, Korobova Street, Building 8<br/>
+Tel. (+380)63 722 39 20<br/>
+r/r UA953052990000026002050592268, <br/>
 PJSC KB "PrivatBank", Dnipro City, <br/>
-EDRPOU 2976418205 <br/>
+EDRPOU 3264604374 <br/>
 Bank code 305299 <br/>
 EDRPOU of the bank 14360570 <br/>
 Payer of a single tax - 2 group,<br/>
@@ -191,17 +191,7 @@ not a VAT payer.
    <p>1.2. Товар або Послуга – об'єкт угоди сторін, який був обраний покупцем на сайті Інтернет-магазину та поміщений у кошик, або вже придбаний Покупцем у Продавця дистанційним способом.</p>
    <p>1.3. Інтернет-магазин – сайт Продавця за адресою https://hdbrand.com.ua/ створений для укладення договорів роздрібної та оптової купівлі-продажу на підставі ознайомлення Покупця із запропонованим Продавцем описом Товару за допомогою мережі Інтернет.</p>
    <p>1.4. Покупець – дієздатна фізична особа, яка досягла 18 років, отримує інформацію від Продавця, розміщує замовлення щодо купівлі товару, що представлений на сайті Інтернет-магазину для цілей, що не пов'язані зі здійсненням підприємницької діяльності, або юридична особа чи фізична особа-підприємець.</p>
-   <p>1.5. Продавець – ФОП "Кравець Наталія Анатоліївна" 
-Адреса: 49019, м. Дніпро, провулок Рекордний 13 ,
-Тел.(+380) 97 974 01 85 ,
-Р/p IBAN: UA833052990000026004050640334 ,
-Код отримувача: 2976418205 ,
-Назва банку: АТ КБ «ПриватБанк», м. Дніпро, 
-Код банку 305299 , 
-ЄДРПОУ банку 14360570 .
-
-Платник єдиного податку-2 група,
-не є платником ПДВ.</p>
+   <p>1.5. Продавець – ФОП «Гончаренко Ярослав Олександрович» Адреса: 49000, м. Дніпро Вулиця Коробова , буд.8 Тел.(+380)63 722 39 20 р/р UA953052990000026002050592268, АТ КБ «Приватбанк» , м. Дніпро, ЄДРПОУ 3264604374 Код банку 305299 ЄДРПОУ банку 14360570 Платник єдиного податку-2 група, не є платником ПДВ.</p>
 
     <h2>2. Предмет Договору</h2>
     <p>2.1. Продавець зобов’язується передати у власність Покупцю Товар, а Покупець зобов’язується оплатити і прийняти Товар на умовах цього Договору.</p>
@@ -283,15 +273,15 @@ not a VAT payer.
 <p></p>
 <h7>АДРЕСА ТА РЕКВІЗИТИ ПРОДАВЦЯ: </h7>
 <p>
-ФОП "Кравець Наталія Анатоліївна" <br/>
-Адреса: 49019, м. Дніпро, провулок Рекордний, 13 <br/>
-Тел.(+380) 97 974 01 85 <br/>
-Р/p IBAN: UA833052990000026004050640334 <br/>
-Код отримувача: 2976418205 <br/>
-Назва банку: АТ КБ «ПриватБанк», м. Дніпро, <br/>
+ФОП «Гончаренко Ярослав Олександрович»<br/>
+Адреса: 49000, м. Дніпро <br/>
+Вулиця Коробова , буд.8 <br/>
+Тел.(+380)63 722 39 20 <br/>
+р/р UA953052990000026002050592268, <br/>
+АТ КБ  «Приватбанк» , м. Дніпро, <br/>
+ЄДРПОУ 3264604374 <br/>
 Код банку 305299 <br/>
 ЄДРПОУ банку 14360570 <br/>
-
 Платник єдиного податку-2 група,<br/>
 не є платником ПДВ.
 

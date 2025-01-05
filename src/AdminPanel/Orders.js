@@ -1,8 +1,8 @@
-import { MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import { MDBTable, MDBTableHead, MDBTableBody,MDBPagination,MDBPaginationItem,MDBPaginationLink } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderTableItem from './OrderTableItem';
-
+import {  Pagination} from 'react-bootstrap';
 export default function Orders() {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const [orders, setOrders] = useState([]);
@@ -27,7 +27,31 @@ export default function Orders() {
                 console.error('Error fetching orders:', error);
             });
     }, []);
+    const [currentPage, setCurrentPage] = useState(1); // Текущая страница
+    const [itemsPerPage] = useState(10); // Количество элементов на странице
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
 
+    // Функция для смены страницы
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    // Количество страниц
+    const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+    const pageRange = 5;  // Количество отображаемых страниц рядом с текущей
+    let startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
+    let endPage = Math.min(totalPages, currentPage + Math.floor(pageRange / 2));
+
+    // Корректируем диапазон, если он выходит за пределы
+    if (endPage - startPage < pageRange - 1) {
+        if (startPage === 1) {
+            endPage = Math.min(totalPages, startPage + pageRange - 1);
+        } else {
+            startPage = Math.max(1, endPage - pageRange + 1);
+        }
+    }
     // Filter orders by surname
     useEffect(() => {
         setFilteredOrders(
@@ -85,7 +109,7 @@ export default function Orders() {
                             </tr>
                         </MDBTableHead>
                         <MDBTableBody>
-                            {filteredOrders.map((order) => (
+                            {currentItems.map((order) => (
                                 <OrderTableItem
                                     key={order.id}
                                     CrmId={order.crmId}
@@ -105,6 +129,38 @@ export default function Orders() {
                     </MDBTable>
                 </div>
             )}
+               <div className="d-flex justify-content-end">
+                <Pagination>
+                    <Pagination.First
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1}
+                    />
+                    <Pagination.Prev
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    />
+
+                    {/* Отображение диапазона страниц */}
+                    {[...Array(endPage - startPage + 1)].map((_, index) => (
+                        <Pagination.Item
+                            key={startPage + index}
+                            active={currentPage === startPage + index}
+                            onClick={() => handlePageChange(startPage + index)}
+                        >
+                            {startPage + index}
+                        </Pagination.Item>
+                    ))}
+
+                    <Pagination.Next
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    />
+                    <Pagination.Last
+                        onClick={() => handlePageChange(totalPages)}
+                        disabled={currentPage === totalPages}
+                    />
+                </Pagination>
+            </div>
         </div>
     );
 }

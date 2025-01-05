@@ -254,6 +254,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
         </div>
       </div>
   </div>
+  {(page !== t('sale') && page !== t('instock')) && (
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingTwo">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
@@ -274,15 +275,26 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
           <Form.Check
             type="checkbox"
             name="sorting"
+            id="instockcollection"
+            label={t('instock')}
+            checked={sortCollection === 'isInStock'}
+            onChange={() => handleSortCollection('isInStock')}
+            style={{ marginTop: 15 }}
+          />
+          <Form.Check
+            type="checkbox"
+            name="sorting"
             id="salecollection"
             label={t('discount_items')}
             checked={sortCollection === 'isDiscount'}
             onChange={() => handleSortCollection('isDiscount')}
             style={{ marginTop: 15 }}
           />
+           
       </div>
     </div>
-  </div>
+    
+  </div>)}
 
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingThree">
@@ -609,7 +621,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
         </div>
       </div>
   </div>
-  <div class="accordion-item">
+  {(page !== t('sale') && page !== t('instock')) && (<div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingTwo">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
       {t('collection')}
@@ -626,6 +638,15 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
             onChange={() => handleSortCollection('isNew')}
             style={{ marginTop: 15 }}
           />
+            <Form.Check
+            type="checkbox"
+            name="sorting"
+            id="instockcollection"
+            label={t('instock')}
+            checked={sortCollection === 'isInStock'}
+            onChange={() => handleSortCollection('isInStock')}
+            style={{ marginTop: 15 }}
+          />
           <Form.Check
             type="checkbox"
             name="sorting"
@@ -637,7 +658,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
           />
       </div>
     </div>
-  </div>
+  </div>)}
 
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingThree">

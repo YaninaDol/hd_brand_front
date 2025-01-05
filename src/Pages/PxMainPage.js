@@ -259,7 +259,7 @@ function getOrder()
  
 
 
-             <section className="header-frame">
+             <section className="header-frame ">
              <div className="ticker-wrapper">
     <div className="ticker">
       <div className="ukrainian-brand">Ukrainian brand</div>
@@ -286,7 +286,21 @@ function getOrder()
       
     </div>
   </div>
-        <header className="header" >
+  <div className="snowflakes">
+  
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+    <div className="snowflake"></div>
+   
+  </div>
+        <header className="header " >
+          <div className="snowflakes"></div>
         <div className="header-container">
           <div className="logo-menu-navigation" >
             <Link to='/'>
@@ -382,7 +396,7 @@ function getOrder()
         </div>
         </header>
          <header className="headermob" >
-         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-2">
+         <Navbar style={{flexWrap:'nowrap'}} key={expand} expand={expand} className="bg-body-tertiary mb-2">
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
@@ -505,6 +519,7 @@ function getOrder()
 </div>
 
       </div>
+      <Nav.Link className="item-title" active  href="/instock">{t('instock')}</Nav.Link>
       <Nav.Link className="item-title" active style={{color:'red'}} href="/sale">{t('sale')}</Nav.Link>
                   <Nav.Link className="item-title" active  href="/faq">FAQ</Nav.Link>
                   <div class="accordion-item">

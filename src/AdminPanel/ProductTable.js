@@ -10,7 +10,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { Card, CardGroup, CardImg, Container} from 'react-bootstrap';
+import { Card, CardGroup, Pagination, Container} from 'react-bootstrap';
 export default function ProductTable(){
 
 
@@ -48,6 +48,7 @@ export default function ProductTable(){
     const [AddProductSizes,setAddProductSizes] = useState("");
     const [AddProductColor,setAddProductColor] = useState("");
     const [AddIsNew,setAddAddIsNew] = useState(false);
+    const [AddIsInstock,setAddAddIsInstock] = useState(false);
     const [idToDelete,setIdToDelete]=useState(0);
 
     const [nametoUpdate,setNameToUpdate] = useState("");
@@ -224,6 +225,7 @@ function confirmAdd()
           bodyFormData.append('image2', AddProductImage2);
           bodyFormData.append('image3', AddProductImage3);
           bodyFormData.append('isNew', AddIsNew);
+          bodyFormData.append('isInStock', AddIsInstock);
           bodyFormData.append('video', AddProductVideo);
           bodyFormData.append('subcategoryid', AddProductSubCategory);
           bodyFormData.append('categoryid', AddProductCategory);
@@ -574,7 +576,17 @@ function changeProductVideoContent()
  handleCloseChange();
 
 }
+const [currentPage, setCurrentPage] = useState(0);
+const pageSize = 20;
 
+const filteredProducts = findProductsTable.filter(product =>
+    product.article.toLowerCase().includes(inputSearchTable.toLowerCase())
+);
+
+const displayedProducts = filteredProducts.slice(
+    currentPage * pageSize,
+    (currentPage + 1) * pageSize
+);
     return(
 
         <div>
@@ -829,6 +841,7 @@ function changeProductVideoContent()
       
       
       <MDBRow className='justify-content-center text-center' style={{marginTop:'50px'}}>
+        {/* video
   <MDBCol>
     <Card  style={{width:'400px'}}>
     <video  controls preload="auto">
@@ -838,7 +851,7 @@ function changeProductVideoContent()
       <input onChange={(e)=>{if(e.target.files[0].type === 'video/mp4'){setVideo(e.target.files[0]);alert("Файл обрано!")}else alert('Not correct format mp4')}} className='form-control' type='file' />
       <Button style={{marginTop:'15px'}} onClick={changeVideoContent} variant="dark">Confirm</Button>
     </Card>
-  </MDBCol>
+  </MDBCol> */}
   {/* <MDBCol>
   <Card style={{width:'300px',height:'280px'}}>
       <img src={selectedProductIdImage} style={{height:'335px'}}></img>
@@ -896,6 +909,7 @@ function changeProductVideoContent()
           <th>Ціна</th>
           <th>На сайті</th>
           <th>Колір</th>
+          <th>Сток</th>
           <th>Функції</th>
           <th></th>
 
@@ -1010,6 +1024,13 @@ function changeProductVideoContent()
                 </div>
                 </MDBInputGroup>
            </td>
+           <td>  <MDBCheckbox 
+  label='Наявність' 
+  onChange={(e) => {
+   
+    setAddAddIsInstock(e.target.checked);
+  }} 
+/></td>
 <td><Button   onClick={confirmAdd}  variant='dark'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
   <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z"/>
   <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0"/>
@@ -1017,7 +1038,7 @@ function changeProductVideoContent()
 <td></td>
       </tr>
       {
-        findProductsTable.map((x, index)=> <tr  >
+        displayedProducts.map((x, index)=> <tr  >
                 
         <th scope='row'>{x.id} {x.article}</th>
       
@@ -1164,7 +1185,7 @@ function changeProductVideoContent()
       </MDBInputGroup>
 
         </td>
-
+        <td>   <MDBCheckbox checked={x.isInStock} /></td>
         <td>
           
          <Button variant="dark" onClick={()=>{handleUpdateClick(x.id)}}> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
@@ -1187,6 +1208,18 @@ function changeProductVideoContent()
       }
       </tbody>
     </Table>
+  
+    <Pagination className="justify-content-center" size="sm ">
+    {Array.from({ length: Math.ceil(filteredProducts.length / pageSize) }, (_, i) => (
+        <Pagination.Item
+            key={i}
+            active={i === currentPage}
+            onClick={() => setCurrentPage(i)}
+        >
+            {i + 1}
+        </Pagination.Item>
+    ))}
+</Pagination>
 
         </div>
     );

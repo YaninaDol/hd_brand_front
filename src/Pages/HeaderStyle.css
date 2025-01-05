@@ -1,38 +1,79 @@
-/* .ukrainian-brand,
-.ukrainian-brand1,
-.ukrainian-brand10,
-.ukrainian-brand2,
-.ukrainian-brand3,
-.ukrainian-brand4,
-.ukrainian-brand5,
-.ukrainian-brand6,
-.ukrainian-brand7,
-.ukrainian-brand8,
-.ukrainian-brand9 {
+.ticker-wrapper {
   position: relative;
-  text-transform: uppercase;
-  
-    position: relative;
-    animation: moveAnimation 7s linear infinite;
-  }
+  overflow: hidden;
+}
 
-  @keyframes moveAnimation {
-      0% { left: 0; }
-       50% { left: 200px }
-       100% { left: 100 }
-     }
-.ticker {
-  white-space: nowrap;
-  color:white;
-  align-self: stretch;
-  background-color: var(--typography-black);
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 15px 20px 16px;
-  gap: var(--gap-xl);
-} */
+
+/* Контейнер для снежинок */
+.snowflakes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Растягиваем на всю высоту экрана */
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+.snowflake {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+/* Анимация падения снежинок */
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) scale(0.5);
+  }
+  100% {
+    transform: translateY(100vh) scale(1);
+  }
+}
+
+.snowflake:nth-child(1) {
+  width: 9px;
+  height: 9px;
+  left: 10%;
+  animation-duration: 4s;  /* Увеличена продолжительность */
+  animation-delay: 0s;
+}
+
+.snowflake:nth-child(2) {
+  width: 8px;
+  height: 8px;
+  left: 30%;
+  animation-duration: 5s;  /* Увеличена продолжительность */
+  animation-delay: 1s;
+}
+
+.snowflake:nth-child(3) {
+  width: 6px;
+  height: 6px;
+  left: 50%;
+  animation-duration: 4.5s;  /* Увеличена продолжительность */
+  animation-delay: 2s;
+}
+
+.snowflake:nth-child(4) {
+  width: 9px;
+  height: 9px;
+  left: 70%;
+  animation-duration: 6s;  /* Увеличена продолжительность */
+  animation-delay: 0.5s;
+}
+
+.snowflake:nth-child(5) {
+  width: 4px;
+  height:4px;
+  left: 80%;
+  animation-duration: 5s;  /* Увеличена продолжительность */
+  animation-delay: 3s;
+}
+
 .ticker-wrapper {
   width: 100%;
   overflow: hidden;
@@ -314,5 +355,6 @@
     .headermob
     {
       display:block;
+      
     }
   }

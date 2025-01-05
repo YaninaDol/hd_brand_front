@@ -133,7 +133,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         const collection = sortCollection === '' || (product[sortCollection] && product[sortCollection] === true);
         const colorIncluded = selectedColor === '' || (product.color && product.color === selectedColor);
        
-        if(page === t('sale'))
+        if(page === t('sale')||page === t('instock'))
           {
            
            // const sizesIncluded = selectedSizes.length === 0 || selectedSizes.some(size => product.name.toString().includes(size.toString()));
@@ -289,6 +289,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         </div>
       </div>
   </div>
+  {(page !== t('sale') && page !== t('instock')) && (
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingTwo">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
@@ -309,15 +310,26 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           <Form.Check
             type="checkbox"
             name="sorting"
+            id="instockcollection"
+            label={t('instock')}
+            checked={sortCollection === 'isInStock'}
+            onChange={() => handleSortCollection('isInStock')}
+            style={{ marginTop: 15 }}
+          />
+          <Form.Check
+            type="checkbox"
+            name="sorting"
             id="salecollection"
             label={t('discount_items')}
             checked={sortCollection === 'isDiscount'}
             onChange={() => handleSortCollection('isDiscount')}
             style={{ marginTop: 15 }}
           />
+           
       </div>
     </div>
-  </div>
+    
+  </div>)}
 
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingThree">
@@ -427,7 +439,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   </div>)}
 
 
-  {page === t('sale') && (
+  {(page === t('sale') || page === t('instock')) && (
   <div className="accordion-item">
     <h2 className="accordion-header" id="flush-headingSize">
       <button
@@ -710,7 +722,8 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         </div>
       </div>
   </div>
-  <div class="accordion-item">
+  
+  {(page !== t('sale') && page !== t('instock')) && (<div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingTwo">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
       {t('collection')}
@@ -727,6 +740,15 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
             onChange={() => handleSortCollection('isNew')}
             style={{ marginTop: 15 }}
           />
+            <Form.Check
+            type="checkbox"
+            name="sorting"
+            id="instockcollection"
+            label={t('instock')}
+            checked={sortCollection === 'isInStock'}
+            onChange={() => handleSortCollection('isInStock')}
+            style={{ marginTop: 15 }}
+          />
           <Form.Check
             type="checkbox"
             name="sorting"
@@ -738,7 +760,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           />
       </div>
     </div>
-  </div>
+  </div>)}
 
   <div class="accordion-item">
     <h2 class="accordion-header" id="flush-headingThree">
@@ -848,7 +870,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
     </div>
   </div>
   )}
-    {page === t('sale') && (
+    {(page === t('sale')||page === t('instock')) && (
   <div className="accordion-item">
     <h2 className="accordion-header" id="flush-headingSize">
       <button

@@ -294,7 +294,7 @@ const ProductDetailsPage = () => {
   }, [id, subcategoryid, dispatch]);
 
   useEffect(() => {
-    if (product.isDiscount && productsizes.length > 0) {
+    if ((product.isDiscount||product.isInStock) && productsizes.length > 0) {
       var prod=productsizes[0];
      prod.size='';
       setNewProd(prod);
@@ -305,7 +305,7 @@ const ProductDetailsPage = () => {
     
     //    setNewProd(prod);
     //   };
-  }, [product.isDiscount, productsizes]);
+  }, [product.isDiscount,product.isInStock, productsizes]);
 
 
   // const fetchExchangeRates = async () => {
@@ -436,7 +436,7 @@ const ProductDetailsPage = () => {
       item.id === 5865
     );
 
-    if (product.isDiscount) {
+    if (product.isDiscount||product.isInStock) {
       if (existingItem) {
         alert('Товар вже доданий до кошика');
       } else {
@@ -772,7 +772,7 @@ const ProductDetailsPage = () => {
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('type')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}  </MDBCol> </MDBRow>
                 <MDBRow style={{marginTop:'5px'}}><MDBCol> {t('material')}: </MDBCol> <MDBCol className='text-end'>{i18n.language === 'en' ? material.nameEng : material.name}   </MDBCol> </MDBRow>
           
-                {!product.isDiscount && (
+                {(!product.isDiscount &&!product.isInStock)&& (
   <MDBRow style={{marginTop:'55px'}}>
     <div>
      <MDBCol>
@@ -798,7 +798,7 @@ const ProductDetailsPage = () => {
     
   </MDBRow>)}
 
-  {!product.isDiscount && ( <MDBRow className='text-start'  style={{marginTop:'55px'}}>
+  {(!product.isDiscount &&!product.isInStock) && ( <MDBRow className='text-start'  style={{marginTop:'55px'}}>
     {product.seasonid === variant_season && (
   <div>
     <label htmlFor="insulatorSeason"> {t('insulator')}:  </label>

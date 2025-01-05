@@ -17,9 +17,15 @@ import LiqPaY from 'liqpayservice';
 import {
  
   MDBContainer,
+  MDBBtn,
   MDBCol,
   MDBRow,
-  MDBRange 
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody
 } from 'mdb-react-ui-kit';
 import CardBox from "../Components/CardBox";
 import { version } from "process";
@@ -324,18 +330,7 @@ const [paymentData, setPaymentData] = useState({
 
    
 async function fetchCountries() {
-  // try {
-  //   const response = await axios.get('https://restcountries.com/v2/all');
-  //   return response.data.map(country => ({
-  //     label:country.name,
-  //     name: country.name,
-  //     value: country.name,
-  //     alpha3Code: country.alpha3Code,
-  //   }));
-  // } catch (error) {
-  //   console.error('Error fetching countries:', error.message);
-  //   return [];
-  // }
+ 
   try {
     const response = await axios.get('https://rest-countries10.p.rapidapi.com/countries', {
       headers: {
@@ -862,11 +857,25 @@ else
       console.error('Payment creation failed:', result);
   }
 }
+const [basicModal, setBasicModal] = useState(true);
+
 
 
 
   return (
     <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
+  <MDBModal open={basicModal}  onClose={() => setBasicModal(false)} tabIndex='-1'>
+        <MDBModalDialog className="modal-dialog-centered">
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>{i18n.language === 'en' ? 'Notification' : 'Зверніть увагу !'}</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={() => setBasicModal(false)}></MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody>{i18n.language === 'en' ? 'Due to the production holidays, custom-made shoes will be shipped from January 17 to January 20, 2025.' : 'У зв’язку з канікулами на виробництві, взуття під замовлення буде відправлене з 17 по 20 січня 2025 року .'}</MDBModalBody>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
     
       <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
@@ -1030,20 +1039,7 @@ else
       )}
 
   {typeDelivery === '3' && (
-        // <Select
-        //   className="custom-select-lg"
-        //   onChange={(e)=> setSelectedDepartament(e.value)}
-        //   options={warehouseDescriptions}
-        //   isSearchable
-        //   placeholder="Оберіть відділення"
-        //   styles={{
-        //     control: (provided) => ({
-        //       ...provided,
-        //       borderRadius: '0%',
-        //       height: '40px',
-        //     }),
-        //   }}
-        // />
+       
         <Form.Control
           size="lg"
        type="text"
@@ -1175,7 +1171,7 @@ else
             onChange={() => handleCheckboxChange('liqpay')}
             label={t('full') }
           />
-      {/* <p style={{fontStyle:'oblique',fontSize:'13px',marginLeft:'5px'}}>  {t('credit') }  </p> */}
+      <p style={{fontStyle:'oblique',fontSize:'13px',marginLeft:'5px'}}>  {t('credit') }  </p>
        
             
 
@@ -1195,27 +1191,6 @@ else
              
       <div className="showtotal">
 
-      
-  <MDBRow>
-  {/* <MDBCol>Всього </MDBCol>
-  <MDBCol className="text-end"><h5>{convertPrice(total,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
-  </MDBRow>
-  {discount>0 && (
-  <MDBRow>
-  <MDBCol>Знижка {discount}%</MDBCol>
-  <MDBCol className="text-end"><h5>{convertPrice(total*(discount/100),selectedCurrency)} {selectedCurrency}</h5></MDBCol>
-  </MDBRow>)}
- 
-  <MDBRow>
-  
-  <MDBCol>Доставка </MDBCol>
-  {activeTab!='longer-tab' ? (
-  <MDBCol className="text-end"><h5>{convertPrice(shipment,selectedCurrency)} {selectedCurrency}</h5></MDBCol>
-  ): (
-    <MDBCol className="text-end"><a style={{color:'black',textDecoration:'underline'}} href="https://novaposhta.ua/basic_tariffs">По тарифам перевізника </a></MDBCol>
-    )
-  } */}
-  </MDBRow>
 
   
   <hr className="my-4 " />
@@ -1241,9 +1216,10 @@ else
  </MDBRow>
 
 
- 
   <MDBRow style={{marginTop:'15px'}}>
-    {proceed===true?( <div > <div style={{display:'none'}}  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
+
+  {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
+
     {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
   <span className="text-start" style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay by Card, ApplePay, GooglePay' : 'Оплата карткою, ApplePay, GooglePay'}</span>
   <img width={90} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
@@ -1333,12 +1309,12 @@ else
   )}
 </MDBRow> </MDBCol>
  </MDBRow>
- 
 
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
-    {proceed===true ?( <div > <div style={{display:'none'}} dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
-    {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
-  <span style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay with' : 'Оплата карткою, ApplePay, GooglePay'}</span>
+   
+  {proceed===true ?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
+  {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
+  <span style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay by Card, ApplePay, GooglePay' : 'Оплата карткою, ApplePay, GooglePay'}</span>
   <img width={110} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
 </Button></div>
 )}

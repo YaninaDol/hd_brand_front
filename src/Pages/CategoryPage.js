@@ -54,6 +54,8 @@ function generatePath(categoryName) {
       return 3;
       case 'sale':
         return 4;
+      case 'instock':
+          return 5;
     default:
       return 'unknown';
   }
@@ -69,6 +71,8 @@ function generatePathName(categoryName) {
       return t('accessorise');
       case 'sale':
         return t('sale');
+      case 'instock':
+          return t('instock');
     default:
       return 'unknown';
   }
