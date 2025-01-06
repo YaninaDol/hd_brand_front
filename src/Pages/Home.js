@@ -288,8 +288,8 @@ const Home = () => {
         playsInline
       
       >
-        {/* <source src='https://hdbrandblob.blob.core.windows.net/storage/videoContent.MP4' type="video/mp4" /> */}
-        <source src={require('../assets/videoContent.MP4')} type="video/mp4" />
+        <source src='https://hdbrandblob.blob.core.windows.net/storage/videoContent.MP4' type="video/mp4" />
+       
         Your browser does not support the video tag.
       </video>
     </div>
