@@ -44,21 +44,89 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   const handleRangeChange = (values) => {
     setRangeValues(values);
   };
+
+
+  const [filters, setFilters] = useState({
+    selectedTypes: [],
+    selectedMaterials: [],
+    selectedSeasons: [],
+    selectedSizes: [],
+    selectedColor: '',
+    rangeValues: [0, 10000],
+    sortOrder: '',
+    sortCollection: '',
+  });
+  useEffect(() => {
+   
+    const savedFilters = JSON.parse(localStorage.getItem('filters')) || {};
+    setSelectedTypes(savedFilters.selectedTypes || []);
+    setSelectedMaterials(savedFilters.selectedMaterials || []);
+    setSelectedSeasons(savedFilters.selectedSeasons || []);
+    setSelectedSizes(savedFilters.selectedSizes || []);
+    setSelectedColor(savedFilters.selectedColor || '');
+    setRangeValues(savedFilters.rangeValues || [0, 10000]);
+    setSortOrder(savedFilters.sortOrder || '');
+    setSortCollection(savedFilters.sortCollection || '');
+
+
+
+    setFilters({
+      selectedTypes: savedFilters.selectedTypes || [],
+      selectedMaterials: savedFilters.selectedMaterials || [],
+      selectedSeasons: savedFilters.selectedSeasons || [],
+      selectedSizes: savedFilters.selectedSizes || [],
+      selectedColor: savedFilters.selectedColor || '',
+      rangeValues: savedFilters.rangeValues || [0, 10000],
+      sortOrder: savedFilters.sortOrder || '',
+      sortCollection: savedFilters.sortCollection || '',
+    });
+  }, []);
+useEffect(() => {
+    const filtersToSave = { ...filters }; // Копируем объект фильтров для сохранения
+    localStorage.setItem('filters', JSON.stringify(filtersToSave));
+  }, [filters]); // Сохраняем весь объект фильтров, когда он меняется
+
+  useEffect(() => {
+    const filtersToSave = {
+      selectedTypes,
+      selectedMaterials,
+      selectedSeasons,
+      selectedSizes,
+      selectedColor,
+      rangeValues,
+      sortOrder,
+      sortCollection
+    };
+    localStorage.setItem('filters', JSON.stringify(filtersToSave));
+  }, [
+    selectedTypes,
+    selectedMaterials,
+    selectedSeasons,
+    selectedSizes,
+    selectedColor,
+    rangeValues,
+    sortOrder,
+    sortCollection
+  ]);
+
+
+ 
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    
-  applyFilters();
+    applyFilters();
+
     setTimeout(() => {
       setLoading(false);
     }, 2000);
 
-}, [items,sortOrder]);
+}, [items]);
 
 
-  const handleCheckboxChange = (event, type) => {
-    const { value, checked } = event.target;
-    const numericValue = parseInt(value, 10);
-  
+const handleCheckboxChange = (event, type) => {
+  const { value, checked } = event.target;
+  const numericValue = parseInt(value, 10);
+
     if (type === 'type') {
       setSelectedTypes((prev) => {
         return checked ? [...prev, numericValue] : prev.filter((item) => item !== numericValue);
@@ -69,9 +137,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           ? [...prev, numericValue]
           : prev.filter((item) => item !== numericValue);
       });
-      // setSelectedMaterials((prev) => {
-      //   return checked ? [...prev, value] : prev.filter((item) => item !== value);
-      // });
+      
     } else if (type === 'season') {
     
       setSelectedSeasons((prev) => {
@@ -82,40 +148,12 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
       setSelectedSizes((prev) => {
         return checked ? [...prev, numericValue] : prev.filter((item) => item !== numericValue);
       });
-      // setSelectedSizes((prev) => {
-      //   return checked ? [...prev, value] : prev.filter((item) => item !== value);
-      // });
+     
     }
-  };
+};
 
   const handleSort = (order) => {
     setSortOrder(order);
-  
-    // let sortedProducts;
-    // if (filteredProducts.length > 0) {
-       
-    //     sortedProducts = [...filteredProducts].sort((a, b) => {
-    //         if (order === 'asc') {
-    //             return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
-    //         } else {
-    //             return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
-    //         }
-    //     });
-    // } else {
-      
-    //     sortedProducts = [...items].sort((a, b) => {
-    //         if (order === 'asc') {
-    //           return convertPrice(a.salePrice,selectedCurrency) - convertPrice(b.salePrice,selectedCurrency);
-    //         } else {
-    //             return convertPrice(b.salePrice,selectedCurrency) - convertPrice(a.salePrice,selectedCurrency);
-    //         }
-    //     });
-    // }
-
-    
-    // setfilteredProducts(sortedProducts);
-    // setAllHidden('hidden');
-    // setFilteredHidden('');
 };
 
   const handleSortCollection = (order) => {
@@ -125,7 +163,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
   };
 
   const applyFilters = () => {
- 
+   
     const filteredProducts1 = items.filter((product) => {
         const typeIncluded = selectedTypes.length === 0 || (product.subCategoryid && selectedTypes.includes(parseInt(product.subCategoryid, 10)));
         const materialIncluded = selectedMaterials.length === 0 || (product.materialid && selectedMaterials.includes(product.materialid));
@@ -136,7 +174,6 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
         if(page === t('sale')||page === t('instock'))
           {
            
-           // const sizesIncluded = selectedSizes.length === 0 || selectedSizes.some(size => product.name.toString().includes(size.toString()));
            const sizesIncluded =
            selectedSizes.length === 0 ||
            selectedSizes.some((size) => {
@@ -606,8 +643,9 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           </div>
         ) : items.length > 0 ? (
           items.slice(0, visibleItems).map((x) => (
-            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+            <div>
               <CartProduct
+               link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}
                 id_key={x.id}
                 imageSrc1={x.image}
                 imageSrc2={x.image2}
@@ -620,7 +658,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
                 currency={selectedCurrency}
                 price2={convertPrice(x.salePrice, selectedCurrency)}
               />
-            </Link>
+            </div>
           ))
         ) : (
           <div>{t('no_items')}</div>
@@ -633,8 +671,9 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
           </div>
         ) : filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleItems).map((x) => (
-            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+            <div>
               <CartProduct
+              link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}
                 id_key={x.id}
                 imageSrc1={x.image}
                 imageSrc2={x.image2}
@@ -647,7 +686,7 @@ const ContentPage = ({ items,page,link,materials,types,selectedCurrency,convertP
                 currency={selectedCurrency}
                 price2={convertPrice(x.salePrice, selectedCurrency)}
               />
-            </Link>
+            </div>
           ))
         ) : (
           <div>{t('no_items')}</div>

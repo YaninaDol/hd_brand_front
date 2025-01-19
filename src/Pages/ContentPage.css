@@ -1405,10 +1405,12 @@
 }
 .containerCart {
   display: grid;
-  gap: 15px; /* Отступы между карточками */
+  gap: 5px; /* Отступы между карточками */
   grid-template-columns: repeat(2, 1fr); /* Две карточки в строку */
   margin: 0; /* Убираем внешние отступы контейнера */
   padding: 0; /* Убираем внутренние отступы контейнера */
+  padding-right: 5px;
+  padding-left: 5px;
   width: 100%; /* Занимает всю ширину родителя */
 }
 @media (min-width: 1024px) {

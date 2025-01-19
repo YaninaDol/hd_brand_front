@@ -36,17 +36,83 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   const [selectedColor, setSelectedColor] = useState('');
   const [rangeValues, setRangeValues] = useState([0, 10000]);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-
+ const [selectedSizes, setSelectedSizes] = useState([]);
   const handleCloseSidebar = () => setShowOffcanvas(false);
   const handleShowSidebar = () => setShowOffcanvas(true);
 
+
+  const [filters, setFilters] = useState({
+    selectedTypes: [],
+    selectedMaterials: [],
+    selectedSeasons: [],
+    selectedSizes: [],
+    selectedColor: '',
+    rangeValues: [0, 10000],
+    sortOrder: '',
+    sortCollection: '',
+  });
+  useEffect(() => {
+   
+    const savedFilters = JSON.parse(localStorage.getItem('filters')) || {};
+    setSelectedTypes(savedFilters.selectedTypes || []);
+    setSelectedMaterials(savedFilters.selectedMaterials || []);
+    setSelectedSeasons(savedFilters.selectedSeasons || []);
+    setSelectedSizes(savedFilters.selectedSizes || []);
+    setSelectedColor(savedFilters.selectedColor || '');
+    setRangeValues(savedFilters.rangeValues || [0, 10000]);
+    setSortOrder(savedFilters.sortOrder || '');
+    setSortCollection(savedFilters.sortCollection || '');
+
+
+
+    setFilters({
+      selectedTypes: savedFilters.selectedTypes || [],
+      selectedMaterials: savedFilters.selectedMaterials || [],
+      selectedSeasons: savedFilters.selectedSeasons || [],
+      selectedSizes: savedFilters.selectedSizes || [],
+      selectedColor: savedFilters.selectedColor || '',
+      rangeValues: savedFilters.rangeValues || [0, 10000],
+      sortOrder: savedFilters.sortOrder || '',
+      sortCollection: savedFilters.sortCollection || '',
+    });
+  }, []);
+useEffect(() => {
+    const filtersToSave = { ...filters }; // Копируем объект фильтров для сохранения
+    localStorage.setItem('filters', JSON.stringify(filtersToSave));
+  }, [filters]); // Сохраняем весь объект фильтров, когда он меняется
+
+  useEffect(() => {
+    const filtersToSave = {
+      selectedTypes,
+      selectedMaterials,
+      selectedSeasons,
+      selectedSizes,
+      selectedColor,
+      rangeValues,
+      sortOrder,
+      sortCollection
+    };
+    localStorage.setItem('filters', JSON.stringify(filtersToSave));
+  }, [
+    selectedTypes,
+    selectedMaterials,
+    selectedSeasons,
+    selectedSizes,
+    selectedColor,
+    rangeValues,
+    sortOrder,
+    sortCollection
+  ]);
+
+
+ 
 
   useEffect(() => {
     applyFilters();
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-  }, [items,sortOrder]);
+  }, [items]);
 
 
   const handleRangeChange = (values) => {
@@ -505,8 +571,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
          </div>
         ) : items.length > 0 ? (
           items.slice(0, visibleItems).map((x) => (
-            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+            <div>
               <CartProduct
+               link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}
                 id_key={x.id}
                 imageSrc1={x.image}
                 imageSrc2={x.image2}
@@ -519,7 +586,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
                 currency={selectedCurrency}
                 price2={convertPrice(x.salePrice, selectedCurrency)}
               />
-            </Link>
+            </div>
           ))
         ) : (
           <div>{t('no_items')}</div>
@@ -532,8 +599,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
           </div>
         ) : filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleItems).map((x) => (
-            <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}>
+            <div>
               <CartProduct
+              link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}
                 id_key={x.id}
                 imageSrc1={x.image}
                 imageSrc2={x.image2}
@@ -546,7 +614,8 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
                 currency={selectedCurrency}
                 price2={convertPrice(x.salePrice, selectedCurrency)}
               />
-            </Link>
+              </div>
+            
           ))
         ) : (
           <div>{t('no_items')}</div>

@@ -4,8 +4,8 @@ import './NewProductCardItem.css';
 import "./DiscountItem.css";
 import axios from 'axios';
 import { MDBCarousel, MDBCarouselItem } from 'mdb-react-ui-kit';
-
-const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, isNew, isDiscount, isLiked, descriprion, price1, price2 }) => {
+import { Link} from "react-router-dom";
+const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, isNew, isDiscount, isLiked, descriprion, price1, price2,link }) => {
   const [isFavourite, setIsFavourite] = useState(isLiked);
   const [isLoading, setIsLoading] = useState(true);
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -64,11 +64,13 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
         <MDBCarousel>
   {imageSrc1 && (
     <MDBCarouselItem itemId={1}>
+       <Link to={link}>
       <Card.Img
         variant="top"
         style={{ objectFit: 'cover', border: 'none',aspectRatio:'3/4',position:'relative' }}
          src={imageSrc1}
       />
+      </Link>
     </MDBCarouselItem>
   )}
   {/* {imageSrc2 && (
@@ -118,6 +120,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
                 </svg>
           }
           </div>
+          <Link to={link}>
           <Card.Body style={{ paddingTop: '10px' }}>
             <Card.Text>
               <div className="description-price">{descriprion}</div>
@@ -135,6 +138,7 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
               )}
             </Card.Title>
           </Card.Body>
+          </Link>
         </>
       )}
     </Card>

@@ -488,6 +488,8 @@ const ProductDetailsPage = () => {
           return require('../assets/table6.jpg');
         case "17":
           return require('../assets/table8.JPG');
+        case "19":
+          return require('../assets/table9.png');
 
       default:
         return  require('../assets/table1.png');
@@ -737,6 +739,7 @@ const ProductDetailsPage = () => {
 
 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 <p style={{opacity:'0.5',color:'gray'}} >{t('article')}: {product.article}</p>
+
 { isFavourite
                   ? <div   onClick={handleLikeClick}><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
@@ -867,8 +870,9 @@ onClick={addToBasket}
           .map((x, index, array) => {
             if (array.length === 1) {
               return silimarproducts.map((x) => (
-                <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
+               
                  <NewProductCardItem
+                 link={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}
                     id_key={x.id}
                     imageSrc1={x.image}
                     imageSrc2={x.image2}
@@ -880,12 +884,13 @@ onClick={addToBasket}
                     currency={selectedCurrency}
                     price2={convertPrice(x.salePrice, selectedCurrency)}
                   />
-                </Link>
+                
               ));
             } else {
               return (
-                <Link key={x.id} to={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}>
+              
                   <NewProductCardItem
+                  link={`/${generatePath(category.id)}/${x.subCategoryid}/${x.id}`}
                     id_key={x.id}
                     imageSrc1={x.image}
                     imageSrc2={x.image2}
@@ -897,7 +902,7 @@ onClick={addToBasket}
                     currency={selectedCurrency}
                     price2={convertPrice(x.salePrice, selectedCurrency)}
                   />
-                </Link>
+                
               );
             }
           })

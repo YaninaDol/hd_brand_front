@@ -101,6 +101,10 @@
     border-right: 1px solid #ccc; 
     padding-right: 70px; 
 }
+.margin-acc
+{
+  padding-left: 55px;
+}
 .col-md-5 {
 padding-left: 35px;
 }
@@ -136,6 +140,10 @@ padding-left: 35px;
   }
   }
   @media screen and (max-width: 750px){
+    .margin-acc
+    {
+      padding-left: 0%;
+    }
     .showtotal
     {
      display: block;

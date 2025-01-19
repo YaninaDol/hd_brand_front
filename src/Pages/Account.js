@@ -386,12 +386,13 @@ function goOut()
   {showFavorColumn && (
     <MDBCol md='8'>
       <MDBRow style={{marginTop:'50px'}} >
-        <CardGroup style={{flexWrap:'wrap'}}>
+        <MDBCol className="containerCart"  >
       {favourite.length > 0 ? (
     favourite.map((x) => (
-      <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+      <div>
        
       <CartProduct
+      link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}
       id_key={x.id}
       imageSrc1={x.image}
       imageSrc2={x.image2}
@@ -404,17 +405,17 @@ function goOut()
       price2={convertPrice(x.salePrice,selectedCurrency)}
       />
      
-      </Link>
+      </div>
     ))
   ) : (
     <div>{i18n.language === 'en' ? 'You haven\'t liked anything yet ...' : 'Ти ще не вподобала нічого ...'}  </div>
   )}
-  </CardGroup>
+  </MDBCol>
       </MDBRow>
     </MDBCol>
   )}
   <MDBCol md='4'>
-<MDBRow  style={{paddingLeft:'55px'}}>
+<MDBRow  className="margin-acc">
 <MDBRow style={{marginTop:'50px'}}>
   <h2>{t('hello')}, {name} !</h2>
 <hr className="my-4" />

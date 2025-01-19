@@ -199,15 +199,12 @@ const Home = () => {
 
 
     </Carousel>
-    {/* <CardGroup style={{marginTop:35,marginLeft:5,marginRight:5,alignItems:'center'}}> */}
     <CardGroup style={{ display: 'flex', justifyContent:'space-around', alignItems:'center' }}>
       <div className="something">
         <CatalogsItemContainer link='/shoes' image={require('../assets/category1.webp')} prop={t('shoes')} />
       </div>
    
-      {/* <div className="something">
-        <CatalogsItemContainer link='/clothes' image={require('../assets/categoryImage2.png')} prop={t('clothes')} />
-      </div> */}
+      
       <div className="something">
         <CatalogsItemContainer  link='/accessorise' image={require('../assets/category2.webp')} prop={t('accessorise')}/>
       </div>
@@ -236,8 +233,9 @@ const Home = () => {
           .filter((x) => x.isNew)
           .map((x) => (
             <div className="something" key={x.id}>
-              <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+           
                 <NewProductCardItem
+                link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}
                   id_key={x.id}
                   imageSrc1={x.image}
                   imageSrc2={x.image2}
@@ -250,7 +248,7 @@ const Home = () => {
                   currency={selectedCurrency}
                   price2={convertPrice(x.salePrice, selectedCurrency)}
                 />
-              </Link>
+             
             </div>
           ))}
       </Carousels>
@@ -314,8 +312,9 @@ const Home = () => {
     <React.Fragment key={x.id}>
      
         <div className="something">
-          <Link to={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}>
+         
             <NewProductCardItem
+            link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`}
               id_key={x.id}
               imageSrc1={x.image}
               imageSrc2={x.image2}
@@ -328,7 +327,7 @@ const Home = () => {
               currency={selectedCurrency}
               price2={convertPrice(x.salePrice, selectedCurrency)}
             />
-          </Link>
+   
         </div>
       
     </React.Fragment>
