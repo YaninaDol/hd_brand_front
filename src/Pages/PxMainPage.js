@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate ,NavLink } from "react-router-dom";
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import AuthModal from "../Components/AuthModal";
 import BasketModal from '../Components/BasketModal';
@@ -38,7 +38,10 @@ const expand='false';
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
  
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
+const handleShowSidebar = () => setShowOffcanvas(true);
+const handleCloseSidebar = () => setShowOffcanvas(false);
 
   const [arrBasket,setArrBasket] = useState([]);
 
@@ -73,7 +76,7 @@ const expand='false';
   .catch(error => console.error('Error fetching products:', error));
 
 
-  const storedBasket = window.sessionStorage.getItem("Basket");
+  const storedBasket = window.localStorage.getItem("Basket");
   if (storedBasket && storedBasket.length > 0) {
     const parsedBasketData = JSON.parse(storedBasket);
     setArrBasket(parsedBasketData);
@@ -98,7 +101,7 @@ const expand='false';
 
    useEffect(() => {
     if (showBasket) {
-      const storedBasket = window.sessionStorage.getItem("Basket");
+      const storedBasket = window.localStorage.getItem("Basket");
       if (storedBasket && storedBasket.length > 0) {
         const parsedBasketData = JSON.parse(storedBasket);
         setArrBasket(parsedBasketData);
@@ -286,19 +289,6 @@ function getOrder()
       
     </div>
   </div>
-  <div className="snowflakes">
-  
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-    <div className="snowflake"></div>
-   
-  </div>
         <header className="header " >
           <div className="snowflakes"></div>
         <div className="header-container">
@@ -313,16 +303,16 @@ function getOrder()
             </Link>
             <div className="menu-navigation">
               <div className="menu-navigation-button-contain">
-               <Link to='/shoes'> <div className="button-nav" >{t('shoes')}</div></Link>
+               <NavLink to='/shoes'> <div className="button-nav" >{t('shoes')}</div></NavLink>
               </div>
               {/* <div className="menu-navigation-button-contain1">
               <Link to='/clothes'>  <div className="button-nav1">{t('clothes')}</div></Link>
               </div> */}
               <div className="menu-navigation-button-contain2">
-              <Link to='/accessorise'>   <div className="button-nav2">{t('accessorise')}</div></Link>
+              <NavLink to='/accessorise'>   <div className="button-nav2">{t('accessorise')}</div></NavLink>
               </div>
               <div className="menu-navigation-button-contain2">
-              <Link to='/sale'>   <div style={{color:'red'}} className="button-nav2">{t('sale')}</div></Link>
+              <NavLink to='/sale'>   <div style={{color:'red'}} className="button-nav2">{t('sale')}</div></NavLink>
               </div>
               <div className="menu-navigation-button-contain5">
               <Link to='/faq'>   <div className="button-nav5">FAQ</div></Link>
@@ -398,8 +388,10 @@ function getOrder()
          <header className="headermob" >
          <Navbar style={{flexWrap:'nowrap'}} key={expand} expand={expand} className="bg-body-tertiary mb-2">
           <Container fluid>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
+            <Navbar.Toggle  onClick={handleShowSidebar} aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
+          show={showOffcanvas}
+          onHide={handleCloseSidebar}
               id={`offcanvasNavbar-expand-${expand}`}
               aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
               placement="start"
@@ -444,12 +436,16 @@ function getOrder()
         <div class="accordion-body">
          
             {subcategory2.map((x) => (
-              <NavDropdown.Item  className="item-title" key={x.id} href={`/shoes/${x.id}`}>
+              <NavDropdown.Item  className="item-title" key={x.id}>
+                <NavLink to={`/shoes/${x.id}`} onClick={handleCloseSidebar} >
              {i18n.language === 'en' ? x.nameEng : x.name}
+             </NavLink>
             </NavDropdown.Item>
             ))}
-             <NavDropdown.Item  className="item-title"  href="/shoes">
+             <NavDropdown.Item  className="item-title" >
+             <NavLink to={`/shoes`} onClick={handleCloseSidebar}>
              {t('show_all')}
+             </NavLink>
   </NavDropdown.Item>
         
         </div>
@@ -507,20 +503,26 @@ function getOrder()
   >
     <div class="accordion-body">
       {subcategory3.map((x) => (
-        <NavDropdown.Item className="item-title" key={x.id} href={`/accessorise/${x.id}`}>
+        <NavDropdown.Item className="item-title" key={x.id} >
+           <NavLink to={`/accessorise/${x.id}`} onClick={handleCloseSidebar}>
           {i18n.language === 'en' ? x.nameEng : x.name}
+          </NavLink>
         </NavDropdown.Item>
       ))}
-         <NavDropdown.Item  className="item-title"  href="/accessorise">
+         <NavDropdown.Item  className="item-title" >
+         <NavLink to={`/accessorise`} onClick={handleCloseSidebar}> 
          {t('show_all')}
+         </NavLink>
+
   </NavDropdown.Item>
     </div>
   </div>
 </div>
 
       </div>
-      <Nav.Link className="item-title" active  href="/instock">{t('instock')}</Nav.Link>
-      <Nav.Link className="item-title" active style={{color:'red'}} href="/sale">{t('sale')}</Nav.Link>
+      <NavLink className="item-title" active to={`/instock`} onClick={handleCloseSidebar}>{t('instock')}</NavLink>
+    
+      <NavLink className="item-title" active style={{color:'red'}} to={`/sale`} onClick={handleCloseSidebar}>{t('sale')}</NavLink>
                   <Nav.Link className="item-title" active  href="/faq">FAQ</Nav.Link>
                   <div class="accordion-item">
   <h2 class="accordion-header" id="flush-headingLanguage">

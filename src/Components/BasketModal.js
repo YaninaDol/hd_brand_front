@@ -13,7 +13,7 @@ const BasketModal = ({
     const [count, setCount] = useState(0);
     const {i18n, t } = useTranslation();
   useEffect(() => {
-    const storedBasket = window.sessionStorage.getItem("Basket");
+    const storedBasket = window.localStorage.getItem("Basket");
     if (storedBasket && storedBasket.length > 0) {
       const parsedBasketData = JSON.parse(storedBasket);
       setArrBasket(parsedBasketData);
@@ -37,7 +37,7 @@ const BasketModal = ({
       setArrBasket(updatedBasket);
       
       
-      window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      window.localStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
   
@@ -50,7 +50,7 @@ const BasketModal = ({
       );
       const filteredBasket = updatedBasket.filter(item => item.quantity > 0);
       setArrBasket(filteredBasket);
-      window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
+      window.localStorage.setItem("Basket", JSON.stringify(filteredBasket));
     }
   };
 
@@ -61,7 +61,7 @@ const BasketModal = ({
         item.id === id && item.insulator === insulator? { ...item, quantity: item.quantity + 1 } : item
       );
       setArrBasket(updatedBasket);
-      window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      window.localStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
 

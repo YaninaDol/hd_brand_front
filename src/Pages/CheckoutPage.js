@@ -208,7 +208,7 @@ if (!surname || !surname.trim()) {
   
      
       window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
-  
+      window.localStorage.setItem('selectedCurrency', selectedCurrency);
       return newCurrency;
     });
   };
@@ -233,7 +233,7 @@ const [paymentData, setPaymentData] = useState({
 });
   useEffect(() => {
   
-    const storedBasket = window.sessionStorage.getItem("Basket");
+    const storedBasket = window.localStorage.getItem("Basket");
      updateDate();
     if (!storedBasket || storedBasket.length < 1) {
      
@@ -365,7 +365,7 @@ async function fetchData() {
 fetchData();
 fetchExchangeRates();
 
-const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+const savedCurrency =  window.localStorage.getItem('selectedCurrency');
 if(activeTab=='longer-tab2')
 {setSelectedPaymentMethod('liqpay')}
 
@@ -864,7 +864,7 @@ const [basicModal, setBasicModal] = useState(true);
 
   return (
     <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
-  <MDBModal open={basicModal}  onClose={() => setBasicModal(false)} tabIndex='-1'>
+  {/* <MDBModal open={basicModal}  onClose={() => setBasicModal(false)} tabIndex='-1'>
         <MDBModalDialog className="modal-dialog-centered">
           <MDBModalContent>
             <MDBModalHeader>
@@ -874,7 +874,7 @@ const [basicModal, setBasicModal] = useState(true);
             <MDBModalBody>{i18n.language === 'en' ? 'Due to the production holidays, custom-made shoes will be shipped from January 17 to January 20, 2025.' : 'У зв’язку з канікулами на виробництві, взуття під замовлення буде відправлене з 17 по 20 січня 2025 року .'}</MDBModalBody>
           </MDBModalContent>
         </MDBModalDialog>
-      </MDBModal>
+      </MDBModal> */}
 
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
     
@@ -1220,11 +1220,11 @@ const [basicModal, setBasicModal] = useState(true);
 
   {proceed===true?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):( <div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
 
-    {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
+    {/* {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
   <span className="text-start" style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay by Card, ApplePay, GooglePay' : 'Оплата карткою, ApplePay, GooglePay'}</span>
   <img width={90} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
 </Button></div>
-)}
+)} */}
 
   </MDBRow>
       </div>
@@ -1313,11 +1313,11 @@ const [basicModal, setBasicModal] = useState(true);
   <MDBRow id="totalbtn" style={{marginTop:'15px'}}>
    
   {proceed===true ?( <div > <div  dangerouslySetInnerHTML={{ __html: instanse_liq.cnb_form(paymentData,proceed) }} /></div>):(<div style={{display:'flex',flexDirection:'column'}}> <Button disabled={checkoutbtn} variant="dark" style={{borderRadius:'0px'}} onClick={saveChanges}> {t('Submit_order')} </Button> <Form.Text style={{fontSize:'12px'}}>{t('check_msg')} <a href='/agreement'>{t('privacy_policy')}</a></Form.Text></div>)}
-  {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
+  {/* {proceed===true&&(<div ><Button  variant="light" onClick={MonoPay} style={{borderColor:'black',borderWidth:'1px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',marginTop:10,width:'100%',padding:'15px 20px' }}>
   <span style={{fontWeight:'bolder'}}>{i18n.language === 'en' ? 'Pay by Card, ApplePay, GooglePay' : 'Оплата карткою, ApplePay, GooglePay'}</span>
   <img width={110} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
 </Button></div>
-)}
+)} */}
   </MDBRow>
     </MDBCol>
 

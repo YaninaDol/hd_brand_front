@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Slider from 'rc-slider';
 import '../Components/range.css'; 
+import { useParams } from 'react-router-dom';
 import { Offcanvas  } from 'react-bootstrap';
 import {
  
@@ -40,6 +41,35 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   const handleCloseSidebar = () => setShowOffcanvas(false);
   const handleShowSidebar = () => setShowOffcanvas(true);
 
+  const activeFiltersCount = [
+    rangeValues[0] !== 0 || rangeValues[1] !== 10000,
+    sortOrder !== '',
+    selectedColor !== '',
+    selectedMaterials.length > 0,
+    selectedSeasons.length > 0,
+    selectedTypes.length > 0,
+    sortCollection !== ''
+  ].filter(Boolean).length;  
+  
+
+
+
+  const { categoryName, subcategoryid } = useParams(); 
+  const [currentParams, setCurrentParams] = useState({
+    categoryName,
+    subcategoryid,
+  });
+
+  useEffect(() => {
+  
+    if (
+      currentParams.categoryName !== categoryName ||
+      currentParams.subcategoryid !== subcategoryid
+    ) {
+      resetFilters();
+      setCurrentParams({ categoryName, subcategoryid });
+    }
+  }, [categoryName, subcategoryid]);
 
   const [filters, setFilters] = useState({
     selectedTypes: [],
@@ -53,7 +83,7 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
   });
   useEffect(() => {
    
-    const savedFilters = JSON.parse(localStorage.getItem('filters')) || {};
+    const savedFilters = JSON.parse(sessionStorage.getItem('filters')) || {};
     setSelectedTypes(savedFilters.selectedTypes || []);
     setSelectedMaterials(savedFilters.selectedMaterials || []);
     setSelectedSeasons(savedFilters.selectedSeasons || []);
@@ -77,9 +107,10 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     });
   }, []);
 useEffect(() => {
-    const filtersToSave = { ...filters }; // Копируем объект фильтров для сохранения
-    localStorage.setItem('filters', JSON.stringify(filtersToSave));
-  }, [filters]); // Сохраняем весь объект фильтров, когда он меняется
+    const filtersToSave = { ...filters };
+    sessionStorage.setItem('filters', JSON.stringify(filtersToSave));
+    localStorage.removeItem("filters");
+  }, [filters]); 
 
   useEffect(() => {
     const filtersToSave = {
@@ -92,7 +123,7 @@ useEffect(() => {
       sortOrder,
       sortCollection
     };
-    localStorage.setItem('filters', JSON.stringify(filtersToSave));
+    sessionStorage.setItem('filters', JSON.stringify(filtersToSave));
   }, [
     selectedTypes,
     selectedMaterials,
@@ -108,7 +139,10 @@ useEffect(() => {
  
 
   useEffect(() => {
+
+     window.scrollTo(0, 0);
     applyFilters();
+
     setTimeout(() => {
       setLoading(false);
     }, 2000);
@@ -265,7 +299,7 @@ useEffect(() => {
 <MDBContainer className="py-5 h-100">
 <MDBRow > 
 <MDBCol  style={{marginLeft:5}}><h2 className="h25">{page}</h2></MDBCol>
-<MDBCol style={{marginRight:35}}>  <p  onClick={handleShowSidebar}  id='filter_mob' style={{marginTop:35,textDecoration:'underline',position:'relative'}}  className="text-end">{t('filters')}</p>  </MDBCol>
+<MDBCol style={{marginRight:35}}>  <p  onClick={handleShowSidebar}  id='filter_mob' style={{marginTop:35,textDecoration:'underline',position:'relative'}}  className="text-end">{t('filters')} ({activeFiltersCount}) </p>  </MDBCol>
    
         
        </MDBRow>
@@ -550,7 +584,8 @@ useEffect(() => {
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-{(sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
+{(rangeValues[0] !== 0 || 
+  rangeValues[1] !== 10000||sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
   <div style={{marginTop:'10px', opacity:'0.5', textDecoration:'underline'}} onClick={resetFilters} >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -618,7 +653,7 @@ useEffect(() => {
             
           ))
         ) : (
-          <div>{t('no_items')}</div>
+          <div>{i18n.language === 'en' ? 'Nothing found...Use another parameters': 'За такими параметрами нічого не знайдено..'}</div>
         )}
       </MDBCol>
       {loading ? (
@@ -645,7 +680,8 @@ useEffect(() => {
 </section>
 <Offcanvas show={showOffcanvas} onHide={handleCloseSidebar}  placement="end">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title> {t('filters')}</Offcanvas.Title>
+          <Offcanvas.Title> {t('filters')}
+           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -917,7 +953,8 @@ useEffect(() => {
 <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 </svg> </div>
-{(sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
+{(rangeValues[0] !== 0 || 
+  rangeValues[1] !== 10000||sortOrder!=='' || selectedColor !== '' || selectedMaterials.length > 0 || selectedSeasons.length > 0 || selectedTypes.length > 0 || sortCollection !== '') && (
   <div style={{marginTop:'10px', opacity:'0.5', textDecoration:'underline'}} onClick={resetFilters} >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>

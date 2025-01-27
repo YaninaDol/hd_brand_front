@@ -11,7 +11,7 @@ import NewProductCardItem from "../Components/NewProductCardItem";
 import '../Components/CardsContainer.css'
 import '../Components/NewProductCardItem.css'
 import WeeklyPreview from '../Components/WeeklyPreview'
-import { Link} from "react-router-dom";
+import { Link, NavLink} from "react-router-dom";
 import { useDispatch,useSelector } from 'react-redux';
 import { setProducts} from '../redux/actions';
 import { CardGroup } from 'react-bootstrap';
@@ -73,7 +73,7 @@ const Home = () => {
   
      
       window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
-  
+      window.localStorage.setItem('selectedCurrency', selectedCurrency);
       return newCurrency;
     });
   };
@@ -81,7 +81,7 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+    window.sessionStorage.removeItem("filters");
     axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
   .then(response => {
     
@@ -102,7 +102,7 @@ const Home = () => {
 
       fetchExchangeRates();
 
-      const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+      const savedCurrency =  window.localStorage.getItem('selectedCurrency');
 
  
     if (savedCurrency) {
@@ -201,12 +201,18 @@ const Home = () => {
     </Carousel>
     <CardGroup style={{ display: 'flex', justifyContent:'space-around', alignItems:'center' }}>
       <div className="something">
-        <CatalogsItemContainer link='/shoes' image={require('../assets/category1.webp')} prop={t('shoes')} />
+      <NavLink to={`/shoes`}>
+
+        <CatalogsItemContainer  image={require('../assets/category1.webp')} prop={t('shoes')} />
+        </NavLink>
+        
       </div>
    
       
       <div className="something">
-        <CatalogsItemContainer  link='/accessorise' image={require('../assets/category2.webp')} prop={t('accessorise')}/>
+      <NavLink to={`/accessorise`}> 
+        <CatalogsItemContainer   image={require('../assets/category2.webp')} prop={t('accessorise')}/>
+        </NavLink>
       </div>
     </CardGroup>
 

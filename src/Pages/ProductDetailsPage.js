@@ -9,7 +9,7 @@ import axios from 'axios';
 import {useDispatch,useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import { Spinner } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Link,NavLink } from "react-router-dom";
 import Carousels from 'react-multi-carousel';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
@@ -133,7 +133,7 @@ const ProductDetailsPage = () => {
   
      
       window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
-  
+      window.localStorage.setItem('selectedCurrency', selectedCurrency);
       return newCurrency;
     });
   };
@@ -194,16 +194,16 @@ const ProductDetailsPage = () => {
     setIsPlaying2(true);
     if (videoRef2.current) {
      
-        videoRef2.current.play(); // Начать воспроизведение видео сразу после загрузки
+        videoRef2.current.play(); 
        
       };
       if (videoRef.current) {
      
-        videoRef.current.play(); // Начать воспроизведение видео сразу после загрузки
+        videoRef.current.play(); 
        
       };
 
-    const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+    const savedCurrency =  window.localStorage.getItem('selectedCurrency');
 
 
   if (savedCurrency) {
@@ -392,7 +392,7 @@ const ProductDetailsPage = () => {
 
   const addSprayToBasket = () => {
     const sprayItem = {productid:1,article:"spray", id: 5865, name: 'Спрей для замші',nameEng: 'Spray for Suede',image:'https://ralf.ru/upload/iblock/f3a/f3aed76dacbee86b6ca8e8e11f8d3e84.jpg', price: 200, quantity: 1,size:'' };
-    const storedBasket = window.sessionStorage.getItem("Basket");
+    const storedBasket = window.localStorage.getItem("Basket");
     const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
 
     // Проверка, есть ли уже спрей в корзине
@@ -405,7 +405,7 @@ const ProductDetailsPage = () => {
     }
 
     // Сохраняем обновлённую корзину в сессии
-    window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+    window.localStorage.setItem("Basket", JSON.stringify(existingBasket));
     handleCloseModalSpray(); 
     handleShowM();
   };
@@ -417,7 +417,7 @@ const ProductDetailsPage = () => {
       return;
     }
   
-    const storedBasket = window.sessionStorage.getItem("Basket");
+    const storedBasket = window.localStorage.getItem("Basket");
     const existingBasket = storedBasket ? JSON.parse(storedBasket) : [];
     
     
@@ -441,7 +441,7 @@ const ProductDetailsPage = () => {
         alert('Товар вже доданий до кошика');
       } else {
         existingBasket.push(itemToAdd);
-        window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+        window.localStorage.setItem("Basket", JSON.stringify(existingBasket));
       //   if(itemToAdd.article.includes('z')&&product.categoryid==2&&!existingSpray)
       //  { handleShowModalSpray();}
       //   else {handleShowM();}
@@ -459,7 +459,7 @@ const ProductDetailsPage = () => {
       existingBasket.push(itemToAdd);
     }
   
-    window.sessionStorage.setItem("Basket", JSON.stringify(existingBasket));
+    window.localStorage.setItem("Basket", JSON.stringify(existingBasket));
     // if(itemToAdd.article.includes('z')&&product.categoryid==2&&!existingSpray)
     //   { handleShowModalSpray();}
     //    else {handleShowM();}
@@ -562,11 +562,12 @@ const ProductDetailsPage = () => {
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<a style={{color:'black'}} href={`/${generatePath(category.id)}`}>{i18n.language === 'en' ? category.nameEng : category.name}</a>
+
+<NavLink  to={`/${generatePath(category.id)}`}>{i18n.language === 'en' ? category.nameEng : category.name}</NavLink>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
-<a style={{color:'black',textAlign:'center'}} href={`/${generatePath(category.id)}/${subcategory.id}`}>{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}</a>
+<NavLink style={{color:'black',textAlign:'center'}} to={`/${generatePath(category.id)}/${subcategory.id}`}>{i18n.language === 'en' ? subcategory.nameEng : subcategory.name}</NavLink>
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>
@@ -660,9 +661,9 @@ const ProductDetailsPage = () => {
 <MDBContainer fluid 
            
            style={{
-               margin: '0 auto', // Центрируем контейнер
-               padding: '0 5px', // Отступы внутри контейнера
-               maxWidth: '95%', // Контролируем ширину (оставляем отступы слева и справа)
+               margin: '0 auto', 
+               padding: '0 5px', 
+               maxWidth: '95%', 
            }}>
 <MDBRow id='rowmargin50' >
    

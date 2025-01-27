@@ -9,8 +9,7 @@ const Status200 = () => {
   const navigate = useNavigate();
   const [orderNumber, setOrderNumber] = useState(null);
   const [isPaymentConfirmed, setIsPaymentConfirmed] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Добавляем состояние для спиннера
-
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const confirmPayment = async () => {
       try {
@@ -19,15 +18,20 @@ const Status200 = () => {
         const cleanOrderNumber = crmId.replace(/^crm#/i, ''); 
         setOrderNumber(cleanOrderNumber);
         window.sessionStorage.removeItem("Basket");
+        window.localStorage.removeItem("Basket");
         window.localStorage.removeItem("order");
         window.sessionStorage.removeItem("order");
-    
+        window.sessionStorage.removeItem("filters");
+        localStorage.removeItem("filters");
         setIsPaymentConfirmed(true);
       } catch (error) {
         console.error('Ошибка подтверждения оплаты:', error);
         window.sessionStorage.removeItem("Basket");
+        window.localStorage.removeItem("Basket");
         window.localStorage.removeItem("order");
         window.sessionStorage.removeItem("order");
+        window.sessionStorage.removeItem("filters");
+        localStorage.removeItem("filters");
         setIsPaymentConfirmed(false);
       }
     };

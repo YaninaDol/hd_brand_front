@@ -93,7 +93,7 @@ const Account = () => {
   };
   useEffect(() => {
     
-   
+    window.scrollTo(0, 0);
 
     if(!window.sessionStorage.getItem("AccessToken"))
      {
@@ -408,7 +408,7 @@ function goOut()
       </div>
     ))
   ) : (
-    <div>{i18n.language === 'en' ? 'You haven\'t liked anything yet ...' : 'Ти ще не вподобала нічого ...'}  </div>
+    <div>{i18n.language === 'en' ? 'You haven\'t liked anything yet ...' : 'На жаль, Ви ще не вподобали нічого ...'}  </div>
   )}
   </MDBCol>
       </MDBRow>

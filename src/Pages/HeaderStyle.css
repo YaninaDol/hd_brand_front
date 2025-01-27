@@ -14,7 +14,8 @@
   pointer-events: none;
   z-index: 1;
 }
-
+a
+{color: #000;}
 
 .snowflake {
   position: absolute;

@@ -36,7 +36,7 @@ const handleCurrencyChange = (selectedCurrency) => {
 
    
     window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
-
+    window.localStorage.setItem('selectedCurrency', selectedCurrency);
     return newCurrency;
   });
 };
@@ -110,7 +110,7 @@ function generatePathName(categoryName) {
   .catch(error => console.error('Error fetching products:', error));
   fetchExchangeRates();
 
-  const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+  const savedCurrency =  window.localStorage.getItem('selectedCurrency');
 
 
 if (savedCurrency) {

@@ -44,8 +44,6 @@ const NewProductCardItem = ({id_key, currency, imageSrc1, imageSrc2,imageSrc3, i
     headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
                   }})
        .then(response => {
-       
-
   
   })
   .catch(error => console.error('Error fetching products:', error));
