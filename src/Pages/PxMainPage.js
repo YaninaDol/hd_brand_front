@@ -289,8 +289,13 @@ function getOrder()
       
     </div>
   </div>
+  {/* <div >
+  <p class="typing-text" >Любі жінки, команда HD brand вітає вас зі святом 8 Березня!🌷</p>
+</div> */}
+
         <header className="header " >
-          <div className="snowflakes"></div>
+      
+
         <div className="header-container">
           <div className="logo-menu-navigation" >
             <Link to='/'>
@@ -305,14 +310,14 @@ function getOrder()
               <div className="menu-navigation-button-contain">
                <NavLink to='/shoes'> <div className="button-nav" >{t('shoes')}</div></NavLink>
               </div>
-              {/* <div className="menu-navigation-button-contain1">
-              <Link to='/clothes'>  <div className="button-nav1">{t('clothes')}</div></Link>
-              </div> */}
               <div className="menu-navigation-button-contain2">
               <NavLink to='/accessorise'>   <div className="button-nav2">{t('accessorise')}</div></NavLink>
               </div>
               <div className="menu-navigation-button-contain2">
               <NavLink to='/sale'>   <div style={{color:'red'}} className="button-nav2">{t('sale')}</div></NavLink>
+              </div>
+              <div className="menu-navigation-button-contain1">
+              <Link to='/instock'>  <div className="button-nav1">{t('instock')}</div></Link>
               </div>
               <div className="menu-navigation-button-contain5">
               <Link to='/faq'>   <div className="button-nav5">FAQ</div></Link>
@@ -386,6 +391,7 @@ function getOrder()
         </div>
         </header>
          <header className="headermob" >
+    
          <Navbar style={{flexWrap:'nowrap'}} key={expand} expand={expand} className="bg-body-tertiary mb-2">
           <Container fluid>
             <Navbar.Toggle  onClick={handleShowSidebar} aria-controls={`offcanvasNavbar-expand-${expand}`} />

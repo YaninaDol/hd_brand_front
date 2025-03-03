@@ -74,6 +74,7 @@ const Home = () => {
      
       window.sessionStorage.setItem('selectedCurrency', selectedCurrency);
       window.localStorage.setItem('selectedCurrency', selectedCurrency);
+
       return newCurrency;
     });
   };
@@ -81,6 +82,8 @@ const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    window.sessionStorage.removeItem("selectedProduct");
+    window.sessionStorage.removeItem("visibleItems");
     window.sessionStorage.removeItem("filters");
     axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
   .then(response => {
@@ -156,6 +159,7 @@ const Home = () => {
   const showSection = contents.filter((x) => x.isDiscount === true).length > 4;
   return (
     <div >
+  
    <div style={{ position: 'fixed', width: '100%', zIndex: '1000', top: '0' }}>
   <PxMainPage convertPrice={convertPrice} selectedCurrency={selectedCurrency} handleCurrencyChange={handleCurrencyChange} />
 </div>

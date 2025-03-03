@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect,useRef } from "react";
 import { useTranslation } from 'react-i18next';
 import './ContentPage.css';
 import { Link} from "react-router-dom";
@@ -18,13 +18,17 @@ import {
   MDBRow,
   MDBSpinner
 } from 'mdb-react-ui-kit';
+import CartProductClick from '../Components/CartProductClick';
 const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrencyChange,convertPrice,link }) => {
   const {i18n, t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [sortOrder, setSortOrder] = useState('');
   const [sortCollection, setSortCollection] = useState('');
   const [itemsPerRow, setItemsPerRow] = useState(12);
-  const [visibleItems, setVisibleItems] = useState(itemsPerRow);
+    const [visibleItems, setVisibleItems] = useState(() => {
+     
+      return parseInt(sessionStorage.getItem('visibleItems'), 10) || itemsPerRow;
+    });
   const [allhidden, setAllHidden] = useState('');
   const [filteredhidden, setFilteredHidden] = useState('hidden');
   const [filteredProducts, setfilteredProducts] = useState([]);
@@ -68,6 +72,9 @@ const ContentPageSubCat = ({ items,page,selectedCurrency,materials,handleCurrenc
     ) {
       resetFilters();
       setCurrentParams({ categoryName, subcategoryid });
+      setVisibleItems(itemsPerRow); 
+      sessionStorage.removeItem("selectedProduct");
+      setSelectedProduct(null);
     }
   }, [categoryName, subcategoryid]);
 
@@ -139,15 +146,37 @@ useEffect(() => {
  
 
   useEffect(() => {
+    sessionStorage.setItem('visibleItems', visibleItems);
+  }, [visibleItems]);
 
-     window.scrollTo(0, 0);
+  useEffect(() => {
+
     applyFilters();
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+   
   }, [items]);
+const [selectedProduct, setSelectedProduct] = useState(sessionStorage.getItem('selectedProduct')); // Состояние для выбранного товара
 
+const itemRefs = useRef([]); 
+
+
+
+useEffect(() => {
+  if (!loading && selectedProduct && itemRefs.current[selectedProduct]) {
+    console.log("Selected product:", selectedProduct); // Отрабатывает при завершении загрузки
+    itemRefs.current[selectedProduct].scrollIntoView({ behavior: 'smooth' });
+  }
+  else{ window.scrollTo(0, 0);}
+}, [loading, selectedProduct]);
+
+useEffect(() => {
+  // Имитируем более длительную загрузку
+  const loadingTimeout = setTimeout(() => {
+    setLoading(false); // Завершаем загрузку
+  }, 3000); // Увеличьте время, например, до 3 секунд
+
+  return () => clearTimeout(loadingTimeout);
+}, []);
 
   const handleRangeChange = (values) => {
     setRangeValues(values);
@@ -256,6 +285,9 @@ useEffect(() => {
     handleCloseSidebar();
 };
   const resetFilters = () => {
+    setVisibleItems(itemsPerRow); 
+    setSelectedProduct(null); 
+    sessionStorage.removeItem("selectedProduct");
     setfilteredProducts([]);
     setAllHidden('');
     setFilteredHidden('hidden');
@@ -372,15 +404,17 @@ useEffect(() => {
             onChange={() => handleSortCollection('isNew')}
             style={{ marginTop: 15 }}
           />
-          <Form.Check
+          {/* <Form.Check
             type="checkbox"
             name="sorting"
             id="instockcollection"
             label={t('instock')}
+           
             checked={sortCollection === 'isInStock'}
-            onChange={() => handleSortCollection('isInStock')}
+             // onChange={() => handleSortCollection('isInStock')}
+            onChange={() => window.location.href='/instock'}
             style={{ marginTop: 15 }}
-          />
+          /> */}
           <Form.Check
             type="checkbox"
             name="sorting"
@@ -601,13 +635,30 @@ useEffect(() => {
 
             <MDBCol hidden={allhidden} className="containerCart">
         {loading ? (
-         <div className="spinner-container">
+         <div style={{
+          position: 'fixed', // Теперь он будет фиксирован поверх контента
+          top: 0,
+          left: 0,
+          width: '100vw', // На весь экран
+          height: '100vh', // На весь экран
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'rgb(255, 255, 255)', // Немного затемняем фон
+          zIndex: 9999, // Обеспечиваем, что спиннер будет наверху
+        }} className="spinner-container">
          <MDBSpinner big />
          </div>
         ) : items.length > 0 ? (
           items.slice(0, visibleItems).map((x) => (
             <div>
-              <CartProduct
+              <div
+            key={x.id}
+            ref={(el) => (itemRefs.current[x.id] = el)} // Привязываем ссылку к каждому элементу
+          
+            style={{ cursor: 'pointer' }}
+          ></div>
+              <CartProductClick
                link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}
                 id_key={x.id}
                 imageSrc1={x.image}
@@ -629,13 +680,30 @@ useEffect(() => {
       </MDBCol>
       <MDBCol hidden={filteredhidden} className="containerCart">
         {loading ? (
-           <div className="spinner-container">
+           <div style={{
+            position: 'fixed', // Теперь он будет фиксирован поверх контента
+            top: 0,
+            left: 0,
+            width: '100vw', // На весь экран
+            height: '100vh', // На весь экран
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'rgb(255, 255, 255)', // Немного затемняем фон
+            zIndex: 9999, // Обеспечиваем, что спиннер будет наверху
+          }} className="spinner-container">
           <MDBSpinner big />
           </div>
         ) : filteredProducts.length > 0 ? (
           filteredProducts.slice(0, visibleItems).map((x) => (
             <div>
-              <CartProduct
+              <div
+            key={x.id}
+            ref={(el) => (itemRefs.current[x.id] = el)} // Привязываем ссылку к каждому элементу
+          
+            style={{ cursor: 'pointer' }}
+          ></div>
+              <CartProductClick
               link={`/${generatePath(x.categoryid)}/${x.subCategoryid}/${x.id}`} key={x.id}
                 id_key={x.id}
                 imageSrc1={x.image}
@@ -743,15 +811,16 @@ useEffect(() => {
             onChange={() => handleSortCollection('isNew')}
             style={{ marginTop: 15 }}
           />
-            <Form.Check
+            {/* <Form.Check
             type="checkbox"
             name="sorting"
             id="instockcollection"
             label={t('instock')}
             checked={sortCollection === 'isInStock'}
-            onChange={() => handleSortCollection('isInStock')}
+            // onChange={() => handleSortCollection('isInStock')}
+            onChange={() => window.location.href='/instock'}
             style={{ marginTop: 15 }}
-          />
+          /> */}
           <Form.Check
             type="checkbox"
             name="sorting"

@@ -45,7 +45,7 @@ class CartBasket extends Component {
             <MDBCardImage
               fluid
               src={this.props.picture}
-              alt="Cotton T-shirt"
+              alt="Photo"
               style={ { aspectRatio:'3/4',position:'relative',objectFit:'cover'}}
             />
           </MDBCol>

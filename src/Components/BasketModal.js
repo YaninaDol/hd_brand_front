@@ -1,68 +1,78 @@
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from 'react-bootstrap';
 import { MDBRow, MDBCol, MDBTypography } from 'mdb-react-ui-kit';
-import CartBasket from './CartBasket'; // Adjust the import path according to your project structure
-import { useEffect,useState } from "react";
+import CartBasket from './CartBasket';
+import { useEffect, useState } from "react";
+
 const BasketModal = ({
   show,
   handleClose,
   selectedCurrency,
   convertPrice
 }) => {
-    const [arrBasket,setArrBasket] = useState([]);
-    const [count, setCount] = useState(0);
-    const {i18n, t } = useTranslation();
+  const [arrBasket, setArrBasket] = useState([]);
+  const [count, setCount] = useState(0);
+  const { i18n, t } = useTranslation();
+
   useEffect(() => {
     const storedBasket = window.localStorage.getItem("Basket");
-    if (storedBasket && storedBasket.length > 0) {
+    if (storedBasket) {
       const parsedBasketData = JSON.parse(storedBasket);
-      setArrBasket(parsedBasketData);
-      const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
-      setCount(totalCount);
+      checkImages(parsedBasketData);
     }
   }, [show]);
 
-  const removeBasket = (id, insulator) => {
-    
-    let prod = arrBasket.find(item => item.id === id && item.insulator === insulator);
-    
-    if (prod) {
-      
-      setCount(count - prod.quantity);
-  
-      
-      const updatedBasket = arrBasket.filter(item => !(item.id === id && item.insulator === insulator));
-      
-     
-      setArrBasket(updatedBasket);
-      
-      
-      window.localStorage.setItem("Basket", JSON.stringify(updatedBasket));
-    }
-  };
-  
+  const checkImages = (basket) => {
+    const validItems = [];
 
-  const decrementQuantity = (id,insulator) => {
-    let prod = arrBasket.find(item => item.id === id && item.insulator === insulator);
-    if (prod && prod.quantity > 1) {
-      const updatedBasket = arrBasket.map(item =>
-        item.id === id&& item.insulator === insulator ? { ...item, quantity: item.quantity - 1 } : item
-      );
-      const filteredBasket = updatedBasket.filter(item => item.quantity > 0);
-      setArrBasket(filteredBasket);
-      window.localStorage.setItem("Basket", JSON.stringify(filteredBasket));
-    }
+    let checkedCount = 0;
+    basket.forEach((item) => {
+      const img = new Image();
+      img.src = item.image;
+      img.onload = () => {
+        validItems.push(item);
+        checkedCount++;
+        if (checkedCount === basket.length) {
+          updateBasket(validItems);
+        }
+      };
+      img.onerror = () => {
+        checkedCount++;
+        if (checkedCount === basket.length) {
+          updateBasket(validItems);
+        }
+      };
+    });
+  };
+
+  const updateBasket = (basket) => {
+    setArrBasket(basket);
+    const totalCount = basket.reduce((sum, item) => sum + item.quantity, 0);
+    setCount(totalCount);
+    window.localStorage.setItem("Basket", JSON.stringify(basket));
+  };
+
+  const removeBasket = (id, insulator) => {
+    const updatedBasket = arrBasket.filter(item => !(item.id === id && item.insulator === insulator));
+    updateBasket(updatedBasket);
+  };
+
+  const decrementQuantity = (id, insulator) => {
+    const updatedBasket = arrBasket.map(item =>
+      item.id === id && item.insulator === insulator && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+    updateBasket(updatedBasket);
   };
 
   const incrementQuantity = (id, insulator) => {
-    let prod = arrBasket.find(item => item.id === id && item.insulator === insulator);
-    if (prod) {
-      const updatedBasket = arrBasket.map(item =>
-        item.id === id && item.insulator === insulator? { ...item, quantity: item.quantity + 1 } : item
-      );
-      setArrBasket(updatedBasket);
-      window.localStorage.setItem("Basket", JSON.stringify(updatedBasket));
-    }
+    const updatedBasket = arrBasket.map(item =>
+      item.id === id && item.insulator === insulator
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+    updateBasket(updatedBasket);
   };
 
   const getOrder = () => {
@@ -85,14 +95,14 @@ const BasketModal = ({
               <MDBCol md="1" lg="1" xl="1"></MDBCol>
               <MDBCol md="3" lg="3" xl="3"></MDBCol>
               <MDBCol md="3" lg="3" xl="3" className="text-center">
-              {t('product')}
+                {t('product')}
               </MDBCol>
               <MDBCol md="2" lg="2" xl="2">
-              {t('count')}
+                {t('count')}
               </MDBCol>
               <MDBCol md="2" lg="2" xl="3" className="text-center">
                 <MDBTypography tag="h7" className="mx-2">
-                {t('price')}
+                  {t('price')}
                 </MDBTypography>
               </MDBCol>
             </MDBRow>
@@ -110,17 +120,17 @@ const BasketModal = ({
                 price1={convertPrice(x.price, selectedCurrency)}
                 incrementQuantity={incrementQuantity}
                 decrementQuantity={decrementQuantity}
-              ></CartBasket>
+              />
             ))}
           </>
         )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-dark" style={{ borderRadius: '0px' }} onClick={handleClose}>
-        {t('continue')}
+          {t('continue')}
         </Button>
         <Button variant="dark" style={{ borderRadius: '0px' }} onClick={getOrder}>
-        {t('checkout')}
+          {t('checkout')}
         </Button>
       </Modal.Footer>
     </Modal>

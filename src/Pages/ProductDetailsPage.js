@@ -183,129 +183,66 @@ const ProductDetailsPage = () => {
 
 
 
-  useEffect(()=>
+  const removeFromCart = (productId) => {
+    const cart = JSON.parse(localStorage.getItem('Basket')) || [];
+    const updatedCart = cart.filter(item => item.id !== productId);
+    localStorage.setItem('Basket', JSON.stringify(updatedCart));
+  };
 
-  {
-    
+  useEffect(() => {
     window.scrollTo(0, 0);
-    fetchExchangeRates();
-  
-     setIsPlaying(true);
-    setIsPlaying2(true);
-    if (videoRef2.current) {
-     
-        videoRef2.current.play(); 
-       
-      };
-      if (videoRef.current) {
-     
-        videoRef.current.play(); 
-       
-      };
 
-    const savedCurrency =  window.localStorage.getItem('selectedCurrency');
+    const fetchData = async () => {
+      try {
+        if (window.sessionStorage.getItem("AccessToken")) {
+          const likeResponse = await axios.post(`${API_BASE_URL}/api/Authenticate/getlike`, null, {
+            params: { prodId: id },
+            headers: { Authorization: `Bearer ${window.sessionStorage.getItem("AccessToken")}` },
+          });
+          setIsFavourite(likeResponse.data);
+        }
 
+        const [subcategoryRes, productSizeRes, productRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryRepById`, { params: { id: subcategoryid } }),
+          axios.get(`${API_BASE_URL}/api/Product/GetSizeofProduct`, { params: { id } }),
+          axios.get(`${API_BASE_URL}/api/Product/GetProductById`, { params: { id } }),
+        ]);
 
-  if (savedCurrency) {
-    setSelectedCurrency(savedCurrency);
-  }
-  if(window.sessionStorage.getItem("AccessToken"))
-  {
-  axios({method:'post',
-      url:`${API_BASE_URL}/api/Authenticate/getlike?prodId=${id}`,
-    headers: {         'Authorization':'Bearer '+ window.sessionStorage.getItem("AccessToken")
-                  }})
-       .then(response => {
-  
-   
-        setIsFavourite(response.data);
+        dispatch(setSubCategory(subcategoryRes.data.value));
+        dispatch(setProductSizes(productSizeRes.data));
+        dispatch(setProduct(productRes.data.value));
 
-  
-  })
-  .catch(error => console.log(''));
-  }
+        const { categoryid, materialid, seasonid } = productRes.data.value;
 
-    axios.get(`${API_BASE_URL}/api/Specification/GetSubCategoryRepById?id=${subcategoryid}`)
-    .then(response => {
-    
-     
-    
-     dispatch(setSubCategory(response.data.value))
-    
-    })
-    .catch(error => console.error('Error fetching products:', error));
-  
-  
-  
-    axios.get(`${API_BASE_URL}/api/Product/GetSizeofProduct?id=${id}`)
-    .then(respons => {
-      dispatch(setProductSizes(respons.data));
-     
-    })
-    .catch(error => console.error('Error fetching products:', error));
-  
-   
-  
-    axios.get(`${API_BASE_URL}/api/Product/GetProductById?id=${id}`)
-    .then(res => {
-      
-        dispatch(setProduct(res.data.value));
-        
-      
-  
-      axios.get(`${API_BASE_URL}/api/Specification/GetCategoryById?id=${res.data.value.categoryid}`)
-      .then(resp => {
-     
-        dispatch(setCategory(resp.data.value));
-     
-      })
-      .catch(error => console.error('Error fetching products:', error));
-      axios.get(`${API_BASE_URL}/api/Specification/GetMaterialById?id=${res.data.value.materialid}`)
-      .then(resp => {
-     
-        dispatch(setMaterial(resp.data.value));
-    
-      })
-      .catch(error => console.error('Error fetching products:', error));
-      axios.get(`${API_BASE_URL}/api/Specification/GetSeasonById?id=${res.data.value.seasonid}`)
-      .then(resp => {
-     
-        dispatch(setSeason(resp.data.value));
-      
-      })
-      .catch(error => console.error('Error fetching products:', error));
-      axios.get(`${API_BASE_URL}/api/Product/GetProductsBySubcategory?id=${subcategoryid}`)
-      .then(responses => {
-       
-        dispatch(setSimilar(responses.data));
-        const loadingTimeout = setTimeout(() => {
-          setLoading(false);
-        }, 1000);
-      })
-    .catch(error => console.error('Error fetching products:', error));
-  
-      
-    })
-    .catch(error => console.error('Error fetching products:', error));
+        const [categoryRes, materialRes, seasonRes, similarRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/api/Specification/GetCategoryById`, { params: { id: categoryid } }),
+          axios.get(`${API_BASE_URL}/api/Specification/GetMaterialById`, { params: { id: materialid } }),
+          axios.get(`${API_BASE_URL}/api/Specification/GetSeasonById`, { params: { id: seasonid } }),
+          axios.get(`${API_BASE_URL}/api/Product/GetProductsBySubcategory`, { params: { id: subcategoryid } }),
+        ]);
 
-    
-   
-  
+        dispatch(setCategory(categoryRes.data.value));
+        dispatch(setMaterial(materialRes.data.value));
+        dispatch(setSeason(seasonRes.data.value));
+        dispatch(setSimilar(similarRes.data));
+
+        setTimeout(() => setLoading(false), 1000);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        removeFromCart(id);
+        window.location.href='/';
+      }
+    };
+
+    fetchData();
   }, [id, subcategoryid, dispatch]);
 
   useEffect(() => {
-    if ((product.isDiscount||product.isInStock) && productsizes.length > 0) {
-      var prod=productsizes[0];
-     prod.size='';
-      setNewProd(prod);
+    if ((product?.isDiscount || product?.isInStock) && Array.isArray(productsizes) && productsizes.length > 0) {
+      setNewProd({ ...productsizes[0], size: '' });
     }
-    // else if (category.id===3)
-    //   {
-    //     var prod=productsizes[0];
-    
-    //    setNewProd(prod);
-    //   };
-  }, [product.isDiscount,product.isInStock, productsizes]);
+  }, [product?.isDiscount, product?.isInStock, productsizes]);
+
 
 
   // const fetchExchangeRates = async () => {
@@ -490,6 +427,11 @@ const ProductDetailsPage = () => {
           return require('../assets/table8.JPG');
         case "19":
           return require('../assets/table9.png');
+        case "20":
+            return require('../assets/table20.png');
+        case "21":
+              return require('../assets/table21.png');
+
 
       default:
         return  require('../assets/table1.png');

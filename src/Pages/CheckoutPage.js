@@ -232,7 +232,32 @@ const [paymentData, setPaymentData] = useState({
       result_url:'https://hdbrand.com.ua/status'
 });
   useEffect(() => {
-  
+
+    const checkImages = (basket) => {
+      const validItems = [];
+      let checkedCount = 0;
+      basket.forEach((item) => {
+        const img = new Image();
+        img.src = item.image;
+        img.onload = () => {
+          validItems.push(item);
+          checkedCount++;
+          if (checkedCount === basket.length) {
+            setBuket(validItems);
+          }
+        };
+        img.onerror = () => {
+          checkedCount++;
+          if (checkedCount === basket.length) {
+            setBuket(validItems);
+          }
+        };
+      });
+    };
+
+    window.sessionStorage.removeItem("selectedProduct");
+    window.sessionStorage.removeItem("visibleItems");
+    window.sessionStorage.removeItem("filters");
     const storedBasket = window.localStorage.getItem("Basket");
      updateDate();
     if (!storedBasket || storedBasket.length < 1) {
@@ -241,7 +266,7 @@ const [paymentData, setPaymentData] = useState({
     } else {
      
       const parsedBasketData = JSON.parse(storedBasket);
-      setBuket(parsedBasketData);
+      checkImages(parsedBasketData);
       const totalCost = parsedBasketData.reduce((sum, item) => sum + item.quantity * item.price, 0);
       setTotal(totalCost);
       const totalCount = parsedBasketData.reduce((sum, item) => sum + item.quantity, 0);
@@ -292,7 +317,7 @@ const [paymentData, setPaymentData] = useState({
    
   }
  
-
+ 
   const requestData = {
     apiKey: NOVAPOST_API_KEY,
     modelName: 'Address',
@@ -434,6 +459,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       }
   
       window.sessionStorage.setItem("Basket", JSON.stringify(filteredBasket));
+      window.localStorage.setItem("Basket", JSON.stringify(filteredBasket));
     }
   };
   
@@ -460,6 +486,7 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
       }
   
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      window.localStorage.setItem("Basket", JSON.stringify(updatedBasket));
     }
   };
   
@@ -475,60 +502,72 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
   };
-  const calculateShippingCostAddress = () => {
+  // const calculateShippingCostAddress = () => {
     
-    switch (selectedCountry) {
-      case 'Poland':
-      case 'Moldova (the Republic of)':
-        setCountryExcel('novapost');
+  //   switch (selectedCountry) {
+  //     case 'Poland':
+  //     case 'Moldova (the Republic of)':
+  //       setCountryExcel('novapost');
         
-        if (count === 1) {
-          return 700 ;
-        } else if (count === 2) {
-          return 730 ;
-        } else {
-          return 970 ;
-        }
-      case 'Romania':
-      case 'Czech Republic':
-      case 'Czechia':
-      case 'Germany':
-      case 'Slovakia':
-      case 'Lithuania':
-      case 'Hungary':
-        setCountryExcel('novapost');
+  //       if (count === 1) {
+  //         return 700 ;
+  //       } else if (count === 2) {
+  //         return 730 ;
+  //       } else {
+  //         return 970 ;
+  //       }
+  //     case 'Romania':
+  //     case 'Czech Republic':
+  //     case 'Czechia':
+  //     case 'Germany':
+  //     case 'Slovakia':
+  //     case 'Lithuania':
+  //     case 'Hungary':
+  //       setCountryExcel('novapost');
        
-        if (count === 1) {
-          return 950 ;
-        } else if (count === 2) {
-          return 980 ;
-        } else {
-          return 1970 ;
-        }
-      case 'Italy':
-      case 'Estonia':
-      case 'Latvia':
-        setCountryExcel('novapost');
+  //       if (count === 1) {
+  //         return 950 ;
+  //       } else if (count === 2) {
+  //         return 980 ;
+  //       } else {
+  //         return 1970 ;
+  //       }
+  //     case 'Italy':
+  //     case 'Estonia':
+  //     case 'Latvia':
+  //       setCountryExcel('novapost');
       
-        if (count === 1) {
-          return 1600 ;
-        } else if (count === 2) {
-          return 1630 ;
-        } else {
-          return 2670 ;
-        }
-      default:
-        setCountryExcel('worldwide');
+  //       if (count === 1) {
+  //         return 1600 ;
+  //       } else if (count === 2) {
+  //         return 1630 ;
+  //       } else {
+  //         return 2670 ;
+  //       }
+  //     default:
+  //       setCountryExcel('worldwide');
      
-        if (count === 1) {
-          return 900;
-        } else if (count === 2) {
-          return 1300;
-        } else {
-          return 1600;
-        }
+  //       if (count === 1) {
+  //         return 900;
+  //       } else if (count === 2) {
+  //         return 1300;
+  //       } else {
+  //         return 1600;
+  //       }
+  //   }
+  // };
+  const calculateShippingCostAddress = () => {
+    setCountryExcel('worldwide');
+ 
+    if (count === 1) {
+      return 900;
+    } else if (count === 2) {
+      return 1300;
+    } else {
+      return 1600;
     }
-  };
+};
+
   const fetchCitiesByCountry = async (selectedCountry) => {
     try {
       const response = await fetch('https://countriesnow.space/api/v0.1/countries/cities', {

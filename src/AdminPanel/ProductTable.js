@@ -578,15 +578,27 @@ function changeProductVideoContent()
 }
 const [currentPage, setCurrentPage] = useState(0);
 const pageSize = 20;
-
 const filteredProducts = findProductsTable.filter(product =>
-    product.article.toLowerCase().includes(inputSearchTable.toLowerCase())
+  product.article.toLowerCase().includes(inputSearchTable.toLowerCase())
 );
+
+
+const totalPages = Math.ceil(filteredProducts.length / pageSize);
 
 const displayedProducts = filteredProducts.slice(
     currentPage * pageSize,
     (currentPage + 1) * pageSize
 );
+
+
+const handlePageChange = (page) => {
+  if (page >= 0 && page < totalPages) {
+      setCurrentPage(page);
+  }
+};
+
+const startPage = Math.max(0, currentPage - 2);
+const endPage = Math.min(totalPages - 1, startPage + 4);
     return(
 
         <div>
@@ -1209,17 +1221,23 @@ const displayedProducts = filteredProducts.slice(
       </tbody>
     </Table>
   
-    <Pagination className="justify-content-center" size="sm ">
-    {Array.from({ length: Math.ceil(filteredProducts.length / pageSize) }, (_, i) => (
-        <Pagination.Item
-            key={i}
-            active={i === currentPage}
-            onClick={() => setCurrentPage(i)}
-        >
-            {i + 1}
-        </Pagination.Item>
-    ))}
-</Pagination>
+    <Pagination className="justify-content-center" size="sm">
+                <Pagination.First onClick={() => handlePageChange(0)} disabled={currentPage === 0} />
+                <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 0} />
+
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((page) => (
+                    <Pagination.Item
+                        key={page}
+                        active={page === currentPage}
+                        onClick={() => handlePageChange(page)}
+                    >
+                        {page + 1}
+                    </Pagination.Item>
+                ))}
+
+                <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages - 1} />
+                <Pagination.Last onClick={() => handlePageChange(totalPages - 1)} disabled={currentPage === totalPages - 1} />
+            </Pagination>
 
         </div>
     );
