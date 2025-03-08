@@ -289,9 +289,7 @@ function getOrder()
       
     </div>
   </div>
-  {/* <div >
-  <p class="typing-text" >Любі жінки, команда HD brand вітає вас зі святом 8 Березня!🌷</p>
-</div> */}
+
 
         <header className="header " >
       
