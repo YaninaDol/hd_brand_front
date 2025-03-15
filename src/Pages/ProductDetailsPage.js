@@ -191,6 +191,26 @@ const ProductDetailsPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetchExchangeRates();
+    setIsPlaying(true);
+    setIsPlaying2(true);
+    if (videoRef2.current) {
+     
+      videoRef2.current.play(); // Начать воспроизведение видео сразу после загрузки
+     
+    };
+    if (videoRef.current) {
+   
+      videoRef.current.play(); // Начать воспроизведение видео сразу после загрузки
+     
+    };
+
+  const savedCurrency =  window.sessionStorage.getItem('selectedCurrency');
+
+
+if (savedCurrency) {
+  setSelectedCurrency(savedCurrency);
+}
 
     const fetchData = async () => {
       try {
