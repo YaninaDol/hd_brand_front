@@ -398,7 +398,12 @@ if (savedCurrency) {
 setSelectedCurrency(savedCurrency);
 }
 const shippingCost = calculateShippingCostAddress();
-setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
+if (countryinExcel === 'novapost'&& typeDeliveryW === 'warehouse') {
+  setShipment( shippingCost - 100);
+} else {
+  setShipment(shippingCost);
+}
+
 
 
   }, [selectedCountry,count,discount,typeDeliveryW,TotalSum,countryinExcel,selectedDepartament,address,phoneNumber,email,selectedCity2,address2,indexW,NovaWorldWare,indexU,activeTab]);
@@ -502,71 +507,75 @@ setShipment(typeDeliveryW === 'warehouse' ? shippingCost - 100 : shippingCost);
 
 
   };
-  // const calculateShippingCostAddress = () => {
-    
-  //   switch (selectedCountry) {
-  //     case 'Poland':
-  //     case 'Moldova (the Republic of)':
-  //       setCountryExcel('novapost');
-        
-  //       if (count === 1) {
-  //         return 700 ;
-  //       } else if (count === 2) {
-  //         return 730 ;
-  //       } else {
-  //         return 970 ;
-  //       }
-  //     case 'Romania':
-  //     case 'Czech Republic':
-  //     case 'Czechia':
-  //     case 'Germany':
-  //     case 'Slovakia':
-  //     case 'Lithuania':
-  //     case 'Hungary':
-  //       setCountryExcel('novapost');
-       
-  //       if (count === 1) {
-  //         return 950 ;
-  //       } else if (count === 2) {
-  //         return 980 ;
-  //       } else {
-  //         return 1970 ;
-  //       }
-  //     case 'Italy':
-  //     case 'Estonia':
-  //     case 'Latvia':
-  //       setCountryExcel('novapost');
-      
-  //       if (count === 1) {
-  //         return 1600 ;
-  //       } else if (count === 2) {
-  //         return 1630 ;
-  //       } else {
-  //         return 2670 ;
-  //       }
-  //     default:
-  //       setCountryExcel('worldwide');
-     
-  //       if (count === 1) {
-  //         return 900;
-  //       } else if (count === 2) {
-  //         return 1300;
-  //       } else {
-  //         return 1600;
-  //       }
-  //   }
-  // };
   const calculateShippingCostAddress = () => {
-    setCountryExcel('worldwide');
- 
-    if (count === 1) {
-      return 900;
-    } else if (count === 2) {
-      return 1300;
-    } else {
-      return 1600;
+    const percent = total * 0.015;
+    switch (selectedCountry) {
+      case 'Poland':
+      case 'Moldova (the Republic of)':
+        setCountryExcel('novapost');
+  
+        if (count === 1) {
+          return 520 + percent;
+        } else if (count === 2) {
+          return 600 + percent;
+        } else {
+          return 650 + percent;
+        }
+  
+      case 'Romania':
+      case 'Czech Republic':
+      case 'Czechia':
+      case 'Germany':
+      case 'Slovakia':
+      case 'Lithuania':
+      case 'Hungary':
+        setCountryExcel('novapost');
+  
+        if (count === 1) {
+          return 700 + percent;
+        } else if (count === 2) {
+          return 800 + percent;
+        } else {
+          return 900 + percent;
+        }
+  
+      case 'Italy':
+      case 'Estonia':
+      case 'Latvia':
+        setCountryExcel('novapost');
+  
+        if (count === 1) {
+          return 1100 + percent;
+        } else if (count === 2) {
+          return 1310 + percent;
+        } else {
+          return 1420 + percent;
+        }
+  
+      default:
+        setCountryExcel('worldwide');
+        setTypeDeliveryW('address');
+        if (count === 1) {
+          return 900;
+        } else if (count === 2) {
+          return 1300;
+        } else {
+          return 1600;
+        }
     }
-};
+  };
+  
+//   const calculateShippingCostAddress = () => {
+//     setCountryExcel('worldwide');
+ 
+//     if (count === 1) {
+//       return 900;
+//     } else if (count === 2) {
+//       return 1300;
+//     } else {
+//       return 1600;
+//     }
+// };
 
   const fetchCitiesByCountry = async (selectedCountry) => {
     try {

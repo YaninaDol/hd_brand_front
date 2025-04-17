@@ -45,6 +45,9 @@ const ProductDetailsPage = () => {
   const [showTableSize, setshowTableSize] = useState(false);
   const handleClosetableSize = () => setshowTableSize(false);
   const handleShowtableSize = () => setshowTableSize(true);
+  const [showNotice, setShowNotice] = useState(false);
+
+
   const [selectedCurrency, setSelectedCurrency] = useState('UAH');
   const [showValidation, setShowValidation] = useState(false);
   const variant_season = 4;
@@ -457,8 +460,12 @@ if (savedCurrency) {
         return  require('../assets/table1.png');
     }
   }
-
-
+  useEffect(() => {
+    if (product.sizes === "21") {
+      setShowNotice(true);
+    }
+  }, [product.sizes]);
+  const handleCloseNotice = () => setShowNotice(false);
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
 //   }
@@ -492,7 +499,34 @@ if (savedCurrency) {
         </Modal.Footer>
       </Modal>
 
+      <Modal show={showNotice} onHide={handleCloseNotice}>
+        <Modal.Header closeButton>
+          <Modal.Title>{i18n.language === 'en' ? 'Attention' : 'Увага!'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+  {i18n.language === 'en' ? (
+    <>
+      ⚠️ The model is undersized. Please pay attention to the{' '}
+      <a style={{ color: 'black', textDecoration: 'underline' }} onClick={handleShowtableSize}>
+        size guide.
+      </a>
+    </>
+  ) : (
+    <>
+      ⚠️ Модель маломірна! Будь ласка, зверніть увагу на{' '}
+      <a style={{ color: 'black', textDecoration: 'underline' }} onClick={handleShowtableSize}>
+       розмірну сітку.
+      </a>
+    </>
+  )}
+</Modal.Body>
 
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseNotice}>
+            Закрыть
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
 
       <Modal show={showTableSize} onHide={handleClosetableSize}>
