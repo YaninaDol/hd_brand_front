@@ -636,6 +636,10 @@ const handleCheckboxChange = (event, type) => {
         <div className="color-child1" />
         <div className="div136">{i18n.language === 'en' ? 'Gray' : 'Сірий'}</div>
       </div>
+      <div  key="14"  onClick={()=>setSelectedColor('Бордовий')}   className={`color8 ${selectedColor === 'Бордовий' ? 'selected' : ''}`}>
+        <div className="color-child44" />
+        <div className="div140">{i18n.language === 'en' ? 'Burgundy' : 'Бордовий'}</div>
+      </div>
       <div  key="5" onClick={()=>setSelectedColor('Червоний')}  className={`color5 ${selectedColor === 'Червоний' ? 'selected' : ''}`}>
         <div className="color-child2" />
         <div className="div137">{i18n.language === 'en' ? 'Red' : 'Червоний'}</div>
@@ -656,7 +660,12 @@ const handleCheckboxChange = (event, type) => {
         <div className="color-child4" />
         <div className="div139">{i18n.language === 'en' ? 'Violet' : 'Фіолетовий'}</div>
       </div>
-      <div  key="8"  onClick={()=>setSelectedColor('Блакитний')}   className={`color8 ${selectedColor === 'Блакитний' ? 'selected' : ''}`}>
+    
+       <div  key="13"  onClick={()=>setSelectedColor('Блакитний')}   className={`color8 ${selectedColor === 'Блакитний' ? 'selected' : ''}`}>
+        <div className="color-child55" />
+        <div className="div140">{i18n.language === 'en' ? 'Light Blue' : 'Блакитний'}</div>
+      </div>
+      <div  key="8"  onClick={()=>setSelectedColor('Синій')}   className={`color8 ${selectedColor === 'Синій' ? 'selected' : ''}`}>
         <div className="color-child5" />
         <div className="div140">{i18n.language === 'en' ? 'Blue' : 'Синій'}</div>
       </div>
@@ -1107,6 +1116,10 @@ const handleCheckboxChange = (event, type) => {
         <div className="color-child1" />
         <div className="div136">{i18n.language === 'en' ? 'Gray' : 'Сірий'}</div>
       </div>
+      <div  key="14"  onClick={()=>setSelectedColor('Бордовий')}   className={`color8 ${selectedColor === 'Бордовий' ? 'selected' : ''}`}>
+        <div className="color-child44" />
+        <div className="div140">{i18n.language === 'en' ? 'Burgundy' : 'Бордовий'}</div>
+      </div>
       <div  key="5" onClick={()=>setSelectedColor('Червоний')}  className={`color5 ${selectedColor === 'Червоний' ? 'selected' : ''}`}>
         <div className="color-child2" />
         <div className="div137">{i18n.language === 'en' ? 'Red' : 'Червоний'}</div>
@@ -1127,7 +1140,11 @@ const handleCheckboxChange = (event, type) => {
         <div className="color-child4" />
         <div className="div139">{i18n.language === 'en' ? 'Violet' : 'Фіолетовий'}</div>
       </div>
-      <div  key="8"  onClick={()=>setSelectedColor('Блакитний')}   className={`color8 ${selectedColor === 'Блакитний' ? 'selected' : ''}`}>
+      <div  key="13"  onClick={()=>setSelectedColor('Блакитний')}   className={`color8 ${selectedColor === 'Блакитний' ? 'selected' : ''}`}>
+        <div className="color-child55" />
+        <div className="div140">{i18n.language === 'en' ? 'Light Blue' : 'Блакитний'}</div>
+      </div>
+      <div  key="8"  onClick={()=>setSelectedColor('Синій')}   className={`color8 ${selectedColor === 'Синій' ? 'selected' : ''}`}>
         <div className="color-child5" />
         <div className="div140">{i18n.language === 'en' ? 'Blue' : 'Синій'}</div>
       </div>

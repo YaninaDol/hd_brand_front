@@ -435,6 +435,7 @@ if (countryinExcel === 'novapost'&& typeDeliveryW === 'warehouse') {
         setCheckoutbtn(true);
       }
       window.sessionStorage.setItem("Basket", JSON.stringify(updatedBasket));
+      window.localStorage.setItem("Basket", JSON.stringify(updatedBasket));
       setShipment(calculateShippingCostAddress());
     }
   }

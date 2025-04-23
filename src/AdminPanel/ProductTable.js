@@ -52,6 +52,7 @@ export default function ProductTable(){
     const [idToDelete,setIdToDelete]=useState(0);
 
     const [nametoUpdate,setNameToUpdate] = useState("");
+    const [nameEngtoUpdate,setNameEngToUpdate] = useState("");
   
     const [imagetoUpdate,setImageToUpdate] = useState(null);
     const [image2toUpdate,setImage2ToUpdate] = useState(null);
@@ -398,6 +399,7 @@ const confirmUpdate = () => {
     bodyFormData.append('id', prodIdUpdate);
     bodyFormData.append('article', articleUpdate);
     bodyFormData.append('name', nametoUpdate);
+    bodyFormData.append('nameEng', nameEngtoUpdate);
     // bodyFormData.append('image3', image3toUpdate);
     // bodyFormData.append('image', imagetoUpdate);
     // bodyFormData.append('image2', image2toUpdate);
@@ -731,6 +733,9 @@ const endPage = Math.min(totalPages - 1, startPage + 4);
      
         <MDBInputGroup className='mb-3'  textBefore='Назва'>
       <input onChange={(e)=>setNameToUpdate(e.target.value)} value={nametoUpdate} className='form-control' type='text' />
+    </MDBInputGroup>
+    <MDBInputGroup className='mb-3'  textBefore='Name'>
+      <input onChange={(e)=>setNameEngToUpdate(e.target.value)} value={nameEngtoUpdate} className='form-control' type='text' />
     </MDBInputGroup>
     <MDBInputGroup className='mb-3'  textBefore='Арт:'>
       <input onChange={(e)=>setArticleUpdate(e.target.value)} value={articleUpdate} className='form-control' type='text' />
