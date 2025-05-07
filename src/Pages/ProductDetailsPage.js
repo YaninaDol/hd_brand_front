@@ -460,11 +460,16 @@ if (savedCurrency) {
         return  require('../assets/table1.png');
     }
   }
+  const [hasSeenNotice, setHasSeenNotice] = useState(false); // новое состояние
+
   useEffect(() => {
-    if (product.sizes === "21") {
-      setShowNotice(true);
-    }
-  }, [product.sizes]);
+    const timeout = setTimeout(() => {
+      if (product?.sizes === "21") {
+        setShowNotice(true);
+      }
+    }, 200); // ждём, пока придут все данные
+    return () => clearTimeout(timeout);
+  }, [product?.id]);
   const handleCloseNotice = () => setShowNotice(false);
 //   if (!subcategory) {
 //     return <div>Loading...</div>;
@@ -499,35 +504,28 @@ if (savedCurrency) {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showNotice} onHide={handleCloseNotice}>
-        <Modal.Header closeButton>
-          <Modal.Title>{i18n.language === 'en' ? 'Attention' : 'Увага!'}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-  {i18n.language === 'en' ? (
-    <>
-      ⚠️ The model is undersized. Please pay attention to the{' '}
-      <a style={{ color: 'black', textDecoration: 'underline' }} onClick={handleShowtableSize}>
-        size guide.
-      </a>
-    </>
-  ) : (
-    <>
-      ⚠️ Модель маломірна! Будь ласка, зверніть увагу на{' '}
-      <a style={{ color: 'black', textDecoration: 'underline' }} onClick={handleShowtableSize}>
-       розмірну сітку.
-      </a>
-    </>
-  )}
-</Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseNotice}>
-            Закрыть
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
+      <Modal show={showNotice} onHide={handleCloseNotice} onExited={() => setShowNotice(false)}>
+  <Modal.Header closeButton>
+    <Modal.Title>{i18n.language === 'en' ? 'Attention' : 'Увага!'}</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {i18n.language === 'en' ? (
+      <>
+        ⚠️ The model is undersized. Please pay attention to the{' '}
+        <a style={{ color: 'black', textDecoration: 'underline' }} onClick={handleShowtableSize}>
+          size guide.
+        </a>
+      </>
+    ) : (
+      <>
+        ⚠️ Модель маломірна! Будь ласка, зверніть увагу на{' '}
+        <a style={{ color: 'black', textDecoration: 'underline' }} onClick={handleShowtableSize}>
+          розмірну сітку.
+        </a>
+      </>
+    )}
+  </Modal.Body>
+</Modal>
 
       <Modal show={showTableSize} onHide={handleClosetableSize}>
         <Modal.Header closeButton>

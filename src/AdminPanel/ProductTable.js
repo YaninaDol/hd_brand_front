@@ -192,6 +192,7 @@ export default function ProductTable(){
     setArticleUpdate(prod['article']);
     setImage3ToUpdate(prod['image3']);
         setNameToUpdate(prod['name']);
+        setNameEngToUpdate(prod['nameEng']);
         setImageToUpdate(prod['image']);
         setImage2ToUpdate(prod['image2']);
         setIsNewUpdate(prod['isNew']);

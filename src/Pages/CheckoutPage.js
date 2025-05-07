@@ -1198,7 +1198,7 @@ const [basicModal, setBasicModal] = useState(true);
      />)}
       {errors.indexW      && <div style={{ color: 'red' }}>{errors.indexW     }</div>}
       {errors.internationalDelivery      && <div style={{ color: 'red' }}>{errors.internationalDelivery     }</div>}
-     
+    
 
   </MDBCol>
 
@@ -1336,7 +1336,26 @@ const [basicModal, setBasicModal] = useState(true);
   }
   </MDBRow>
 
-  
+  {( activeTab !== 'longer-tab' ) && (
+    <div style={{ color: '#555', fontSize: '0.95rem', marginTop: '10px' }}>
+    
+      {i18n.language === 'en' ? (
+        <>
+          <strong style={{ color: 'red'}}>Please note:</strong><br />
+          Orders are shipped in branded packaging with a receipt inside.<br />
+          Duties and taxes are determined by the customs service of the recipient's country and must be paid separately. We recommend checking the conditions in advance.
+        </>
+      ) : (
+        <>
+          <strong style={{ color: 'red'}}>Зверніть, будь ласка, увагу:</strong><br />
+          замовлення відправляємо у фірмовому пакуванні з чеком усередині.<br />
+          Мито та податки встановлює митна служба країни отримувача та оплачуються окремо. Рекомендуємо уточнити умови заздалегідь.
+        </>
+      )}
+   
+   
+    </div>
+  )}
   <hr className="my-4" />
   <MDBRow id='totalbtn' >
   <MDBCol>{t('to_payment')} </MDBCol>
