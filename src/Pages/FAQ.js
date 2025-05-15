@@ -157,7 +157,7 @@ HD brand - це не просто бренд, це спільнота, що об
 
   <li>When ordering through the website, you have the option to choose the payment method:</li>
   <ul>
-    <li>By bank card on the website (Visa or MasterCard). For the additional payment service LiqPay or Plata by Mono, with technology existing on the Internet.</li>
+    <li>By bank card on the website (Visa or MasterCard). For the additional payment service LiqPay , with technology existing on the Internet.</li>
   </ul>
 </ol>
 
