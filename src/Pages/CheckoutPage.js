@@ -723,12 +723,12 @@ if (countryinExcel === 'novapost'&& typeDeliveryW === 'warehouse') {
         {
         
          
-          confirmOrder("НП-відділення","Україна, "+selectedCity+" "+selectedDepartament,sum,totalString)
+         confirmOrder("НП-відділення", "Україна, " + selectedCity + "||" + selectedDepartament, sum, totalString);
         }
         else if(typeDelivery==='2')
         {
         
-          confirmOrder("НП-адреса","Україна, "+selectedCity+" "+address,sum,totalString)
+           confirmOrder("НП-адреса", "Україна, " + selectedCity + "||" + address, sum, totalString);
         }
         else if(typeDelivery==='3')
         {
@@ -914,16 +914,16 @@ const [basicModal, setBasicModal] = useState(true);
   return (
     <div style={{ margin: '0', padding: '0', overflowX: 'hidden' }}>
   {/* <MDBModal open={basicModal}  onClose={() => setBasicModal(false)} tabIndex='-1'>
-        <MDBModalDialog className="modal-dialog-centered">
-          <MDBModalContent>
-            <MDBModalHeader>
+  <MDBModalDialog className="modal-dialog-centered">
+    <MDBModalContent>
+      <MDBModalHeader>
               <MDBModalTitle>{i18n.language === 'en' ? 'Notification' : 'Зверніть увагу !'}</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={() => setBasicModal(false)}></MDBBtn>
-            </MDBModalHeader>
+        <MDBBtn className='btn-close' color='none' onClick={() => setBasicModal(false)}></MDBBtn>
+      </MDBModalHeader>
             <MDBModalBody>{i18n.language === 'en' ? 'Due to the production holidays, custom-made shoes will be shipped from January 17 to January 20, 2025.' : 'У зв’язку з канікулами на виробництві, взуття під замовлення буде відправлене з 17 по 20 січня 2025 року .'}</MDBModalBody>
-          </MDBModalContent>
-        </MDBModalDialog>
-      </MDBModal> */}
+    </MDBModalContent>
+  </MDBModalDialog>
+</MDBModal> */}
 
       <AuthModal show={show2} handleClose={handleClose2}></AuthModal>
     
@@ -1274,7 +1274,7 @@ const [basicModal, setBasicModal] = useState(true);
   <img width={90} style={{height:'100%'}} src={require('../assets/plata_light_bg@2x.png')} />
 </Button></div>
 )} */}
-
+ 
   </MDBRow>
       </div>
   </MDBCol>
