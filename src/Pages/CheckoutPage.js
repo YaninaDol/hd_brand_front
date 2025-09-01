@@ -499,9 +499,14 @@ if (countryinExcel === 'novapost'&& typeDeliveryW === 'warehouse') {
 
   const handleChangeCountry = async (e) => {
     setSelectedCountry(e.value);
+    
     if(e.value.includes('Moldova'))
     {
       await fetchCitiesByCountry('Moldova');
+    }
+    else if(e.value.includes('Czechia'))
+    {
+      await fetchCitiesByCountry('Czech Republic');
     }
    else await fetchCitiesByCountry(e.value);
 
@@ -595,6 +600,7 @@ if (countryinExcel === 'novapost'&& typeDeliveryW === 'warehouse') {
       }
   
       const data = await response.json();
+      
       const cities = data.data.map((city) => ({
         label: city,
         value: city,

@@ -66,6 +66,7 @@ export default function ProductTable(){
     const [colorUpdate,setColorlUpdate] = useState("");
     const [seasonUpdate,setSeasonUpdate] = useState(true);
     const [isNewUpdate,setIsNewUpdate] = useState(true);
+    const [isInStockUpdate,setIsInStockUpdate] = useState(true);
     const [categoryUpdate,setCategoryUpdate] = useState(0);
     const [SizesUpdate,setSizesUpdate] = useState("");
     const [prodIdUpdate,setProdIdUpdate] = useState(0);
@@ -117,11 +118,12 @@ export default function ProductTable(){
       })
       .catch(error => console.error('Error fetching products:', error));
 
-      axios.get(`${API_BASE_URL}/api/Product/GetProducts`)
+      axios.get(`${API_BASE_URL}/api/Product/GetVisibleProducts`)
       .then(response => {
       
         dispatch(setProducts(response.data))
-        setAllProducts(response.data);
+         
+        setAllProducts(response.data.filter(prod => prod.visible === true));
        
         // axios.get(`${API_BASE_URL}/api/Product/GetContentVideo`, {
         //   headers: {
@@ -196,6 +198,7 @@ export default function ProductTable(){
         setImageToUpdate(prod['image']);
         setImage2ToUpdate(prod['image2']);
         setIsNewUpdate(prod['isNew']);
+         setIsInStockUpdate(prod['isInStock']);
         setVideoToUpdate(prod['video']);
         setSubCategoryUpdate(prod['subCategoryid']);
         setCategoryUpdate(prod['categoryid']);   
@@ -406,6 +409,7 @@ const confirmUpdate = () => {
     // bodyFormData.append('image2', image2toUpdate);
     // bodyFormData.append('video', videotoUpdate);
     bodyFormData.append('isnew', isNewUpdate);
+    bodyFormData.append('isInStock', isInStockUpdate);
     bodyFormData.append('subcategoryid', subCategoryUpdate);
     bodyFormData.append('categoryid', categoryUpdate);
     bodyFormData.append('seasonid', seasonUpdate);
@@ -840,6 +844,9 @@ const endPage = Math.min(totalPages - 1, startPage + 4);
        
       <MDBInputGroup className='mb-3'  textBefore='Новинка'>
       <MDBCheckbox  label='NEW' checked={isNewUpdate} onChange={(e)=>setIsNewUpdate(e.target.checked)} />
+      </MDBInputGroup>
+      <MDBInputGroup className='mb-3'  textBefore='В наявності'>
+      <MDBCheckbox  label='In Stock' checked={isInStockUpdate} onChange={(e)=>setIsInStockUpdate(e.target.checked)} />
       </MDBInputGroup>
         </Modal.Body>
         <Modal.Footer>

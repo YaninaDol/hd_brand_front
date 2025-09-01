@@ -234,7 +234,7 @@ if (savedCurrency) {
         dispatch(setSubCategory(subcategoryRes.data.value));
         dispatch(setProductSizes(productSizeRes.data));
         dispatch(setProduct(productRes.data.value));
-
+        if(productRes.data.value.visible=== false){throw new Error('Product not found');}
         const { categoryid, materialid, seasonid } = productRes.data.value;
 
         const [categoryRes, materialRes, seasonRes, similarRes] = await Promise.all([

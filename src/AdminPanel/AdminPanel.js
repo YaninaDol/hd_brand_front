@@ -1,66 +1,105 @@
+import React, { useState, useEffect } from "react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import ProductsTable from "./ProductTable";
+import UsersTable from "./UserTable";
+import ArchivedProductsTable from "./ArchivedProductsTable";
+import CategorySpecification from "./CategorySpecification";
+import Orders from "./Orders";
+import AuthModal from "../Components/AuthModal"; 
 
-import React, { useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
-import ProductsTable from './ProductTable';
-import UsersTable from './UserTable';
-import CategorySpecification from './CategorySpecification';
-import Orders from './Orders';
 const AdminPanel = () => {
-  const [activeTab, setActiveTab] = useState('/admin/products');
+  const [activeTab, setActiveTab] = useState("/admin/products");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = window.sessionStorage.getItem("AccessToken");
+    const role = window.sessionStorage.getItem("Role");
+
+    if (token && role === "1") {
+      setIsAuthorized(true);
+    } else {
+      setShowAuth(true);
+    }
+  }, []);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
+  const handleCloseAuth = () => {
+    setShowAuth(false);
+
+    
+    const token = window.sessionStorage.getItem("AccessToken");
+    const role = window.sessionStorage.getItem("Role");
+    if (token && role === "1") {
+      setIsAuthorized(true);
+      navigate("/admin/products");
+    }
+  };
+
+  if (!isAuthorized) {
+    return <AuthModal show={showAuth} handleClose={handleCloseAuth} />;
+  }
+
   return (
     <div>
-      <ul className="nav nav-pills nav-justified  " id="ex1" role="tablist">
+      <ul className="nav nav-pills nav-justified" id="ex1" role="tablist">
         <li className="nav-item" role="presentation">
           <Link
-            className={`nav-link ${activeTab === '/admin/products' ? 'active' : ''}`}
+            className={`nav-link ${
+              activeTab === "/admin/products" ? "active" : ""
+            }`}
             to="/admin/products"
-            role="tab"
-            aria-controls="ex3-pills-1"
-            aria-selected={activeTab === '/admin/products'}
-            onClick={() => handleTabClick('/admin/products')}
+            onClick={() => handleTabClick("/admin/products")}
           >
             DASHBOARD OF PRODUCTS
           </Link>
         </li>
         <li className="nav-item" role="presentation">
           <Link
-            className={`nav-link ${activeTab === '/admin/categoryspec' ? 'active' : ''}`}
+            className={`nav-link ${
+              activeTab === "/admin/categoryspec" ? "active" : ""
+            }`}
             to="/admin/categoryspec"
-            role="tab"
-            aria-controls="ex3-pills-2"
-            aria-selected={activeTab === '/admin/categoryspec'}
-            onClick={() => handleTabClick('/admin/categoryspec')}
+            onClick={() => handleTabClick("/admin/categoryspec")}
           >
             DASHBOARD OF CATEGORY & SPECIFICATIONS
           </Link>
         </li>
         <li className="nav-item" role="presentation">
           <Link
-            className={`nav-link ${activeTab === '/admin/users' ? 'active' : ''}`}
+            className={`nav-link ${
+              activeTab === "/admin/users" ? "active" : ""
+            }`}
             to="/admin/users"
-            role="tab"
-            aria-controls="ex3-pills-2"
-            aria-selected={activeTab === '/admin/users'}
-            onClick={() => handleTabClick('/admin/users')}
+            onClick={() => handleTabClick("/admin/users")}
           >
             DASHBOARD OF USERS
           </Link>
         </li>
         <li className="nav-item" role="presentation">
           <Link
-            className={`nav-link ${activeTab === '/admin/orders' ? 'active' : ''}`}
+            className={`nav-link ${
+              activeTab === "/admin/orders" ? "active" : ""
+            }`}
             to="/admin/orders"
-            role="tab"
-            aria-controls="ex3-pills-2"
-            aria-selected={activeTab === '/admin/orders'}
-            onClick={() => handleTabClick('/admin/orders')}
+            onClick={() => handleTabClick("/admin/orders")}
           >
             DASHBOARD OF ORDERS
+          </Link>
+        </li>
+        <li className="nav-item" role="presentation">
+          <Link
+            className={`nav-link ${
+              activeTab === "/admin/archive" ? "active" : ""
+            }`}
+            to="/admin/archive"
+            onClick={() => handleTabClick("/admin/archive")}
+          >
+            Архивовані товари
           </Link>
         </li>
       </ul>
@@ -71,9 +110,9 @@ const AdminPanel = () => {
           <Route path="/users" element={<UsersTable />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/categoryspec" element={<CategorySpecification />} />
+          <Route path="/archive" element={<ArchivedProductsTable />} />
         </Routes>
       </div>
-     
     </div>
   );
 };

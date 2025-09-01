@@ -3,7 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { MDBRow, MDBCol, MDBTypography } from 'mdb-react-ui-kit';
 import CartBasket from './CartBasket';
 import { useEffect, useState } from "react";
-
+import axios from 'axios';
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const BasketModal = ({
   show,
   handleClose,
@@ -18,32 +19,53 @@ const BasketModal = ({
     const storedBasket = window.localStorage.getItem("Basket");
     if (storedBasket) {
       const parsedBasketData = JSON.parse(storedBasket);
-      checkImages(parsedBasketData);
+      // checkImages(parsedBasketData);
+      checkProductsVisibility(parsedBasketData);
     }
   }, [show]);
 
-  const checkImages = (basket) => {
-    const validItems = [];
+  // const checkImages = (basket) => {
+  //   const validItems = [];
 
-    let checkedCount = 0;
-    basket.forEach((item) => {
-      const img = new Image();
-      img.src = item.image;
-      img.onload = () => {
+  //   let checkedCount = 0;
+  //   basket.forEach((item) => {
+  //     const img = new Image();
+  //     img.src = item.image;
+  //     img.onload = () => {
+  //       validItems.push(item);
+  //       checkedCount++;
+  //       if (checkedCount === basket.length) {
+  //         updateBasket(validItems);
+  //       }
+  //     };
+  //     img.onerror = () => {
+  //       checkedCount++;
+  //       if (checkedCount === basket.length) {
+  //         updateBasket(validItems);
+  //       }
+  //     };
+  //   });
+  // };
+const checkProductsVisibility = async (basket) => {
+  const validItems = [];
+   
+  for (const item of basket) {
+  
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/Product/GetProductById?id=${item.productid}`);
+      const product = res.data.value;
+
+      if (product && product.visible === true) {
+        
         validItems.push(item);
-        checkedCount++;
-        if (checkedCount === basket.length) {
-          updateBasket(validItems);
-        }
-      };
-      img.onerror = () => {
-        checkedCount++;
-        if (checkedCount === basket.length) {
-          updateBasket(validItems);
-        }
-      };
-    });
-  };
+      }
+    } catch (err) {
+     
+    }
+  }
+
+  updateBasket(validItems);
+};
 
   const updateBasket = (basket) => {
     setArrBasket(basket);

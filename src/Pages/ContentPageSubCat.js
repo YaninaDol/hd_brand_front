@@ -415,7 +415,7 @@ useEffect(() => {
             onChange={() => window.location.href='/instock'}
             style={{ marginTop: 15 }}
           /> */}
-          <Form.Check
+          {/* <Form.Check
             type="checkbox"
             name="sorting"
             id="salecollection"
@@ -423,7 +423,7 @@ useEffect(() => {
             checked={sortCollection === 'isDiscount'}
             onChange={() => handleSortCollection('isDiscount')}
             style={{ marginTop: 15 }}
-          />
+          /> */}
            
       </div>
     </div>
@@ -829,7 +829,7 @@ useEffect(() => {
             onChange={() => window.location.href='/instock'}
             style={{ marginTop: 15 }}
           /> */}
-          <Form.Check
+          {/* <Form.Check
             type="checkbox"
             name="sorting"
             id="salecollection"
@@ -837,7 +837,7 @@ useEffect(() => {
             checked={sortCollection === 'isDiscount'}
             onChange={() => handleSortCollection('isDiscount')}
             style={{ marginTop: 15 }}
-          />
+          /> */}
       </div>
     </div>
   </div>)}

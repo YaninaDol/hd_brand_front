@@ -406,7 +406,7 @@ const handleCheckboxChange = (event, type) => {
             onChange={() => handleSortCollection('isNew')}
             style={{ marginTop: 15 }}
           />
-          {/* <Form.Check
+          <Form.Check
             type="checkbox"
             name="sorting"
             id="instockcollection"
@@ -415,14 +415,15 @@ const handleCheckboxChange = (event, type) => {
             // onChange={() => handleSortCollection('isInStock')}
             onChange={() => window.location.href='/instock'}
             style={{ marginTop: 15 }}
-          /> */}
+          />
           <Form.Check
             type="checkbox"
             name="sorting"
             id="salecollection"
             label={t('discount_items')}
             checked={sortCollection === 'isDiscount'}
-            onChange={() => handleSortCollection('isDiscount')}
+            // onChange={() => handleSortCollection('isDiscount')}
+              onChange={() => window.location.href='/sale'}
             style={{ marginTop: 15 }}
           />
            
@@ -904,7 +905,8 @@ const handleCheckboxChange = (event, type) => {
             id="salecollection"
             label={t('discount_items')}
             checked={sortCollection === 'isDiscount'}
-            onChange={() => handleSortCollection('isDiscount')}
+            // onChange={() => handleSortCollection('isDiscount')}
+              onChange={() => window.location.href='/sale'}
             style={{ marginTop: 15 }}
           />
       </div>
