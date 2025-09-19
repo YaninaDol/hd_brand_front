@@ -198,7 +198,7 @@ export default function ProductTable(){
         setImageToUpdate(prod['image']);
         setImage2ToUpdate(prod['image2']);
         setIsNewUpdate(prod['isNew']);
-         setIsInStockUpdate(prod['isInStock']);
+         setIsInStockUpdate(prod['isInStock'] !== null ? prod['isInStock'] : false);
         setVideoToUpdate(prod['video']);
         setSubCategoryUpdate(prod['subCategoryid']);
         setCategoryUpdate(prod['categoryid']);   
@@ -1050,11 +1050,7 @@ const endPage = Math.min(totalPages - 1, startPage + 4);
                 </MDBInputGroup>
            </td>
            <td>  <MDBCheckbox 
-  label='Наявність' 
-  onChange={(e) => {
-   
-    setAddAddIsInstock(e.target.checked);
-  }} 
+  label='Наявність' onChange={(e)=>setAddAddIsInstock(e.target.checked)}
 /></td>
 <td><Button   onClick={confirmAdd}  variant='dark'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
   <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z"/>
@@ -1210,7 +1206,7 @@ const endPage = Math.min(totalPages - 1, startPage + 4);
       </MDBInputGroup>
 
         </td>
-        <td>   <MDBCheckbox checked={x.isInStock} /></td>
+        <td>  <MDBCheckbox checked={x.isInStock ?? false} /></td>
         <td>
           
          <Button variant="dark" onClick={()=>{handleUpdateClick(x.id)}}> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
@@ -1224,12 +1220,7 @@ const endPage = Math.min(totalPages - 1, startPage + 4);
   <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
 </svg> </Button>
          </td>
-        
-        
-
       </tr>)
-      
-      
       }
       </tbody>
     </Table>

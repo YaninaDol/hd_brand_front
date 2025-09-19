@@ -454,6 +454,10 @@ if (savedCurrency) {
             return require('../assets/table20.png');
         case "21":
               return require('../assets/table21.png');
+       case "28":
+              return require('../assets/table28.png');
+      case "29":
+              return require('../assets/table29.png');
 
 
       default:
@@ -464,7 +468,7 @@ if (savedCurrency) {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (product?.sizes === "21") {
+      if (product?.sizes === "21"|| product?.sizes === "28" ) {
         setShowNotice(true);
       }
     }, 200); // ждём, пока придут все данные
